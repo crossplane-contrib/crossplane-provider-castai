@@ -9,8 +9,13 @@ import "github.com/upbound/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	"castai_eks_cluster":                config.IdentifierFromProvider,
+	"castai_autoscaler":                 config.IdentifierFromProvider,
+	"castai_node_configuration":         config.IdentifierFromProvider,
+	"castai_node_configuration_default": config.IdentifierFromProvider,
+	"castai_node_template":              config.IdentifierFromProvider,
+	"castai_rebalancing_job":            config.IdentifierFromProvider,
+	"castai_rebalancing_schedule":       config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

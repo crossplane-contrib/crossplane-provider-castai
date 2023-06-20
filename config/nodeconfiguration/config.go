@@ -11,7 +11,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "NodeConfiguration"
 		r.References = config.References{
 			"cluster_id": {
-				Type: "github.com/haarchri/provider-castai/apis/castai/v1alpha1.EksCluster",
+				Type: "github.com/haarchri/provider-castai/apis/castai/v1alpha1.EksClusterId",
 			},
 		}
 	})

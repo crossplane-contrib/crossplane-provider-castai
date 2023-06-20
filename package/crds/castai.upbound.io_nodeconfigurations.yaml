@@ -82,7 +82,8 @@ spec:
                     description: CAST AI cluster id
                     type: string
                   clusterIdRef:
-                    description: Reference to a EksCluster in castai to populate clusterId.
+                    description: Reference to a EksClusterId in castai to populate
+                      clusterId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -116,7 +117,8 @@ spec:
                     - name
                     type: object
                   clusterIdSelector:
-                    description: Selector for a EksCluster in castai to populate clusterId.
+                    description: Selector for a EksClusterId in castai to populate
+                      clusterId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the

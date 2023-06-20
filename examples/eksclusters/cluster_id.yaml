@@ -1,0 +1,9 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EksClusterId
+metadata:
+  name: sample
+spec:
+  forProvider:
+    accountId: "123456789101"
+    clusterName: sample
+    region: eu-central-1

@@ -12,6 +12,7 @@ import (
 
 	autoscaler "github.com/haarchri/provider-castai/config/autoscaler"
 	ekscluster "github.com/haarchri/provider-castai/config/ekscluster"
+	eksclusterid "github.com/haarchri/provider-castai/config/eksclusterid"
 	nodeconfiguration "github.com/haarchri/provider-castai/config/nodeconfiguration"
 	nodeconfigurationdefault "github.com/haarchri/provider-castai/config/nodeconfigurationdefault"
 	nodetemplate "github.com/haarchri/provider-castai/config/nodetemplate"
@@ -48,6 +49,7 @@ func GetProvider() *ujconfig.Provider {
 		nodetemplate.Configure,
 		rebalancingjob.Configure,
 		rebalancingschedule.Configure,
+		eksclusterid.Configure,
 	} {
 		configure(pc)
 	}

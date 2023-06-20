@@ -26,7 +26,7 @@ const (
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal castai credentials as JSON"
 	apiToken                = "api_token"
-	apiUrl                  = "api_url"
+	apiURL                  = "api_url"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -71,8 +71,8 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			ps.Configuration[apiToken] = v
 		}
 
-		if v, ok := creds[apiUrl]; ok {
-			ps.Configuration[apiUrl] = v
+		if v, ok := creds[apiURL]; ok {
+			ps.Configuration[apiURL] = v
 		}
 
 		return ps, nil

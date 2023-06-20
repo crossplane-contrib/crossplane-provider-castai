@@ -12,10 +12,10 @@ import (
 	autoscaler "github.com/haarchri/provider-castai/internal/controller/castai/autoscaler"
 	ekscluster "github.com/haarchri/provider-castai/internal/controller/castai/ekscluster"
 	nodeconfiguration "github.com/haarchri/provider-castai/internal/controller/castai/nodeconfiguration"
+	nodeconfigurationdefault "github.com/haarchri/provider-castai/internal/controller/castai/nodeconfigurationdefault"
 	nodetemplate "github.com/haarchri/provider-castai/internal/controller/castai/nodetemplate"
 	rebalancingjob "github.com/haarchri/provider-castai/internal/controller/castai/rebalancingjob"
 	rebalancingschedule "github.com/haarchri/provider-castai/internal/controller/castai/rebalancingschedule"
-	configurationdefault "github.com/haarchri/provider-castai/internal/controller/node/configurationdefault"
 	providerconfig "github.com/haarchri/provider-castai/internal/controller/providerconfig"
 )
 
@@ -26,10 +26,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		autoscaler.Setup,
 		ekscluster.Setup,
 		nodeconfiguration.Setup,
+		nodeconfigurationdefault.Setup,
 		nodetemplate.Setup,
 		rebalancingjob.Setup,
 		rebalancingschedule.Setup,
-		configurationdefault.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

@@ -235,6 +235,82 @@ func (mg *NodeConfiguration) SetWriteConnectionSecretToReference(r *xpv1.SecretR
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicy of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) GetManagementPolicy() xpv1.ManagementPolicy {
+	return mg.Spec.ManagementPolicy
+}
+
+// GetProviderConfigReference of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+/*
+GetProviderReference of this NodeConfigurationDefault.
+Deprecated: Use GetProviderConfigReference.
+*/
+func (mg *NodeConfigurationDefault) GetProviderReference() *xpv1.Reference {
+	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicy of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) SetManagementPolicy(r xpv1.ManagementPolicy) {
+	mg.Spec.ManagementPolicy = r
+}
+
+// SetProviderConfigReference of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+/*
+SetProviderReference of this NodeConfigurationDefault.
+Deprecated: Use SetProviderConfigReference.
+*/
+func (mg *NodeConfigurationDefault) SetProviderReference(r *xpv1.Reference) {
+	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this NodeConfigurationDefault.
+func (mg *NodeConfigurationDefault) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this NodeTemplate.
 func (mg *NodeTemplate) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)

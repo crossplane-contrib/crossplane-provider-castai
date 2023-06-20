@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: configurationdefaults.node.castai.upbound.io
+  name: nodeconfigurationdefaults.castai.upbound.io
 spec:
-  group: node.castai.upbound.io
+  group: castai.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - castai
-    kind: ConfigurationDefault
-    listKind: ConfigurationDefaultList
-    plural: configurationdefaults
-    singular: configurationdefault
+    kind: NodeConfigurationDefault
+    listKind: NodeConfigurationDefaultList
+    plural: nodeconfigurationdefaults
+    singular: nodeconfigurationdefault
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ConfigurationDefault is the Schema for the ConfigurationDefaults
+        description: NodeConfigurationDefault is the Schema for the NodeConfigurationDefaults
           API. <no value>
         properties:
           apiVersion:
@@ -51,7 +51,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: ConfigurationDefaultSpec defines the desired state of ConfigurationDefault
+            description: NodeConfigurationDefaultSpec defines the desired state of
+              NodeConfigurationDefault
             properties:
               deletionPolicy:
                 default: Delete
@@ -71,9 +72,157 @@ spec:
                   clusterId:
                     description: CAST AI cluster id
                     type: string
+                  clusterIdRef:
+                    description: Reference to a EksCluster in castai to populate clusterId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  clusterIdSelector:
+                    description: Selector for a EksCluster in castai to populate clusterId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                   configurationId:
                     description: Id of the node configuration
                     type: string
+                  configurationIdRef:
+                    description: Reference to a NodeConfiguration in castai to populate
+                      configurationId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  configurationIdSelector:
+                    description: Selector for a NodeConfiguration in castai to populate
+                      configurationId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                 type: object
               managementPolicy:
                 default: FullControl
@@ -261,14 +410,9 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: clusterId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.clusterId)
-            - message: configurationId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.configurationId)
           status:
-            description: ConfigurationDefaultStatus defines the observed state of
-              ConfigurationDefault.
+            description: NodeConfigurationDefaultStatus defines the observed state
+              of NodeConfigurationDefault.
             properties:
               atProvider:
                 properties:

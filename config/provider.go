@@ -10,12 +10,18 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	"github.com/upbound/upjet-provider-template/config/null"
+	autoscaler "github.com/haarchri/provider-castai/config/autoscaler"
+	ekscluster "github.com/haarchri/provider-castai/config/ekscluster"
+	nodeconfiguration "github.com/haarchri/provider-castai/config/nodeconfiguration"
+	nodeconfigurationdefault "github.com/haarchri/provider-castai/config/nodeconfigurationdefault"
+	nodetemplate "github.com/haarchri/provider-castai/config/nodetemplate"
+	rebalancingjob "github.com/haarchri/provider-castai/config/rebalancingjob"
+	rebalancingschedule "github.com/haarchri/provider-castai/config/rebalancingschedule"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "castai"
+	modulePath     = "github.com/haarchri/provider-castai"
 )
 
 //go:embed schema.json
@@ -35,7 +41,13 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		ekscluster.Configure,
+		autoscaler.Configure,
+		nodeconfiguration.Configure,
+		nodeconfigurationdefault.Configure,
+		nodetemplate.Configure,
+		rebalancingjob.Configure,
+		rebalancingschedule.Configure,
 	} {
 		configure(pc)
 	}

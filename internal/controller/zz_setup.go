@@ -11,6 +11,7 @@ import (
 
 	autoscaler "github.com/haarchri/provider-castai/internal/controller/castai/autoscaler"
 	ekscluster "github.com/haarchri/provider-castai/internal/controller/castai/ekscluster"
+	eksclusterid "github.com/haarchri/provider-castai/internal/controller/castai/eksclusterid"
 	nodeconfiguration "github.com/haarchri/provider-castai/internal/controller/castai/nodeconfiguration"
 	nodeconfigurationdefault "github.com/haarchri/provider-castai/internal/controller/castai/nodeconfigurationdefault"
 	nodetemplate "github.com/haarchri/provider-castai/internal/controller/castai/nodetemplate"
@@ -25,6 +26,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		autoscaler.Setup,
 		ekscluster.Setup,
+		eksclusterid.Setup,
 		nodeconfiguration.Setup,
 		nodeconfigurationdefault.Setup,
 		nodetemplate.Setup,

@@ -25,8 +25,8 @@ func (mg *AutoScaler) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.ForProvider.ClusterIDRef,
 		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
 		To: reference.To{
-			List:    &EksClusterList{},
-			Managed: &EksCluster{},
+			List:    &EksClusterIdList{},
+			Managed: &EksClusterId{},
 		},
 	})
 	if err != nil {
@@ -51,8 +51,8 @@ func (mg *NodeConfiguration) ResolveReferences(ctx context.Context, c client.Rea
 		Reference:    mg.Spec.ForProvider.ClusterIDRef,
 		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
 		To: reference.To{
-			List:    &EksClusterList{},
-			Managed: &EksCluster{},
+			List:    &EksClusterIdList{},
+			Managed: &EksClusterId{},
 		},
 	})
 	if err != nil {
@@ -77,8 +77,8 @@ func (mg *NodeConfigurationDefault) ResolveReferences(ctx context.Context, c cli
 		Reference:    mg.Spec.ForProvider.ClusterIDRef,
 		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
 		To: reference.To{
-			List:    &EksClusterList{},
-			Managed: &EksCluster{},
+			List:    &EksClusterIdList{},
+			Managed: &EksClusterId{},
 		},
 	})
 	if err != nil {
@@ -119,8 +119,8 @@ func (mg *NodeTemplate) ResolveReferences(ctx context.Context, c client.Reader) 
 		Reference:    mg.Spec.ForProvider.ClusterIDRef,
 		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
 		To: reference.To{
-			List:    &EksClusterList{},
-			Managed: &EksCluster{},
+			List:    &EksClusterIdList{},
+			Managed: &EksClusterId{},
 		},
 	})
 	if err != nil {
@@ -161,8 +161,8 @@ func (mg *RebalancingJob) ResolveReferences(ctx context.Context, c client.Reader
 		Reference:    mg.Spec.ForProvider.ClusterIDRef,
 		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
 		To: reference.To{
-			List:    &EksClusterList{},
-			Managed: &EksCluster{},
+			List:    &EksClusterIdList{},
+			Managed: &EksClusterId{},
 		},
 	})
 	if err != nil {

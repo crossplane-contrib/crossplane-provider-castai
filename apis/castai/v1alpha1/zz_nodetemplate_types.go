@@ -244,15 +244,15 @@ type NodeTemplateObservation struct {
 type NodeTemplateParameters struct {
 
 	// CAST AI cluster id.
-	// +crossplane:generate:reference:type=github.com/haarchri/provider-castai/apis/castai/v1alpha1.EksCluster
+	// +crossplane:generate:reference:type=github.com/haarchri/provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
-	// Reference to a EksCluster in castai to populate clusterId.
+	// Reference to a EksClusterId in castai to populate clusterId.
 	// +kubebuilder:validation:Optional
 	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
 
-	// Selector for a EksCluster in castai to populate clusterId.
+	// Selector for a EksClusterId in castai to populate clusterId.
 	// +kubebuilder:validation:Optional
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 

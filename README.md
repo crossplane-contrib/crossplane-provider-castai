@@ -21,7 +21,7 @@ kind: Provider
 metadata:
   name: provider-castai
 spec:
-  package: dkb-bank/provider-castai:v0.1.0
+  package: xpkg.upbound.io/dkb-bank/provider-castai:v0.3.0
 EOF
 ```
 

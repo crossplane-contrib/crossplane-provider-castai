@@ -66,7 +66,7 @@ IMAGES = $(PROJECT_NAME)
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= index.docker.io/platformdkbcf
+XPKG_REG_ORGS ?= index.docker.io/platformdkbcf xpkg.upbound.io/dkb-bank
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/dkb-bank

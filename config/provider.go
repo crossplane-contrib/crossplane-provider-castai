@@ -10,19 +10,19 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	autoscaler "github.com/haarchri/provider-castai/config/autoscaler"
-	ekscluster "github.com/haarchri/provider-castai/config/ekscluster"
-	eksclusterid "github.com/haarchri/provider-castai/config/eksclusterid"
-	nodeconfiguration "github.com/haarchri/provider-castai/config/nodeconfiguration"
-	nodeconfigurationdefault "github.com/haarchri/provider-castai/config/nodeconfigurationdefault"
-	nodetemplate "github.com/haarchri/provider-castai/config/nodetemplate"
-	rebalancingjob "github.com/haarchri/provider-castai/config/rebalancingjob"
-	rebalancingschedule "github.com/haarchri/provider-castai/config/rebalancingschedule"
+	autoscaler "github.com/dkb-bank/provider-castai/config/autoscaler"
+	ekscluster "github.com/dkb-bank/provider-castai/config/ekscluster"
+	eksclusterid "github.com/dkb-bank/provider-castai/config/eksclusterid"
+	nodeconfiguration "github.com/dkb-bank/provider-castai/config/nodeconfiguration"
+	nodeconfigurationdefault "github.com/dkb-bank/provider-castai/config/nodeconfigurationdefault"
+	nodetemplate "github.com/dkb-bank/provider-castai/config/nodetemplate"
+	rebalancingjob "github.com/dkb-bank/provider-castai/config/rebalancingjob"
+	rebalancingschedule "github.com/dkb-bank/provider-castai/config/rebalancingschedule"
 )
 
 const (
 	resourcePrefix = "castai"
-	modulePath     = "github.com/haarchri/provider-castai"
+	modulePath     = "github.com/dkb-bank/provider-castai"
 )
 
 //go:embed schema.json

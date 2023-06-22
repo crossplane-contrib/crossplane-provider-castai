@@ -1,4 +1,4 @@
-module github.com/haarchri/provider-castai
+module github.com/dkb-bank/provider-castai
 
 go 1.19
 

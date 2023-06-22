@@ -24,12 +24,12 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/haarchri/provider-castai/apis"
-	"github.com/haarchri/provider-castai/apis/v1alpha1"
-	"github.com/haarchri/provider-castai/config"
-	"github.com/haarchri/provider-castai/internal/clients"
-	"github.com/haarchri/provider-castai/internal/controller"
-	"github.com/haarchri/provider-castai/internal/features"
+	"github.com/dkb-bank/provider-castai/apis"
+	"github.com/dkb-bank/provider-castai/apis/v1alpha1"
+	"github.com/dkb-bank/provider-castai/config"
+	"github.com/dkb-bank/provider-castai/internal/clients"
+	"github.com/dkb-bank/provider-castai/internal/controller"
+	"github.com/dkb-bank/provider-castai/internal/features"
 )
 
 func main() {

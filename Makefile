@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-castai
-PROJECT_REPO ?= github.com/haarchri/$(PROJECT_NAME)
+PROJECT_REPO ?= github.com/dkb-bank/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.3.3
 
@@ -59,17 +59,17 @@ UPTEST_VERSION = v0.2.1
 # ====================================================================================
 # Setup Images
 
-REGISTRY_ORGS ?= index.docker.io/haarchri
+REGISTRY_ORGS ?= index.docker.io/platformdkbcf
 IMAGES = $(PROJECT_NAME)
 -include build/makelib/imagelight.mk
 
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= index.docker.io/haarchri
+XPKG_REG_ORGS ?= index.docker.io/platformdkbcf
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
-XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/haarchri
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/dkb-bank
 XPKGS = $(PROJECT_NAME)
 -include build/makelib/xpkg.mk
 

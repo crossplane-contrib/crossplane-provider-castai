@@ -244,7 +244,7 @@ type NodeTemplateObservation struct {
 type NodeTemplateParameters struct {
 
 	// CAST AI cluster id.
-	// +crossplane:generate:reference:type=github.com/haarchri/provider-castai/apis/castai/v1alpha1.EksClusterId
+	// +crossplane:generate:reference:type=github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
@@ -257,7 +257,7 @@ type NodeTemplateParameters struct {
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// CAST AI node configuration id to be used for node template.
-	// +crossplane:generate:reference:type=github.com/haarchri/provider-castai/apis/castai/v1alpha1.NodeConfiguration
+	// +crossplane:generate:reference:type=github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.NodeConfiguration
 	// +kubebuilder:validation:Optional
 	ConfigurationID *string `json:"configurationId,omitempty" tf:"configuration_id,omitempty"`
 

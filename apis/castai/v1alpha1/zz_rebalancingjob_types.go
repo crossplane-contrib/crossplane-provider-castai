@@ -30,7 +30,7 @@ type RebalancingJobObservation struct {
 type RebalancingJobParameters struct {
 
 	// CAST AI cluster id.
-	// +crossplane:generate:reference:type=github.com/haarchri/provider-castai/apis/castai/v1alpha1.EksClusterId
+	// +crossplane:generate:reference:type=github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
@@ -47,7 +47,7 @@ type RebalancingJobParameters struct {
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Rebalancing schedule of this job.
-	// +crossplane:generate:reference:type=github.com/haarchri/provider-castai/apis/castai/v1alpha1.RebalancingSchedule
+	// +crossplane:generate:reference:type=github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.RebalancingSchedule
 	// +kubebuilder:validation:Optional
 	RebalancingScheduleID *string `json:"rebalancingScheduleId,omitempty" tf:"rebalancing_schedule_id,omitempty"`
 

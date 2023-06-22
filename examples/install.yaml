@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-castai
 spec:
-  package: haarchri/provider-castai:v0.1.0
+  package: dkb-bank/provider-castai:v0.1.0

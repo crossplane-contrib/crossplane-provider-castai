@@ -2,3 +2,12 @@ apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
   name: provider-castai
+  annotations:
+    meta.crossplane.io/maintainer: "Deutsche Kreditbank AG <opensource@dkb.de>"
+    meta.crossplane.io/source: "github.com/dkb-bank/provider-castai"
+    meta.crossplane.io/license: "Apache2"
+    meta.crossplane.io/description: "Crossplane provider generated from https://github.com/castai/terraform-provider-castai."
+    meta.crossplane.io/readme: |
+      # Castai Provider
+      This provider is generated from https://github.com/castai/terraform-provider-castai by https://github.com/upbound/upjet.
+      See the [examples directory in the source repository](https://github.com/dkb-bank/provider-castai/tree/main/examples/) for examples on how to use this provider.

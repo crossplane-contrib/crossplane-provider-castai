@@ -25,38 +25,6 @@ spec:
 EOF
 ```
 
-# phase1:
-```
-apiVersion: castai.upbound.io/v1alpha1
-kind: EksCluster
-metadata:
-  name: sample-cluster
-  labels:
-    cast-ai-cluster: sample
-spec:
-  forProvider:
-    accountId: "123456789101"
-    name: sample-cluster
-    region: eu-central-1
-```
-
-# phase2:
-```
-apiVersion: castai.upbound.io/v1alpha1
-kind: EksCluster
-metadata:
-  name: sample-cluster
-  labels:
-    cast-ai-cluster: sample
-spec:
-  forProvider:
-    accountId: "123456789101"
-    assumeRoleArn: arn:aws:iam::123456789101:role/cast-eks-sample-cluster-cluster-role
-    deleteNodesOnDisconnect: false
-    name: sample-cluster
-    region: eu-central-1
-```
-
 Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
 
 You can see the API reference [here](https://doc.crds.dev/github.com/dkb-bank/provider-castai).

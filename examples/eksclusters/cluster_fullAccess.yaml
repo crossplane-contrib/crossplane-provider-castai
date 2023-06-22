@@ -1,0 +1,13 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EksCluster
+metadata:
+  name: sample
+  labels:
+    cast-ai-cluster: sample
+spec:
+  forProvider:
+    accountId: "123456789101"
+    name: sample
+    assumeRoleArn: arn:aws:iam::123456789101:role/cast-eks-sample-cluster-role
+    deleteNodesOnDisconnect: false
+    region: eu-central-1

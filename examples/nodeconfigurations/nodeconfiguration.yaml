@@ -1,0 +1,22 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: NodeConfiguration
+metadata:
+  name: sample
+  labels:
+    cast-ai-cluster: sample
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        cast-ai-cluster: sample
+    name: sample
+    diskCpuRatio: 0
+    minDiskSize: 100
+    subnets:
+      - subnet-022c218bd7b50ed49
+      - subnet-0710f29adf03e1031
+      - subnet-02829c9c9212f504a
+    eks:
+      - securityGroups:
+          - sg-0655d02d13f40b8c6
+        instanceProfileArn: arn:aws:iam::123456789101:role/cast-eks-sample-instance-profile

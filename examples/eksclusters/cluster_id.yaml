@@ -2,6 +2,8 @@ apiVersion: castai.upbound.io/v1alpha1
 kind: EksClusterId
 metadata:
   name: sample
+  labels:
+    cast-ai-cluster: sample
 spec:
   forProvider:
     accountId: "123456789101"

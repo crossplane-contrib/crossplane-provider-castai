@@ -1,0 +1,14 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: NodeConfigurationDefault
+metadata:
+  name: sample
+  labels:
+    cast-ai-cluster: sample
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        cast-ai-cluster: sample
+    configurationIdSelector:
+      matchLabels:
+        cast-ai-cluster: sample

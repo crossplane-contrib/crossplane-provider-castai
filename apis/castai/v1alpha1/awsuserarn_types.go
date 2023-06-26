@@ -10,6 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
+// AWSUserARNParameters are the parameters used for AWSUserARN
 type AWSUserARNParameters struct {
 	// CAST AI cluster id
 	// +crossplane:generate:reference:type=github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.EksClusterId
@@ -25,10 +26,11 @@ type AWSUserARNParameters struct {
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty"`
 }
 
+// AWSUserARNObservation are the parameters used for AWSUserARN status
 type AWSUserARNObservation struct {
 	ARN                 *string `json:"arn,omitempty"`
 	ClusterID           *string `json:"clusterId,omitempty"`
-	ManagementAccountId *string `json:"managementAccountId,omitempty"`
+	ManagementAccountID *string `json:"managementAccountId,omitempty"`
 	UserPrefix          *string `json:"userPrefix,omitempty"`
 }
 
@@ -71,10 +73,10 @@ type AWSUserARNList struct {
 
 // Repository type metadata.
 var (
-	AWSUserARN_Kind             = "AWSUserARN"
-	AWSUserARN_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: AWSUserARN_Kind}.String()
-	AWSUserARN_KindAPIVersion   = AWSUserARN_Kind + "." + CRDGroupVersion.String()
-	AWSUserARN_GroupVersionKind = CRDGroupVersion.WithKind(AWSUserARN_Kind)
+	AWSUserARNKind             = "AWSUserARN"
+	AWSUserARNGroupKind        = schema.GroupKind{Group: CRDGroup, Kind: AWSUserARNKind}.String()
+	AWSUserARNKindAPIVersion   = AWSUserARNKind + "." + CRDGroupVersion.String()
+	AWSUserARNGroupVersionKind = CRDGroupVersion.WithKind(AWSUserARNKind)
 )
 
 func init() {

@@ -66,6 +66,7 @@ spec:
                 - Delete
                 type: string
               forProvider:
+                description: AWSUserARNParameters are the parameters used for AWSUserARN
                 properties:
                   clusterId:
                     description: CAST AI cluster id
@@ -336,6 +337,8 @@ spec:
             description: AWSUserARNStatus defines the observed state of AWSUserARN.
             properties:
               atProvider:
+                description: AWSUserARNObservation are the parameters used for AWSUserARN
+                  status
                 properties:
                   arn:
                     type: string

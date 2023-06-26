@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"regexp"
 	"time"
 
@@ -30,18 +31,14 @@ import (
 )
 
 const (
-	additionalDurationForExpiration = 5 * time.Minute
-
-	errNotAWSUserARN   = "managed resource is not a AWSUserARN custom resource"
-	errDescribeCluster = "cannot describe cluster"
-	errGetKubeconfig   = "cannot get kubeconfig"
-	errUpdate          = "cannot update AWSUserARN"
-	errStatusUpdate    = "cannot update status of AWSUserARN"
+	errNotAWSUserARN = "managed resource is not a AWSUserARN custom resource"
+	errUpdate        = "cannot update AWSUserARN"
+	errStatusUpdate  = "cannot update status of AWSUserARN"
 )
 
 // Setup adds a controller that reconciles AWSUserARN.
 func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
-	name := managed.ControllerName(v1alpha1.AWSUserARN_GroupKind)
+	name := managed.ControllerName(v1alpha1.AWSUserARNGroupKind)
 
 	cps := []managed.ConnectionPublisher{managed.NewAPISecretPublisher(mgr.GetClient(), mgr.GetScheme())}
 	if o.SecretStoreConfigGVK != nil {
@@ -53,7 +50,7 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 		WithOptions(o.ForControllerRuntime()).
 		For(&v1alpha1.AWSUserARN{}).
 		Complete(managed.NewReconciler(mgr,
-			resource.ManagedKind(v1alpha1.AWSUserARN_GroupVersionKind),
+			resource.ManagedKind(v1alpha1.AWSUserARNGroupVersionKind),
 			managed.WithExternalConnecter(&connector{
 				kube: mgr.GetClient(),
 			}),
@@ -130,11 +127,12 @@ func (e *external) createOrUpdate(ctx context.Context, mg resource.Managed) erro
 	clusterID := cr.Spec.ForProvider.ClusterID
 	if clusterID != nil {
 		url := fmt.Sprintf("/v1/kubernetes/external-clusters/%s/assume-role-user", *clusterID)
-		resp, err := e.client.Get(url)
+		resp, err := e.client.Get(ctx, url)
 		if err != nil {
 			return err
 		}
-		defer resp.Body.Close()
+
+		defer close(resp.Body)
 
 		bodyBytes, _ := io.ReadAll(resp.Body)
 
@@ -153,7 +151,7 @@ func (e *external) createOrUpdate(ctx context.Context, mg resource.Managed) erro
 
 		matches := re.FindAllStringSubmatch(*result.ARN, -1)
 		if len(matches) == 1 && len(matches[0]) == 4 {
-			result.ManagementAccountId = &matches[0][1]
+			result.ManagementAccountID = &matches[0][1]
 			result.UserPrefix = &matches[0][2]
 			result.ClusterID = &matches[0][3]
 		}
@@ -181,4 +179,11 @@ func (e *external) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 
 func (e *external) Delete(_ context.Context, _ resource.Managed) error {
 	return nil
+}
+
+func close(body io.Closer) {
+	err := body.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

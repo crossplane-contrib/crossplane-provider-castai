@@ -20,7 +20,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
@@ -44,26 +43,27 @@ const (
 	errInvalidSecretData              = "'%s' is required in secret data"
 )
 
-// GetConfig constructs an *httptransport.Runtime that can be used to connect to Zscaler ZPA
-// API by the ZPA client.
+// GetConfig loads config for custom castai api
 func GetConfig(ctx context.Context, c client.Client, mg resource.Managed) (*CustomClient, error) {
 	switch {
 	case mg.GetProviderConfigReference() != nil:
-		return UseProviderConfig(ctx, c, mg)
+		return useProviderConfig(ctx, c, mg)
 	default:
 		return nil, errors.New(errNoProviderConfigRef)
 	}
 }
 
+// CustomClient is the struct used to
 type CustomClient struct {
 	client  http.Client
 	baseURL string
 	headers map[string]string
 }
 
-func (c *CustomClient) Get(url string) (*http.Response, error) {
+// Get calls a get endpoint with default host and headers
+func (c *CustomClient) Get(ctx context.Context, url string) (*http.Response, error) {
 	fullURL := c.baseURL + url
-	req, err := http.NewRequest("GET", fullURL, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", fullURL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -75,8 +75,7 @@ func (c *CustomClient) Get(url string) (*http.Response, error) {
 
 }
 
-// UseProviderConfig to produce a *httptransport.Runtime that can be used to connect to Zscaler ZPA.
-func UseProviderConfig(ctx context.Context, c client.Client, mg resource.Managed) (*CustomClient, error) { // nolint:gocyclo
+func useProviderConfig(ctx context.Context, c client.Client, mg resource.Managed) (*CustomClient, error) { // nolint:gocyclo
 	pc := &v1beta1.ProviderConfig{}
 	if err := c.Get(ctx, types.NamespacedName{Name: mg.GetProviderConfigReference().Name}, pc); err != nil {
 		return nil, errors.Wrap(err, errCannotGetProvider)
@@ -97,9 +96,9 @@ func UseProviderConfig(ctx context.Context, c client.Client, mg resource.Managed
 	}
 
 	customClient := CustomClient{
-		baseURL: credentials.ApiUrl,
+		baseURL: credentials.APIUrl,
 		headers: map[string]string{
-			"X-API-Key": credentials.ApiToken,
+			"X-API-Key": credentials.APIToken,
 		},
 	}
 
@@ -107,8 +106,8 @@ func UseProviderConfig(ctx context.Context, c client.Client, mg resource.Managed
 }
 
 type providerCredentials struct {
-	ApiToken string `json:"api_token"`
-	ApiUrl   string `json:"api_url"`
+	APIToken string `json:"api_token"`
+	APIUrl   string `json:"api_url"`
 }
 
 func extractCredentialsFromSecret(ctx context.Context, client client.Client, s xpv1.CommonCredentialSelectors) (*providerCredentials, error) {
@@ -134,8 +133,4 @@ func extractCredentialsFromSecret(ctx context.Context, client client.Client, s x
 	}
 
 	return credentials, nil
-}
-
-func closeBody(c io.Closer) {
-	_ = c.Close()
 }

@@ -86,8 +86,8 @@ func (in *AWSUserARNObservation) DeepCopyInto(out *AWSUserARNObservation) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ManagementAccountId != nil {
-		in, out := &in.ManagementAccountId, &out.ManagementAccountId
+	if in.ManagementAccountID != nil {
+		in, out := &in.ManagementAccountID, &out.ManagementAccountID
 		*out = new(string)
 		**out = **in
 	}

@@ -1,0 +1,9 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: AWSUserARN
+metadata:
+  name: sample
+  labels:
+    cast-ai-cluster: sample
+spec:
+  forProvider:
+    clusterId: "00000000-0000-0000-0000-000000000000"

@@ -29,6 +29,7 @@ import (
 	"github.com/dkb-bank/provider-castai/config"
 	"github.com/dkb-bank/provider-castai/internal/clients"
 	"github.com/dkb-bank/provider-castai/internal/controller"
+	"github.com/dkb-bank/provider-castai/internal/controller/castai/awsuserarn"
 	"github.com/dkb-bank/provider-castai/internal/features"
 )
 
@@ -113,5 +114,6 @@ func main() {
 	}
 
 	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup CastAI controllers")
+	kingpin.FatalIfError(awsuserarn.Setup(mgr, o), "Cannot setup CastAI AWSUserARN controller")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
 }

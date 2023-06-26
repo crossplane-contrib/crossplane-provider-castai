@@ -57,8 +57,6 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 			managed.WithExternalConnecter(&connector{
 				kube: mgr.GetClient(),
 			}),
-			// We use a constant poll interval here to make sure we get a chance
-			// to refresh the token before it expires.
 			managed.WithPollInterval(time.Minute*1),
 			managed.WithLogger(o.Logger.WithValues("controller", name)),
 			managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name))),

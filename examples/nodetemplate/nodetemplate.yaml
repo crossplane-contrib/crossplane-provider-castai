@@ -1,0 +1,27 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: NodeTemplate
+metadata:
+  name: sample
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        cast-ai-cluster: "sample-cluster"
+    configurationIdSelector:
+      matchLabels:
+        cast-ai-cluster: "sample-cluster"
+    constraints:
+    - architectures:
+        - amd64
+      spot: true
+    customLabel:
+    - key: domain.node.cloud.example/sample
+      value: "true"
+    customTaints:
+    - effect: NoSchedule
+      key: ddomain.node.cloud.example/sample
+      value: "true"
+    name: sample
+    shouldTaint: true
+  providerConfigRef:
+    name: default

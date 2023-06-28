@@ -1,0 +1,52 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: AutoScaler
+metadata:
+  name: sample
+spec:
+  forProvider:
+    autoscalerPoliciesJson: |
+       {
+              "enabled": true,
+              "unschedulablePods": {
+                  "enabled": true
+              },
+              "spotInstances": {
+                  "enabled": true,
+                  "clouds": ["aws"],
+                  "spotBackups": {
+                      "enabled": true
+                  },
+                  "spotDiversityEnabled": false,
+                  "spotDiversityPriceIncreaseLimitPercent": 20,
+                  "spotInterruptionPredictions": {
+                    "enabled": true,
+                    "type": "AWSRebalanceRecommendations"
+                  }
+              },
+              "nodeDownscaler": {
+                  "enabled": true,
+                  "emptyNodes": {
+                      "enabled": true
+                  },
+                  "evictor": {
+                      "aggressiveMode": false,
+                      "cycleInterval": "5m10s",
+                      "dryRun": false,
+                      "enabled": true,
+                      "nodeGracePeriodMinutes": 10,
+                      "scopedMode": false
+                  }
+              },
+              "clusterLimits": {
+                  "cpu": {
+                      "maxCores": 20,
+                      "minCores": 1
+                  },
+                  "enabled": true
+              }
+          }
+    clusterIdSelector:
+      matchLabels:
+        cast-ai-cluster: "sample-cluster"
+  providerConfigRef:
+    name: default

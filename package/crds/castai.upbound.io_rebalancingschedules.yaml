@@ -71,6 +71,29 @@ spec:
                   launchConfiguration:
                     items:
                       properties:
+                        executionConditions:
+                          items:
+                            properties:
+                              achievedSavingsPercentage:
+                                description: The percentage of the predicted savings
+                                  that must be achieved in order to fully execute
+                                  the plan.If the savings are not achieved after creating
+                                  the new nodes, the plan will fail and delete the
+                                  created nodes.
+                                type: number
+                              enabled:
+                                description: Enables or disables the execution conditions.
+                                type: boolean
+                            required:
+                            - enabled
+                            type: object
+                          type: array
+                        keepDrainTimeoutNodes:
+                          description: Defines whether the nodes that failed to get
+                            drained until a predefined timeout, will be kept with
+                            a rebalancing.cast.ai/status=drain-failed annotation instead
+                            of forcefully drained.
+                          type: boolean
                         nodeTtlSeconds:
                           description: Specifies amount of time since node creation
                             before the node is allowed to be considered for automated
@@ -319,6 +342,27 @@ spec:
                   launchConfiguration:
                     items:
                       properties:
+                        executionConditions:
+                          items:
+                            properties:
+                              achievedSavingsPercentage:
+                                description: The percentage of the predicted savings
+                                  that must be achieved in order to fully execute
+                                  the plan.If the savings are not achieved after creating
+                                  the new nodes, the plan will fail and delete the
+                                  created nodes.
+                                type: number
+                              enabled:
+                                description: Enables or disables the execution conditions.
+                                type: boolean
+                            type: object
+                          type: array
+                        keepDrainTimeoutNodes:
+                          description: Defines whether the nodes that failed to get
+                            drained until a predefined timeout, will be kept with
+                            a rebalancing.cast.ai/status=drain-failed annotation instead
+                            of forcefully drained.
+                          type: boolean
                         nodeTtlSeconds:
                           description: Specifies amount of time since node creation
                             before the node is allowed to be considered for automated

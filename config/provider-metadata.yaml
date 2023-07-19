@@ -65,6 +65,15 @@ resources:
             id: (String) The ID of this resource.
             region: (String)
         importStatements: []
+    castai_eks_user_arn Resource - terraform-provider-castai:
+        subCategory: ""
+        name: castai_eks_user_arn Resource - terraform-provider-castai
+        title: castai_eks_user_arn Resource - terraform-provider-castai
+        argumentDocs:
+            arn: (String)
+            cluster_id: (String)
+            id: (String) The ID of this resource.
+        importStatements: []
     castai_gke_cluster Resource - terraform-provider-castai:
         subCategory: ""
         description: GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
@@ -96,6 +105,7 @@ resources:
             create: (String)
             delete: (String)
             disk_cpu_ratio: (Number) Disk to CPU ratio. Sets the number of GiBs to be added for every CPU on the node. Defaults to 0
+            disk_type: '(String) Type of boot disk attached to the node. (See disk types). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
             dns_cluster_ip: (String) IP address to use for DNS queries within the cluster
             docker_config: (String) Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             eks: '(Block List, Max: 1) (see below for nested schema)'
@@ -103,7 +113,7 @@ resources:
             id: (String) The ID of this resource.
             image: (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
             imds_hop_limit: (Number) Allow configure the IMDSv2 hop limit, the default is 2
-            imds_v1: (Boolean) Allow IMDSv1, the default is true
+            imds_v1: (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
             init_script: (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
             instance_profile_arn: (String) Cluster's instance profile ARN used for CAST provisioned nodes
             key_pair_id: (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
@@ -210,10 +220,14 @@ resources:
         name: castai_rebalancing_schedule Resource - terraform-provider-castai
         title: castai_rebalancing_schedule Resource - terraform-provider-castai
         argumentDocs:
+            achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
             create: (String)
             cron: (String) Cron expression defining when the schedule should trigger.
             delete: (String)
+            enabled: (Boolean) Enables or disables the execution conditions.
+            execution_conditions: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
+            keep_drain_timeout_nodes: (Boolean) Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
             launch_configuration: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             name: (String) Name of the schedule.
             node_ttl_seconds: (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.

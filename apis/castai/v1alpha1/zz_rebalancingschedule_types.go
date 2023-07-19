@@ -13,7 +13,31 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ExecutionConditionsObservation struct {
+
+	// The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
+	AchievedSavingsPercentage *float64 `json:"achievedSavingsPercentage,omitempty" tf:"achieved_savings_percentage,omitempty"`
+
+	// Enables or disables the execution conditions.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type ExecutionConditionsParameters struct {
+
+	// The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
+	// +kubebuilder:validation:Optional
+	AchievedSavingsPercentage *float64 `json:"achievedSavingsPercentage,omitempty" tf:"achieved_savings_percentage,omitempty"`
+
+	// Enables or disables the execution conditions.
+	// +kubebuilder:validation:Required
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+}
+
 type LaunchConfigurationObservation struct {
+	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
+
+	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
+	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
 
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
@@ -29,6 +53,13 @@ type LaunchConfigurationObservation struct {
 }
 
 type LaunchConfigurationParameters struct {
+
+	// +kubebuilder:validation:Optional
+	ExecutionConditions []ExecutionConditionsParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
+
+	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
+	// +kubebuilder:validation:Optional
+	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
 
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// +kubebuilder:validation:Optional

@@ -182,7 +182,11 @@ spec:
                             is 2
                           type: number
                         imdsV1:
-                          description: Allow IMDSv1, the default is true
+                          description: When the value is true both IMDSv1 and IMDSv2
+                            are enabled. Setting the value to false disables permanently
+                            IMDSv1 and might affect legacy workloads running on the
+                            node created with this configuration. The default is true
+                            if the flag isn't provided
                           type: boolean
                         instanceProfileArn:
                           description: Cluster's instance profile ARN used for CAST
@@ -218,6 +222,11 @@ spec:
                   gke:
                     items:
                       properties:
+                        diskType:
+                          description: 'Type of boot disk attached to the node. (See
+                            [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)).
+                            One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
+                          type: string
                         maxPodsPerNode:
                           description: Maximum number of pods that can be run on a
                             node, which affects how many IP addresses you will need
@@ -512,7 +521,11 @@ spec:
                             is 2
                           type: number
                         imdsV1:
-                          description: Allow IMDSv1, the default is true
+                          description: When the value is true both IMDSv1 and IMDSv2
+                            are enabled. Setting the value to false disables permanently
+                            IMDSv1 and might affect legacy workloads running on the
+                            node created with this configuration. The default is true
+                            if the flag isn't provided
                           type: boolean
                         instanceProfileArn:
                           description: Cluster's instance profile ARN used for CAST
@@ -545,6 +558,11 @@ spec:
                   gke:
                     items:
                       properties:
+                        diskType:
+                          description: 'Type of boot disk attached to the node. (See
+                            [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)).
+                            One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
+                          type: string
                         maxPodsPerNode:
                           description: Maximum number of pods that can be run on a
                             node, which affects how many IP addresses you will need

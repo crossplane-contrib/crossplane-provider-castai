@@ -34,7 +34,7 @@ type EksObservation struct {
 	// Allow configure the IMDSv2 hop limit, the default is 2
 	ImdsHopLimit *float64 `json:"imdsHopLimit,omitempty" tf:"imds_hop_limit,omitempty"`
 
-	// Allow IMDSv1, the default is true
+	// When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
 	ImdsV1 *bool `json:"imdsV1,omitempty" tf:"imds_v1,omitempty"`
 
 	// Cluster's instance profile ARN used for CAST provisioned nodes
@@ -66,7 +66,7 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	ImdsHopLimit *float64 `json:"imdsHopLimit,omitempty" tf:"imds_hop_limit,omitempty"`
 
-	// Allow IMDSv1, the default is true
+	// When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
 	// +kubebuilder:validation:Optional
 	ImdsV1 *bool `json:"imdsV1,omitempty" tf:"imds_v1,omitempty"`
 
@@ -97,6 +97,9 @@ type EksParameters struct {
 
 type GkeObservation struct {
 
+	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
+
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
 
@@ -105,6 +108,10 @@ type GkeObservation struct {
 }
 
 type GkeParameters struct {
+
+	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+	// +kubebuilder:validation:Optional
+	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
 
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
 	// +kubebuilder:validation:Optional

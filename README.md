@@ -1,6 +1,6 @@
 # Provider CastAI
 
-`provider-castai` is a [Crossplane](https://crossplane.io/) provider that
+`crossplane-provider-castai` is a [Crossplane](https://crossplane.io/) provider that
 is built using [Upjet](https://github.com/upbound/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 CastAI API.
@@ -10,7 +10,7 @@ CastAI API.
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://marketplace.upbound.io/providers/castai/crossplane-provider-castai):
 ```
-up ctp provider install castai/provider-castai:v0.1.0
+up ctp provider install castai/crossplane-provider-castai:v0.1.0
 ```
 
 Alternatively, you can use declarative installation:
@@ -19,7 +19,7 @@ cat <<EOF | kubectl apply -f -
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-castai
+  name: crossplane-provider-castai
 spec:
   package: xpkg.upbound.io/castai/crossplane-provider-castai:v0.3.0
 EOF

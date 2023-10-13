@@ -1,7 +1,7 @@
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-castai
+  name: crossplane-provider-castai
   annotations:
     meta.crossplane.io/maintainer: "CAST AI <info@cast.ai>"
     meta.crossplane.io/source: "github.com/castai/crossplane-provider-castai"

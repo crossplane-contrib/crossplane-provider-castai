@@ -11,7 +11,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/pipeline"
 
-	"github.com/dkb-bank/provider-castai/config"
+	"github.com/castai/crossplane-provider-castai/config"
 )
 
 func main() {

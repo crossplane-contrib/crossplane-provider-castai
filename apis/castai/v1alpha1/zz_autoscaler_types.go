@@ -34,7 +34,7 @@ type AutoScalerParameters struct {
 	AutoscalerPoliciesJSON *string `json:"autoscalerPoliciesJson,omitempty" tf:"autoscaler_policies_json,omitempty"`
 
 	// CAST AI cluster id
-	// +crossplane:generate:reference:type=github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.EksClusterId
+	// +crossplane:generate:reference:type=github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 

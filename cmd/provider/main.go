@@ -24,13 +24,13 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/dkb-bank/provider-castai/apis"
-	"github.com/dkb-bank/provider-castai/apis/v1alpha1"
-	"github.com/dkb-bank/provider-castai/config"
-	"github.com/dkb-bank/provider-castai/internal/clients"
-	"github.com/dkb-bank/provider-castai/internal/controller"
-	"github.com/dkb-bank/provider-castai/internal/controller/castai/awsuserarn"
-	"github.com/dkb-bank/provider-castai/internal/features"
+	"github.com/castai/crossplane-provider-castai/apis"
+	"github.com/castai/crossplane-provider-castai/apis/v1alpha1"
+	"github.com/castai/crossplane-provider-castai/config"
+	"github.com/castai/crossplane-provider-castai/internal/clients"
+	"github.com/castai/crossplane-provider-castai/internal/controller"
+	"github.com/castai/crossplane-provider-castai/internal/controller/castai/awsuserarn"
+	"github.com/castai/crossplane-provider-castai/internal/features"
 )
 
 func main() {

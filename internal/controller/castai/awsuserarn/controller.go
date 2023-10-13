@@ -26,8 +26,8 @@ import (
 	tjcontroller "github.com/upbound/upjet/pkg/controller"
 	ujresource "github.com/upbound/upjet/pkg/resource"
 
-	v1alpha1 "github.com/dkb-bank/provider-castai/apis/castai/v1alpha1"
-	"github.com/dkb-bank/provider-castai/internal/clients"
+	v1alpha1 "github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1"
+	"github.com/castai/crossplane-provider-castai/internal/clients"
 )
 
 const (

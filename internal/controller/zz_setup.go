@@ -9,15 +9,15 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	autoscaler "github.com/dkb-bank/provider-castai/internal/controller/castai/autoscaler"
-	ekscluster "github.com/dkb-bank/provider-castai/internal/controller/castai/ekscluster"
-	eksclusterid "github.com/dkb-bank/provider-castai/internal/controller/castai/eksclusterid"
-	nodeconfiguration "github.com/dkb-bank/provider-castai/internal/controller/castai/nodeconfiguration"
-	nodeconfigurationdefault "github.com/dkb-bank/provider-castai/internal/controller/castai/nodeconfigurationdefault"
-	nodetemplate "github.com/dkb-bank/provider-castai/internal/controller/castai/nodetemplate"
-	rebalancingjob "github.com/dkb-bank/provider-castai/internal/controller/castai/rebalancingjob"
-	rebalancingschedule "github.com/dkb-bank/provider-castai/internal/controller/castai/rebalancingschedule"
-	providerconfig "github.com/dkb-bank/provider-castai/internal/controller/providerconfig"
+	autoscaler "github.com/castai/crossplane-provider-castai/internal/controller/castai/autoscaler"
+	ekscluster "github.com/castai/crossplane-provider-castai/internal/controller/castai/ekscluster"
+	eksclusterid "github.com/castai/crossplane-provider-castai/internal/controller/castai/eksclusterid"
+	nodeconfiguration "github.com/castai/crossplane-provider-castai/internal/controller/castai/nodeconfiguration"
+	nodeconfigurationdefault "github.com/castai/crossplane-provider-castai/internal/controller/castai/nodeconfigurationdefault"
+	nodetemplate "github.com/castai/crossplane-provider-castai/internal/controller/castai/nodetemplate"
+	rebalancingjob "github.com/castai/crossplane-provider-castai/internal/controller/castai/rebalancingjob"
+	rebalancingschedule "github.com/castai/crossplane-provider-castai/internal/controller/castai/rebalancingschedule"
+	providerconfig "github.com/castai/crossplane-provider-castai/internal/controller/providerconfig"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to

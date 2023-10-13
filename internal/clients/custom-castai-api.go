@@ -29,7 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/dkb-bank/provider-castai/apis/v1beta1"
+	"github.com/castai/crossplane-provider-castai/apis/v1beta1"
 )
 
 const (

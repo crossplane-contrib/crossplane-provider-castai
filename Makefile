@@ -1,8 +1,8 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= provider-castai
-PROJECT_REPO ?= github.com/dkb-bank/$(PROJECT_NAME)
+PROJECT_NAME ?= crossplane-provider-castai
+PROJECT_REPO ?= github.com/castai/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.3.3
 
@@ -40,7 +40,7 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.19
+GO_REQUIRED_VERSION ?= 1.20
 GOLANGCILINT_VERSION ?= 1.50.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
@@ -59,17 +59,17 @@ UPTEST_VERSION = v0.2.1
 # ====================================================================================
 # Setup Images
 
-REGISTRY_ORGS ?= index.docker.io/platformdkbcf
+REGISTRY_ORGS ?= xpkg.upbound.io/castai
 IMAGES = $(PROJECT_NAME)
 -include build/makelib/imagelight.mk
 
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= index.docker.io/platformdkbcf xpkg.upbound.io/dkb-bank
+XPKG_REG_ORGS ?= xpkg.upbound.io/castai
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
-XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/dkb-bank
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/castai
 XPKGS = $(PROJECT_NAME)
 -include build/makelib/xpkg.mk
 

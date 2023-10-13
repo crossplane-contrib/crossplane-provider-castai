@@ -18,8 +18,8 @@ import (
 	"github.com/upbound/upjet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/dkb-bank/provider-castai/apis/castai/v1alpha1"
-	features "github.com/dkb-bank/provider-castai/internal/features"
+	v1alpha1 "github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1"
+	features "github.com/castai/crossplane-provider-castai/internal/features"
 )
 
 // Setup adds a controller that reconciles EksClusterId managed resources.

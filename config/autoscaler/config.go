@@ -11,7 +11,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "AutoScaler"
 		r.References = config.References{
 			"cluster_id": {
-				Type: "github.com/dkb-bank/provider-castai/apis/castai/v1alpha1.EksClusterId",
+				Type: "github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId",
 			},
 		}
 	})

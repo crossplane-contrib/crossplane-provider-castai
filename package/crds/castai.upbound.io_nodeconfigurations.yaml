@@ -1,0 +1,667 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.3
+  creationTimestamp: null
+  name: nodeconfigurations.castai.upbound.io
+spec:
+  group: castai.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - castai
+    kind: NodeConfiguration
+    listKind: NodeConfigurationList
+    plural: nodeconfigurations
+    singular: nodeconfiguration
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NodeConfiguration is the Schema for the NodeConfigurations API.
+          <no value>
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NodeConfigurationSpec defines the desired state of NodeConfiguration
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: 'DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicy field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  aks:
+                    items:
+                      properties:
+                        maxPodsPerNode:
+                          description: Maximum number of pods that can be run on a
+                            node, which affects how many IP addresses you will need
+                            for each node. Defaults to 30
+                          type: number
+                      type: object
+                    type: array
+                  clusterId:
+                    description: CAST AI cluster id
+                    type: string
+                  clusterIdRef:
+                    description: Reference to a EksClusterId in castai to populate
+                      clusterId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  clusterIdSelector:
+                    description: Selector for a EksClusterId in castai to populate
+                      clusterId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  containerRuntime:
+                    description: 'Optional container runtime to be used by kubelet.
+                      Applicable for EKS only.  Supported values include: `dockerd`,
+                      `containerd`'
+                    type: string
+                  diskCpuRatio:
+                    description: Disk to CPU ratio. Sets the number of GiBs to be
+                      added for every CPU on the node. Defaults to 0
+                    type: number
+                  dockerConfig:
+                    description: Optional docker daemon configuration properties in
+                      JSON format. Provide only properties that you want to override.
+                      Applicable for EKS only. [Available values](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file)
+                    type: string
+                  eks:
+                    items:
+                      properties:
+                        dnsClusterIp:
+                          description: IP address to use for DNS queries within the
+                            cluster
+                          type: string
+                        imdsHopLimit:
+                          description: Allow configure the IMDSv2 hop limit, the default
+                            is 2
+                          type: number
+                        imdsV1:
+                          description: When the value is true both IMDSv1 and IMDSv2
+                            are enabled. Setting the value to false disables permanently
+                            IMDSv1 and might affect legacy workloads running on the
+                            node created with this configuration. The default is true
+                            if the flag isn't provided
+                          type: boolean
+                        instanceProfileArn:
+                          description: Cluster's instance profile ARN used for CAST
+                            provisioned nodes
+                          type: string
+                        keyPairId:
+                          description: AWS key pair ID to be used for CAST provisioned
+                            nodes. Has priority over ssh_public_key
+                          type: string
+                        securityGroups:
+                          description: Cluster's security groups configuration for
+                            CAST provisioned nodes
+                          items:
+                            type: string
+                          type: array
+                        volumeIops:
+                          description: AWS EBS volume IOPS to be used for CAST provisioned
+                            nodes
+                          type: number
+                        volumeThroughput:
+                          description: AWS EBS volume throughput in MiB/s to be used
+                            for CAST provisioned nodes
+                          type: number
+                        volumeType:
+                          description: 'AWS EBS volume type to be used for CAST provisioned
+                            nodes. One of: gp3, io1, io2'
+                          type: string
+                      required:
+                      - instanceProfileArn
+                      - securityGroups
+                      type: object
+                    type: array
+                  gke:
+                    items:
+                      properties:
+                        diskType:
+                          description: 'Type of boot disk attached to the node. (See
+                            [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)).
+                            One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
+                          type: string
+                        maxPodsPerNode:
+                          description: Maximum number of pods that can be run on a
+                            node, which affects how many IP addresses you will need
+                            for each node. Defaults to 110
+                          type: number
+                        networkTags:
+                          description: Network tags to be added on a VM. (See [network
+                            tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  image:
+                    description: Image to be used while provisioning the node. If
+                      nothing is provided will be resolved to latest available image
+                      based on Kubernetes version if possible
+                    type: string
+                  initScript:
+                    description: Init script to be run on your instance at launch.
+                      Should not contain any sensitive data. Value should be base64
+                      encoded
+                    type: string
+                  kops:
+                    items:
+                      properties:
+                        keyPairId:
+                          description: AWS key pair ID to be used for provisioned
+                            nodes. Has priority over sshPublicKey
+                          type: string
+                      type: object
+                    type: array
+                  kubeletConfig:
+                    description: Optional kubelet configuration properties in JSON
+                      format. Provide only properties that you want to override. Applicable
+                      for EKS only. [Available values](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/)
+                    type: string
+                  minDiskSize:
+                    description: Minimal disk size in GiB. Defaults to 100, min 30,
+                      max 1000
+                    type: number
+                  name:
+                    description: Name of the node configuration
+                    type: string
+                  sshPublicKey:
+                    description: SSH public key to be used for provisioned nodes
+                    type: string
+                  subnets:
+                    description: Subnet ids to be used for provisioned nodes
+                    items:
+                      type: string
+                    type: array
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: Tags to be added on cloud instances for provisioned
+                      nodes
+                    type: object
+                type: object
+              managementPolicy:
+                default: FullControl
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicy
+                  specifies the level of control Crossplane has over the managed external
+                  resource. This field is planned to replace the DeletionPolicy field
+                  in a future release. Currently, both could be set independently
+                  and non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - FullControl
+                - ObserveOnly
+                - OrphanOnDelete
+                type: string
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+            - message: subnets is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.subnets)
+          status:
+            description: NodeConfigurationStatus defines the observed state of NodeConfiguration.
+            properties:
+              atProvider:
+                properties:
+                  aks:
+                    items:
+                      properties:
+                        maxPodsPerNode:
+                          description: Maximum number of pods that can be run on a
+                            node, which affects how many IP addresses you will need
+                            for each node. Defaults to 30
+                          type: number
+                      type: object
+                    type: array
+                  clusterId:
+                    description: CAST AI cluster id
+                    type: string
+                  containerRuntime:
+                    description: 'Optional container runtime to be used by kubelet.
+                      Applicable for EKS only.  Supported values include: `dockerd`,
+                      `containerd`'
+                    type: string
+                  diskCpuRatio:
+                    description: Disk to CPU ratio. Sets the number of GiBs to be
+                      added for every CPU on the node. Defaults to 0
+                    type: number
+                  dockerConfig:
+                    description: Optional docker daemon configuration properties in
+                      JSON format. Provide only properties that you want to override.
+                      Applicable for EKS only. [Available values](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file)
+                    type: string
+                  eks:
+                    items:
+                      properties:
+                        dnsClusterIp:
+                          description: IP address to use for DNS queries within the
+                            cluster
+                          type: string
+                        imdsHopLimit:
+                          description: Allow configure the IMDSv2 hop limit, the default
+                            is 2
+                          type: number
+                        imdsV1:
+                          description: When the value is true both IMDSv1 and IMDSv2
+                            are enabled. Setting the value to false disables permanently
+                            IMDSv1 and might affect legacy workloads running on the
+                            node created with this configuration. The default is true
+                            if the flag isn't provided
+                          type: boolean
+                        instanceProfileArn:
+                          description: Cluster's instance profile ARN used for CAST
+                            provisioned nodes
+                          type: string
+                        keyPairId:
+                          description: AWS key pair ID to be used for CAST provisioned
+                            nodes. Has priority over ssh_public_key
+                          type: string
+                        securityGroups:
+                          description: Cluster's security groups configuration for
+                            CAST provisioned nodes
+                          items:
+                            type: string
+                          type: array
+                        volumeIops:
+                          description: AWS EBS volume IOPS to be used for CAST provisioned
+                            nodes
+                          type: number
+                        volumeThroughput:
+                          description: AWS EBS volume throughput in MiB/s to be used
+                            for CAST provisioned nodes
+                          type: number
+                        volumeType:
+                          description: 'AWS EBS volume type to be used for CAST provisioned
+                            nodes. One of: gp3, io1, io2'
+                          type: string
+                      type: object
+                    type: array
+                  gke:
+                    items:
+                      properties:
+                        diskType:
+                          description: 'Type of boot disk attached to the node. (See
+                            [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)).
+                            One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
+                          type: string
+                        maxPodsPerNode:
+                          description: Maximum number of pods that can be run on a
+                            node, which affects how many IP addresses you will need
+                            for each node. Defaults to 110
+                          type: number
+                        networkTags:
+                          description: Network tags to be added on a VM. (See [network
+                            tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  id:
+                    type: string
+                  image:
+                    description: Image to be used while provisioning the node. If
+                      nothing is provided will be resolved to latest available image
+                      based on Kubernetes version if possible
+                    type: string
+                  initScript:
+                    description: Init script to be run on your instance at launch.
+                      Should not contain any sensitive data. Value should be base64
+                      encoded
+                    type: string
+                  kops:
+                    items:
+                      properties:
+                        keyPairId:
+                          description: AWS key pair ID to be used for provisioned
+                            nodes. Has priority over sshPublicKey
+                          type: string
+                      type: object
+                    type: array
+                  kubeletConfig:
+                    description: Optional kubelet configuration properties in JSON
+                      format. Provide only properties that you want to override. Applicable
+                      for EKS only. [Available values](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/)
+                    type: string
+                  minDiskSize:
+                    description: Minimal disk size in GiB. Defaults to 100, min 30,
+                      max 1000
+                    type: number
+                  name:
+                    description: Name of the node configuration
+                    type: string
+                  sshPublicKey:
+                    description: SSH public key to be used for provisioned nodes
+                    type: string
+                  subnets:
+                    description: Subnet ids to be used for provisioned nodes
+                    items:
+                      type: string
+                    type: array
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: Tags to be added on cloud instances for provisioned
+                      nodes
+                    type: object
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

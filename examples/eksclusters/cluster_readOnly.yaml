@@ -1,0 +1,12 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EksCluster
+metadata:
+  name: sample-read-only
+spec:
+  forProvider:
+    accountId: "123456789101"
+    name: sample
+    region: eu-central-1
+  writeConnectionSecretToRef:
+    name: sample
+    namespace: crossplane-system

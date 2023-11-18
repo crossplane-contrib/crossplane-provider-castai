@@ -206,6 +206,10 @@ spec:
                           description: AWS EBS volume IOPS to be used for CAST provisioned
                             nodes
                           type: number
+                        volumeKmsKeyArn:
+                          description: AWS KMS key ARN for encrypting EBS volume attached
+                            to the node
+                          type: string
                         volumeThroughput:
                           description: AWS EBS volume throughput in MiB/s to be used
                             for CAST provisioned nodes
@@ -545,6 +549,10 @@ spec:
                           description: AWS EBS volume IOPS to be used for CAST provisioned
                             nodes
                           type: number
+                        volumeKmsKeyArn:
+                          description: AWS KMS key ARN for encrypting EBS volume attached
+                            to the node
+                          type: string
                         volumeThroughput:
                           description: AWS EBS volume throughput in MiB/s to be used
                             for CAST provisioned nodes

@@ -9,15 +9,15 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	autoscaler "github.com/castai/crossplane-provider-castai/internal/controller/castai/autoscaler"
-	ekscluster "github.com/castai/crossplane-provider-castai/internal/controller/castai/ekscluster"
-	eksclusterid "github.com/castai/crossplane-provider-castai/internal/controller/castai/eksclusterid"
-	nodeconfiguration "github.com/castai/crossplane-provider-castai/internal/controller/castai/nodeconfiguration"
-	nodeconfigurationdefault "github.com/castai/crossplane-provider-castai/internal/controller/castai/nodeconfigurationdefault"
-	nodetemplate "github.com/castai/crossplane-provider-castai/internal/controller/castai/nodetemplate"
-	rebalancingjob "github.com/castai/crossplane-provider-castai/internal/controller/castai/rebalancingjob"
-	rebalancingschedule "github.com/castai/crossplane-provider-castai/internal/controller/castai/rebalancingschedule"
-	providerconfig "github.com/castai/crossplane-provider-castai/internal/controller/providerconfig"
+	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/autoscaler"
+	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ekscluster"
+	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksclusterid"
+	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfiguration"
+	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfigurationdefault"
+	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodetemplate"
+	rebalancingjob "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/rebalancingjob"
+	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/rebalancingschedule"
+	providerconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/providerconfig"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to

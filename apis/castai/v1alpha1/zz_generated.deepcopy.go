@@ -394,6 +394,11 @@ func (in *ConstraintsObservation) DeepCopyInto(out *ConstraintsObservation) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.EnableSpotDiversity != nil {
+		in, out := &in.EnableSpotDiversity, &out.EnableSpotDiversity
+		*out = new(bool)
+		**out = **in
+	}
 	if in.FallbackRestoreRateSeconds != nil {
 		in, out := &in.FallbackRestoreRateSeconds, &out.FallbackRestoreRateSeconds
 		*out = new(float64)
@@ -412,6 +417,11 @@ func (in *ConstraintsObservation) DeepCopyInto(out *ConstraintsObservation) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.IsGpuOnly != nil {
+		in, out := &in.IsGpuOnly, &out.IsGpuOnly
+		*out = new(bool)
+		**out = **in
 	}
 	if in.MaxCPU != nil {
 		in, out := &in.MaxCPU, &out.MaxCPU
@@ -433,9 +443,40 @@ func (in *ConstraintsObservation) DeepCopyInto(out *ConstraintsObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.OnDemand != nil {
+		in, out := &in.OnDemand, &out.OnDemand
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Os != nil {
+		in, out := &in.Os, &out.Os
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Spot != nil {
 		in, out := &in.Spot, &out.Spot
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SpotDiversityPriceIncreaseLimitPercent != nil {
+		in, out := &in.SpotDiversityPriceIncreaseLimitPercent, &out.SpotDiversityPriceIncreaseLimitPercent
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SpotInterruptionPredictionsEnabled != nil {
+		in, out := &in.SpotInterruptionPredictionsEnabled, &out.SpotInterruptionPredictionsEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.SpotInterruptionPredictionsType != nil {
+		in, out := &in.SpotInterruptionPredictionsType, &out.SpotInterruptionPredictionsType
+		*out = new(string)
 		**out = **in
 	}
 	if in.StorageOptimized != nil {
@@ -479,6 +520,11 @@ func (in *ConstraintsParameters) DeepCopyInto(out *ConstraintsParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.EnableSpotDiversity != nil {
+		in, out := &in.EnableSpotDiversity, &out.EnableSpotDiversity
+		*out = new(bool)
+		**out = **in
+	}
 	if in.FallbackRestoreRateSeconds != nil {
 		in, out := &in.FallbackRestoreRateSeconds, &out.FallbackRestoreRateSeconds
 		*out = new(float64)
@@ -497,6 +543,11 @@ func (in *ConstraintsParameters) DeepCopyInto(out *ConstraintsParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.IsGpuOnly != nil {
+		in, out := &in.IsGpuOnly, &out.IsGpuOnly
+		*out = new(bool)
+		**out = **in
 	}
 	if in.MaxCPU != nil {
 		in, out := &in.MaxCPU, &out.MaxCPU
@@ -518,9 +569,40 @@ func (in *ConstraintsParameters) DeepCopyInto(out *ConstraintsParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.OnDemand != nil {
+		in, out := &in.OnDemand, &out.OnDemand
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Os != nil {
+		in, out := &in.Os, &out.Os
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Spot != nil {
 		in, out := &in.Spot, &out.Spot
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SpotDiversityPriceIncreaseLimitPercent != nil {
+		in, out := &in.SpotDiversityPriceIncreaseLimitPercent, &out.SpotDiversityPriceIncreaseLimitPercent
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SpotInterruptionPredictionsEnabled != nil {
+		in, out := &in.SpotInterruptionPredictionsEnabled, &out.SpotInterruptionPredictionsEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.SpotInterruptionPredictionsType != nil {
+		in, out := &in.SpotInterruptionPredictionsType, &out.SpotInterruptionPredictionsType
+		*out = new(string)
 		**out = **in
 	}
 	if in.StorageOptimized != nil {
@@ -1040,6 +1122,11 @@ func (in *EksObservation) DeepCopyInto(out *EksObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.VolumeKMSKeyArn != nil {
+		in, out := &in.VolumeKMSKeyArn, &out.VolumeKMSKeyArn
+		*out = new(string)
+		**out = **in
+	}
 	if in.VolumeThroughput != nil {
 		in, out := &in.VolumeThroughput, &out.VolumeThroughput
 		*out = new(float64)
@@ -1104,6 +1191,11 @@ func (in *EksParameters) DeepCopyInto(out *EksParameters) {
 	if in.VolumeIops != nil {
 		in, out := &in.VolumeIops, &out.VolumeIops
 		*out = new(float64)
+		**out = **in
+	}
+	if in.VolumeKMSKeyArn != nil {
+		in, out := &in.VolumeKMSKeyArn, &out.VolumeKMSKeyArn
+		*out = new(string)
 		**out = **in
 	}
 	if in.VolumeThroughput != nil {
@@ -2206,6 +2298,16 @@ func (in *NodeTemplateObservation) DeepCopyInto(out *NodeTemplateObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IsDefault != nil {
+		in, out := &in.IsDefault, &out.IsDefault
+		*out = new(bool)
+		**out = **in
+	}
+	if in.IsEnabled != nil {
+		in, out := &in.IsEnabled, &out.IsEnabled
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -2306,6 +2408,16 @@ func (in *NodeTemplateParameters) DeepCopyInto(out *NodeTemplateParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.IsDefault != nil {
+		in, out := &in.IsDefault, &out.IsDefault
+		*out = new(bool)
+		**out = **in
+	}
+	if in.IsEnabled != nil {
+		in, out := &in.IsEnabled, &out.IsEnabled
+		*out = new(bool)
+		**out = **in
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name

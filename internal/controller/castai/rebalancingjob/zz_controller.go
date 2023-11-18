@@ -18,8 +18,8 @@ import (
 	"github.com/upbound/upjet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1"
-	features "github.com/castai/crossplane-provider-castai/internal/features"
+	v1alpha1 "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1"
+	features "github.com/crossplane-contrib/crossplane-provider-castai/internal/features"
 )
 
 // Setup adds a controller that reconciles RebalancingJob managed resources.

@@ -237,6 +237,11 @@ spec:
                           description: Compute optimized instance constraint - will
                             only pick compute optimized nodes if true.
                           type: boolean
+                        enableSpotDiversity:
+                          description: Enable/disable spot diversity policy. When
+                            enabled, autoscaler will try to balance between diverse
+                            and cost optimal instance types.
+                          type: boolean
                         fallbackRestoreRateSeconds:
                           description: 'Fallback restore rate in seconds: defines
                             how much time should pass before spot fallback should
@@ -289,6 +294,10 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        isGpuOnly:
+                          description: GPU instance constraint - will only pick nodes
+                            with GPU if true
+                          type: boolean
                         maxCpu:
                           description: Max CPU cores per node.
                           type: number
@@ -301,10 +310,33 @@ spec:
                         minMemory:
                           description: Min Memory (Mib) per node.
                           type: number
-                        spot:
-                          description: Spot instance constraint - true only spot,
-                            false only on-demand.
+                        onDemand:
+                          description: Should include on-demand instances in the considered
+                            pool.
                           type: boolean
+                        os:
+                          description: 'List of acceptable instance Operating Systems,
+                            the default is linux. Allowed values: linux, windows.'
+                          items:
+                            type: string
+                          type: array
+                        spot:
+                          description: Should include spot instances in the considered
+                            pool.
+                          type: boolean
+                        spotDiversityPriceIncreaseLimitPercent:
+                          description: Allowed node configuration price increase when
+                            diversifying instance types. E.g. if the value is 10%,
+                            then the overall price of diversified instance types can
+                            be 10% higher than the price of the optimal configuration.
+                          type: number
+                        spotInterruptionPredictionsEnabled:
+                          description: Enable/disable spot interruption predictions.
+                          type: boolean
+                        spotInterruptionPredictionsType:
+                          description: Spot interruption predictions type. Can be
+                            either "aws-rebalance-recommendations" or "interruption-predictions".
+                          type: string
                         storageOptimized:
                           description: Storage optimized instance constraint - will
                             only pick storage optimized nodes if true
@@ -354,8 +386,9 @@ spec:
                     items:
                       properties:
                         effect:
-                          description: Effect of a taint to be added to nodes created
-                            from this template. The effect must always be NoSchedule.
+                          description: 'Effect of a taint to be added to nodes created
+                            from this template, the default is NoSchedule. Allowed
+                            values: NoSchedule, NoExecute.'
                           type: string
                         key:
                           description: Key of a taint to be added to nodes created
@@ -370,6 +403,13 @@ spec:
                       - value
                       type: object
                     type: array
+                  isDefault:
+                    description: Flag whether the node template is default.
+                    type: boolean
+                  isEnabled:
+                    description: Flag whether the node template is enabled and considered
+                      for autoscaling.
+                    type: boolean
                   name:
                     description: Name of the node template.
                     type: string
@@ -595,6 +635,11 @@ spec:
                           description: Compute optimized instance constraint - will
                             only pick compute optimized nodes if true.
                           type: boolean
+                        enableSpotDiversity:
+                          description: Enable/disable spot diversity policy. When
+                            enabled, autoscaler will try to balance between diverse
+                            and cost optimal instance types.
+                          type: boolean
                         fallbackRestoreRateSeconds:
                           description: 'Fallback restore rate in seconds: defines
                             how much time should pass before spot fallback should
@@ -647,6 +692,10 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        isGpuOnly:
+                          description: GPU instance constraint - will only pick nodes
+                            with GPU if true
+                          type: boolean
                         maxCpu:
                           description: Max CPU cores per node.
                           type: number
@@ -659,10 +708,33 @@ spec:
                         minMemory:
                           description: Min Memory (Mib) per node.
                           type: number
-                        spot:
-                          description: Spot instance constraint - true only spot,
-                            false only on-demand.
+                        onDemand:
+                          description: Should include on-demand instances in the considered
+                            pool.
                           type: boolean
+                        os:
+                          description: 'List of acceptable instance Operating Systems,
+                            the default is linux. Allowed values: linux, windows.'
+                          items:
+                            type: string
+                          type: array
+                        spot:
+                          description: Should include spot instances in the considered
+                            pool.
+                          type: boolean
+                        spotDiversityPriceIncreaseLimitPercent:
+                          description: Allowed node configuration price increase when
+                            diversifying instance types. E.g. if the value is 10%,
+                            then the overall price of diversified instance types can
+                            be 10% higher than the price of the optimal configuration.
+                          type: number
+                        spotInterruptionPredictionsEnabled:
+                          description: Enable/disable spot interruption predictions.
+                          type: boolean
+                        spotInterruptionPredictionsType:
+                          description: Spot interruption predictions type. Can be
+                            either "aws-rebalance-recommendations" or "interruption-predictions".
+                          type: string
                         storageOptimized:
                           description: Storage optimized instance constraint - will
                             only pick storage optimized nodes if true
@@ -709,8 +781,9 @@ spec:
                     items:
                       properties:
                         effect:
-                          description: Effect of a taint to be added to nodes created
-                            from this template. The effect must always be NoSchedule.
+                          description: 'Effect of a taint to be added to nodes created
+                            from this template, the default is NoSchedule. Allowed
+                            values: NoSchedule, NoExecute.'
                           type: string
                         key:
                           description: Key of a taint to be added to nodes created
@@ -724,6 +797,13 @@ spec:
                     type: array
                   id:
                     type: string
+                  isDefault:
+                    description: Flag whether the node template is default.
+                    type: boolean
+                  isEnabled:
+                    description: Flag whether the node template is enabled and considered
+                      for autoscaling.
+                    type: boolean
                   name:
                     description: Name of the node template.
                     type: string

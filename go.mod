@@ -1,4 +1,4 @@
-module github.com/castai/crossplane-provider-castai
+module github.com/crossplane-contrib/crossplane-provider-castai
 
 go 1.20
 

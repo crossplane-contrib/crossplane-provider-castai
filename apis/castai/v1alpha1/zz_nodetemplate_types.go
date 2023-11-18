@@ -21,12 +21,18 @@ type ConstraintsObservation struct {
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
 
+	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
+
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
 
 	Gpu []GpuObservation `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
 	InstanceFamilies []InstanceFamiliesObservation `json:"instanceFamilies,omitempty" tf:"instance_families,omitempty"`
+
+	// GPU instance constraint - will only pick nodes with GPU if true
+	IsGpuOnly *bool `json:"isGpuOnly,omitempty" tf:"is_gpu_only,omitempty"`
 
 	// Max CPU cores per node.
 	MaxCPU *float64 `json:"maxCpu,omitempty" tf:"max_cpu,omitempty"`
@@ -40,8 +46,23 @@ type ConstraintsObservation struct {
 	// Min Memory (Mib) per node.
 	MinMemory *float64 `json:"minMemory,omitempty" tf:"min_memory,omitempty"`
 
-	// Spot instance constraint - true only spot, false only on-demand.
+	// Should include on-demand instances in the considered pool.
+	OnDemand *bool `json:"onDemand,omitempty" tf:"on_demand,omitempty"`
+
+	// List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
+	Os []*string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// Should include spot instances in the considered pool.
 	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
+
+	// Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+	SpotDiversityPriceIncreaseLimitPercent *float64 `json:"spotDiversityPriceIncreaseLimitPercent,omitempty" tf:"spot_diversity_price_increase_limit_percent,omitempty"`
+
+	// Enable/disable spot interruption predictions.
+	SpotInterruptionPredictionsEnabled *bool `json:"spotInterruptionPredictionsEnabled,omitempty" tf:"spot_interruption_predictions_enabled,omitempty"`
+
+	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
 	// Storage optimized instance constraint - will only pick storage optimized nodes if true
 	StorageOptimized *bool `json:"storageOptimized,omitempty" tf:"storage_optimized,omitempty"`
@@ -60,6 +81,10 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
 
+	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+	// +kubebuilder:validation:Optional
+	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
+
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	// +kubebuilder:validation:Optional
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
@@ -69,6 +94,10 @@ type ConstraintsParameters struct {
 
 	// +kubebuilder:validation:Optional
 	InstanceFamilies []InstanceFamiliesParameters `json:"instanceFamilies,omitempty" tf:"instance_families,omitempty"`
+
+	// GPU instance constraint - will only pick nodes with GPU if true
+	// +kubebuilder:validation:Optional
+	IsGpuOnly *bool `json:"isGpuOnly,omitempty" tf:"is_gpu_only,omitempty"`
 
 	// Max CPU cores per node.
 	// +kubebuilder:validation:Optional
@@ -86,9 +115,29 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	MinMemory *float64 `json:"minMemory,omitempty" tf:"min_memory,omitempty"`
 
-	// Spot instance constraint - true only spot, false only on-demand.
+	// Should include on-demand instances in the considered pool.
+	// +kubebuilder:validation:Optional
+	OnDemand *bool `json:"onDemand,omitempty" tf:"on_demand,omitempty"`
+
+	// List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
+	// +kubebuilder:validation:Optional
+	Os []*string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// Should include spot instances in the considered pool.
 	// +kubebuilder:validation:Optional
 	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
+
+	// Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+	// +kubebuilder:validation:Optional
+	SpotDiversityPriceIncreaseLimitPercent *float64 `json:"spotDiversityPriceIncreaseLimitPercent,omitempty" tf:"spot_diversity_price_increase_limit_percent,omitempty"`
+
+	// Enable/disable spot interruption predictions.
+	// +kubebuilder:validation:Optional
+	SpotInterruptionPredictionsEnabled *bool `json:"spotInterruptionPredictionsEnabled,omitempty" tf:"spot_interruption_predictions_enabled,omitempty"`
+
+	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+	// +kubebuilder:validation:Optional
+	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
 	// Storage optimized instance constraint - will only pick storage optimized nodes if true
 	// +kubebuilder:validation:Optional
@@ -121,7 +170,7 @@ type CustomLabelParameters struct {
 
 type CustomTaintsObservation struct {
 
-	// Effect of a taint to be added to nodes created from this template. The effect must always be NoSchedule.
+	// Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
 	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
 
 	// Key of a taint to be added to nodes created from this template.
@@ -133,7 +182,7 @@ type CustomTaintsObservation struct {
 
 type CustomTaintsParameters struct {
 
-	// Effect of a taint to be added to nodes created from this template. The effect must always be NoSchedule.
+	// Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
 	// +kubebuilder:validation:Optional
 	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
 
@@ -231,6 +280,12 @@ type NodeTemplateObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Flag whether the node template is default.
+	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default,omitempty"`
+
+	// Flag whether the node template is enabled and considered for autoscaling.
+	IsEnabled *bool `json:"isEnabled,omitempty" tf:"is_enabled,omitempty"`
+
 	// Name of the node template.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -244,7 +299,7 @@ type NodeTemplateObservation struct {
 type NodeTemplateParameters struct {
 
 	// CAST AI cluster id.
-	// +crossplane:generate:reference:type=github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
@@ -257,7 +312,7 @@ type NodeTemplateParameters struct {
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// CAST AI node configuration id to be used for node template.
-	// +crossplane:generate:reference:type=github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.NodeConfiguration
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.NodeConfiguration
 	// +kubebuilder:validation:Optional
 	ConfigurationID *string `json:"configurationId,omitempty" tf:"configuration_id,omitempty"`
 
@@ -287,6 +342,14 @@ type NodeTemplateParameters struct {
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	// +kubebuilder:validation:Optional
 	CustomTaints []CustomTaintsParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
+
+	// Flag whether the node template is default.
+	// +kubebuilder:validation:Optional
+	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default,omitempty"`
+
+	// Flag whether the node template is enabled and considered for autoscaling.
+	// +kubebuilder:validation:Optional
+	IsEnabled *bool `json:"isEnabled,omitempty" tf:"is_enabled,omitempty"`
 
 	// Name of the node template.
 	// +kubebuilder:validation:Optional

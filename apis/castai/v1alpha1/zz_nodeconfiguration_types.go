@@ -49,6 +49,9 @@ type EksObservation struct {
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
 	VolumeIops *float64 `json:"volumeIops,omitempty" tf:"volume_iops,omitempty"`
 
+	// AWS KMS key ARN for encrypting EBS volume attached to the node
+	VolumeKMSKeyArn *string `json:"volumeKmsKeyArn,omitempty" tf:"volume_kms_key_arn,omitempty"`
+
 	// AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
 	VolumeThroughput *float64 `json:"volumeThroughput,omitempty" tf:"volume_throughput,omitempty"`
 
@@ -85,6 +88,10 @@ type EksParameters struct {
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
 	VolumeIops *float64 `json:"volumeIops,omitempty" tf:"volume_iops,omitempty"`
+
+	// AWS KMS key ARN for encrypting EBS volume attached to the node
+	// +kubebuilder:validation:Optional
+	VolumeKMSKeyArn *string `json:"volumeKmsKeyArn,omitempty" tf:"volume_kms_key_arn,omitempty"`
 
 	// AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
@@ -189,7 +196,7 @@ type NodeConfigurationParameters struct {
 	Aks []AksParameters `json:"aks,omitempty" tf:"aks,omitempty"`
 
 	// CAST AI cluster id
-	// +crossplane:generate:reference:type=github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 

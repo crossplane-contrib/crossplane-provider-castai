@@ -10,19 +10,19 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	autoscaler "github.com/castai/crossplane-provider-castai/config/autoscaler"
-	ekscluster "github.com/castai/crossplane-provider-castai/config/ekscluster"
-	eksclusterid "github.com/castai/crossplane-provider-castai/config/eksclusterid"
-	nodeconfiguration "github.com/castai/crossplane-provider-castai/config/nodeconfiguration"
-	nodeconfigurationdefault "github.com/castai/crossplane-provider-castai/config/nodeconfigurationdefault"
-	nodetemplate "github.com/castai/crossplane-provider-castai/config/nodetemplate"
-	rebalancingjob "github.com/castai/crossplane-provider-castai/config/rebalancingjob"
-	rebalancingschedule "github.com/castai/crossplane-provider-castai/config/rebalancingschedule"
+	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/config/autoscaler"
+	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/ekscluster"
+	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/eksclusterid"
+	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfiguration"
+	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfigurationdefault"
+	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/config/nodetemplate"
+	rebalancingjob "github.com/crossplane-contrib/crossplane-provider-castai/config/rebalancingjob"
+	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/config/rebalancingschedule"
 )
 
 const (
 	resourcePrefix = "castai"
-	modulePath     = "github.com/castai/crossplane-provider-castai"
+	modulePath     = "github.com/crossplane-contrib/crossplane-provider-castai"
 )
 
 //go:embed schema.json

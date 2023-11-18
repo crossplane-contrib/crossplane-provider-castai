@@ -11,10 +11,10 @@ func Configure(p *config.Provider) {
 		r.Kind = "RebalancingJob"
 		r.References = config.References{
 			"cluster_id": {
-				Type: "github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId",
+				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId",
 			},
 			"rebalancing_schedule_id": {
-				Type: "github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.RebalancingSchedule",
+				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.RebalancingSchedule",
 			},
 		}
 	})

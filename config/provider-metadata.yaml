@@ -74,6 +74,31 @@ resources:
             cluster_id: (String)
             id: (String) The ID of this resource.
         importStatements: []
+    castai_evictor_advanced_config Resource - terraform-provider-castai:
+        subCategory: ""
+        description: CAST AI eviction config resource to manage evictor properties
+        name: castai_evictor_advanced_config Resource - terraform-provider-castai
+        title: castai_evictor_advanced_config Resource - terraform-provider-castai
+        argumentDocs:
+            aggressive: (Boolean)
+            cluster_id: (String) CAST AI cluster id.
+            create: (String)
+            disposable: (Boolean)
+            evictor_advanced_config: '(Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)'
+            id: (String) The ID of this resource.
+            key: (String)
+            kind: (String)
+            match_expressions: (Block List) (see below for nested schema)
+            match_labels: (Map of String)
+            namespace: (String)
+            node_selector: (Block List) node selector (see below for nested schema)
+            operator: (String)
+            pod_selector: (Block List) pod selector (see below for nested schema)
+            removal_disabled: (Boolean)
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+            values: (List of String)
+        importStatements: []
     castai_gke_cluster Resource - terraform-provider-castai:
         subCategory: ""
         description: GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
@@ -131,6 +156,7 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             volume_iops: (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
+            volume_kms_key_arn: (String) AWS KMS key ARN for encrypting EBS volume attached to the node
             volume_throughput: (Number) AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
             volume_type: '(String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2'
         importStatements:
@@ -166,7 +192,8 @@ resources:
             custom_labels: (Map of String) Custom labels to be added to nodes created from this template. If the field custom_label is present, the value of custom_labels will be ignored.
             custom_taints: (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
             delete: (String)
-            effect: (String) Effect of a taint to be added to nodes created from this template. The effect must always be NoSchedule.
+            effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'
+            enable_spot_diversity: (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
             exclude: (List of String) Instance families to include when filtering (excludes all other families).
             exclude_names: (List of String) Names of the GPUs to exclude.
             fallback_restore_rate_seconds: '(Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.'
@@ -175,6 +202,9 @@ resources:
             include: (List of String) Instance families to exclude when filtering (includes all other families).
             include_names: (List of String) Instance families to include when filtering (excludes all other families).
             instance_families: '(Block List, Max: 1) (see below for nested schema)'
+            is_default: (Boolean) Flag whether the node template is default.
+            is_enabled: (Boolean) Flag whether the node template is enabled and considered for autoscaling.
+            is_gpu_only: (Boolean) GPU instance constraint - will only pick nodes with GPU if true
             key: (String) Label key to be added to nodes created from this template.
             manufacturers: (List of String) Manufacturers of the gpus to select - NVIDIA, AMD.
             max_count: (Number) Max GPU count for the instance type to have.
@@ -184,15 +214,39 @@ resources:
             min_cpu: (Number) Min CPU cores per node.
             min_memory: (Number) Min Memory (Mib) per node.
             name: (String) Name of the node template.
+            on_demand: (Boolean) Should include on-demand instances in the considered pool.
+            os: '(List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.'
             read: (String)
             rebalancing_config_min_nodes: (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
             should_taint: (Boolean) Marks whether the templated nodes will have a taint.
-            spot: (Boolean) Spot instance constraint - true only spot, false only on-demand.
+            spot: (Boolean) Should include spot instances in the considered pool.
+            spot_diversity_price_increase_limit_percent: (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+            spot_interruption_predictions_enabled: (Boolean) Enable/disable spot interruption predictions.
+            spot_interruption_predictions_type: (String) Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
             storage_optimized: (Boolean) Storage optimized instance constraint - will only pick storage optimized nodes if true
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             use_spot_fallbacks: (Boolean) Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
             value: (String) Label value to be added to nodes created from this template.
+        importStatements:
+            - |-
+              # Import node template by specifying cluster ID and node template name.
+              terraform import castai_node_template.default_by_castai 105e6fa3-20b1-424e-v589-9a64d1eeabea/default-by-castai
+    castai_organization_members Resource - terraform-provider-castai:
+        subCategory: ""
+        description: CAST AI organization members resource to manage organization members
+        name: castai_organization_members Resource - terraform-provider-castai
+        title: castai_organization_members Resource - terraform-provider-castai
+        argumentDocs:
+            create: (String)
+            delete: (String)
+            id: (String) The ID of this resource.
+            members: (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+            organization_id: (String) CAST AI organization ID.
+            owners: (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+            viewers: (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
         importStatements: []
     castai_rebalancing_job Resource - terraform-provider-castai:
         subCategory: ""
@@ -247,3 +301,50 @@ resources:
 
               # Importing via direct schedule ID is also possible.
               terraform import 'castai_rebalancing_schedule.spots' b4e69e0c-1762-45eb-bd4f-85cb172e6ad3
+    castai_reservations Resource - terraform-provider-castai:
+        subCategory: ""
+        description: Reservation represents cloud service provider reserved instances that can be used by CAST AI autoscaler.
+        name: castai_reservations Resource - terraform-provider-castai
+        title: castai_reservations Resource - terraform-provider-castai
+        argumentDocs:
+            count: (String) - amount of reserved instances
+            create: (String)
+            end_date: (String) - end date of reservation
+            id: (String) The ID of this resource.
+            instance_type: (String) - reserved instance type
+            name: (String) - unique reservation name in region for specific instance type
+            organization_id: (String) organization
+            price: (String) - reservation price
+            provider: (String) - reservation cloud provider (gcp, aws, azure)
+            region: (String) - reservation region
+            reservations: (List of Object) (see below for nested schema)
+            reservations_csv: (String) csv file containing reservations
+            start_date: (String) - start date of reservation
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+            zone_id: (String) - reservation zone id
+            zone_name: (String) - reservation zone name
+        importStatements:
+            - |-
+              # Import reservations of an organization.
+              terraform import 'castai_reservations.test' 5b046e29-e947-470f-9952-bfdf369ecca6
+    castai_sso_connection Resource - terraform-provider-castai:
+        subCategory: ""
+        description: SSO Connection resource allows creating SSO trust relationship with CAST AI.
+        name: castai_sso_connection Resource - terraform-provider-castai
+        title: castai_sso_connection Resource - terraform-provider-castai
+        argumentDocs:
+            aad: '(Block List, Max: 1) Azure AD connector (see below for nested schema)'
+            ad_domain: (String) Azure AD domain
+            client_id: (String) Azure AD client ID
+            client_secret: (String, Sensitive) Azure AD client secret
+            create: (String)
+            delete: (String)
+            email_domain: (String) Email domain of the connection
+            id: (String) The ID of this resource.
+            name: (String) Connection name
+            okta: '(Block List, Max: 1) Okta connector (see below for nested schema)'
+            okta_domain: (String) Okta domain
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements: []

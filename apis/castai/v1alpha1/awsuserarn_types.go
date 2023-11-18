@@ -13,7 +13,7 @@ import (
 // AWSUserARNParameters are the parameters used for AWSUserARN
 type AWSUserARNParameters struct {
 	// CAST AI cluster id
-	// +crossplane:generate:reference:type=github.com/castai/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty"`
 

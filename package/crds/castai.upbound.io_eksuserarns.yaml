@@ -5,7 +5,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: awsuserarns.castai.upbound.io
+  name: eksuserarns.castai.upbound.io
 spec:
   group: castai.upbound.io
   names:
@@ -13,10 +13,10 @@ spec:
     - crossplane
     - managed
     - castai
-    kind: AWSUserARN
-    listKind: AWSUserARNList
-    plural: awsuserarns
-    singular: awsuserarn
+    kind: EksUserArn
+    listKind: EksUserArnList
+    plural: eksuserarns
+    singular: eksuserarn
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: AWSUserARN is used to retrieve ARN of given EKS cluster ID.
+        description: EksUserArn is the Schema for the EksUserArns API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: AWSUserARNSpec defines the desired state of AWSUserARN
+            description: EksUserArnSpec defines the desired state of EksUserArn
             properties:
               deletionPolicy:
                 default: Delete
@@ -66,14 +66,11 @@ spec:
                 - Delete
                 type: string
               forProvider:
-                description: AWSUserARNParameters are the parameters used for AWSUserARN
                 properties:
                   clusterId:
-                    description: CAST AI cluster id
                     type: string
                   clusterIdRef:
-                    description: Reference to a EksClusterId in castai to populate
-                      clusterId.
+                    description: Reference to a EksCluster in castai to populate clusterId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -107,8 +104,7 @@ spec:
                     - name
                     type: object
                   clusterIdSelector:
-                    description: Selector for a EksClusterId in castai to populate
-                      clusterId.
+                    description: Selector for a EksCluster in castai to populate clusterId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -334,19 +330,15 @@ spec:
             - forProvider
             type: object
           status:
-            description: AWSUserARNStatus defines the observed state of AWSUserARN.
+            description: EksUserArnStatus defines the observed state of EksUserArn.
             properties:
               atProvider:
-                description: AWSUserARNObservation are the parameters used for AWSUserARN
-                  status
                 properties:
                   arn:
                     type: string
                   clusterId:
                     type: string
-                  managementAccountId:
-                    type: string
-                  userPrefix:
+                  id:
                     type: string
                 type: object
               conditions:

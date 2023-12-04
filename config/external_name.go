@@ -17,6 +17,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"castai_rebalancing_job":            config.IdentifierFromProvider,
 	"castai_rebalancing_schedule":       config.IdentifierFromProvider,
 	"castai_eks_clusterid":              config.IdentifierFromProvider,
+	"castai_eks_user_arn":               config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

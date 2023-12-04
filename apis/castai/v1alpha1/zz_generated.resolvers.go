@@ -12,8 +12,8 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this AWSUserARN.
-func (mg *AWSUserARN) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this AutoScaler.
+func (mg *AutoScaler) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -38,8 +38,8 @@ func (mg *AWSUserARN) ResolveReferences(ctx context.Context, c client.Reader) er
 	return nil
 }
 
-// ResolveReferences of this AutoScaler.
-func (mg *AutoScaler) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this EksUserArn.
+func (mg *EksUserArn) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -51,8 +51,8 @@ func (mg *AutoScaler) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.ForProvider.ClusterIDRef,
 		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
 		To: reference.To{
-			List:    &EksClusterIdList{},
-			Managed: &EksClusterId{},
+			List:    &EksClusterList{},
+			Managed: &EksCluster{},
 		},
 	})
 	if err != nil {

@@ -13,6 +13,7 @@ import (
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/config/autoscaler"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/eksclusterid"
+	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/config/nodetemplate"
@@ -50,6 +51,7 @@ func GetProvider() *ujconfig.Provider {
 		rebalancingjob.Configure,
 		rebalancingschedule.Configure,
 		eksclusterid.Configure,
+		eksuserarn.Configure,
 	} {
 		configure(pc)
 	}

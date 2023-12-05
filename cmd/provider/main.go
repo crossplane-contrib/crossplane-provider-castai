@@ -29,7 +29,6 @@ import (
 	"github.com/crossplane-contrib/crossplane-provider-castai/config"
 	"github.com/crossplane-contrib/crossplane-provider-castai/internal/clients"
 	"github.com/crossplane-contrib/crossplane-provider-castai/internal/controller"
-	"github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/awsuserarn"
 	"github.com/crossplane-contrib/crossplane-provider-castai/internal/features"
 )
 
@@ -114,6 +113,5 @@ func main() {
 	}
 
 	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup CastAI controllers")
-	kingpin.FatalIfError(awsuserarn.Setup(mgr, o), "Cannot setup CastAI AWSUserARN controller")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
 }

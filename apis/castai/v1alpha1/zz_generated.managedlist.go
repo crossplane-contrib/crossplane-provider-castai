@@ -7,15 +7,6 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
-// GetItems of this AWSUserARNList.
-func (l *AWSUserARNList) GetItems() []resource.Managed {
-	items := make([]resource.Managed, len(l.Items))
-	for i := range l.Items {
-		items[i] = &l.Items[i]
-	}
-	return items
-}
-
 // GetItems of this AutoScalerList.
 func (l *AutoScalerList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -36,6 +27,15 @@ func (l *EksClusterIdList) GetItems() []resource.Managed {
 
 // GetItems of this EksClusterList.
 func (l *EksClusterList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EksUserArnList.
+func (l *EksUserArnList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

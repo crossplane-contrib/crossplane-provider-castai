@@ -12,6 +12,7 @@ import (
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/autoscaler"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksclusterid"
+	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksuserarn"
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodetemplate"
@@ -27,6 +28,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		autoscaler.Setup,
 		ekscluster.Setup,
 		eksclusterid.Setup,
+		eksuserarn.Setup,
 		nodeconfiguration.Setup,
 		nodeconfigurationdefault.Setup,
 		nodetemplate.Setup,

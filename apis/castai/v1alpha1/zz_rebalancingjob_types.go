@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,22 +17,34 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RebalancingJobInitParameters struct {
+
+	// (Boolean) The job will only be executed if it's enabled.
+	// The job will only be executed if it's enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
 type RebalancingJobObservation struct {
 
+	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
+	// (Boolean) The job will only be executed if it's enabled.
 	// The job will only be executed if it's enabled.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) Rebalancing schedule of this job.
 	// Rebalancing schedule of this job.
 	RebalancingScheduleID *string `json:"rebalancingScheduleId,omitempty" tf:"rebalancing_schedule_id,omitempty"`
 }
 
 type RebalancingJobParameters struct {
 
+	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
@@ -42,10 +58,12 @@ type RebalancingJobParameters struct {
 	// +kubebuilder:validation:Optional
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
+	// (Boolean) The job will only be executed if it's enabled.
 	// The job will only be executed if it's enabled.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) Rebalancing schedule of this job.
 	// Rebalancing schedule of this job.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.RebalancingSchedule
 	// +kubebuilder:validation:Optional
@@ -64,6 +82,17 @@ type RebalancingJobParameters struct {
 type RebalancingJobSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RebalancingJobParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RebalancingJobInitParameters `json:"initProvider,omitempty"`
 }
 
 // RebalancingJobStatus defines the observed state of RebalancingJob.
@@ -74,7 +103,7 @@ type RebalancingJobStatus struct {
 
 // +kubebuilder:object:root=true
 
-// RebalancingJob is the Schema for the RebalancingJobs API. <no value>
+// RebalancingJob is the Schema for the RebalancingJobs API. Job assigns a rebalancing schedule to a cluster.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

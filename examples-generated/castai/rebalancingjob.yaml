@@ -1,0 +1,17 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: RebalancingJob
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/rebalancingjob
+  labels:
+    testing.upbound.io/example-name: spots
+  name: spots
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    enabled: true
+    rebalancingScheduleIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: spots

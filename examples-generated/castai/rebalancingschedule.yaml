@@ -1,0 +1,34 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: RebalancingSchedule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/rebalancingschedule
+  labels:
+    testing.upbound.io/example-name: spots
+  name: spots
+spec:
+  forProvider:
+    launchConfiguration:
+    - executionConditions:
+      - achievedSavingsPercentage: 10
+        enabled: true
+      keepDrainTimeoutNodes: false
+      nodeTtlSeconds: 300
+      numTargetedNodes: 3
+      rebalancingMinNodes: 2
+      selector: |-
+        ${jsonencode({
+              nodeSelectorTerms = [{
+                matchExpressions = [
+                  {
+                    key      = "scheduling.cast.ai/spot"
+                    operator = "Exists"
+                  }
+                ]
+              }]
+            })}
+    name: rebalance spots at every 30th minute
+    schedule:
+    - cron: '*/30 * * * *'
+    triggerConditions:
+    - savingsPercentage: 20

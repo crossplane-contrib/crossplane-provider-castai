@@ -1,0 +1,21 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: AksCluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/akscluster
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    clientId: ${azuread_application.castai.application_id}
+    clientSecretSecretRef:
+      key: attribute.value
+      name: example-application-password
+      namespace: upbound-system
+    deleteNodesOnDisconnect: ${var.delete_nodes_on_disconnect}
+    name: ${var.aks_cluster_name}
+    nodeResourceGroup: ${azurerm_kubernetes_cluster.this.node_resource_group}
+    region: ${var.aks_cluster_region}
+    subscriptionId: ${data.azurerm_subscription.current.subscription_id}
+    tenantId: ${data.azurerm_subscription.current.tenant_id}

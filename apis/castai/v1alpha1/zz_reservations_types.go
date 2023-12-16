@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,48 +17,80 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ReservationsObservation struct {
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+type ReservationsInitParameters struct {
 
+	// (String) organization
 	// organization
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
+	// (String) csv file containing reservations
+	// csv file containing reservations
+	ReservationsCsv *string `json:"reservationsCsv,omitempty" tf:"reservations_csv,omitempty"`
+}
+
+type ReservationsObservation struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) organization
+	// organization
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// (List of Object) (see below for nested schema)
 	Reservations []ReservationsReservationsObservation `json:"reservations,omitempty" tf:"reservations,omitempty"`
 
+	// (String) csv file containing reservations
 	// csv file containing reservations
 	ReservationsCsv *string `json:"reservationsCsv,omitempty" tf:"reservations_csv,omitempty"`
 }
 
 type ReservationsParameters struct {
 
+	// (String) organization
 	// organization
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
+	// (String) csv file containing reservations
 	// csv file containing reservations
 	// +kubebuilder:validation:Optional
 	ReservationsCsv *string `json:"reservationsCsv,omitempty" tf:"reservations_csv,omitempty"`
 }
 
+type ReservationsReservationsInitParameters struct {
+}
+
 type ReservationsReservationsObservation struct {
+
+	// amount of reserved instances
 	Count *string `json:"count,omitempty" tf:"count,omitempty"`
 
+	// end date of reservation
 	EndDate *string `json:"endDate,omitempty" tf:"end_date,omitempty"`
 
+	// reserved instance type
 	InstanceType *string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
+	// unique reservation name in region for specific instance type
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// reservation price
 	Price *string `json:"price,omitempty" tf:"price,omitempty"`
 
+	// reservation cloud provider (gcp, aws, azure)
 	Provider *string `json:"provider,omitempty" tf:"provider,omitempty"`
 
+	// reservation region
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
+	// start date of reservation
 	StartDate *string `json:"startDate,omitempty" tf:"start_date,omitempty"`
 
+	// reservation zone id
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
+	// reservation zone name
 	ZoneName *string `json:"zoneName,omitempty" tf:"zone_name,omitempty"`
 }
 
@@ -65,6 +101,17 @@ type ReservationsReservationsParameters struct {
 type ReservationsSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ReservationsParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ReservationsInitParameters `json:"initProvider,omitempty"`
 }
 
 // ReservationsStatus defines the observed state of Reservations.
@@ -75,7 +122,7 @@ type ReservationsStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Reservations is the Schema for the Reservationss API. <no value>
+// Reservations is the Schema for the Reservationss API. Reservation represents cloud service provider reserved instances that can be used by CAST AI autoscaler.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -85,7 +132,7 @@ type ReservationsStatus struct {
 type Reservations struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.reservationsCsv)",message="reservationsCsv is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.reservationsCsv) || (has(self.initProvider) && has(self.initProvider.reservationsCsv))",message="spec.forProvider.reservationsCsv is a required parameter"
 	Spec   ReservationsSpec   `json:"spec"`
 	Status ReservationsStatus `json:"status,omitempty"`
 }

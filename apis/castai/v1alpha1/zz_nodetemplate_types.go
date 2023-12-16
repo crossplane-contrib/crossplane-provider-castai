@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -12,6 +16,64 @@ import (
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
+
+type ConstraintsInitParameters struct {
+
+	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
+	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
+
+	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
+	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
+
+	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
+
+	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
+	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
+
+	Gpu []GpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
+
+	InstanceFamilies []InstanceFamiliesInitParameters `json:"instanceFamilies,omitempty" tf:"instance_families,omitempty"`
+
+	// GPU instance constraint - will only pick nodes with GPU if true
+	IsGpuOnly *bool `json:"isGpuOnly,omitempty" tf:"is_gpu_only,omitempty"`
+
+	// Max CPU cores per node.
+	MaxCPU *float64 `json:"maxCpu,omitempty" tf:"max_cpu,omitempty"`
+
+	// Max Memory (Mib) per node.
+	MaxMemory *float64 `json:"maxMemory,omitempty" tf:"max_memory,omitempty"`
+
+	// Min CPU cores per node.
+	MinCPU *float64 `json:"minCpu,omitempty" tf:"min_cpu,omitempty"`
+
+	// Min Memory (Mib) per node.
+	MinMemory *float64 `json:"minMemory,omitempty" tf:"min_memory,omitempty"`
+
+	// Should include on-demand instances in the considered pool.
+	OnDemand *bool `json:"onDemand,omitempty" tf:"on_demand,omitempty"`
+
+	// List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
+	Os []*string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// Should include spot instances in the considered pool.
+	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
+
+	// Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+	SpotDiversityPriceIncreaseLimitPercent *float64 `json:"spotDiversityPriceIncreaseLimitPercent,omitempty" tf:"spot_diversity_price_increase_limit_percent,omitempty"`
+
+	// Enable/disable spot interruption predictions.
+	SpotInterruptionPredictionsEnabled *bool `json:"spotInterruptionPredictionsEnabled,omitempty" tf:"spot_interruption_predictions_enabled,omitempty"`
+
+	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
+
+	// Storage optimized instance constraint - will only pick storage optimized nodes if true
+	StorageOptimized *bool `json:"storageOptimized,omitempty" tf:"storage_optimized,omitempty"`
+
+	// Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
+	UseSpotFallbacks *bool `json:"useSpotFallbacks,omitempty" tf:"use_spot_fallbacks,omitempty"`
+}
 
 type ConstraintsObservation struct {
 
@@ -148,6 +210,18 @@ type ConstraintsParameters struct {
 	UseSpotFallbacks *bool `json:"useSpotFallbacks,omitempty" tf:"use_spot_fallbacks,omitempty"`
 }
 
+type CustomTaintsInitParameters struct {
+
+	// Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
+	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
+
+	// Key of a taint to be added to nodes created from this template.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Value of a taint to be added to nodes created from this template.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type CustomTaintsObservation struct {
 
 	// Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
@@ -167,12 +241,30 @@ type CustomTaintsParameters struct {
 	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
 
 	// Key of a taint to be added to nodes created from this template.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Key *string `json:"key" tf:"key,omitempty"`
 
 	// Value of a taint to be added to nodes created from this template.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type GpuInitParameters struct {
+
+	// Names of the GPUs to exclude.
+	ExcludeNames []*string `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
+
+	// Instance families to include when filtering (excludes all other families).
+	IncludeNames []*string `json:"includeNames,omitempty" tf:"include_names,omitempty"`
+
+	// Manufacturers of the gpus to select - NVIDIA, AMD.
+	Manufacturers []*string `json:"manufacturers,omitempty" tf:"manufacturers,omitempty"`
+
+	// Max GPU count for the instance type to have.
+	MaxCount *float64 `json:"maxCount,omitempty" tf:"max_count,omitempty"`
+
+	// Min GPU count for the instance type to have.
+	MinCount *float64 `json:"minCount,omitempty" tf:"min_count,omitempty"`
 }
 
 type GpuObservation struct {
@@ -216,6 +308,15 @@ type GpuParameters struct {
 	MinCount *float64 `json:"minCount,omitempty" tf:"min_count,omitempty"`
 }
 
+type InstanceFamiliesInitParameters struct {
+
+	// Instance families to include when filtering (excludes all other families).
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// Instance families to exclude when filtering (includes all other families).
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
+}
+
 type InstanceFamiliesObservation struct {
 
 	// Instance families to include when filtering (excludes all other families).
@@ -234,6 +335,37 @@ type InstanceFamiliesParameters struct {
 	// Instance families to exclude when filtering (includes all other families).
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
+}
+
+type NodeTemplateInitParameters struct {
+	Constraints []ConstraintsInitParameters `json:"constraints,omitempty" tf:"constraints,omitempty"`
+
+	// Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
+
+	// Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+	CustomInstancesWithExtendedMemoryEnabled *bool `json:"customInstancesWithExtendedMemoryEnabled,omitempty" tf:"custom_instances_with_extended_memory_enabled,omitempty"`
+
+	// Custom labels to be added to nodes created from this template.
+	CustomLabels map[string]*string `json:"customLabels,omitempty" tf:"custom_labels,omitempty"`
+
+	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
+	CustomTaints []CustomTaintsInitParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
+
+	// Flag whether the node template is default.
+	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default,omitempty"`
+
+	// Flag whether the node template is enabled and considered for autoscaling.
+	IsEnabled *bool `json:"isEnabled,omitempty" tf:"is_enabled,omitempty"`
+
+	// Name of the node template.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Minimum nodes that will be kept when rebalancing nodes using this node template.
+	RebalancingConfigMinNodes *float64 `json:"rebalancingConfigMinNodes,omitempty" tf:"rebalancing_config_min_nodes,omitempty"`
+
+	// Marks whether the templated nodes will have a taint.
+	ShouldTaint *bool `json:"shouldTaint,omitempty" tf:"should_taint,omitempty"`
 }
 
 type NodeTemplateObservation struct {
@@ -348,6 +480,17 @@ type NodeTemplateParameters struct {
 type NodeTemplateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     NodeTemplateParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider NodeTemplateInitParameters `json:"initProvider,omitempty"`
 }
 
 // NodeTemplateStatus defines the observed state of NodeTemplate.
@@ -368,7 +511,7 @@ type NodeTemplateStatus struct {
 type NodeTemplate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   NodeTemplateSpec   `json:"spec"`
 	Status NodeTemplateStatus `json:"status,omitempty"`
 }

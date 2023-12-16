@@ -9,4 +9,4 @@ spec:
     region: eu-central-1
   writeConnectionSecretToRef:
     name: sample
-    namespace: crossplane-system
+    namespace: upbound-system

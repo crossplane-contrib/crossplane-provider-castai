@@ -1,10 +1,32 @@
 name: castai/castai
 resources:
-    castai_aks_cluster Resource - terraform-provider-castai:
+    castai_aks_cluster:
         subCategory: ""
         description: AKS cluster resource allows connecting an existing AKS cluster to CAST AI.
-        name: castai_aks_cluster Resource - terraform-provider-castai
+        name: castai_aks_cluster
         title: castai_aks_cluster Resource - terraform-provider-castai
+        examples:
+            - name: this
+              manifest: |-
+                {
+                  "client_id": "${azuread_application.castai.application_id}",
+                  "client_secret": "${azuread_application_password.castai.value}",
+                  "delete_nodes_on_disconnect": "${var.delete_nodes_on_disconnect}",
+                  "name": "${var.aks_cluster_name}",
+                  "node_resource_group": "${azurerm_kubernetes_cluster.this.node_resource_group}",
+                  "region": "${var.aks_cluster_region}",
+                  "subscription_id": "${data.azurerm_subscription.current.subscription_id}",
+                  "tenant_id": "${data.azurerm_subscription.current.tenant_id}"
+                }
+              references:
+                client_id: azuread_application.castai.application_id
+                client_secret: azuread_application_password.castai.value
+                delete_nodes_on_disconnect: var.delete_nodes_on_disconnect
+                name: var.aks_cluster_name
+                node_resource_group: azurerm_kubernetes_cluster.this.node_resource_group
+                region: var.aks_cluster_region
+                subscription_id: data.azurerm_subscription.current.subscription_id
+                tenant_id: data.azurerm_subscription.current.tenant_id
         argumentDocs:
             client_id: (String) Azure AD application ID that is created and used by CAST AI.
             client_secret: (String, Sensitive) Azure AD application password that will be used by CAST AI.
@@ -36,11 +58,27 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_eks_cluster Resource - terraform-provider-castai:
+    castai_eks_cluster:
         subCategory: ""
         description: EKS cluster resource allows connecting an existing EKS cluster to CAST AI.
-        name: castai_eks_cluster Resource - terraform-provider-castai
+        name: castai_eks_cluster
         title: castai_eks_cluster Resource - terraform-provider-castai
+        examples:
+            - name: this
+              manifest: |-
+                {
+                  "account_id": "${data.aws_caller_identity.current.account_id}",
+                  "assume_role_arn": "${module.castai-eks-role-iam.role_arn}",
+                  "delete_nodes_on_disconnect": "${var.delete_nodes_on_disconnect}",
+                  "name": "${data.aws_eks_cluster.eks.id}",
+                  "region": "${var.aws_cluster_region}"
+                }
+              references:
+                account_id: data.aws_caller_identity.current.account_id
+                assume_role_arn: module.castai-eks-role-iam.role_arn
+                delete_nodes_on_disconnect: var.delete_nodes_on_disconnect
+                name: data.aws_eks_cluster.eks.id
+                region: var.aws_cluster_region
         argumentDocs:
             account_id: (String) ID of AWS account
             assume_role_arn: (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
@@ -99,11 +137,27 @@ resources:
             update: (String)
             values: (List of String)
         importStatements: []
-    castai_gke_cluster Resource - terraform-provider-castai:
+    castai_gke_cluster:
         subCategory: ""
         description: GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
-        name: castai_gke_cluster Resource - terraform-provider-castai
+        name: castai_gke_cluster
         title: castai_gke_cluster Resource - terraform-provider-castai
+        examples:
+            - name: this
+              manifest: |-
+                {
+                  "credentials_json": "${var.gke_credentials}",
+                  "delete_nodes_on_disconnect": "${var.delete_nodes_on_disconnect}",
+                  "location": "${module.gke.location}",
+                  "name": "${var.gke_cluster_name}",
+                  "project_id": "${var.project_id}"
+                }
+              references:
+                credentials_json: var.gke_credentials
+                delete_nodes_on_disconnect: var.delete_nodes_on_disconnect
+                location: module.gke.location
+                name: var.gke_cluster_name
+                project_id: var.project_id
         argumentDocs:
             cluster_token: (String, Sensitive) CAST.AI agent cluster token
             create: (String)
@@ -118,11 +172,42 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_node_configuration Resource - terraform-provider-castai:
+    castai_node_configuration:
         subCategory: ""
         description: Create node configuration for given cluster. Node configuration reference https://docs.cast.ai/docs/node-configuration
-        name: castai_node_configuration Resource - terraform-provider-castai
+        name: castai_node_configuration
         title: castai_node_configuration Resource - terraform-provider-castai
+        examples:
+            - name: default
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_cluster.test.id}",
+                  "container_runtime": "dockerd",
+                  "disk_cpu_ratio": 35,
+                  "docker_config": "${jsonencode({\n    \"insecure-registries\"      = [\"registry.com:5000\"],\n    \"max-concurrent-downloads\" = 10\n  })}",
+                  "eks": [
+                    {
+                      "dns_cluster_ip": "10.100.0.10",
+                      "instance_profile_arn": "${aws_iam_instance_profile.test.arn}",
+                      "security_groups": [
+                        "${aws_security_group.test.id}"
+                      ]
+                    }
+                  ],
+                  "init_script": "${base64encode(var.init_script)}",
+                  "kubelet_config": "${jsonencode({\n    \"registryBurst\" : 20,\n    \"registryPullQPS\" : 10\n  })}",
+                  "min_disk_size": 133,
+                  "name": "default",
+                  "subnets": "${aws_subnet.test[*].id}",
+                  "tags": {
+                    "env": "development"
+                  }
+                }
+              references:
+                cluster_id: castai_eks_cluster.test.id
+                eks.instance_profile_arn: aws_iam_instance_profile.test.arn
+            - name: default
+              manifest: '{}'
         argumentDocs:
             aks: '(Block List, Max: 1) (see below for nested schema)'
             cluster_id: (String) CAST AI cluster id
@@ -163,10 +248,20 @@ resources:
         importStatements:
             - $ terraform import castai_node_configuration.default <cluster_id>/default
             - $ terraform import 'module.castai-eks-cluster.castai_node_configuration.this["default"]' <cluster_id>/default
-    castai_node_configuration_default Resource - terraform-provider-castai:
+    castai_node_configuration_default:
         subCategory: ""
-        name: castai_node_configuration_default Resource - terraform-provider-castai
+        name: castai_node_configuration_default
         title: castai_node_configuration_default Resource - terraform-provider-castai
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_cluster.test.id}",
+                  "configuration_id": "${castai_node_configuration.test.id}"
+                }
+              references:
+                cluster_id: castai_eks_cluster.test.id
+                configuration_id: castai_node_configuration.test.id
         argumentDocs:
             cluster_id: (String) CAST AI cluster id
             configuration_id: (String) Id of the node configuration
@@ -249,11 +344,22 @@ resources:
             update: (String)
             viewers: (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
         importStatements: []
-    castai_rebalancing_job Resource - terraform-provider-castai:
+    castai_rebalancing_job:
         subCategory: ""
         description: Job assigns a rebalancing schedule to a cluster.
-        name: castai_rebalancing_job Resource - terraform-provider-castai
+        name: castai_rebalancing_job
         title: castai_rebalancing_job Resource - terraform-provider-castai
+        examples:
+            - name: spots
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_cluster.test.id}",
+                  "enabled": true,
+                  "rebalancing_schedule_id": "${castai_rebalancing_schedule.spots.id}"
+                }
+              references:
+                cluster_id: castai_eks_cluster.test.id
+                rebalancing_schedule_id: castai_rebalancing_schedule.spots.id
         argumentDocs:
             cluster_id: (String) CAST AI cluster id.
             create: (String)
@@ -269,11 +375,42 @@ resources:
               # Import jobs by specifying cluster ID and schedule name.
               # Schedule must be assigned to the cluster already for this command to succeed.
               terraform import 'castai_rebalancing_job.spots' 12345678-1762-45eb-bd4f-85cb172e6ad3/spots
-    castai_rebalancing_schedule Resource - terraform-provider-castai:
+    castai_rebalancing_schedule:
         subCategory: ""
         description: CAST AI rebalancing schedule resource to manage rebalancing schedules.
-        name: castai_rebalancing_schedule Resource - terraform-provider-castai
+        name: castai_rebalancing_schedule
         title: castai_rebalancing_schedule Resource - terraform-provider-castai
+        examples:
+            - name: spots
+              manifest: |-
+                {
+                  "launch_configuration": [
+                    {
+                      "execution_conditions": [
+                        {
+                          "achieved_savings_percentage": 10,
+                          "enabled": true
+                        }
+                      ],
+                      "keep_drain_timeout_nodes": false,
+                      "node_ttl_seconds": 300,
+                      "num_targeted_nodes": 3,
+                      "rebalancing_min_nodes": 2,
+                      "selector": "${jsonencode({\n      nodeSelectorTerms = [{\n        matchExpressions = [\n          {\n            key      = \"scheduling.cast.ai/spot\"\n            operator = \"Exists\"\n          }\n        ]\n      }]\n    })}"
+                    }
+                  ],
+                  "name": "rebalance spots at every 30th minute",
+                  "schedule": [
+                    {
+                      "cron": "*/30 * * * *"
+                    }
+                  ],
+                  "trigger_conditions": [
+                    {
+                      "savings_percentage": 20
+                    }
+                  ]
+                }
         argumentDocs:
             CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
             achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
@@ -303,11 +440,17 @@ resources:
 
               # Importing via direct schedule ID is also possible.
               terraform import 'castai_rebalancing_schedule.spots' b4e69e0c-1762-45eb-bd4f-85cb172e6ad3
-    castai_reservations Resource - terraform-provider-castai:
+    castai_reservations:
         subCategory: ""
         description: Reservation represents cloud service provider reserved instances that can be used by CAST AI autoscaler.
-        name: castai_reservations Resource - terraform-provider-castai
+        name: castai_reservations
         title: castai_reservations Resource - terraform-provider-castai
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "reservations_csv": "${file(\"./reservations.csv\")}"
+                }
         argumentDocs:
             count: (String) - amount of reserved instances
             create: (String)
@@ -330,11 +473,29 @@ resources:
             - |-
               # Import reservations of an organization.
               terraform import 'castai_reservations.test' 5b046e29-e947-470f-9952-bfdf369ecca6
-    castai_sso_connection Resource - terraform-provider-castai:
+    castai_sso_connection:
         subCategory: ""
         description: SSO Connection resource allows creating SSO trust relationship with CAST AI.
-        name: castai_sso_connection Resource - terraform-provider-castai
+        name: castai_sso_connection
         title: castai_sso_connection Resource - terraform-provider-castai
+        examples:
+            - name: sso
+              manifest: |-
+                {
+                  "aad": [
+                    {
+                      "ad_domain": "${azuread_application.castai_sso.publisher_domain}",
+                      "client_id": "${azuread_application.castai_sso.client_id}",
+                      "client_secret": "${azuread_application_password.castai_sso.value}"
+                    }
+                  ],
+                  "email_domain": "aad_connection@test.com",
+                  "name": "aad_connection"
+                }
+              references:
+                aad.ad_domain: azuread_application.castai_sso.publisher_domain
+                aad.client_id: azuread_application.castai_sso.client_id
+                aad.client_secret: azuread_application_password.castai_sso.value
         argumentDocs:
             aad: '(Block List, Max: 1) Azure AD connector (see below for nested schema)'
             ad_domain: (String) Azure AD domain

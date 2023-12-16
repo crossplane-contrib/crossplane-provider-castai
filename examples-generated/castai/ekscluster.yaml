@@ -1,0 +1,15 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EksCluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/ekscluster
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    accountId: ${data.aws_caller_identity.current.account_id}
+    assumeRoleArn: ${module.castai-eks-role-iam.role_arn}
+    deleteNodesOnDisconnect: ${var.delete_nodes_on_disconnect}
+    name: ${data.aws_eks_cluster.eks.id}
+    region: ${var.aws_cluster_region}

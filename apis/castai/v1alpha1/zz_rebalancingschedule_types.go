@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,102 +17,204 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ExecutionConditionsObservation struct {
+type ExecutionConditionsInitParameters struct {
 
+	// (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
 	// The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
 	AchievedSavingsPercentage *float64 `json:"achievedSavingsPercentage,omitempty" tf:"achieved_savings_percentage,omitempty"`
 
+	// (Boolean) Enables or disables the execution conditions.
+	// Enables or disables the execution conditions.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type ExecutionConditionsObservation struct {
+
+	// (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
+	// The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
+	AchievedSavingsPercentage *float64 `json:"achievedSavingsPercentage,omitempty" tf:"achieved_savings_percentage,omitempty"`
+
+	// (Boolean) Enables or disables the execution conditions.
 	// Enables or disables the execution conditions.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type ExecutionConditionsParameters struct {
 
+	// (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
 	// The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
 	// +kubebuilder:validation:Optional
 	AchievedSavingsPercentage *float64 `json:"achievedSavingsPercentage,omitempty" tf:"achieved_savings_percentage,omitempty"`
 
+	// (Boolean) Enables or disables the execution conditions.
 	// Enables or disables the execution conditions.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
 }
 
-type LaunchConfigurationObservation struct {
-	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
+type LaunchConfigurationInitParameters struct {
 
+	// (Block List, Max: 1) (see below for nested schema)
+	ExecutionConditions []ExecutionConditionsInitParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
+
+	// failed annotation instead of forcefully drained.
 	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
 	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
 
+	// (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
 
+	// (Number) Maximum number of nodes that will be selected for rebalancing.
 	// Maximum number of nodes that will be selected for rebalancing.
 	NumTargetedNodes *float64 `json:"numTargetedNodes,omitempty" tf:"num_targeted_nodes,omitempty"`
 
+	// (Number) Minimum number of nodes that should be kept in the cluster after rebalancing.
 	// Minimum number of nodes that should be kept in the cluster after rebalancing.
 	RebalancingMinNodes *float64 `json:"rebalancingMinNodes,omitempty" tf:"rebalancing_min_nodes,omitempty"`
 
+	// (String) Node selector in JSON format.
+	// Node selector in JSON format.
+	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type LaunchConfigurationObservation struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
+
+	// failed annotation instead of forcefully drained.
+	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
+	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
+
+	// (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
+	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
+	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
+
+	// (Number) Maximum number of nodes that will be selected for rebalancing.
+	// Maximum number of nodes that will be selected for rebalancing.
+	NumTargetedNodes *float64 `json:"numTargetedNodes,omitempty" tf:"num_targeted_nodes,omitempty"`
+
+	// (Number) Minimum number of nodes that should be kept in the cluster after rebalancing.
+	// Minimum number of nodes that should be kept in the cluster after rebalancing.
+	RebalancingMinNodes *float64 `json:"rebalancingMinNodes,omitempty" tf:"rebalancing_min_nodes,omitempty"`
+
+	// (String) Node selector in JSON format.
 	// Node selector in JSON format.
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
 }
 
 type LaunchConfigurationParameters struct {
 
+	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExecutionConditions []ExecutionConditionsParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
 
+	// failed annotation instead of forcefully drained.
 	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
 	// +kubebuilder:validation:Optional
 	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
 
+	// (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// +kubebuilder:validation:Optional
 	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
 
+	// (Number) Maximum number of nodes that will be selected for rebalancing.
 	// Maximum number of nodes that will be selected for rebalancing.
 	// +kubebuilder:validation:Optional
 	NumTargetedNodes *float64 `json:"numTargetedNodes,omitempty" tf:"num_targeted_nodes,omitempty"`
 
+	// (Number) Minimum number of nodes that should be kept in the cluster after rebalancing.
 	// Minimum number of nodes that should be kept in the cluster after rebalancing.
 	// +kubebuilder:validation:Optional
 	RebalancingMinNodes *float64 `json:"rebalancingMinNodes,omitempty" tf:"rebalancing_min_nodes,omitempty"`
 
+	// (String) Node selector in JSON format.
 	// Node selector in JSON format.
 	// +kubebuilder:validation:Optional
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
 }
 
-type RebalancingScheduleObservation struct {
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+type RebalancingScheduleInitParameters struct {
 
-	LaunchConfiguration []LaunchConfigurationObservation `json:"launchConfiguration,omitempty" tf:"launch_configuration,omitempty"`
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	LaunchConfiguration []LaunchConfigurationInitParameters `json:"launchConfiguration,omitempty" tf:"launch_configuration,omitempty"`
 
+	// (String) Name of the schedule.
 	// Name of the schedule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Schedule []ScheduleInitParameters `json:"schedule,omitempty" tf:"schedule,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	TriggerConditions []TriggerConditionsInitParameters `json:"triggerConditions,omitempty" tf:"trigger_conditions,omitempty"`
+}
+
+type RebalancingScheduleObservation struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	LaunchConfiguration []LaunchConfigurationObservation `json:"launchConfiguration,omitempty" tf:"launch_configuration,omitempty"`
+
+	// (String) Name of the schedule.
+	// Name of the schedule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	Schedule []ScheduleObservation `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	TriggerConditions []TriggerConditionsObservation `json:"triggerConditions,omitempty" tf:"trigger_conditions,omitempty"`
 }
 
 type RebalancingScheduleParameters struct {
 
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	LaunchConfiguration []LaunchConfigurationParameters `json:"launchConfiguration,omitempty" tf:"launch_configuration,omitempty"`
 
+	// (String) Name of the schedule.
 	// Name of the schedule.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Schedule []ScheduleParameters `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	TriggerConditions []TriggerConditionsParameters `json:"triggerConditions,omitempty" tf:"trigger_conditions,omitempty"`
 }
 
+type ScheduleInitParameters struct {
+
+	// (String) Cron expression defining when the schedule should trigger.
+	// Cron expression defining when the schedule should trigger.
+	//
+	// The `cron` expression can optionally include the `CRON_TZ` variable at the beginning to specify the timezone in which the schedule should be interpreted.
+	//
+	// Example:
+	// ```plaintext
+	// CRON_TZ=America/New_York 0 12 * * ?
+	// ```
+	// In the example above, the `CRON_TZ` variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
+	//
+	// To retrieve a list of available timezone values, you can use the following API endpoint:
+	//
+	// GET https://api.cast.ai/v1/time-zones
+	//
+	// When using the `CRON_TZ` variable, ensure that the specified timezone is valid and supported by checking the list of available timezones from the API endpoint.  If the `CRON_TZ` variable is not specified, the cron expression will be interpreted in the UTC timezone.
+	Cron *string `json:"cron,omitempty" tf:"cron,omitempty"`
+}
+
 type ScheduleObservation struct {
 
+	// (String) Cron expression defining when the schedule should trigger.
 	// Cron expression defining when the schedule should trigger.
 	//
 	// The `cron` expression can optionally include the `CRON_TZ` variable at the beginning to specify the timezone in which the schedule should be interpreted.
@@ -129,6 +235,7 @@ type ScheduleObservation struct {
 
 type ScheduleParameters struct {
 
+	// (String) Cron expression defining when the schedule should trigger.
 	// Cron expression defining when the schedule should trigger.
 	//
 	// The `cron` expression can optionally include the `CRON_TZ` variable at the beginning to specify the timezone in which the schedule should be interpreted.
@@ -144,20 +251,29 @@ type ScheduleParameters struct {
 	// GET https://api.cast.ai/v1/time-zones
 	//
 	// When using the `CRON_TZ` variable, ensure that the specified timezone is valid and supported by checking the list of available timezones from the API endpoint.  If the `CRON_TZ` variable is not specified, the cron expression will be interpreted in the UTC timezone.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Cron *string `json:"cron" tf:"cron,omitempty"`
+}
+
+type TriggerConditionsInitParameters struct {
+
+	// (Number) Defines the minimum percentage of savings expected.
+	// Defines the minimum percentage of savings expected.
+	SavingsPercentage *float64 `json:"savingsPercentage,omitempty" tf:"savings_percentage,omitempty"`
 }
 
 type TriggerConditionsObservation struct {
 
+	// (Number) Defines the minimum percentage of savings expected.
 	// Defines the minimum percentage of savings expected.
 	SavingsPercentage *float64 `json:"savingsPercentage,omitempty" tf:"savings_percentage,omitempty"`
 }
 
 type TriggerConditionsParameters struct {
 
+	// (Number) Defines the minimum percentage of savings expected.
 	// Defines the minimum percentage of savings expected.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SavingsPercentage *float64 `json:"savingsPercentage" tf:"savings_percentage,omitempty"`
 }
 
@@ -165,6 +281,17 @@ type TriggerConditionsParameters struct {
 type RebalancingScheduleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RebalancingScheduleParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RebalancingScheduleInitParameters `json:"initProvider,omitempty"`
 }
 
 // RebalancingScheduleStatus defines the observed state of RebalancingSchedule.
@@ -175,7 +302,7 @@ type RebalancingScheduleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// RebalancingSchedule is the Schema for the RebalancingSchedules API. <no value>
+// RebalancingSchedule is the Schema for the RebalancingSchedules API. CAST AI rebalancing schedule resource to manage rebalancing schedules.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -185,10 +312,10 @@ type RebalancingScheduleStatus struct {
 type RebalancingSchedule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.launchConfiguration)",message="launchConfiguration is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.schedule)",message="schedule is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.triggerConditions)",message="triggerConditions is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.launchConfiguration) || (has(self.initProvider) && has(self.initProvider.launchConfiguration))",message="spec.forProvider.launchConfiguration is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.schedule) || (has(self.initProvider) && has(self.initProvider.schedule))",message="spec.forProvider.schedule is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.triggerConditions) || (has(self.initProvider) && has(self.initProvider.triggerConditions))",message="spec.forProvider.triggerConditions is a required parameter"
 	Spec   RebalancingScheduleSpec   `json:"spec"`
 	Status RebalancingScheduleStatus `json:"status,omitempty"`
 }

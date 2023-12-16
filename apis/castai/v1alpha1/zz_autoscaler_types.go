@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -12,6 +16,12 @@ import (
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
+
+type AutoScalerInitParameters struct {
+
+	// autoscaler policies JSON string to override current autoscaler settings
+	AutoscalerPoliciesJSON *string `json:"autoscalerPoliciesJson,omitempty" tf:"autoscaler_policies_json,omitempty"`
+}
 
 type AutoScalerObservation struct {
 
@@ -51,6 +61,17 @@ type AutoScalerParameters struct {
 type AutoScalerSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AutoScalerParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AutoScalerInitParameters `json:"initProvider,omitempty"`
 }
 
 // AutoScalerStatus defines the observed state of AutoScaler.

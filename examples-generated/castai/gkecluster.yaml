@@ -1,0 +1,18 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: GkeCluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/gkecluster
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    credentialsJsonSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    deleteNodesOnDisconnect: ${var.delete_nodes_on_disconnect}
+    location: ${module.gke.location}
+    name: ${var.gke_cluster_name}
+    projectId: ${var.project_id}

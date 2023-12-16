@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,44 +17,74 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type GkeClusterObservation struct {
+type GkeClusterInitParameters struct {
 
-	// CAST AI credentials id for cluster
-	CredentialsID *string `json:"credentialsId,omitempty" tf:"credentials_id,omitempty"`
-
+	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
+	// (String) GCP cluster zone in case of zonal or region in case of regional cluster
 	// GCP cluster zone in case of zonal or region in case of regional cluster
 	Location *string `json:"location,omitempty" tf:"location,omitempty"`
 
+	// (String) GKE cluster name
 	// GKE cluster name
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) GCP project id
+	// GCP project id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+}
+
+type GkeClusterObservation struct {
+
+	// (String) CAST AI credentials id for cluster
+	// CAST AI credentials id for cluster
+	CredentialsID *string `json:"credentialsId,omitempty" tf:"credentials_id,omitempty"`
+
+	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect
+	// Should CAST AI remove nodes managed by CAST.AI on disconnect
+	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) GCP cluster zone in case of zonal or region in case of regional cluster
+	// GCP cluster zone in case of zonal or region in case of regional cluster
+	Location *string `json:"location,omitempty" tf:"location,omitempty"`
+
+	// (String) GKE cluster name
+	// GKE cluster name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) GCP project id
 	// GCP project id
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type GkeClusterParameters struct {
 
+	// (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
 	// GCP credentials.json from ServiceAccount with credentials for CAST AI
 	// +kubebuilder:validation:Optional
 	CredentialsJSONSecretRef *v1.SecretKeySelector `json:"credentialsJsonSecretRef,omitempty" tf:"-"`
 
+	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect
 	// +kubebuilder:validation:Optional
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
+	// (String) GCP cluster zone in case of zonal or region in case of regional cluster
 	// GCP cluster zone in case of zonal or region in case of regional cluster
 	// +kubebuilder:validation:Optional
 	Location *string `json:"location,omitempty" tf:"location,omitempty"`
 
+	// (String) GKE cluster name
 	// GKE cluster name
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) GCP project id
 	// GCP project id
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
@@ -60,6 +94,17 @@ type GkeClusterParameters struct {
 type GkeClusterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     GkeClusterParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider GkeClusterInitParameters `json:"initProvider,omitempty"`
 }
 
 // GkeClusterStatus defines the observed state of GkeCluster.
@@ -70,7 +115,7 @@ type GkeClusterStatus struct {
 
 // +kubebuilder:object:root=true
 
-// GkeCluster is the Schema for the GkeClusters API. <no value>
+// GkeCluster is the Schema for the GkeClusters API. GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -80,9 +125,9 @@ type GkeClusterStatus struct {
 type GkeCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.location)",message="location is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.projectId)",message="projectId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.location) || (has(self.initProvider) && has(self.initProvider.location))",message="spec.forProvider.location is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
 	Spec   GkeClusterSpec   `json:"spec"`
 	Status GkeClusterStatus `json:"status,omitempty"`
 }

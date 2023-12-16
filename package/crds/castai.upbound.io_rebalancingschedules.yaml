@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.13.0
   name: rebalancingschedules.castai.upbound.io
 spec:
   group: castai.upbound.io
@@ -36,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: RebalancingSchedule is the Schema for the RebalancingSchedules
-          API. <no value>
+          API. CAST AI rebalancing schedule resource to manage rebalancing schedules.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,62 +68,77 @@ spec:
               forProvider:
                 properties:
                   launchConfiguration:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
                     items:
                       properties:
                         executionConditions:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               achievedSavingsPercentage:
-                                description: The percentage of the predicted savings
-                                  that must be achieved in order to fully execute
-                                  the plan.If the savings are not achieved after creating
-                                  the new nodes, the plan will fail and delete the
-                                  created nodes.
+                                description: (Number) The percentage of the predicted
+                                  savings that must be achieved in order to fully
+                                  execute the plan.If the savings are not achieved
+                                  after creating the new nodes, the plan will fail
+                                  and delete the created nodes. The percentage of
+                                  the predicted savings that must be achieved in order
+                                  to fully execute the plan.If the savings are not
+                                  achieved after creating the new nodes, the plan
+                                  will fail and delete the created nodes.
                                 type: number
                               enabled:
-                                description: Enables or disables the execution conditions.
+                                description: (Boolean) Enables or disables the execution
+                                  conditions. Enables or disables the execution conditions.
                                 type: boolean
-                            required:
-                            - enabled
                             type: object
                           type: array
                         keepDrainTimeoutNodes:
-                          description: Defines whether the nodes that failed to get
-                            drained until a predefined timeout, will be kept with
-                            a rebalancing.cast.ai/status=drain-failed annotation instead
-                            of forcefully drained.
+                          description: failed annotation instead of forcefully drained.
+                            Defines whether the nodes that failed to get drained until
+                            a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed
+                            annotation instead of forcefully drained.
                           type: boolean
                         nodeTtlSeconds:
-                          description: Specifies amount of time since node creation
-                            before the node is allowed to be considered for automated
-                            rebalancing.
+                          description: (Number) Specifies amount of time since node
+                            creation before the node is allowed to be considered for
+                            automated rebalancing. Specifies amount of time since
+                            node creation before the node is allowed to be considered
+                            for automated rebalancing.
                           type: number
                         numTargetedNodes:
-                          description: Maximum number of nodes that will be selected
-                            for rebalancing.
+                          description: (Number) Maximum number of nodes that will
+                            be selected for rebalancing. Maximum number of nodes that
+                            will be selected for rebalancing.
                           type: number
                         rebalancingMinNodes:
-                          description: Minimum number of nodes that should be kept
-                            in the cluster after rebalancing.
+                          description: (Number) Minimum number of nodes that should
+                            be kept in the cluster after rebalancing. Minimum number
+                            of nodes that should be kept in the cluster after rebalancing.
                           type: number
                         selector:
-                          description: Node selector in JSON format.
+                          description: (String) Node selector in JSON format. Node
+                            selector in JSON format.
                           type: string
                       type: object
                     type: array
                   name:
-                    description: Name of the schedule.
+                    description: (String) Name of the schedule. Name of the schedule.
                     type: string
                   schedule:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
                     items:
                       properties:
                         cron:
-                          description: "Cron expression defining when the schedule
-                            should trigger. \n The `cron` expression can optionally
-                            include the `CRON_TZ` variable at the beginning to specify
-                            the timezone in which the schedule should be interpreted.
-                            \n Example: ```plaintext CRON_TZ=America/New_York 0 12
-                            * * ? ``` In the example above, the `CRON_TZ` variable
+                          description: "(String) Cron expression defining when the
+                            schedule should trigger. Cron expression defining when
+                            the schedule should trigger. \n The `cron` expression
+                            can optionally include the `CRON_TZ` variable at the beginning
+                            to specify the timezone in which the schedule should be
+                            interpreted. \n Example: ```plaintext CRON_TZ=America/New_York
+                            0 12 * * ? ``` In the example above, the `CRON_TZ` variable
                             is set to \"America/New_York\" indicating that the cron
                             expression should be interpreted in the Eastern Time (ET)
                             timezone. \n To retrieve a list of available timezone
@@ -136,78 +150,162 @@ spec:
                             specified, the cron expression will be interpreted in
                             the UTC timezone."
                           type: string
-                      required:
-                      - cron
                       type: object
                     type: array
                   triggerConditions:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
                     items:
                       properties:
                         savingsPercentage:
-                          description: Defines the minimum percentage of savings expected.
+                          description: (Number) Defines the minimum percentage of
+                            savings expected. Defines the minimum percentage of savings
+                            expected.
                           type: number
-                      required:
-                      - savingsPercentage
                       type: object
                     type: array
                 type: object
-              managementPolicy:
-                default: FullControl
-                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  launchConfiguration:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
+                    items:
+                      properties:
+                        executionConditions:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              achievedSavingsPercentage:
+                                description: (Number) The percentage of the predicted
+                                  savings that must be achieved in order to fully
+                                  execute the plan.If the savings are not achieved
+                                  after creating the new nodes, the plan will fail
+                                  and delete the created nodes. The percentage of
+                                  the predicted savings that must be achieved in order
+                                  to fully execute the plan.If the savings are not
+                                  achieved after creating the new nodes, the plan
+                                  will fail and delete the created nodes.
+                                type: number
+                              enabled:
+                                description: (Boolean) Enables or disables the execution
+                                  conditions. Enables or disables the execution conditions.
+                                type: boolean
+                            type: object
+                          type: array
+                        keepDrainTimeoutNodes:
+                          description: failed annotation instead of forcefully drained.
+                            Defines whether the nodes that failed to get drained until
+                            a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed
+                            annotation instead of forcefully drained.
+                          type: boolean
+                        nodeTtlSeconds:
+                          description: (Number) Specifies amount of time since node
+                            creation before the node is allowed to be considered for
+                            automated rebalancing. Specifies amount of time since
+                            node creation before the node is allowed to be considered
+                            for automated rebalancing.
+                          type: number
+                        numTargetedNodes:
+                          description: (Number) Maximum number of nodes that will
+                            be selected for rebalancing. Maximum number of nodes that
+                            will be selected for rebalancing.
+                          type: number
+                        rebalancingMinNodes:
+                          description: (Number) Minimum number of nodes that should
+                            be kept in the cluster after rebalancing. Minimum number
+                            of nodes that should be kept in the cluster after rebalancing.
+                          type: number
+                        selector:
+                          description: (String) Node selector in JSON format. Node
+                            selector in JSON format.
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: (String) Name of the schedule. Name of the schedule.
+                    type: string
+                  schedule:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
+                    items:
+                      properties:
+                        cron:
+                          description: "(String) Cron expression defining when the
+                            schedule should trigger. Cron expression defining when
+                            the schedule should trigger. \n The `cron` expression
+                            can optionally include the `CRON_TZ` variable at the beginning
+                            to specify the timezone in which the schedule should be
+                            interpreted. \n Example: ```plaintext CRON_TZ=America/New_York
+                            0 12 * * ? ``` In the example above, the `CRON_TZ` variable
+                            is set to \"America/New_York\" indicating that the cron
+                            expression should be interpreted in the Eastern Time (ET)
+                            timezone. \n To retrieve a list of available timezone
+                            values, you can use the following API endpoint: \n GET
+                            https://api.cast.ai/v1/time-zones \n When using the `CRON_TZ`
+                            variable, ensure that the specified timezone is valid
+                            and supported by checking the list of available timezones
+                            from the API endpoint.  If the `CRON_TZ` variable is not
+                            specified, the cron expression will be interpreted in
+                            the UTC timezone."
+                          type: string
+                      type: object
+                    type: array
+                  triggerConditions:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
+                    items:
+                      properties:
+                        savingsPercentage:
+                          description: (Number) Defines the minimum percentage of
+                            savings expected. Defines the minimum percentage of savings
+                            expected.
+                          type: number
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: 'THIS IS A BETA FIELD. It is on by default but can be
+                  opted out through a Crossplane feature flag. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
                 description: ProviderConfigReference specifies how the provider that
                   will be used to create, observe, update, and delete this managed
                   resource should be configured.
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -338,76 +436,102 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: launchConfiguration is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.launchConfiguration)
-            - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
-            - message: schedule is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.schedule)
-            - message: triggerConditions is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.triggerConditions)
+            - message: spec.forProvider.launchConfiguration is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.launchConfiguration)
+                || (has(self.initProvider) && has(self.initProvider.launchConfiguration))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.schedule is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.schedule)
+                || (has(self.initProvider) && has(self.initProvider.schedule))'
+            - message: spec.forProvider.triggerConditions is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.triggerConditions)
+                || (has(self.initProvider) && has(self.initProvider.triggerConditions))'
           status:
             description: RebalancingScheduleStatus defines the observed state of RebalancingSchedule.
             properties:
               atProvider:
                 properties:
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   launchConfiguration:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
                     items:
                       properties:
                         executionConditions:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               achievedSavingsPercentage:
-                                description: The percentage of the predicted savings
-                                  that must be achieved in order to fully execute
-                                  the plan.If the savings are not achieved after creating
-                                  the new nodes, the plan will fail and delete the
-                                  created nodes.
+                                description: (Number) The percentage of the predicted
+                                  savings that must be achieved in order to fully
+                                  execute the plan.If the savings are not achieved
+                                  after creating the new nodes, the plan will fail
+                                  and delete the created nodes. The percentage of
+                                  the predicted savings that must be achieved in order
+                                  to fully execute the plan.If the savings are not
+                                  achieved after creating the new nodes, the plan
+                                  will fail and delete the created nodes.
                                 type: number
                               enabled:
-                                description: Enables or disables the execution conditions.
+                                description: (Boolean) Enables or disables the execution
+                                  conditions. Enables or disables the execution conditions.
                                 type: boolean
                             type: object
                           type: array
                         keepDrainTimeoutNodes:
-                          description: Defines whether the nodes that failed to get
-                            drained until a predefined timeout, will be kept with
-                            a rebalancing.cast.ai/status=drain-failed annotation instead
-                            of forcefully drained.
+                          description: failed annotation instead of forcefully drained.
+                            Defines whether the nodes that failed to get drained until
+                            a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed
+                            annotation instead of forcefully drained.
                           type: boolean
                         nodeTtlSeconds:
-                          description: Specifies amount of time since node creation
-                            before the node is allowed to be considered for automated
-                            rebalancing.
+                          description: (Number) Specifies amount of time since node
+                            creation before the node is allowed to be considered for
+                            automated rebalancing. Specifies amount of time since
+                            node creation before the node is allowed to be considered
+                            for automated rebalancing.
                           type: number
                         numTargetedNodes:
-                          description: Maximum number of nodes that will be selected
-                            for rebalancing.
+                          description: (Number) Maximum number of nodes that will
+                            be selected for rebalancing. Maximum number of nodes that
+                            will be selected for rebalancing.
                           type: number
                         rebalancingMinNodes:
-                          description: Minimum number of nodes that should be kept
-                            in the cluster after rebalancing.
+                          description: (Number) Minimum number of nodes that should
+                            be kept in the cluster after rebalancing. Minimum number
+                            of nodes that should be kept in the cluster after rebalancing.
                           type: number
                         selector:
-                          description: Node selector in JSON format.
+                          description: (String) Node selector in JSON format. Node
+                            selector in JSON format.
                           type: string
                       type: object
                     type: array
                   name:
-                    description: Name of the schedule.
+                    description: (String) Name of the schedule. Name of the schedule.
                     type: string
                   schedule:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
                     items:
                       properties:
                         cron:
-                          description: "Cron expression defining when the schedule
-                            should trigger. \n The `cron` expression can optionally
-                            include the `CRON_TZ` variable at the beginning to specify
-                            the timezone in which the schedule should be interpreted.
-                            \n Example: ```plaintext CRON_TZ=America/New_York 0 12
-                            * * ? ``` In the example above, the `CRON_TZ` variable
+                          description: "(String) Cron expression defining when the
+                            schedule should trigger. Cron expression defining when
+                            the schedule should trigger. \n The `cron` expression
+                            can optionally include the `CRON_TZ` variable at the beginning
+                            to specify the timezone in which the schedule should be
+                            interpreted. \n Example: ```plaintext CRON_TZ=America/New_York
+                            0 12 * * ? ``` In the example above, the `CRON_TZ` variable
                             is set to \"America/New_York\" indicating that the cron
                             expression should be interpreted in the Eastern Time (ET)
                             timezone. \n To retrieve a list of available timezone
@@ -422,10 +546,14 @@ spec:
                       type: object
                     type: array
                   triggerConditions:
+                    description: '(Block List, Min: 1, Max: 1) (see below for nested
+                      schema)'
                     items:
                       properties:
                         savingsPercentage:
-                          description: Defines the minimum percentage of savings expected.
+                          description: (Number) Defines the minimum percentage of
+                            savings expected. Defines the minimum percentage of savings
+                            expected.
                           type: number
                       type: object
                     type: array
@@ -463,6 +591,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec

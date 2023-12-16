@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,65 +17,113 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AksClusterObservation struct {
+type AksClusterInitParameters struct {
 
+	// (String) Azure AD application ID that is created and used by CAST AI.
 	// Azure AD application ID that is created and used by CAST AI.
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
-	// CAST AI internal credentials ID
-	CredentialsID *string `json:"credentialsId,omitempty" tf:"credentials_id,omitempty"`
-
+	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
+	// (String) AKS cluster name.
 	// AKS cluster name.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) Azure resource group in which nodes are and will be created.
 	// Azure resource group in which nodes are and will be created.
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty" tf:"node_resource_group,omitempty"`
 
+	// (String) AKS cluster region.
 	// AKS cluster region.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
+	// (String) ID of the Azure subscription.
 	// ID of the Azure subscription.
 	SubscriptionID *string `json:"subscriptionId,omitempty" tf:"subscription_id,omitempty"`
 
+	// (String) Azure AD tenant ID from the used subscription.
+	// Azure AD tenant ID from the used subscription.
+	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
+}
+
+type AksClusterObservation struct {
+
+	// (String) Azure AD application ID that is created and used by CAST AI.
+	// Azure AD application ID that is created and used by CAST AI.
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String) CAST AI internal credentials ID
+	// CAST AI internal credentials ID
+	CredentialsID *string `json:"credentialsId,omitempty" tf:"credentials_id,omitempty"`
+
+	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
+	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
+	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) AKS cluster name.
+	// AKS cluster name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) Azure resource group in which nodes are and will be created.
+	// Azure resource group in which nodes are and will be created.
+	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty" tf:"node_resource_group,omitempty"`
+
+	// (String) AKS cluster region.
+	// AKS cluster region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// (String) ID of the Azure subscription.
+	// ID of the Azure subscription.
+	SubscriptionID *string `json:"subscriptionId,omitempty" tf:"subscription_id,omitempty"`
+
+	// (String) Azure AD tenant ID from the used subscription.
 	// Azure AD tenant ID from the used subscription.
 	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
 }
 
 type AksClusterParameters struct {
 
+	// (String) Azure AD application ID that is created and used by CAST AI.
 	// Azure AD application ID that is created and used by CAST AI.
 	// +kubebuilder:validation:Optional
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	// (String, Sensitive) Azure AD application password that will be used by CAST AI.
 	// Azure AD application password that will be used by CAST AI.
 	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
 
+	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// +kubebuilder:validation:Optional
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
+	// (String) AKS cluster name.
 	// AKS cluster name.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) Azure resource group in which nodes are and will be created.
 	// Azure resource group in which nodes are and will be created.
 	// +kubebuilder:validation:Optional
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty" tf:"node_resource_group,omitempty"`
 
+	// (String) AKS cluster region.
 	// AKS cluster region.
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
+	// (String) ID of the Azure subscription.
 	// ID of the Azure subscription.
 	// +kubebuilder:validation:Optional
 	SubscriptionID *string `json:"subscriptionId,omitempty" tf:"subscription_id,omitempty"`
 
+	// (String) Azure AD tenant ID from the used subscription.
 	// Azure AD tenant ID from the used subscription.
 	// +kubebuilder:validation:Optional
 	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
@@ -81,6 +133,17 @@ type AksClusterParameters struct {
 type AksClusterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AksClusterParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AksClusterInitParameters `json:"initProvider,omitempty"`
 }
 
 // AksClusterStatus defines the observed state of AksCluster.
@@ -91,7 +154,7 @@ type AksClusterStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AksCluster is the Schema for the AksClusters API. <no value>
+// AksCluster is the Schema for the AksClusters API. AKS cluster resource allows connecting an existing AKS cluster to CAST AI.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -101,13 +164,13 @@ type AksClusterStatus struct {
 type AksCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.clientId)",message="clientId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.clientSecretSecretRef)",message="clientSecretSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.nodeResourceGroup)",message="nodeResourceGroup is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.region)",message="region is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.subscriptionId)",message="subscriptionId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.tenantId)",message="tenantId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clientId) || (has(self.initProvider) && has(self.initProvider.clientId))",message="spec.forProvider.clientId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clientSecretSecretRef)",message="spec.forProvider.clientSecretSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.nodeResourceGroup) || (has(self.initProvider) && has(self.initProvider.nodeResourceGroup))",message="spec.forProvider.nodeResourceGroup is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.region) || (has(self.initProvider) && has(self.initProvider.region))",message="spec.forProvider.region is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriptionId) || (has(self.initProvider) && has(self.initProvider.subscriptionId))",message="spec.forProvider.subscriptionId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantId) || (has(self.initProvider) && has(self.initProvider.tenantId))",message="spec.forProvider.tenantId is a required parameter"
 	Spec   AksClusterSpec   `json:"spec"`
 	Status AksClusterStatus `json:"status,omitempty"`
 }

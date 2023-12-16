@@ -1,0 +1,36 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: NodeConfiguration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/nodeconfiguration
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    containerRuntime: dockerd
+    diskCpuRatio: 35
+    dockerConfig: |-
+      ${jsonencode({
+          "insecure-registries"      = ["registry.com:5000"],
+          "max-concurrent-downloads" = 10
+        })}
+    eks:
+    - dnsClusterIp: 10.100.0.10
+      instanceProfileArn: ${aws_iam_instance_profile.test.arn}
+      securityGroups:
+      - ${aws_security_group.test.id}
+    initScript: ${base64encode(var.init_script)}
+    kubeletConfig: |-
+      ${jsonencode({
+          "registryBurst" : 20,
+          "registryPullQPS" : 10
+        })}
+    minDiskSize: 133
+    name: default
+    subnets: ${aws_subnet.test[*].id}
+    tags:
+      env: development

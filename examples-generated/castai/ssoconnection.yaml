@@ -1,0 +1,19 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: SSOConnection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/ssoconnection
+  labels:
+    testing.upbound.io/example-name: sso
+  name: sso
+spec:
+  forProvider:
+    aad:
+    - adDomain: ${azuread_application.castai_sso.publisher_domain}
+      clientId: ${azuread_application.castai_sso.client_id}
+      clientSecretSecretRef:
+        key: attribute.value
+        name: example-application-password
+        namespace: upbound-system
+    emailDomain: aad_connection@test.com
+    name: aad_connection

@@ -1,0 +1,11 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: Reservations
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/reservations
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    reservationsCsv: ${file("./reservations.csv")}

@@ -13,6 +13,80 @@ import (
 	"github.com/upbound/upjet/pkg/resource/json"
 )
 
+// GetTerraformResourceType returns Terraform resource type for this AksCluster
+func (mg *AksCluster) GetTerraformResourceType() string {
+	return "castai_aks_cluster"
+}
+
+// GetConnectionDetailsMapping for this AksCluster
+func (tr *AksCluster) GetConnectionDetailsMapping() map[string]string {
+	return map[string]string{"client_secret": "spec.forProvider.clientSecretSecretRef", "cluster_token": "status.atProvider.clusterToken"}
+}
+
+// GetObservation of this AksCluster
+func (tr *AksCluster) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this AksCluster
+func (tr *AksCluster) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this AksCluster
+func (tr *AksCluster) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this AksCluster
+func (tr *AksCluster) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this AksCluster
+func (tr *AksCluster) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this AksCluster using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *AksCluster) LateInitialize(attrs []byte) (bool, error) {
+	params := &AksClusterParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *AksCluster) GetTerraformSchemaVersion() int {
+	return 0
+}
+
 // GetTerraformResourceType returns Terraform resource type for this AutoScaler
 func (mg *AutoScaler) GetTerraformResourceType() string {
 	return "castai_autoscaler"
@@ -309,6 +383,154 @@ func (tr *EksUserArn) GetTerraformSchemaVersion() int {
 	return 0
 }
 
+// GetTerraformResourceType returns Terraform resource type for this EvictorAdvancedConfig
+func (mg *EvictorAdvancedConfig) GetTerraformResourceType() string {
+	return "castai_evictor_advanced_config"
+}
+
+// GetConnectionDetailsMapping for this EvictorAdvancedConfig
+func (tr *EvictorAdvancedConfig) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this EvictorAdvancedConfig
+func (tr *EvictorAdvancedConfig) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this EvictorAdvancedConfig
+func (tr *EvictorAdvancedConfig) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this EvictorAdvancedConfig
+func (tr *EvictorAdvancedConfig) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this EvictorAdvancedConfig
+func (tr *EvictorAdvancedConfig) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this EvictorAdvancedConfig
+func (tr *EvictorAdvancedConfig) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this EvictorAdvancedConfig using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *EvictorAdvancedConfig) LateInitialize(attrs []byte) (bool, error) {
+	params := &EvictorAdvancedConfigParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *EvictorAdvancedConfig) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this GkeCluster
+func (mg *GkeCluster) GetTerraformResourceType() string {
+	return "castai_gke_cluster"
+}
+
+// GetConnectionDetailsMapping for this GkeCluster
+func (tr *GkeCluster) GetConnectionDetailsMapping() map[string]string {
+	return map[string]string{"cluster_token": "status.atProvider.clusterToken", "credentials_json": "spec.forProvider.credentialsJsonSecretRef"}
+}
+
+// GetObservation of this GkeCluster
+func (tr *GkeCluster) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this GkeCluster
+func (tr *GkeCluster) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this GkeCluster
+func (tr *GkeCluster) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this GkeCluster
+func (tr *GkeCluster) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this GkeCluster
+func (tr *GkeCluster) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this GkeCluster using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *GkeCluster) LateInitialize(attrs []byte) (bool, error) {
+	params := &GkeClusterParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *GkeCluster) GetTerraformSchemaVersion() int {
+	return 0
+}
+
 // GetTerraformResourceType returns Terraform resource type for this NodeConfiguration
 func (mg *NodeConfiguration) GetTerraformResourceType() string {
 	return "castai_node_configuration"
@@ -531,6 +753,80 @@ func (tr *NodeTemplate) GetTerraformSchemaVersion() int {
 	return 0
 }
 
+// GetTerraformResourceType returns Terraform resource type for this OrganizationMembers
+func (mg *OrganizationMembers) GetTerraformResourceType() string {
+	return "castai_organization_members"
+}
+
+// GetConnectionDetailsMapping for this OrganizationMembers
+func (tr *OrganizationMembers) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this OrganizationMembers
+func (tr *OrganizationMembers) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this OrganizationMembers
+func (tr *OrganizationMembers) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this OrganizationMembers
+func (tr *OrganizationMembers) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this OrganizationMembers
+func (tr *OrganizationMembers) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this OrganizationMembers
+func (tr *OrganizationMembers) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this OrganizationMembers using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *OrganizationMembers) LateInitialize(attrs []byte) (bool, error) {
+	params := &OrganizationMembersParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *OrganizationMembers) GetTerraformSchemaVersion() int {
+	return 0
+}
+
 // GetTerraformResourceType returns Terraform resource type for this RebalancingJob
 func (mg *RebalancingJob) GetTerraformResourceType() string {
 	return "castai_rebalancing_job"
@@ -676,5 +972,153 @@ func (tr *RebalancingSchedule) LateInitialize(attrs []byte) (bool, error) {
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *RebalancingSchedule) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this Reservations
+func (mg *Reservations) GetTerraformResourceType() string {
+	return "castai_reservations"
+}
+
+// GetConnectionDetailsMapping for this Reservations
+func (tr *Reservations) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this Reservations
+func (tr *Reservations) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this Reservations
+func (tr *Reservations) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this Reservations
+func (tr *Reservations) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this Reservations
+func (tr *Reservations) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this Reservations
+func (tr *Reservations) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this Reservations using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *Reservations) LateInitialize(attrs []byte) (bool, error) {
+	params := &ReservationsParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *Reservations) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this SSOConnection
+func (mg *SSOConnection) GetTerraformResourceType() string {
+	return "castai_sso_connection"
+}
+
+// GetConnectionDetailsMapping for this SSOConnection
+func (tr *SSOConnection) GetConnectionDetailsMapping() map[string]string {
+	return map[string]string{"aad[*].client_secret": "spec.forProvider.aad[*].clientSecretSecretRef", "okta[*].client_secret": "spec.forProvider.okta[*].clientSecretSecretRef"}
+}
+
+// GetObservation of this SSOConnection
+func (tr *SSOConnection) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this SSOConnection
+func (tr *SSOConnection) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this SSOConnection
+func (tr *SSOConnection) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this SSOConnection
+func (tr *SSOConnection) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this SSOConnection
+func (tr *SSOConnection) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this SSOConnection using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *SSOConnection) LateInitialize(attrs []byte) (bool, error) {
+	params := &SSOConnectionParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *SSOConnection) GetTerraformSchemaVersion() int {
 	return 0
 }

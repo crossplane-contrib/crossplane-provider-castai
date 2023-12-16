@@ -10,15 +10,21 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
+	"github.com/crossplane-contrib/crossplane-provider-castai/config/akscluster"
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/config/autoscaler"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/eksclusterid"
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
+	"github.com/crossplane-contrib/crossplane-provider-castai/config/evictoradvancedconfig"
+	"github.com/crossplane-contrib/crossplane-provider-castai/config/gkecluster"
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/config/nodetemplate"
+	"github.com/crossplane-contrib/crossplane-provider-castai/config/organizationmembers"
 	rebalancingjob "github.com/crossplane-contrib/crossplane-provider-castai/config/rebalancingjob"
 	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/config/rebalancingschedule"
+	"github.com/crossplane-contrib/crossplane-provider-castai/config/reservations"
+	ssoconnation "github.com/crossplane-contrib/crossplane-provider-castai/config/ssoconnection"
 )
 
 const (
@@ -52,6 +58,12 @@ func GetProvider() *ujconfig.Provider {
 		rebalancingschedule.Configure,
 		eksclusterid.Configure,
 		eksuserarn.Configure,
+		akscluster.Configure,
+		evictoradvancedconfig.Configure,
+		gkecluster.Configure,
+		organizationmembers.Configure,
+		reservations.Configure,
+		ssoconnation.Configure,
 	} {
 		configure(pc)
 	}

@@ -8,10 +8,10 @@ export TERRAFORM_VERSION ?= 1.3.3
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai
-export TERRAFORM_PROVIDER_VERSION ?= 5.11.0
+export TERRAFORM_PROVIDER_VERSION ?= 6.2.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-castai
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v5.11.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v6.2.0
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 

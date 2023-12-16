@@ -76,6 +76,12 @@ spec:
                             node, which affects how many IP addresses you will need
                             for each node. Defaults to 30
                           type: number
+                        osDiskType:
+                          description: 'Type of managed os disk attached to the node.
+                            (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)).
+                            One of: standard, standard-ssd, premium-ssd (ultra and
+                            premium-ssd-v2 are not supported for os disk)'
+                          type: string
                       type: object
                     type: array
                   clusterId:
@@ -494,6 +500,12 @@ spec:
                             node, which affects how many IP addresses you will need
                             for each node. Defaults to 30
                           type: number
+                        osDiskType:
+                          description: 'Type of managed os disk attached to the node.
+                            (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)).
+                            One of: standard, standard-ssd, premium-ssd (ultra and
+                            premium-ssd-v2 are not supported for os disk)'
+                          type: string
                       type: object
                     type: array
                   clusterId:

@@ -352,30 +352,16 @@ spec:
                       deciding which parts of inventory are available. Custom instances
                       are only supported in GCP.
                     type: boolean
-                  customLabel:
-                    description: Custom label key/value to be added to nodes created
-                      from this template.
-                    items:
-                      properties:
-                        key:
-                          description: Label key to be added to nodes created from
-                            this template.
-                          type: string
-                        value:
-                          description: Label value to be added to nodes created from
-                            this template.
-                          type: string
-                      required:
-                      - key
-                      - value
-                      type: object
-                    type: array
+                  customInstancesWithExtendedMemoryEnabled:
+                    description: Marks whether custom instances with extended memory
+                      should be used when deciding which parts of inventory are available.
+                      Custom instances are only supported in GCP.
+                    type: boolean
                   customLabels:
                     additionalProperties:
                       type: string
                     description: Custom labels to be added to nodes created from this
-                      template. If the field `custom_label` is present, the value
-                      of `custom_labels` will be ignored.
+                      template.
                     type: object
                   customTaints:
                     description: Custom taints to be added to the nodes created from
@@ -400,7 +386,6 @@ spec:
                           type: string
                       required:
                       - key
-                      - value
                       type: object
                     type: array
                   isDefault:
@@ -750,27 +735,16 @@ spec:
                       deciding which parts of inventory are available. Custom instances
                       are only supported in GCP.
                     type: boolean
-                  customLabel:
-                    description: Custom label key/value to be added to nodes created
-                      from this template.
-                    items:
-                      properties:
-                        key:
-                          description: Label key to be added to nodes created from
-                            this template.
-                          type: string
-                        value:
-                          description: Label value to be added to nodes created from
-                            this template.
-                          type: string
-                      type: object
-                    type: array
+                  customInstancesWithExtendedMemoryEnabled:
+                    description: Marks whether custom instances with extended memory
+                      should be used when deciding which parts of inventory are available.
+                      Custom instances are only supported in GCP.
+                    type: boolean
                   customLabels:
                     additionalProperties:
                       type: string
                     description: Custom labels to be added to nodes created from this
-                      template. If the field `custom_label` is present, the value
-                      of `custom_labels` will be ignored.
+                      template.
                     type: object
                   customTaints:
                     description: Custom taints to be added to the nodes created from

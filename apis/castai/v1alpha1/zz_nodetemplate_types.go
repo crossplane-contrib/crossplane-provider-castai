@@ -148,26 +148,6 @@ type ConstraintsParameters struct {
 	UseSpotFallbacks *bool `json:"useSpotFallbacks,omitempty" tf:"use_spot_fallbacks,omitempty"`
 }
 
-type CustomLabelObservation struct {
-
-	// Label key to be added to nodes created from this template.
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
-
-	// Label value to be added to nodes created from this template.
-	Value *string `json:"value,omitempty" tf:"value,omitempty"`
-}
-
-type CustomLabelParameters struct {
-
-	// Label key to be added to nodes created from this template.
-	// +kubebuilder:validation:Required
-	Key *string `json:"key" tf:"key,omitempty"`
-
-	// Label value to be added to nodes created from this template.
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
-}
-
 type CustomTaintsObservation struct {
 
 	// Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
@@ -191,8 +171,8 @@ type CustomTaintsParameters struct {
 	Key *string `json:"key" tf:"key,omitempty"`
 
 	// Value of a taint to be added to nodes created from this template.
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type GpuObservation struct {
@@ -269,10 +249,10 @@ type NodeTemplateObservation struct {
 	// Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
-	// Custom label key/value to be added to nodes created from this template.
-	CustomLabel []CustomLabelObservation `json:"customLabel,omitempty" tf:"custom_label,omitempty"`
+	// Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+	CustomInstancesWithExtendedMemoryEnabled *bool `json:"customInstancesWithExtendedMemoryEnabled,omitempty" tf:"custom_instances_with_extended_memory_enabled,omitempty"`
 
-	// Custom labels to be added to nodes created from this template. If the field `custom_label` is present, the value of `custom_labels` will be ignored.
+	// Custom labels to be added to nodes created from this template.
 	CustomLabels map[string]*string `json:"customLabels,omitempty" tf:"custom_labels,omitempty"`
 
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
@@ -331,11 +311,11 @@ type NodeTemplateParameters struct {
 	// +kubebuilder:validation:Optional
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
-	// Custom label key/value to be added to nodes created from this template.
+	// Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
 	// +kubebuilder:validation:Optional
-	CustomLabel []CustomLabelParameters `json:"customLabel,omitempty" tf:"custom_label,omitempty"`
+	CustomInstancesWithExtendedMemoryEnabled *bool `json:"customInstancesWithExtendedMemoryEnabled,omitempty" tf:"custom_instances_with_extended_memory_enabled,omitempty"`
 
-	// Custom labels to be added to nodes created from this template. If the field `custom_label` is present, the value of `custom_labels` will be ignored.
+	// Custom labels to be added to nodes created from this template.
 	// +kubebuilder:validation:Optional
 	CustomLabels map[string]*string `json:"customLabels,omitempty" tf:"custom_labels,omitempty"`
 

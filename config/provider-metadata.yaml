@@ -148,6 +148,7 @@ resources:
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 1000
             name: (String) Name of the node configuration
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
+            os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
             read: (String)
             security_groups: (List of String) Cluster's security groups configuration for CAST provisioned nodes
             ssh_public_key: (String) SSH public key to be used for provisioned nodes
@@ -188,8 +189,8 @@ resources:
             constraints: '(Block List, Max: 1) (see below for nested schema)'
             create: (String)
             custom_instances_enabled: (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
-            custom_label: '(Block List, Max: 1, Deprecated) Custom label key/value to be added to nodes created from this template. (see below for nested schema)'
-            custom_labels: (Map of String) Custom labels to be added to nodes created from this template. If the field custom_label is present, the value of custom_labels will be ignored.
+            custom_instances_with_extended_memory_enabled: (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+            custom_labels: (Map of String) Custom labels to be added to nodes created from this template.
             custom_taints: (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
             delete: (String)
             effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'
@@ -205,7 +206,7 @@ resources:
             is_default: (Boolean) Flag whether the node template is default.
             is_enabled: (Boolean) Flag whether the node template is enabled and considered for autoscaling.
             is_gpu_only: (Boolean) GPU instance constraint - will only pick nodes with GPU if true
-            key: (String) Label key to be added to nodes created from this template.
+            key: (String) Key of a taint to be added to nodes created from this template.
             manufacturers: (List of String) Manufacturers of the gpus to select - NVIDIA, AMD.
             max_count: (Number) Max GPU count for the instance type to have.
             max_cpu: (Number) Max CPU cores per node.
@@ -227,7 +228,7 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             use_spot_fallbacks: (Boolean) Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
-            value: (String) Label value to be added to nodes created from this template.
+            value: (String) Value of a taint to be added to nodes created from this template.
         importStatements:
             - |-
               # Import node template by specifying cluster ID and node template name.
@@ -274,6 +275,7 @@ resources:
         name: castai_rebalancing_schedule Resource - terraform-provider-castai
         title: castai_rebalancing_schedule Resource - terraform-provider-castai
         argumentDocs:
+            CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
             achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
             create: (String)
             cron: (String) Cron expression defining when the schedule should trigger.

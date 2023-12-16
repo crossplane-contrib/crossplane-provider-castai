@@ -17,6 +17,9 @@ type AksObservation struct {
 
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
+
+	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
+	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
 }
 
 type AksParameters struct {
@@ -24,6 +27,10 @@ type AksParameters struct {
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// +kubebuilder:validation:Optional
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
+
+	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
+	// +kubebuilder:validation:Optional
+	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
 }
 
 type EksObservation struct {

@@ -9,7 +9,7 @@
   "prConcurrentLimit": 5,
   "baseBranches": ["main"],
   "labels": ["automated"],
-  "regexManagers": [
+  "customManagers": [
     {
       "fileMatch": ["^Makefile$"],
       "matchStrings": [
@@ -26,9 +26,7 @@
         ],
         "fileFilters": ["**/*"]
       }
-    }
-  ],
-  "customManagers": [
+    },
     {
       "customType": "regex",
       "description": "Bump up version in the Makefile",

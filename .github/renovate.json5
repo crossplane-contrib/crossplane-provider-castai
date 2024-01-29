@@ -11,21 +11,15 @@
   "labels": ["automated"],
   "customManagers": [
     {
+      "customType": "regex",
+      "description": "Bump castai terraform provider version in the Makefile",
       "fileMatch": ["^Makefile$"],
       "matchStrings": [
-        "export TERRAFORM_PROVIDER_VERSION ?= (?<currentValue>.*?)\\s",
-        "export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v(?<currentValue>.*?)\\s"
+        "export TERRAFORM_PROVIDER_VERSION ?= (?<currentValue>.*?)\\n",
+        "export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v(?<currentValue>.*?)\\n"
       ],
-      "datasource": "github-releases",
+      "datasourceTemplate": "github-releases",
       "depNameTemplate": "castai/terraform-provider-castai",
-      "versioningTemplate": "semver",
-      "postUpgradeTasks": {
-        "commands": [
-          "make submodules",
-          "make generate"
-        ],
-        "fileFilters": ["**/*"]
-      }
     },
     {
       "customType": "regex",

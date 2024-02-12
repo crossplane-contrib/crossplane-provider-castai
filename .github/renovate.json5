@@ -9,11 +9,12 @@
   "prConcurrentLimit": 5,
   "baseBranches": ["main"],
   "labels": ["automated"],
-  "postUpgradeTasks": {
-    "commands": ["make submodules", "make generate"],
-    "fileFilters": ["Makefile"],
-    "executionMode": "update"
-  },
+  // only possible in self-hosted renovate instances
+  // "postUpgradeTasks": {
+  //   "commands": ["make submodules", "make generate"],
+  //   "fileFilters": ["Makefile"],
+  //   "executionMode": "update"
+  // },
   "customManagers": [
     {
       "customType": "regex",

@@ -32,7 +32,7 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Login to Docker
-        uses: docker/login-action@dd4fa0671be5250ee6f50aedf4cb05514abda2c7 # v1
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
         if: env.CONTRIB_DOCKER_USR != ''
         with:
           username: ${{ secrets.CONTRIB_DOCKER_USR }}

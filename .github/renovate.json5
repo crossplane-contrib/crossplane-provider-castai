@@ -9,6 +9,11 @@
   "prConcurrentLimit": 5,
   "baseBranches": ["main"],
   "labels": ["automated"],
+  "postUpgradeTasks": {
+    "commands": ["make submodules", "make generate"],
+    "fileFilters": ["Makefile"],
+    "executionMode": "update"
+  },
   "customManagers": [
     {
       "customType": "regex",

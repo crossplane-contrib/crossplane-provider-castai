@@ -18,6 +18,32 @@ import (
 )
 
 type NodeConfigurationDefaultInitParameters struct {
+
+	// (String) CAST AI cluster id
+	// CAST AI cluster id
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
+	// (String) Id of the node configuration
+	// Id of the node configuration
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.NodeConfiguration
+	ConfigurationID *string `json:"configurationId,omitempty" tf:"configuration_id,omitempty"`
+
+	// Reference to a NodeConfiguration in castai to populate configurationId.
+	// +kubebuilder:validation:Optional
+	ConfigurationIDRef *v1.Reference `json:"configurationIdRef,omitempty" tf:"-"`
+
+	// Selector for a NodeConfiguration in castai to populate configurationId.
+	// +kubebuilder:validation:Optional
+	ConfigurationIDSelector *v1.Selector `json:"configurationIdSelector,omitempty" tf:"-"`
 }
 
 type NodeConfigurationDefaultObservation struct {
@@ -89,13 +115,14 @@ type NodeConfigurationDefaultStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // NodeConfigurationDefault is the Schema for the NodeConfigurationDefaults API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}
 type NodeConfigurationDefault struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -338,6 +338,31 @@ type InstanceFamiliesParameters struct {
 }
 
 type NodeTemplateInitParameters struct {
+
+	// CAST AI cluster id.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
+	// CAST AI node configuration id to be used for node template.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.NodeConfiguration
+	ConfigurationID *string `json:"configurationId,omitempty" tf:"configuration_id,omitempty"`
+
+	// Reference to a NodeConfiguration in castai to populate configurationId.
+	// +kubebuilder:validation:Optional
+	ConfigurationIDRef *v1.Reference `json:"configurationIdRef,omitempty" tf:"-"`
+
+	// Selector for a NodeConfiguration in castai to populate configurationId.
+	// +kubebuilder:validation:Optional
+	ConfigurationIDSelector *v1.Selector `json:"configurationIdSelector,omitempty" tf:"-"`
+
 	Constraints []ConstraintsInitParameters `json:"constraints,omitempty" tf:"constraints,omitempty"`
 
 	// Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
@@ -347,6 +372,7 @@ type NodeTemplateInitParameters struct {
 	CustomInstancesWithExtendedMemoryEnabled *bool `json:"customInstancesWithExtendedMemoryEnabled,omitempty" tf:"custom_instances_with_extended_memory_enabled,omitempty"`
 
 	// Custom labels to be added to nodes created from this template.
+	// +mapType=granular
 	CustomLabels map[string]*string `json:"customLabels,omitempty" tf:"custom_labels,omitempty"`
 
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
@@ -385,6 +411,7 @@ type NodeTemplateObservation struct {
 	CustomInstancesWithExtendedMemoryEnabled *bool `json:"customInstancesWithExtendedMemoryEnabled,omitempty" tf:"custom_instances_with_extended_memory_enabled,omitempty"`
 
 	// Custom labels to be added to nodes created from this template.
+	// +mapType=granular
 	CustomLabels map[string]*string `json:"customLabels,omitempty" tf:"custom_labels,omitempty"`
 
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
@@ -449,6 +476,7 @@ type NodeTemplateParameters struct {
 
 	// Custom labels to be added to nodes created from this template.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	CustomLabels map[string]*string `json:"customLabels,omitempty" tf:"custom_labels,omitempty"`
 
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
@@ -500,13 +528,14 @@ type NodeTemplateStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // NodeTemplate is the Schema for the NodeTemplates API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}
 type NodeTemplate struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -67,6 +67,18 @@ type EvictorAdvancedConfigEvictorAdvancedConfigParameters struct {
 
 type EvictorAdvancedConfigInitParameters struct {
 
+	// CAST AI cluster id.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
 	// evictor advanced configuration to target specific node/pod
 	EvictorAdvancedConfig []EvictorAdvancedConfigEvictorAdvancedConfigInitParameters `json:"evictorAdvancedConfig,omitempty" tf:"evictor_advanced_config,omitempty"`
 }
@@ -133,12 +145,14 @@ type MatchExpressionsParameters struct {
 type NodeSelectorInitParameters struct {
 	MatchExpressions []MatchExpressionsInitParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 }
 
 type NodeSelectorObservation struct {
 	MatchExpressions []MatchExpressionsObservation `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 }
 
@@ -148,6 +162,7 @@ type NodeSelectorParameters struct {
 	MatchExpressions []MatchExpressionsParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 }
 
@@ -156,6 +171,7 @@ type PodSelectorInitParameters struct {
 
 	MatchExpressions []PodSelectorMatchExpressionsInitParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -194,6 +210,7 @@ type PodSelectorObservation struct {
 
 	MatchExpressions []PodSelectorMatchExpressionsObservation `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -208,6 +225,7 @@ type PodSelectorParameters struct {
 	MatchExpressions []PodSelectorMatchExpressionsParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -238,13 +256,14 @@ type EvictorAdvancedConfigStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // EvictorAdvancedConfig is the Schema for the EvictorAdvancedConfigs API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}
 type EvictorAdvancedConfig struct {
 	metav1.TypeMeta   `json:",inline"`

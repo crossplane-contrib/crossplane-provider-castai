@@ -266,6 +266,19 @@ type NodeConfigurationInitParameters struct {
 	// (Block List, Max: 1) (see below for nested schema)
 	Aks []AksInitParameters `json:"aks,omitempty" tf:"aks,omitempty"`
 
+	// (String) CAST AI cluster id
+	// CAST AI cluster id
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
 	// (String) Optional container runtime to be used by kubelet. Applicable for EKS only.  Supported values include: dockerd, containerd
 	// Optional container runtime to be used by kubelet. Applicable for EKS only.  Supported values include: `dockerd`, `containerd`
 	ContainerRuntime *string `json:"containerRuntime,omitempty" tf:"container_runtime,omitempty"`
@@ -317,6 +330,7 @@ type NodeConfigurationInitParameters struct {
 
 	// (Map of String) Tags to be added on cloud instances for provisioned nodes
 	// Tags to be added on cloud instances for provisioned nodes
+	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
@@ -383,6 +397,7 @@ type NodeConfigurationObservation struct {
 
 	// (Map of String) Tags to be added on cloud instances for provisioned nodes
 	// Tags to be added on cloud instances for provisioned nodes
+	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
@@ -471,6 +486,7 @@ type NodeConfigurationParameters struct {
 	// (Map of String) Tags to be added on cloud instances for provisioned nodes
 	// Tags to be added on cloud instances for provisioned nodes
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
@@ -498,13 +514,14 @@ type NodeConfigurationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // NodeConfiguration is the Schema for the NodeConfigurations API. Create node configuration for given cluster. Node configuration reference https://docs.cast.ai/docs/node-configuration
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}
 type NodeConfiguration struct {
 	metav1.TypeMeta   `json:",inline"`

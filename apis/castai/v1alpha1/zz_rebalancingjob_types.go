@@ -19,9 +19,35 @@ import (
 
 type RebalancingJobInitParameters struct {
 
+	// (String) CAST AI cluster id.
+	// CAST AI cluster id.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a EksClusterId in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
 	// (Boolean) The job will only be executed if it's enabled.
 	// The job will only be executed if it's enabled.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) Rebalancing schedule of this job.
+	// Rebalancing schedule of this job.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.RebalancingSchedule
+	RebalancingScheduleID *string `json:"rebalancingScheduleId,omitempty" tf:"rebalancing_schedule_id,omitempty"`
+
+	// Reference to a RebalancingSchedule in castai to populate rebalancingScheduleId.
+	// +kubebuilder:validation:Optional
+	RebalancingScheduleIDRef *v1.Reference `json:"rebalancingScheduleIdRef,omitempty" tf:"-"`
+
+	// Selector for a RebalancingSchedule in castai to populate rebalancingScheduleId.
+	// +kubebuilder:validation:Optional
+	RebalancingScheduleIDSelector *v1.Selector `json:"rebalancingScheduleIdSelector,omitempty" tf:"-"`
 }
 
 type RebalancingJobObservation struct {
@@ -102,13 +128,14 @@ type RebalancingJobStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // RebalancingJob is the Schema for the RebalancingJobs API. Job assigns a rebalancing schedule to a cluster.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}
 type RebalancingJob struct {
 	metav1.TypeMeta   `json:",inline"`

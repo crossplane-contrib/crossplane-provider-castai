@@ -1,8 +1,6 @@
 module github.com/crossplane-contrib/crossplane-provider-castai
 
-go 1.21
-
-toolchain go1.22.0
+go 1.20
 
 require (
 	dario.cat/mergo v1.0.0

@@ -316,8 +316,8 @@ type NodeConfigurationInitParameters struct {
 	// Minimal disk size in GiB. Defaults to 100, min 30, max 1000
 	MinDiskSize *float64 `json:"minDiskSize,omitempty" tf:"min_disk_size,omitempty"`
 
-	// (String) Name of the node configuration
-	// Name of the node configuration
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the node configuration. It must be unique within the cluster.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (String) SSH public key to be used for provisioned nodes
@@ -383,8 +383,8 @@ type NodeConfigurationObservation struct {
 	// Minimal disk size in GiB. Defaults to 100, min 30, max 1000
 	MinDiskSize *float64 `json:"minDiskSize,omitempty" tf:"min_disk_size,omitempty"`
 
-	// (String) Name of the node configuration
-	// Name of the node configuration
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the node configuration. It must be unique within the cluster.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (String) SSH public key to be used for provisioned nodes
@@ -468,8 +468,8 @@ type NodeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	MinDiskSize *float64 `json:"minDiskSize,omitempty" tf:"min_disk_size,omitempty"`
 
-	// (String) Name of the node configuration
-	// Name of the node configuration
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the node configuration. It must be unique within the cluster.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 

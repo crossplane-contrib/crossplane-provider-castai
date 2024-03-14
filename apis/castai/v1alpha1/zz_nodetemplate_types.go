@@ -25,6 +25,8 @@ type ConstraintsInitParameters struct {
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
 
+	CustomPriority []CustomPriorityInitParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
 	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
 
@@ -82,6 +84,8 @@ type ConstraintsObservation struct {
 
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
+
+	CustomPriority []CustomPriorityObservation `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
 
 	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
@@ -142,6 +146,9 @@ type ConstraintsParameters struct {
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	// +kubebuilder:validation:Optional
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	CustomPriority []CustomPriorityParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
 
 	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// +kubebuilder:validation:Optional
@@ -208,6 +215,45 @@ type ConstraintsParameters struct {
 	// Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
 	// +kubebuilder:validation:Optional
 	UseSpotFallbacks *bool `json:"useSpotFallbacks,omitempty" tf:"use_spot_fallbacks,omitempty"`
+}
+
+type CustomPriorityInitParameters struct {
+
+	// Instance families to prioritize in this tier.
+	InstanceFamilies []*string `json:"instanceFamilies,omitempty" tf:"instance_families,omitempty"`
+
+	// If true, this tier will apply to on-demand instances.
+	OnDemand *bool `json:"onDemand,omitempty" tf:"on_demand,omitempty"`
+
+	// If true, this tier will apply to spot instances.
+	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
+}
+
+type CustomPriorityObservation struct {
+
+	// Instance families to prioritize in this tier.
+	InstanceFamilies []*string `json:"instanceFamilies,omitempty" tf:"instance_families,omitempty"`
+
+	// If true, this tier will apply to on-demand instances.
+	OnDemand *bool `json:"onDemand,omitempty" tf:"on_demand,omitempty"`
+
+	// If true, this tier will apply to spot instances.
+	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
+}
+
+type CustomPriorityParameters struct {
+
+	// Instance families to prioritize in this tier.
+	// +kubebuilder:validation:Optional
+	InstanceFamilies []*string `json:"instanceFamilies,omitempty" tf:"instance_families,omitempty"`
+
+	// If true, this tier will apply to on-demand instances.
+	// +kubebuilder:validation:Optional
+	OnDemand *bool `json:"onDemand,omitempty" tf:"on_demand,omitempty"`
+
+	// If true, this tier will apply to spot instances.
+	// +kubebuilder:validation:Optional
+	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
 }
 
 type CustomTaintsInitParameters struct {

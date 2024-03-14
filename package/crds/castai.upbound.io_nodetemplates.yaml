@@ -244,6 +244,25 @@ spec:
                           description: Compute optimized instance constraint - will
                             only pick compute optimized nodes if true.
                           type: boolean
+                        customPriority:
+                          items:
+                            properties:
+                              instanceFamilies:
+                                description: Instance families to prioritize in this
+                                  tier.
+                                items:
+                                  type: string
+                                type: array
+                              onDemand:
+                                description: If true, this tier will apply to on-demand
+                                  instances.
+                                type: boolean
+                              spot:
+                                description: If true, this tier will apply to spot
+                                  instances.
+                                type: boolean
+                            type: object
+                          type: array
                         enableSpotDiversity:
                           description: Enable/disable spot diversity policy. When
                             enabled, autoscaler will try to balance between diverse
@@ -597,6 +616,25 @@ spec:
                           description: Compute optimized instance constraint - will
                             only pick compute optimized nodes if true.
                           type: boolean
+                        customPriority:
+                          items:
+                            properties:
+                              instanceFamilies:
+                                description: Instance families to prioritize in this
+                                  tier.
+                                items:
+                                  type: string
+                                type: array
+                              onDemand:
+                                description: If true, this tier will apply to on-demand
+                                  instances.
+                                type: boolean
+                              spot:
+                                description: If true, this tier will apply to spot
+                                  instances.
+                                type: boolean
+                            type: object
+                          type: array
                         enableSpotDiversity:
                           description: Enable/disable spot diversity policy. When
                             enabled, autoscaler will try to balance between diverse
@@ -962,6 +1000,25 @@ spec:
                           description: Compute optimized instance constraint - will
                             only pick compute optimized nodes if true.
                           type: boolean
+                        customPriority:
+                          items:
+                            properties:
+                              instanceFamilies:
+                                description: Instance families to prioritize in this
+                                  tier.
+                                items:
+                                  type: string
+                                type: array
+                              onDemand:
+                                description: If true, this tier will apply to on-demand
+                                  instances.
+                                type: boolean
+                              spot:
+                                description: If true, this tier will apply to spot
+                                  instances.
+                                type: boolean
+                            type: object
+                          type: array
                         enableSpotDiversity:
                           description: Enable/disable spot diversity policy. When
                             enabled, autoscaler will try to balance between diverse

@@ -300,8 +300,8 @@ spec:
                     type: number
                   name:
                     description: |-
-                      (String) Name of the node configuration
-                      Name of the node configuration
+                      (String) Name of the node configuration. It must be unique within the cluster.
+                      Name of the node configuration. It must be unique within the cluster.
                     type: string
                   sshPublicKey:
                     description: |-
@@ -563,8 +563,8 @@ spec:
                     type: number
                   name:
                     description: |-
-                      (String) Name of the node configuration
-                      Name of the node configuration
+                      (String) Name of the node configuration. It must be unique within the cluster.
+                      Name of the node configuration. It must be unique within the cluster.
                     type: string
                   sshPublicKey:
                     description: |-
@@ -921,8 +921,8 @@ spec:
                     type: number
                   name:
                     description: |-
-                      (String) Name of the node configuration
-                      Name of the node configuration
+                      (String) Name of the node configuration. It must be unique within the cluster.
+                      Name of the node configuration. It must be unique within the cluster.
                     type: string
                   sshPublicKey:
                     description: |-

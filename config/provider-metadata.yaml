@@ -231,7 +231,7 @@ resources:
             kubelet_config: (String) Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             max_pods_per_node: (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 1000
-            name: (String) Name of the node configuration
+            name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
             os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
             read: (String)
@@ -286,6 +286,7 @@ resources:
             custom_instances_enabled: (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
             custom_instances_with_extended_memory_enabled: (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
             custom_labels: (Map of String) Custom labels to be added to nodes created from this template.
+            custom_priority: (Block List) (see below for nested schema)
             custom_taints: (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
             delete: (String)
             effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'

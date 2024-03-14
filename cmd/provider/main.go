@@ -63,7 +63,12 @@ func main() {
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("crossplane-provider-castai"))
 
-	ctrl.SetLogger(zl)
+	if *debug {
+		// The controller-runtime runs with a no-op logger by default. It is
+		// *very* verbose even at info level, so we only provide it a real
+		// logger when we're running in debug mode.
+		ctrl.SetLogger(zl)
+	}
 
 	// currently, we configure the jitter to be the 5% of the poll interval
 	pollJitter := time.Duration(float64(*pollInterval) * 0.05)

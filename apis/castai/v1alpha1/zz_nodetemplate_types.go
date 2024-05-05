@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -17,6 +13,45 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AffinityInitParameters struct {
+
+	// Key of the node affinity selector.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// Values of the node affinity selector.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type AffinityObservation struct {
+
+	// Key of the node affinity selector.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// Values of the node affinity selector.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type AffinityParameters struct {
+
+	// Key of the node affinity selector.
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key" tf:"key,omitempty"`
+
+	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	// +kubebuilder:validation:Optional
+	Operator *string `json:"operator" tf:"operator,omitempty"`
+
+	// Values of the node affinity selector.
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values" tf:"values,omitempty"`
+}
+
 type ConstraintsInitParameters struct {
 
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
@@ -26,6 +61,14 @@ type ConstraintsInitParameters struct {
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
 
 	CustomPriority []CustomPriorityInitParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
+	// Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
+	// feature is only available for GCP clusters and sole tenancy nodes with local
+	// SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+	// type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+	// Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+	// the sole tenancy or dedicated node (example: setting min CPU to 16).
+	DedicatedNodeAffinity []DedicatedNodeAffinityInitParameters `json:"dedicatedNodeAffinity,omitempty" tf:"dedicated_node_affinity,omitempty"`
 
 	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
@@ -86,6 +129,14 @@ type ConstraintsObservation struct {
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
 
 	CustomPriority []CustomPriorityObservation `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
+	// Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
+	// feature is only available for GCP clusters and sole tenancy nodes with local
+	// SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+	// type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+	// Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+	// the sole tenancy or dedicated node (example: setting min CPU to 16).
+	DedicatedNodeAffinity []DedicatedNodeAffinityObservation `json:"dedicatedNodeAffinity,omitempty" tf:"dedicated_node_affinity,omitempty"`
 
 	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	EnableSpotDiversity *bool `json:"enableSpotDiversity,omitempty" tf:"enable_spot_diversity,omitempty"`
@@ -149,6 +200,15 @@ type ConstraintsParameters struct {
 
 	// +kubebuilder:validation:Optional
 	CustomPriority []CustomPriorityParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
+	// Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
+	// feature is only available for GCP clusters and sole tenancy nodes with local
+	// SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+	// type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+	// Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+	// the sole tenancy or dedicated node (example: setting min CPU to 16).
+	// +kubebuilder:validation:Optional
+	DedicatedNodeAffinity []DedicatedNodeAffinityParameters `json:"dedicatedNodeAffinity,omitempty" tf:"dedicated_node_affinity,omitempty"`
 
 	// Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// +kubebuilder:validation:Optional
@@ -293,6 +353,50 @@ type CustomTaintsParameters struct {
 	// Value of a taint to be added to nodes created from this template.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type DedicatedNodeAffinityInitParameters struct {
+	Affinity []AffinityInitParameters `json:"affinity,omitempty" tf:"affinity,omitempty"`
+
+	// Availability zone name.
+	AzName *string `json:"azName,omitempty" tf:"az_name,omitempty"`
+
+	// Instance/node types in this node group.
+	InstanceTypes []*string `json:"instanceTypes,omitempty" tf:"instance_types,omitempty"`
+
+	// Name of node group.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type DedicatedNodeAffinityObservation struct {
+	Affinity []AffinityObservation `json:"affinity,omitempty" tf:"affinity,omitempty"`
+
+	// Availability zone name.
+	AzName *string `json:"azName,omitempty" tf:"az_name,omitempty"`
+
+	// Instance/node types in this node group.
+	InstanceTypes []*string `json:"instanceTypes,omitempty" tf:"instance_types,omitempty"`
+
+	// Name of node group.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type DedicatedNodeAffinityParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Affinity []AffinityParameters `json:"affinity,omitempty" tf:"affinity,omitempty"`
+
+	// Availability zone name.
+	// +kubebuilder:validation:Optional
+	AzName *string `json:"azName" tf:"az_name,omitempty"`
+
+	// Instance/node types in this node group.
+	// +kubebuilder:validation:Optional
+	InstanceTypes []*string `json:"instanceTypes" tf:"instance_types,omitempty"`
+
+	// Name of node group.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type GpuInitParameters struct {
@@ -578,8 +682,8 @@ type NodeTemplateStatus struct {
 // +kubebuilder:storageversion
 
 // NodeTemplate is the Schema for the NodeTemplates API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}

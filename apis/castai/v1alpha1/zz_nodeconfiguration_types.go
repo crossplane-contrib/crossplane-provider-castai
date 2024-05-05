@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -78,6 +74,10 @@ type EksInitParameters struct {
 	// Cluster's security groups configuration for CAST provisioned nodes
 	SecurityGroups []*string `json:"securityGroups,omitempty" tf:"security_groups,omitempty"`
 
+	// (Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)
+	// AWS target group configuration for CAST provisioned nodes
+	TargetGroup []TargetGroupInitParameters `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
+
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
 	VolumeIops *float64 `json:"volumeIops,omitempty" tf:"volume_iops,omitempty"`
@@ -120,6 +120,10 @@ type EksObservation struct {
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
 	SecurityGroups []*string `json:"securityGroups,omitempty" tf:"security_groups,omitempty"`
+
+	// (Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)
+	// AWS target group configuration for CAST provisioned nodes
+	TargetGroup []TargetGroupObservation `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
 
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -169,6 +173,11 @@ type EksParameters struct {
 	// Cluster's security groups configuration for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
 	SecurityGroups []*string `json:"securityGroups" tf:"security_groups,omitempty"`
+
+	// (Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)
+	// AWS target group configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	TargetGroup []TargetGroupParameters `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
 
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -291,6 +300,10 @@ type NodeConfigurationInitParameters struct {
 	// Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. [Available values](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file)
 	DockerConfig *string `json:"dockerConfig,omitempty" tf:"docker_config,omitempty"`
 
+	// (Number) Timeout in seconds for draining the node. Defaults to 0
+	// Timeout in seconds for draining the node. Defaults to 0
+	DrainTimeoutSec *float64 `json:"drainTimeoutSec,omitempty" tf:"drain_timeout_sec,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	Eks []EksInitParameters `json:"eks,omitempty" tf:"eks,omitempty"`
 
@@ -312,8 +325,8 @@ type NodeConfigurationInitParameters struct {
 	// Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. [Available values](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/)
 	KubeletConfig *string `json:"kubeletConfig,omitempty" tf:"kubelet_config,omitempty"`
 
-	// (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 1000
-	// Minimal disk size in GiB. Defaults to 100, min 30, max 1000
+	// (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
+	// Minimal disk size in GiB. Defaults to 100, min 30, max 65536
 	MinDiskSize *float64 `json:"minDiskSize,omitempty" tf:"min_disk_size,omitempty"`
 
 	// (String) Name of the node configuration. It must be unique within the cluster.
@@ -355,6 +368,10 @@ type NodeConfigurationObservation struct {
 	// Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. [Available values](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file)
 	DockerConfig *string `json:"dockerConfig,omitempty" tf:"docker_config,omitempty"`
 
+	// (Number) Timeout in seconds for draining the node. Defaults to 0
+	// Timeout in seconds for draining the node. Defaults to 0
+	DrainTimeoutSec *float64 `json:"drainTimeoutSec,omitempty" tf:"drain_timeout_sec,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	Eks []EksObservation `json:"eks,omitempty" tf:"eks,omitempty"`
 
@@ -379,8 +396,8 @@ type NodeConfigurationObservation struct {
 	// Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. [Available values](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/)
 	KubeletConfig *string `json:"kubeletConfig,omitempty" tf:"kubelet_config,omitempty"`
 
-	// (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 1000
-	// Minimal disk size in GiB. Defaults to 100, min 30, max 1000
+	// (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
+	// Minimal disk size in GiB. Defaults to 100, min 30, max 65536
 	MinDiskSize *float64 `json:"minDiskSize,omitempty" tf:"min_disk_size,omitempty"`
 
 	// (String) Name of the node configuration. It must be unique within the cluster.
@@ -436,6 +453,11 @@ type NodeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	DockerConfig *string `json:"dockerConfig,omitempty" tf:"docker_config,omitempty"`
 
+	// (Number) Timeout in seconds for draining the node. Defaults to 0
+	// Timeout in seconds for draining the node. Defaults to 0
+	// +kubebuilder:validation:Optional
+	DrainTimeoutSec *float64 `json:"drainTimeoutSec,omitempty" tf:"drain_timeout_sec,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Eks []EksParameters `json:"eks,omitempty" tf:"eks,omitempty"`
@@ -463,8 +485,8 @@ type NodeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	KubeletConfig *string `json:"kubeletConfig,omitempty" tf:"kubelet_config,omitempty"`
 
-	// (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 1000
-	// Minimal disk size in GiB. Defaults to 100, min 30, max 1000
+	// (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
+	// Minimal disk size in GiB. Defaults to 100, min 30, max 65536
 	// +kubebuilder:validation:Optional
 	MinDiskSize *float64 `json:"minDiskSize,omitempty" tf:"min_disk_size,omitempty"`
 
@@ -488,6 +510,41 @@ type NodeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type TargetGroupInitParameters struct {
+
+	// (String) AWS target group ARN for CAST provisioned nodes
+	// AWS target group ARN for CAST provisioned nodes
+	Arn *string `json:"arn,omitempty" tf:"arn,omitempty"`
+
+	// (Number) Port for AWS target group for CAST provisioned nodes
+	// Port for AWS target group for CAST provisioned nodes
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+}
+
+type TargetGroupObservation struct {
+
+	// (String) AWS target group ARN for CAST provisioned nodes
+	// AWS target group ARN for CAST provisioned nodes
+	Arn *string `json:"arn,omitempty" tf:"arn,omitempty"`
+
+	// (Number) Port for AWS target group for CAST provisioned nodes
+	// Port for AWS target group for CAST provisioned nodes
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+}
+
+type TargetGroupParameters struct {
+
+	// (String) AWS target group ARN for CAST provisioned nodes
+	// AWS target group ARN for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	Arn *string `json:"arn" tf:"arn,omitempty"`
+
+	// (Number) Port for AWS target group for CAST provisioned nodes
+	// Port for AWS target group for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 }
 
 // NodeConfigurationSpec defines the desired state of NodeConfiguration
@@ -518,8 +575,8 @@ type NodeConfigurationStatus struct {
 // +kubebuilder:storageversion
 
 // NodeConfiguration is the Schema for the NodeConfigurations API. Create node configuration for given cluster. Node configuration reference https://docs.cast.ai/docs/node-configuration
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}

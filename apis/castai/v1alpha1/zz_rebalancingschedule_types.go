@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -76,6 +72,10 @@ type LaunchConfigurationInitParameters struct {
 	// (String) Node selector in JSON format.
 	// Node selector in JSON format.
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	// (String) Defines the algorithm used to select the target nodes for rebalancing.
+	// Defines the algorithm used to select the target nodes for rebalancing.
+	TargetNodeSelectionAlgorithm *string `json:"targetNodeSelectionAlgorithm,omitempty" tf:"target_node_selection_algorithm,omitempty"`
 }
 
 type LaunchConfigurationObservation struct {
@@ -102,6 +102,10 @@ type LaunchConfigurationObservation struct {
 	// (String) Node selector in JSON format.
 	// Node selector in JSON format.
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	// (String) Defines the algorithm used to select the target nodes for rebalancing.
+	// Defines the algorithm used to select the target nodes for rebalancing.
+	TargetNodeSelectionAlgorithm *string `json:"targetNodeSelectionAlgorithm,omitempty" tf:"target_node_selection_algorithm,omitempty"`
 }
 
 type LaunchConfigurationParameters struct {
@@ -134,6 +138,11 @@ type LaunchConfigurationParameters struct {
 	// Node selector in JSON format.
 	// +kubebuilder:validation:Optional
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	// (String) Defines the algorithm used to select the target nodes for rebalancing.
+	// Defines the algorithm used to select the target nodes for rebalancing.
+	// +kubebuilder:validation:Optional
+	TargetNodeSelectionAlgorithm *string `json:"targetNodeSelectionAlgorithm,omitempty" tf:"target_node_selection_algorithm,omitempty"`
 }
 
 type RebalancingScheduleInitParameters struct {
@@ -305,8 +314,8 @@ type RebalancingScheduleStatus struct {
 // +kubebuilder:storageversion
 
 // RebalancingSchedule is the Schema for the RebalancingSchedules API. CAST AI rebalancing schedule resource to manage rebalancing schedules.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}

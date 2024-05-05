@@ -14,5 +14,8 @@ func Configure(p *config.Provider) {
 				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId",
 			},
 		}
+		r.LateInitializer = config.LateInitializer{
+			IgnoredFields: []string{"eks"},
+		}
 	})
 }

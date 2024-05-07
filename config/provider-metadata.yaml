@@ -210,6 +210,7 @@ resources:
               manifest: '{}'
         argumentDocs:
             aks: '(Block List, Max: 1) (see below for nested schema)'
+            arn: (String) AWS target group ARN for CAST provisioned nodes
             cluster_id: (String) CAST AI cluster id
             container_runtime: '(String) Optional container runtime to be used by kubelet. Applicable for EKS only.  Supported values include: dockerd, containerd'
             create: (String)
@@ -218,6 +219,7 @@ resources:
             disk_type: '(String) Type of boot disk attached to the node. (See disk types). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
             dns_cluster_ip: (String) IP address to use for DNS queries within the cluster
             docker_config: (String) Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
+            drain_timeout_sec: (Number) Timeout in seconds for draining the node. Defaults to 0
             eks: '(Block List, Max: 1) (see below for nested schema)'
             gke: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
@@ -230,15 +232,17 @@ resources:
             kops: '(Block List, Max: 1) (see below for nested schema)'
             kubelet_config: (String) Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             max_pods_per_node: (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
-            min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 1000
+            min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
             os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
+            port: (Number) Port for AWS target group for CAST provisioned nodes
             read: (String)
             security_groups: (List of String) Cluster's security groups configuration for CAST provisioned nodes
             ssh_public_key: (String) SSH public key to be used for provisioned nodes
             subnets: (List of String) Subnet ids to be used for provisioned nodes
             tags: (Map of String) Tags to be added on cloud instances for provisioned nodes
+            target_group: '(Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)'
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             volume_iops: (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -277,7 +281,9 @@ resources:
         name: castai_node_template Resource - terraform-provider-castai
         title: castai_node_template Resource - terraform-provider-castai
         argumentDocs:
+            affinity: (Block List) (see below for nested schema)
             architectures: '(List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.'
+            az_name: (String) Availability zone name.
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint - will only pick compute optimized nodes if true.
             configuration_id: (String) CAST AI node configuration id to be used for node template.
@@ -288,6 +294,13 @@ resources:
             custom_labels: (Map of String) Custom labels to be added to nodes created from this template.
             custom_priority: (Block List) (see below for nested schema)
             custom_taints: (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
+            dedicated_node_affinity: |-
+                (Block List) Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
+                feature is only available for GCP clusters and sole tenancy nodes with local
+                SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+                type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+                Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+                the sole tenancy or dedicated node (example: setting min CPU to 16). (see below for nested schema)
             delete: (String)
             effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'
             enable_spot_diversity: (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
@@ -299,10 +312,11 @@ resources:
             include: (List of String) Instance families to exclude when filtering (includes all other families).
             include_names: (List of String) Instance families to include when filtering (excludes all other families).
             instance_families: '(Block List, Max: 1) (see below for nested schema)'
+            instance_types: (List of String) Instance/node types in this node group.
             is_default: (Boolean) Flag whether the node template is default.
             is_enabled: (Boolean) Flag whether the node template is enabled and considered for autoscaling.
             is_gpu_only: (Boolean) GPU instance constraint - will only pick nodes with GPU if true
-            key: (String) Key of a taint to be added to nodes created from this template.
+            key: (String) Key of the node affinity selector.
             manufacturers: (List of String) Manufacturers of the gpus to select - NVIDIA, AMD.
             max_count: (Number) Max GPU count for the instance type to have.
             max_cpu: (Number) Max CPU cores per node.
@@ -312,6 +326,7 @@ resources:
             min_memory: (Number) Min Memory (Mib) per node.
             name: (String) Name of the node template.
             on_demand: (Boolean) Should include on-demand instances in the considered pool.
+            operator: '(String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.'
             os: '(List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.'
             read: (String)
             rebalancing_config_min_nodes: (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
@@ -325,6 +340,7 @@ resources:
             update: (String)
             use_spot_fallbacks: (Boolean) Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
             value: (String) Value of a taint to be added to nodes created from this template.
+            values: (List of String) Values of the node affinity selector.
         importStatements:
             - |-
               # Import node template by specifying cluster ID and node template name.
@@ -431,6 +447,7 @@ resources:
             savings_percentage: (Number) Defines the minimum percentage of savings expected.
             schedule: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             selector: (String) Node selector in JSON format.
+            target_node_selection_algorithm: (String) Defines the algorithm used to select the target nodes for rebalancing.
             timeouts: (Block, Optional) (see below for nested schema)
             trigger_conditions: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             update: (String)

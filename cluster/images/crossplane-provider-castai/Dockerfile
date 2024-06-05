@@ -3,6 +3,7 @@ RUN apk --no-cache add ca-certificates bash
 
 ARG TARGETOS
 ARG TARGETARCH
+ARG CROSSPLANE_PROVIDER_VERSION
 
 ADD "bin/${TARGETOS}_${TARGETARCH}/provider" /usr/local/bin/provider
 

@@ -213,6 +213,10 @@ type GkeInitParameters struct {
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
+	// List of preferred availability zones to choose from when provisioning new nodes.
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type GkeObservation struct {
@@ -228,6 +232,10 @@ type GkeObservation struct {
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
+	// List of preferred availability zones to choose from when provisioning new nodes.
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type GkeParameters struct {
@@ -246,6 +254,11 @@ type GkeParameters struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	// +kubebuilder:validation:Optional
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
+	// List of preferred availability zones to choose from when provisioning new nodes.
+	// +kubebuilder:validation:Optional
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type KopsInitParameters struct {

@@ -57,6 +57,9 @@ type ConstraintsInitParameters struct {
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
 
+	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
+
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
 
@@ -124,6 +127,9 @@ type ConstraintsObservation struct {
 
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
+
+	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
@@ -193,6 +199,10 @@ type ConstraintsParameters struct {
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	// +kubebuilder:validation:Optional
 	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
+
+	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+	// +kubebuilder:validation:Optional
+	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
 	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
 	// +kubebuilder:validation:Optional

@@ -240,6 +240,12 @@ spec:
                           items:
                             type: string
                           type: array
+                        azs:
+                          description: The list of AZ names to consider for the node
+                            template, if empty or not set all AZs are considered.
+                          items:
+                            type: string
+                          type: array
                         computeOptimized:
                           description: Compute optimized instance constraint - will
                             only pick compute optimized nodes if true.
@@ -650,6 +656,12 @@ spec:
                         architectures:
                           description: 'List of acceptable instance CPU architectures,
                             the default is amd64. Allowed values: amd64, arm64.'
+                          items:
+                            type: string
+                          type: array
+                        azs:
+                          description: The list of AZ names to consider for the node
+                            template, if empty or not set all AZs are considered.
                           items:
                             type: string
                           type: array
@@ -1075,6 +1087,12 @@ spec:
                         architectures:
                           description: 'List of acceptable instance CPU architectures,
                             the default is amd64. Allowed values: amd64, arm64.'
+                          items:
+                            type: string
+                          type: array
+                        azs:
+                          description: The list of AZ names to consider for the node
+                            template, if empty or not set all AZs are considered.
                           items:
                             type: string
                           type: array

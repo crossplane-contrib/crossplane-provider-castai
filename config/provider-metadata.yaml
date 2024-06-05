@@ -58,6 +58,101 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
+    castai_commitments:
+        subCategory: ""
+        description: Commitments represent cloud service provider reserved instances (Azure) and commited use discounts (GCP) that can be used by CAST AI autoscaler.
+        name: castai_commitments
+        title: castai_commitments Resource - terraform-provider-castai
+        examples:
+            - name: gcp_test
+              manifest: |-
+                {
+                  "commitment_configs": [
+                    {
+                      "allowed_usage": 0.6,
+                      "assignments": [
+                        {
+                          "cluster_id": "cluster-id-1"
+                        },
+                        {
+                          "cluster_id": "cluster-id-2"
+                        }
+                      ],
+                      "matcher": [
+                        {
+                          "name": "test",
+                          "region": "us-east4",
+                          "type": "COMPUTE_OPTIMIZED_C2D"
+                        }
+                      ],
+                      "prioritization": true,
+                      "status": "Inactive"
+                    }
+                  ],
+                  "gcp_cuds_json": "${file(\"./cuds.json\")}"
+                }
+            - name: azure_test
+              manifest: |-
+                {
+                  "azure_reservations_csv": "${file(\"./reservations.csv\")}",
+                  "commitment_configs": [
+                    {
+                      "allowed_usage": 0.9,
+                      "assignments": [
+                        {
+                          "cluster_id": "cluster-id-3"
+                        },
+                        {
+                          "cluster_id": "cluster-id-4"
+                        }
+                      ],
+                      "matcher": [
+                        {
+                          "name": "test-res-1",
+                          "region": "eastus",
+                          "type": "Standard_D32as_v4"
+                        }
+                      ],
+                      "prioritization": false,
+                      "status": "Active"
+                    }
+                  ]
+                }
+        argumentDocs:
+            allowed_usage: (Number) Allowed usage of the commitment. The value is between 0 (0%) and 1 (100%).
+            assignments: (Block List) List of assigned clusters for the commitment. If prioritization is enabled, the order of the assignments indicates the priority. The first assignment has the highest priority. (see below for nested schema)
+            azure_reservations: (List of Object) List of Azure reservations. (see below for nested schema)
+            azure_reservations_csv: (String) CSV file containing reservations exported from Azure.
+            cluster_id: (String) ID of the cluster to assign the commitment to.
+            commitment_configs: (Block List) List of commitment configurations. (see below for nested schema)
+            count: (Number)
+            cpu: (Number)
+            create: (String)
+            cud_id: (String)
+            cud_status: (String)
+            end_timestamp: (String)
+            gcp_cuds: (List of Object) List of GCP CUDs. (see below for nested schema)
+            gcp_cuds_json: (String) JSON file containing CUDs exported from GCP.
+            id: (String) The ID of this resource.
+            instance_type: (String)
+            matcher: '(Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)'
+            memory_mb: (Number)
+            name: (String) Name of the commitment to match.
+            plan: (String)
+            prioritization: (Boolean) If enabled, it's possible to assign priorities to the assigned clusters.
+            priority: (Number) Priority of the assignment. The lower the value, the higher the priority. 1 is the highest priority.
+            region: (String) Region of the commitment to match.
+            reservation_id: (String)
+            reservation_status: (String)
+            scope: (String)
+            scope_resource_group: (String)
+            scope_subscription: (String)
+            start_timestamp: (String)
+            status: (String) Status of the commitment in CAST AI.
+            timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) Type of the commitment to match. For compute resources, it's the type of the machine.
+            update: (String)
+        importStatements: []
     castai_eks_cluster:
         subCategory: ""
         description: EKS cluster resource allows connecting an existing EKS cluster to CAST AI.
@@ -249,6 +344,7 @@ resources:
             volume_kms_key_arn: (String) AWS KMS key ARN for encrypting EBS volume attached to the node
             volume_throughput: (Number) AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
             volume_type: '(String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2'
+            zones: (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
         importStatements:
             - $ terraform import castai_node_configuration.default <cluster_id>/default
             - $ terraform import 'module.castai-eks-cluster.castai_node_configuration.this["default"]' <cluster_id>/default
@@ -284,6 +380,7 @@ resources:
             affinity: (Block List) (see below for nested schema)
             architectures: '(List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.'
             az_name: (String) Availability zone name.
+            azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint - will only pick compute optimized nodes if true.
             configuration_id: (String) CAST AI node configuration id to be used for node template.

@@ -9,6 +9,16 @@ include ../../../build/makelib/common.mk
 include ../../../build/makelib/imagelight.mk
 
 # ====================================================================================
+# Setup k8s tools
+
+-include ../../../build/makelib/k8s_tools.mk
+
+# ====================================================================================
+# Setup xpkg
+
+-include ../../../build/makelib/xpkg.mk
+
+# ====================================================================================
 # Targets
 
 img.build:

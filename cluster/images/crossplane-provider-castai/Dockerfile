@@ -7,6 +7,7 @@ ARG TARGETARCH
 ADD "bin/${TARGETOS}_${TARGETARCH}/provider" /usr/local/bin/provider
 
 ENV USER_ID=65532
+ENV CASTAI_ADDITIONAL_USER_AGENT crossplane-provider-castai/${CROSSPLANE_PROVIDER_VERSION}
 
 # Setup Terraform environment
 

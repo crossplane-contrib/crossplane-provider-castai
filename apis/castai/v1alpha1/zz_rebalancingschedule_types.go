@@ -266,6 +266,10 @@ type ScheduleParameters struct {
 
 type TriggerConditionsInitParameters struct {
 
+	// (Boolean) If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
+	// If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
+	IgnoreSavings *bool `json:"ignoreSavings,omitempty" tf:"ignore_savings,omitempty"`
+
 	// (Number) Defines the minimum percentage of savings expected.
 	// Defines the minimum percentage of savings expected.
 	SavingsPercentage *float64 `json:"savingsPercentage,omitempty" tf:"savings_percentage,omitempty"`
@@ -273,12 +277,21 @@ type TriggerConditionsInitParameters struct {
 
 type TriggerConditionsObservation struct {
 
+	// (Boolean) If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
+	// If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
+	IgnoreSavings *bool `json:"ignoreSavings,omitempty" tf:"ignore_savings,omitempty"`
+
 	// (Number) Defines the minimum percentage of savings expected.
 	// Defines the minimum percentage of savings expected.
 	SavingsPercentage *float64 `json:"savingsPercentage,omitempty" tf:"savings_percentage,omitempty"`
 }
 
 type TriggerConditionsParameters struct {
+
+	// (Boolean) If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
+	// If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
+	// +kubebuilder:validation:Optional
+	IgnoreSavings *bool `json:"ignoreSavings,omitempty" tf:"ignore_savings,omitempty"`
 
 	// (Number) Defines the minimum percentage of savings expected.
 	// Defines the minimum percentage of savings expected.

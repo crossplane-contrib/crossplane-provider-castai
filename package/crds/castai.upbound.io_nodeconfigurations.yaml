@@ -215,10 +215,20 @@ spec:
                             (String) Cluster's instance profile ARN used for CAST provisioned nodes
                             Cluster's instance profile ARN used for CAST provisioned nodes
                           type: string
+                        ipsPerPrefix:
+                          description: |-
+                            (Number) Number of IPs per prefix to be used for calculating max pods.
+                            Number of IPs per prefix to be used for calculating max pods.
+                          type: number
                         keyPairId:
                           description: |-
                             (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
                             AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
+                          type: string
+                        maxPodsPerNodeFormula:
+                          description: |-
+                            (String) Formula to calculate the maximum number of pods that can be run on a node.
+                            Formula to calculate the maximum number of pods that can be run on a node.
                           type: string
                         securityGroups:
                           description: |-
@@ -262,8 +272,8 @@ spec:
                           type: number
                         volumeType:
                           description: |-
-                            (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
-                            AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
+                            (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
+                            AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
                           type: string
                       type: object
                     type: array
@@ -288,6 +298,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        useEphemeralStorageLocalSsd:
+                          description: |-
+                            (Boolean) Use ephemeral storage local SSD. Defaults to false
+                            Use ephemeral storage local SSD. Defaults to false
+                          type: boolean
                         zones:
                           description: |-
                             (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
@@ -508,10 +523,20 @@ spec:
                             (String) Cluster's instance profile ARN used for CAST provisioned nodes
                             Cluster's instance profile ARN used for CAST provisioned nodes
                           type: string
+                        ipsPerPrefix:
+                          description: |-
+                            (Number) Number of IPs per prefix to be used for calculating max pods.
+                            Number of IPs per prefix to be used for calculating max pods.
+                          type: number
                         keyPairId:
                           description: |-
                             (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
                             AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
+                          type: string
+                        maxPodsPerNodeFormula:
+                          description: |-
+                            (String) Formula to calculate the maximum number of pods that can be run on a node.
+                            Formula to calculate the maximum number of pods that can be run on a node.
                           type: string
                         securityGroups:
                           description: |-
@@ -555,8 +580,8 @@ spec:
                           type: number
                         volumeType:
                           description: |-
-                            (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
-                            AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
+                            (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
+                            AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
                           type: string
                       type: object
                     type: array
@@ -581,6 +606,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        useEphemeralStorageLocalSsd:
+                          description: |-
+                            (Boolean) Use ephemeral storage local SSD. Defaults to false
+                            Use ephemeral storage local SSD. Defaults to false
+                          type: boolean
                         zones:
                           description: |-
                             (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
@@ -893,10 +923,20 @@ spec:
                             (String) Cluster's instance profile ARN used for CAST provisioned nodes
                             Cluster's instance profile ARN used for CAST provisioned nodes
                           type: string
+                        ipsPerPrefix:
+                          description: |-
+                            (Number) Number of IPs per prefix to be used for calculating max pods.
+                            Number of IPs per prefix to be used for calculating max pods.
+                          type: number
                         keyPairId:
                           description: |-
                             (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
                             AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
+                          type: string
+                        maxPodsPerNodeFormula:
+                          description: |-
+                            (String) Formula to calculate the maximum number of pods that can be run on a node.
+                            Formula to calculate the maximum number of pods that can be run on a node.
                           type: string
                         securityGroups:
                           description: |-
@@ -940,8 +980,8 @@ spec:
                           type: number
                         volumeType:
                           description: |-
-                            (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
-                            AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
+                            (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
+                            AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
                           type: string
                       type: object
                     type: array
@@ -966,6 +1006,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        useEphemeralStorageLocalSsd:
+                          description: |-
+                            (Boolean) Use ephemeral storage local SSD. Defaults to false
+                            Use ephemeral storage local SSD. Defaults to false
+                          type: boolean
                         zones:
                           description: |-
                             (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.

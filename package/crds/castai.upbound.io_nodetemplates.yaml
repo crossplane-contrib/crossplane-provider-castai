@@ -246,10 +246,21 @@ spec:
                           items:
                             type: string
                           type: array
+                        burstableInstances:
+                          description: 'Will only include burstable instances when
+                            enabled otherwise they will be excluded. Supported values:
+                            `enabled`, `disabled` or “.'
+                          type: string
                         computeOptimized:
-                          description: Compute optimized instance constraint - will
-                            only pick compute optimized nodes if true.
+                          description: Compute optimized instance constraint (deprecated).
                           type: boolean
+                        computeOptimizedState:
+                          description: 'Will only include compute optimized nodes
+                            when enabled and exclude compute optimized nodes when
+                            disabled. Empty value won''t have effect on instances
+                            filter. Supported values: `enabled`, `disabled` or empty
+                            string.'
+                          type: string
                         customPriority:
                           items:
                             properties:
@@ -411,9 +422,14 @@ spec:
                             either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
                         storageOptimized:
-                          description: Storage optimized instance constraint - will
-                            only pick storage optimized nodes if true
+                          description: Storage optimized instance constraint (deprecated).
                           type: boolean
+                        storageOptimizedState:
+                          description: 'Storage optimized instance constraint - will
+                            only pick storage optimized nodes if enabled and won''t
+                            pick if disabled. Empty value will have no effect. Supported
+                            values: `enabled`, `disabled` or empty string.'
+                          type: string
                         useSpotFallbacks:
                           description: Spot instance fallback constraint - when true,
                             on-demand instances will be created, when spots are unavailable.
@@ -665,10 +681,21 @@ spec:
                           items:
                             type: string
                           type: array
+                        burstableInstances:
+                          description: 'Will only include burstable instances when
+                            enabled otherwise they will be excluded. Supported values:
+                            `enabled`, `disabled` or “.'
+                          type: string
                         computeOptimized:
-                          description: Compute optimized instance constraint - will
-                            only pick compute optimized nodes if true.
+                          description: Compute optimized instance constraint (deprecated).
                           type: boolean
+                        computeOptimizedState:
+                          description: 'Will only include compute optimized nodes
+                            when enabled and exclude compute optimized nodes when
+                            disabled. Empty value won''t have effect on instances
+                            filter. Supported values: `enabled`, `disabled` or empty
+                            string.'
+                          type: string
                         customPriority:
                           items:
                             properties:
@@ -830,9 +857,14 @@ spec:
                             either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
                         storageOptimized:
-                          description: Storage optimized instance constraint - will
-                            only pick storage optimized nodes if true
+                          description: Storage optimized instance constraint (deprecated).
                           type: boolean
+                        storageOptimizedState:
+                          description: 'Storage optimized instance constraint - will
+                            only pick storage optimized nodes if enabled and won''t
+                            pick if disabled. Empty value will have no effect. Supported
+                            values: `enabled`, `disabled` or empty string.'
+                          type: string
                         useSpotFallbacks:
                           description: Spot instance fallback constraint - when true,
                             on-demand instances will be created, when spots are unavailable.
@@ -1096,10 +1128,21 @@ spec:
                           items:
                             type: string
                           type: array
+                        burstableInstances:
+                          description: 'Will only include burstable instances when
+                            enabled otherwise they will be excluded. Supported values:
+                            `enabled`, `disabled` or “.'
+                          type: string
                         computeOptimized:
-                          description: Compute optimized instance constraint - will
-                            only pick compute optimized nodes if true.
+                          description: Compute optimized instance constraint (deprecated).
                           type: boolean
+                        computeOptimizedState:
+                          description: 'Will only include compute optimized nodes
+                            when enabled and exclude compute optimized nodes when
+                            disabled. Empty value won''t have effect on instances
+                            filter. Supported values: `enabled`, `disabled` or empty
+                            string.'
+                          type: string
                         customPriority:
                           items:
                             properties:
@@ -1261,9 +1304,14 @@ spec:
                             either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
                         storageOptimized:
-                          description: Storage optimized instance constraint - will
-                            only pick storage optimized nodes if true
+                          description: Storage optimized instance constraint (deprecated).
                           type: boolean
+                        storageOptimizedState:
+                          description: 'Storage optimized instance constraint - will
+                            only pick storage optimized nodes if enabled and won''t
+                            pick if disabled. Empty value will have no effect. Supported
+                            values: `enabled`, `disabled` or empty string.'
+                          type: string
                         useSpotFallbacks:
                           description: Spot instance fallback constraint - when true,
                             on-demand instances will be created, when spots are unavailable.

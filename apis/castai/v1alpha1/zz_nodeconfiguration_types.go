@@ -66,9 +66,17 @@ type EksInitParameters struct {
 	// Cluster's instance profile ARN used for CAST provisioned nodes
 	InstanceProfileArn *string `json:"instanceProfileArn,omitempty" tf:"instance_profile_arn,omitempty"`
 
+	// (Number) Number of IPs per prefix to be used for calculating max pods.
+	// Number of IPs per prefix to be used for calculating max pods.
+	IpsPerPrefix *float64 `json:"ipsPerPrefix,omitempty" tf:"ips_per_prefix,omitempty"`
+
 	// (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	// AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
+
+	// (String) Formula to calculate the maximum number of pods that can be run on a node.
+	// Formula to calculate the maximum number of pods that can be run on a node.
+	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
@@ -90,8 +98,8 @@ type EksInitParameters struct {
 	// AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
 	VolumeThroughput *float64 `json:"volumeThroughput,omitempty" tf:"volume_throughput,omitempty"`
 
-	// (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
-	// AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
+	// (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
+	// AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
 	VolumeType *string `json:"volumeType,omitempty" tf:"volume_type,omitempty"`
 }
 
@@ -113,9 +121,17 @@ type EksObservation struct {
 	// Cluster's instance profile ARN used for CAST provisioned nodes
 	InstanceProfileArn *string `json:"instanceProfileArn,omitempty" tf:"instance_profile_arn,omitempty"`
 
+	// (Number) Number of IPs per prefix to be used for calculating max pods.
+	// Number of IPs per prefix to be used for calculating max pods.
+	IpsPerPrefix *float64 `json:"ipsPerPrefix,omitempty" tf:"ips_per_prefix,omitempty"`
+
 	// (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	// AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
+
+	// (String) Formula to calculate the maximum number of pods that can be run on a node.
+	// Formula to calculate the maximum number of pods that can be run on a node.
+	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
@@ -137,8 +153,8 @@ type EksObservation struct {
 	// AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
 	VolumeThroughput *float64 `json:"volumeThroughput,omitempty" tf:"volume_throughput,omitempty"`
 
-	// (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
-	// AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
+	// (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
+	// AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
 	VolumeType *string `json:"volumeType,omitempty" tf:"volume_type,omitempty"`
 }
 
@@ -164,10 +180,20 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	InstanceProfileArn *string `json:"instanceProfileArn" tf:"instance_profile_arn,omitempty"`
 
+	// (Number) Number of IPs per prefix to be used for calculating max pods.
+	// Number of IPs per prefix to be used for calculating max pods.
+	// +kubebuilder:validation:Optional
+	IpsPerPrefix *float64 `json:"ipsPerPrefix,omitempty" tf:"ips_per_prefix,omitempty"`
+
 	// (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	// AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	// +kubebuilder:validation:Optional
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
+
+	// (String) Formula to calculate the maximum number of pods that can be run on a node.
+	// Formula to calculate the maximum number of pods that can be run on a node.
+	// +kubebuilder:validation:Optional
+	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
@@ -194,8 +220,8 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	VolumeThroughput *float64 `json:"volumeThroughput,omitempty" tf:"volume_throughput,omitempty"`
 
-	// (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
-	// AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2
+	// (String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
+	// AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2
 	// +kubebuilder:validation:Optional
 	VolumeType *string `json:"volumeType,omitempty" tf:"volume_type,omitempty"`
 }
@@ -213,6 +239,10 @@ type GkeInitParameters struct {
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (Boolean) Use ephemeral storage local SSD. Defaults to false
+	// Use ephemeral storage local SSD. Defaults to false
+	UseEphemeralStorageLocalSsd *bool `json:"useEphemeralStorageLocalSsd,omitempty" tf:"use_ephemeral_storage_local_ssd,omitempty"`
 
 	// (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
 	// List of preferred availability zones to choose from when provisioning new nodes.
@@ -232,6 +262,10 @@ type GkeObservation struct {
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (Boolean) Use ephemeral storage local SSD. Defaults to false
+	// Use ephemeral storage local SSD. Defaults to false
+	UseEphemeralStorageLocalSsd *bool `json:"useEphemeralStorageLocalSsd,omitempty" tf:"use_ephemeral_storage_local_ssd,omitempty"`
 
 	// (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
 	// List of preferred availability zones to choose from when provisioning new nodes.
@@ -254,6 +288,11 @@ type GkeParameters struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	// +kubebuilder:validation:Optional
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (Boolean) Use ephemeral storage local SSD. Defaults to false
+	// Use ephemeral storage local SSD. Defaults to false
+	// +kubebuilder:validation:Optional
+	UseEphemeralStorageLocalSsd *bool `json:"useEphemeralStorageLocalSsd,omitempty" tf:"use_ephemeral_storage_local_ssd,omitempty"`
 
 	// (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
 	// List of preferred availability zones to choose from when provisioning new nodes.

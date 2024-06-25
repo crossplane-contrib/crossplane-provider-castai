@@ -50,12 +50,50 @@ resources:
         name: castai_autoscaler Resource - terraform-provider-castai
         title: castai_autoscaler Resource - terraform-provider-castai
         argumentDocs:
+            aggressive_mode: (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
             autoscaler_policies: (String) computed value to store full policies configuration
-            autoscaler_policies_json: (String) autoscaler policies JSON string to override current autoscaler settings
+            autoscaler_policies_json: (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
+            autoscaler_settings: '(Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)'
             cluster_id: (String) CAST AI cluster id
+            cluster_limits: '(Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)'
+            cpu: '(Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster''s worker nodes. (see below for nested schema)'
+            cpu_percentage: (Number) defines percentage of additional CPU capacity to be added.
             create: (String)
+            custom_instances_enabled: (Boolean) enable/disable custom instances policy.
+            cycle_interval: (String) configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
+            delay_seconds: (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
+            dry_run: (Boolean) enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
+            empty_nodes: '(Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)'
+            enabled: (Boolean) enable/disable autoscaler policies
+            evictor: '(Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)'
+            headroom: '(Block List, Max: 1) additional headroom based on cluster''s total available capacity for on-demand nodes. (see below for nested schema)'
+            headroom_spot: '(Block List, Max: 1) additional headroom based on cluster''s total available capacity for spot nodes. (see below for nested schema)'
             id: (String) The ID of this resource.
+            ignore_pod_disruption_budgets: (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
+            is_scoped_mode: (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
+            max_cores: (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
+            max_cpu_cores: (Number) defines max CPU cores for the node to pick.
+            max_ram_mib: (Number) defines max RAM in MiB for the node to pick.
+            max_reclaim_rate: (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+            memory_percentage: (Number) defines percentage of additional memory capacity to be added.
+            min_cores: (Number) defines the minimum allowed amount of CPUs in the whole cluster.
+            min_cpu_cores: (Number) defines min CPU cores for the node to pick.
+            min_ram_mib: (Number) defines min RAM in MiB for the node to pick.
+            node_constraints: '(Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)'
+            node_downscaler: '(Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)'
+            node_grace_period_minutes: (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
+            node_templates_partial_matching_enabled: (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
+            pod_eviction_failure_back_off_interval: (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
+            scoped_mode: (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
+            spot_backup_restore_rate_seconds: (Number) defines interval on how often spot backups restore to real spot should occur.
+            spot_backups: '(Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)'
+            spot_diversity_enabled: (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+            spot_diversity_price_increase_limit: (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+            spot_instances: '(Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)'
+            spot_interruption_predictions: '(Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)'
+            spot_interruption_predictions_type: (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
             timeouts: (Block, Optional) (see below for nested schema)
+            unschedulable_pods: '(Block List, Max: 1) policy defining autoscaler''s behavior when unschedulable pods were detected. (see below for nested schema)'
             update: (String)
         importStatements: []
     castai_commitments:
@@ -86,6 +124,7 @@ resources:
                         }
                       ],
                       "prioritization": true,
+                      "scaling_strategy": "Default",
                       "status": "Inactive"
                     }
                   ],
@@ -114,6 +153,7 @@ resources:
                         }
                       ],
                       "prioritization": false,
+                      "scaling_strategy": "Default",
                       "status": "Active"
                     }
                   ]
@@ -144,6 +184,7 @@ resources:
             region: (String) Region of the commitment to match.
             reservation_id: (String)
             reservation_status: (String)
+            scaling_strategy: '(String) Scaling strategy of the commitment in CAST AI. One of: Default, CPUBased, RamBased'
             scope: (String)
             scope_resource_group: (String)
             scope_subscription: (String)
@@ -323,10 +364,12 @@ resources:
             imds_v1: (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
             init_script: (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
             instance_profile_arn: (String) Cluster's instance profile ARN used for CAST provisioned nodes
+            ips_per_prefix: (Number) Number of IPs per prefix to be used for calculating max pods.
             key_pair_id: (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
             kops: '(Block List, Max: 1) (see below for nested schema)'
             kubelet_config: (String) Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             max_pods_per_node: (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
+            max_pods_per_node_formula: (String) Formula to calculate the maximum number of pods that can be run on a node.
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
@@ -340,10 +383,11 @@ resources:
             target_group: '(Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)'
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
+            use_ephemeral_storage_local_ssd: (Boolean) Use ephemeral storage local SSD. Defaults to false
             volume_iops: (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
             volume_kms_key_arn: (String) AWS KMS key ARN for encrypting EBS volume attached to the node
             volume_throughput: (Number) AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
-            volume_type: '(String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, io1, io2'
+            volume_type: '(String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2'
             zones: (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
         importStatements:
             - $ terraform import castai_node_configuration.default <cluster_id>/default
@@ -381,8 +425,10 @@ resources:
             architectures: '(List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.'
             az_name: (String) Availability zone name.
             azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+            burstable_instances: '(String) Will only include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
             cluster_id: (String) CAST AI cluster id.
-            compute_optimized: (Boolean) Compute optimized instance constraint - will only pick compute optimized nodes if true.
+            compute_optimized: (Boolean) Compute optimized instance constraint (deprecated).
+            compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'
             configuration_id: (String) CAST AI node configuration id to be used for node template.
             constraints: '(Block List, Max: 1) (see below for nested schema)'
             create: (String)
@@ -432,7 +478,8 @@ resources:
             spot_diversity_price_increase_limit_percent: (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
             spot_interruption_predictions_enabled: (Boolean) Enable/disable spot interruption predictions.
             spot_interruption_predictions_type: (String) Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
-            storage_optimized: (Boolean) Storage optimized instance constraint - will only pick storage optimized nodes if true
+            storage_optimized: (Boolean) Storage optimized instance constraint (deprecated).
+            storage_optimized_state: '(String) Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won''t pick if disabled. Empty value will have no effect. Supported values: enabled, disabled or empty string.'
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             use_spot_fallbacks: (Boolean) Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
@@ -534,6 +581,7 @@ resources:
             enabled: (Boolean) Enables or disables the execution conditions.
             execution_conditions: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
+            ignore_savings: (Boolean) If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
             keep_drain_timeout_nodes: (Boolean) Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
             launch_configuration: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             name: (String) Name of the schedule.

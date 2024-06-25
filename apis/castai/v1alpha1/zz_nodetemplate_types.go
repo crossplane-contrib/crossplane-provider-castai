@@ -60,8 +60,14 @@ type ConstraintsInitParameters struct {
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
-	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
+	// Will only include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
+
+	// Compute optimized instance constraint (deprecated).
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
+
+	// Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: `enabled`, `disabled` or empty string.
+	ComputeOptimizedState *string `json:"computeOptimizedState,omitempty" tf:"compute_optimized_state,omitempty"`
 
 	CustomPriority []CustomPriorityInitParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
 
@@ -116,8 +122,11 @@ type ConstraintsInitParameters struct {
 	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
-	// Storage optimized instance constraint - will only pick storage optimized nodes if true
+	// Storage optimized instance constraint (deprecated).
 	StorageOptimized *bool `json:"storageOptimized,omitempty" tf:"storage_optimized,omitempty"`
+
+	// Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: `enabled`, `disabled` or empty string.
+	StorageOptimizedState *string `json:"storageOptimizedState,omitempty" tf:"storage_optimized_state,omitempty"`
 
 	// Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
 	UseSpotFallbacks *bool `json:"useSpotFallbacks,omitempty" tf:"use_spot_fallbacks,omitempty"`
@@ -131,8 +140,14 @@ type ConstraintsObservation struct {
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
-	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
+	// Will only include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
+
+	// Compute optimized instance constraint (deprecated).
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
+
+	// Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: `enabled`, `disabled` or empty string.
+	ComputeOptimizedState *string `json:"computeOptimizedState,omitempty" tf:"compute_optimized_state,omitempty"`
 
 	CustomPriority []CustomPriorityObservation `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
 
@@ -187,8 +202,11 @@ type ConstraintsObservation struct {
 	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
-	// Storage optimized instance constraint - will only pick storage optimized nodes if true
+	// Storage optimized instance constraint (deprecated).
 	StorageOptimized *bool `json:"storageOptimized,omitempty" tf:"storage_optimized,omitempty"`
+
+	// Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: `enabled`, `disabled` or empty string.
+	StorageOptimizedState *string `json:"storageOptimizedState,omitempty" tf:"storage_optimized_state,omitempty"`
 
 	// Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
 	UseSpotFallbacks *bool `json:"useSpotFallbacks,omitempty" tf:"use_spot_fallbacks,omitempty"`
@@ -204,9 +222,17 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
-	// Compute optimized instance constraint - will only pick compute optimized nodes if true.
+	// Will only include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	// +kubebuilder:validation:Optional
+	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
+
+	// Compute optimized instance constraint (deprecated).
 	// +kubebuilder:validation:Optional
 	ComputeOptimized *bool `json:"computeOptimized,omitempty" tf:"compute_optimized,omitempty"`
+
+	// Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: `enabled`, `disabled` or empty string.
+	// +kubebuilder:validation:Optional
+	ComputeOptimizedState *string `json:"computeOptimizedState,omitempty" tf:"compute_optimized_state,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	CustomPriority []CustomPriorityParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
@@ -278,9 +304,13 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
-	// Storage optimized instance constraint - will only pick storage optimized nodes if true
+	// Storage optimized instance constraint (deprecated).
 	// +kubebuilder:validation:Optional
 	StorageOptimized *bool `json:"storageOptimized,omitempty" tf:"storage_optimized,omitempty"`
+
+	// Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: `enabled`, `disabled` or empty string.
+	// +kubebuilder:validation:Optional
+	StorageOptimizedState *string `json:"storageOptimizedState,omitempty" tf:"storage_optimized_state,omitempty"`
 
 	// Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
 	// +kubebuilder:validation:Optional

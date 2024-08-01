@@ -357,9 +357,10 @@ resources:
             docker_config: (String) Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             drain_timeout_sec: (Number) Timeout in seconds for draining the node. Defaults to 0
             eks: '(Block List, Max: 1) (see below for nested schema)'
+            eks_image_family: (String) Image OS Family to use when provisioning node. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details.
             gke: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
-            image: (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
+            image: (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
             imds_hop_limit: (Number) Allow configure the IMDSv2 hop limit, the default is 2
             imds_v1: (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
             init_script: (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
@@ -369,7 +370,7 @@ resources:
             kops: '(Block List, Max: 1) (see below for nested schema)'
             kubelet_config: (String) Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             max_pods_per_node: (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
-            max_pods_per_node_formula: (String) Formula to calculate the maximum number of pods that can be run on a node.
+            max_pods_per_node_formula: '(String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .'
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
@@ -380,7 +381,7 @@ resources:
             ssh_public_key: (String) SSH public key to be used for provisioned nodes
             subnets: (List of String) Subnet ids to be used for provisioned nodes
             tags: (Map of String) Tags to be added on cloud instances for provisioned nodes
-            target_group: '(Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)'
+            target_group: (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             use_ephemeral_storage_local_ssd: (Boolean) Use ephemeral storage local SSD. Defaults to false
@@ -425,7 +426,7 @@ resources:
             architectures: '(List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.'
             az_name: (String) Availability zone name.
             azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
-            burstable_instances: '(String) Will only include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
+            burstable_instances: '(String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint (deprecated).
             compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'
@@ -437,6 +438,7 @@ resources:
             custom_labels: (Map of String) Custom labels to be added to nodes created from this template.
             custom_priority: (Block List) (see below for nested schema)
             custom_taints: (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
+            customer_specific: '(String) Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
             dedicated_node_affinity: |-
                 (Block List) Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
                 feature is only available for GCP clusters and sole tenancy nodes with local
@@ -575,6 +577,7 @@ resources:
         argumentDocs:
             CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
             achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
+            aggressive_mode: (Boolean) When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
             create: (String)
             cron: (String) Cron expression defining when the schedule should trigger.
             delete: (String)
@@ -662,6 +665,7 @@ resources:
         argumentDocs:
             aad: '(Block List, Max: 1) Azure AD connector (see below for nested schema)'
             ad_domain: (String) Azure AD domain
+            additional_email_domains: (List of String) Additional email domains that will be allowed to sign in via the connection
             client_id: (String) Azure AD client ID
             client_secret: (String, Sensitive) Azure AD client secret
             create: (String)

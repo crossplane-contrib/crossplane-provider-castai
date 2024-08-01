@@ -60,7 +60,7 @@ type ConstraintsInitParameters struct {
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
-	// Will only include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	// Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
 	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
 
 	// Compute optimized instance constraint (deprecated).
@@ -70,6 +70,9 @@ type ConstraintsInitParameters struct {
 	ComputeOptimizedState *string `json:"computeOptimizedState,omitempty" tf:"compute_optimized_state,omitempty"`
 
 	CustomPriority []CustomPriorityInitParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
+	// Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	CustomerSpecific *string `json:"customerSpecific,omitempty" tf:"customer_specific,omitempty"`
 
 	// Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
 	// feature is only available for GCP clusters and sole tenancy nodes with local
@@ -140,7 +143,7 @@ type ConstraintsObservation struct {
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
-	// Will only include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	// Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
 	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
 
 	// Compute optimized instance constraint (deprecated).
@@ -150,6 +153,9 @@ type ConstraintsObservation struct {
 	ComputeOptimizedState *string `json:"computeOptimizedState,omitempty" tf:"compute_optimized_state,omitempty"`
 
 	CustomPriority []CustomPriorityObservation `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
+	// Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	CustomerSpecific *string `json:"customerSpecific,omitempty" tf:"customer_specific,omitempty"`
 
 	// Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
 	// feature is only available for GCP clusters and sole tenancy nodes with local
@@ -222,7 +228,7 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
-	// Will only include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	// Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
 	// +kubebuilder:validation:Optional
 	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
 
@@ -236,6 +242,10 @@ type ConstraintsParameters struct {
 
 	// +kubebuilder:validation:Optional
 	CustomPriority []CustomPriorityParameters `json:"customPriority,omitempty" tf:"custom_priority,omitempty"`
+
+	// Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	// +kubebuilder:validation:Optional
+	CustomerSpecific *string `json:"customerSpecific,omitempty" tf:"customer_specific,omitempty"`
 
 	// Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
 	// feature is only available for GCP clusters and sole tenancy nodes with local

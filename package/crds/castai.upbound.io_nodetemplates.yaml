@@ -247,9 +247,9 @@ spec:
                             type: string
                           type: array
                         burstableInstances:
-                          description: 'Will only include burstable instances when
-                            enabled otherwise they will be excluded. Supported values:
-                            `enabled`, `disabled` or “.'
+                          description: 'Will include burstable instances when enabled
+                            otherwise they will be excluded. Supported values: `enabled`,
+                            `disabled` or “.'
                           type: string
                         computeOptimized:
                           description: Compute optimized instance constraint (deprecated).
@@ -280,6 +280,11 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        customerSpecific:
+                          description: 'Will include customer specific (preview) instances
+                            when enabled otherwise they will be excluded. Supported
+                            values: `enabled`, `disabled` or “.'
+                          type: string
                         dedicatedNodeAffinity:
                           description: |-
                             Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
@@ -682,9 +687,9 @@ spec:
                             type: string
                           type: array
                         burstableInstances:
-                          description: 'Will only include burstable instances when
-                            enabled otherwise they will be excluded. Supported values:
-                            `enabled`, `disabled` or “.'
+                          description: 'Will include burstable instances when enabled
+                            otherwise they will be excluded. Supported values: `enabled`,
+                            `disabled` or “.'
                           type: string
                         computeOptimized:
                           description: Compute optimized instance constraint (deprecated).
@@ -715,6 +720,11 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        customerSpecific:
+                          description: 'Will include customer specific (preview) instances
+                            when enabled otherwise they will be excluded. Supported
+                            values: `enabled`, `disabled` or “.'
+                          type: string
                         dedicatedNodeAffinity:
                           description: |-
                             Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
@@ -1129,9 +1139,9 @@ spec:
                             type: string
                           type: array
                         burstableInstances:
-                          description: 'Will only include burstable instances when
-                            enabled otherwise they will be excluded. Supported values:
-                            `enabled`, `disabled` or “.'
+                          description: 'Will include burstable instances when enabled
+                            otherwise they will be excluded. Supported values: `enabled`,
+                            `disabled` or “.'
                           type: string
                         computeOptimized:
                           description: Compute optimized instance constraint (deprecated).
@@ -1162,6 +1172,11 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        customerSpecific:
+                          description: 'Will include customer specific (preview) instances
+                            when enabled otherwise they will be excluded. Supported
+                            values: `enabled`, `disabled` or “.'
+                          type: string
                         dedicatedNodeAffinity:
                           description: |-
                             Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This

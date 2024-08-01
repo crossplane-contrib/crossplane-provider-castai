@@ -112,6 +112,13 @@ spec:
                       - clientSecretSecretRef
                       type: object
                     type: array
+                  additionalEmailDomains:
+                    description: |-
+                      (List of String) Additional email domains that will be allowed to sign in via the connection
+                      Additional email domains that will be allowed to sign in via the connection
+                    items:
+                      type: string
+                    type: array
                   emailDomain:
                     description: |-
                       (String) Email domain of the connection
@@ -192,6 +199,13 @@ spec:
                             Azure AD client ID
                           type: string
                       type: object
+                    type: array
+                  additionalEmailDomains:
+                    description: |-
+                      (List of String) Additional email domains that will be allowed to sign in via the connection
+                      Additional email domains that will be allowed to sign in via the connection
+                    items:
+                      type: string
                     type: array
                   emailDomain:
                     description: |-
@@ -420,6 +434,13 @@ spec:
                             Azure AD client ID
                           type: string
                       type: object
+                    type: array
+                  additionalEmailDomains:
+                    description: |-
+                      (List of String) Additional email domains that will be allowed to sign in via the connection
+                      Additional email domains that will be allowed to sign in via the connection
+                    items:
+                      type: string
                     type: array
                   emailDomain:
                     description: |-

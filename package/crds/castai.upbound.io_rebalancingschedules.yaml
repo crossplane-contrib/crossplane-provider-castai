@@ -78,6 +78,11 @@ spec:
                       schema)'
                     items:
                       properties:
+                        aggressiveMode:
+                          description: |-
+                            disabled annotation) as not-problematic.
+                            When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                          type: boolean
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -199,6 +204,11 @@ spec:
                       schema)'
                     items:
                       properties:
+                        aggressiveMode:
+                          description: |-
+                            disabled annotation) as not-problematic.
+                            When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                          type: boolean
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -499,6 +509,11 @@ spec:
                       schema)'
                     items:
                       properties:
+                        aggressiveMode:
+                          description: |-
+                            disabled annotation) as not-problematic.
+                            When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                          type: boolean
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'

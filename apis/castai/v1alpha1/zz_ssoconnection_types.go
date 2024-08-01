@@ -99,6 +99,10 @@ type SSOConnectionInitParameters struct {
 	// Azure AD connector
 	Aad []AadInitParameters `json:"aad,omitempty" tf:"aad,omitempty"`
 
+	// (List of String) Additional email domains that will be allowed to sign in via the connection
+	// Additional email domains that will be allowed to sign in via the connection
+	AdditionalEmailDomains []*string `json:"additionalEmailDomains,omitempty" tf:"additional_email_domains,omitempty"`
+
 	// (String) Email domain of the connection
 	// Email domain of the connection
 	EmailDomain *string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
@@ -117,6 +121,10 @@ type SSOConnectionObservation struct {
 	// (Block List, Max: 1) Azure AD connector (see below for nested schema)
 	// Azure AD connector
 	Aad []AadObservation `json:"aad,omitempty" tf:"aad,omitempty"`
+
+	// (List of String) Additional email domains that will be allowed to sign in via the connection
+	// Additional email domains that will be allowed to sign in via the connection
+	AdditionalEmailDomains []*string `json:"additionalEmailDomains,omitempty" tf:"additional_email_domains,omitempty"`
 
 	// (String) Email domain of the connection
 	// Email domain of the connection
@@ -140,6 +148,11 @@ type SSOConnectionParameters struct {
 	// Azure AD connector
 	// +kubebuilder:validation:Optional
 	Aad []AadParameters `json:"aad,omitempty" tf:"aad,omitempty"`
+
+	// (List of String) Additional email domains that will be allowed to sign in via the connection
+	// Additional email domains that will be allowed to sign in via the connection
+	// +kubebuilder:validation:Optional
+	AdditionalEmailDomains []*string `json:"additionalEmailDomains,omitempty" tf:"additional_email_domains,omitempty"`
 
 	// (String) Email domain of the connection
 	// Email domain of the connection

@@ -1,0 +1,38 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: AutoScaler
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/autoscaler
+  labels:
+    testing.upbound.io/example-name: castai_autoscaler_policy
+  name: castai-autoscaler-policy
+spec:
+  forProvider:
+    autoscalerSettings:
+    - clusterLimits:
+      - cpu:
+        - maxCores: 10
+          minCores: 1
+        enabled: true
+      enabled: true
+      isScopedMode: false
+      nodeDownscaler:
+      - emptyNodes:
+        - delaySeconds: 90
+          enabled: true
+        enabled: true
+        evictor:
+        - aggressiveMode: false
+          cycleInterval: 60s
+          dryRun: false
+          enabled: true
+          ignorePodDisruptionBudgets: false
+          nodeGracePeriodMinutes: 10
+          podEvictionFailureBackOffInterval: 30s
+          scopedMode: false
+      nodeTemplatesPartialMatchingEnabled: false
+      unschedulablePods:
+      - enabled: true
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test

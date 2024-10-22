@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: AutoScaler is the Schema for the AutoScalers API. <no value>
+        description: AutoScaler is the Schema for the AutoScalers API. CAST AI autoscaler
+          resource to manage autoscaler settings
         properties:
           apiVersion:
             description: |-
@@ -73,267 +74,311 @@ spec:
               forProvider:
                 properties:
                   autoscalerPoliciesJson:
-                    description: autoscaler policies JSON string to override current
-                      autoscaler settings
+                    description: |-
+                      (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
+                      autoscaler policies JSON string to override current autoscaler settings
                     type: string
                   autoscalerSettings:
-                    description: autoscaler policy definitions to override current
-                      autoscaler settings
+                    description: |-
+                      (Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)
+                      autoscaler policy definitions to override current autoscaler settings
                     items:
                       properties:
                         clusterLimits:
-                          description: defines minimum and maximum amount of CPU the
-                            cluster can have.
+                          description: |-
+                            (Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)
+                            defines minimum and maximum amount of CPU the cluster can have.
                           items:
                             properties:
                               cpu:
-                                description: defines the minimum and maximum amount
-                                  of CPUs for cluster's worker nodes.
+                                description: |-
+                                  (Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster's worker nodes. (see below for nested schema)
+                                  defines the minimum and maximum amount of CPUs for cluster's worker nodes.
                                 items:
                                   properties:
                                     maxCores:
-                                      description: defines the maximum allowed amount
-                                        of vCPUs in the whole cluster.
+                                      description: |-
+                                        (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
+                                        defines the maximum allowed amount of vCPUs in the whole cluster.
                                       type: number
                                     minCores:
-                                      description: defines the minimum allowed amount
-                                        of CPUs in the whole cluster.
+                                      description: |-
+                                        (Number) defines the minimum allowed amount of CPUs in the whole cluster.
+                                        defines the minimum allowed amount of CPUs in the whole cluster.
                                       type: number
                                   type: object
                                 type: array
                               enabled:
-                                description: enable/disable cluster size limits policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable cluster size limits policy.
                                 type: boolean
                             type: object
                           type: array
                         enabled:
-                          description: enable/disable autoscaler policies
+                          description: |-
+                            (Boolean) enable/disable autoscaler policies
+                            enable/disable autoscaler policies
                           type: boolean
                         isScopedMode:
-                          description: run autoscaler in scoped mode. Only marked
-                            pods and nodes will be considered.
+                          description: |-
+                            (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
+                            run autoscaler in scoped mode. Only marked pods and nodes will be considered.
                           type: boolean
                         nodeDownscaler:
-                          description: node downscaler defines policies for removing
-                            nodes based on the configured conditions.
+                          description: |-
+                            (Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)
+                            node downscaler defines policies for removing nodes based on the configured conditions.
                           items:
                             properties:
                               emptyNodes:
-                                description: defines whether Node Downscaler should
-                                  opt in for removing empty worker nodes when possible.
+                                description: |-
+                                  (Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)
+                                  defines whether Node Downscaler should opt in for removing empty worker nodes when possible.
                                 items:
                                   properties:
                                     delaySeconds:
-                                      description: period (in seconds) to wait before
-                                        removing the node. Might be useful to control
-                                        the aggressiveness of the downscaler.
+                                      description: |-
+                                        (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
+                                        period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
                                       type: number
                                     enabled:
-                                      description: enable/disable the empty worker
-                                        nodes policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the empty worker nodes policy.
                                       type: boolean
                                   type: object
                                 type: array
                               enabled:
-                                description: enable/disable node downscaler policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable node downscaler policy.
                                 type: boolean
                               evictor:
-                                description: defines the CAST AI Evictor component
-                                  settings. Evictor watches the pods running in your
-                                  cluster and looks for ways to compact them into
-                                  fewer nodes, making nodes empty, which will be removed
-                                  by the empty worker nodes policy.
+                                description: |-
+                                  (Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)
+                                  defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy.
                                 items:
                                   properties:
                                     aggressiveMode:
-                                      description: enable/disable aggressive mode.
-                                        By default, Evictor does not target nodes
-                                        that are running unreplicated pods. This mode
-                                        will make the Evictor start considering application
-                                        with just a single replica.
+                                      description: |-
+                                        (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
+                                        enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
                                       type: boolean
                                     cycleInterval:
-                                      description: configure the interval duration
-                                        between Evictor operations. This property
-                                        can be used to lower or raise the frequency
-                                        of the Evictor's find-and-drain operations.
+                                      description: |-
+                                        and-drain operations.
+                                        configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
                                       type: string
                                     dryRun:
-                                      description: enable/disable dry-run. This property
-                                        allows you to prevent the Evictor from carrying
-                                        any operations out and preview the actions
-                                        it would take.
+                                      description: |-
+                                        run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
+                                        enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
                                       type: boolean
                                     enabled:
-                                      description: enable/disable the Evictor policy.
-                                        This will either install or uninstall the
-                                        Evictor component in your cluster.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.
                                       type: boolean
                                     ignorePodDisruptionBudgets:
-                                      description: if enabled then Evictor will attempt
-                                        to evict pods that have pod disruption budgets
-                                        configured.
+                                      description: |-
+                                        (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
+                                        if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
                                       type: boolean
                                     nodeGracePeriodMinutes:
-                                      description: configure the node grace period
-                                        which controls the duration which must pass
-                                        after a node has been created before Evictor
-                                        starts considering that node.
+                                      description: |-
+                                        (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
+                                        configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
                                       type: number
                                     podEvictionFailureBackOffInterval:
-                                      description: configure the pod eviction failure
-                                        back off interval. If pod eviction fails then
-                                        Evictor will attempt to evict it again after
-                                        the amount of time specified here.
+                                      description: |-
+                                        (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
+                                        configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
                                       type: string
                                     scopedMode:
-                                      description: enable/disable scoped mode. By
-                                        default, Evictor targets all nodes in the
-                                        cluster. This mode will constrain it to just
-                                        the nodes which were created by CAST AI.
+                                      description: |-
+                                        (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
+                                        enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
                                       type: boolean
                                   type: object
                                 type: array
                             type: object
                           type: array
                         nodeTemplatesPartialMatchingEnabled:
-                          description: marks whether partial matching should be used
-                            when deciding which custom node template to select.
+                          description: |-
+                            (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
+                            marks whether partial matching should be used when deciding which custom node template to select.
                           type: boolean
                         spotInstances:
-                          description: policy defining whether autoscaler can use
-                            spot instances for provisioning additional workloads.
+                          description: |-
+                            (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+                            policy defining whether autoscaler can use spot instances for provisioning additional workloads.
                           items:
                             properties:
                               enabled:
-                                description: enable/disable spot instances policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable spot instances policy.
                                 type: boolean
                               maxReclaimRate:
-                                description: max allowed reclaim rate when choosing
-                                  spot instance type. E.g. if the value is 10%, instance
-                                  types having 10% or higher reclaim rate will not
-                                  be considered. Set to zero to use all instance types
-                                  regardless of reclaim rate.
+                                description: |-
+                                  (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+                                  max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                 type: number
                               spotBackups:
-                                description: policy defining whether autoscaler can
-                                  use spot backups instead of spot instances when
-                                  spot instances are not available.
+                                description: |-
+                                  (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+                                  policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable spot backups policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable spot backups policy.
                                       type: boolean
                                     spotBackupRestoreRateSeconds:
-                                      description: defines interval on how often spot
-                                        backups restore to real spot should occur.
+                                      description: |-
+                                        (Number) defines interval on how often spot backups restore to real spot should occur.
+                                        defines interval on how often spot backups restore to real spot should occur.
                                       type: number
                                   type: object
                                 type: array
                               spotDiversityEnabled:
-                                description: enable/disable spot diversity policy.
-                                  When enabled, autoscaler will try to balance between
-                                  diverse and cost optimal instance types.
+                                description: |-
+                                  (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                                  enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                 type: boolean
                               spotDiversityPriceIncreaseLimit:
-                                description: allowed node configuration price increase
-                                  when diversifying instance types. E.g. if the value
-                                  is 10%, then the overall price of diversified instance
-                                  types can be 10% higher than the price of the optimal
-                                  configuration.
+                                description: |-
+                                  (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                                  allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                 type: number
                               spotInterruptionPredictions:
-                                description: configure the handling of SPOT interruption
-                                  predictions.
+                                description: |-
+                                  (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+                                  configure the handling of SPOT interruption predictions.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable spot interruption
-                                        predictions.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable spot interruption predictions.
                                       type: boolean
                                     spotInterruptionPredictionsType:
-                                      description: define the type of the spot interruption
-                                        prediction to handle. Allowed values are AWSRebalanceRecommendations,
-                                        CASTAIInterruptionPredictions.
+                                      description: |-
+                                        (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+                                        define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
                         unschedulablePods:
-                          description: policy defining autoscaler's behavior when
-                            unschedulable pods were detected.
+                          description: |-
+                            (Block List, Max: 1) policy defining autoscaler's behavior when unschedulable pods were detected. (see below for nested schema)
+                            policy defining autoscaler's behavior when unschedulable pods were detected.
                           items:
                             properties:
                               customInstancesEnabled:
-                                description: enable/disable custom instances policy.
+                                description: |-
+                                  (Boolean) enable/disable custom instances policy.
+                                  enable/disable custom instances policy.
                                 type: boolean
                               enabled:
-                                description: enable/disable unschedulable pods detection
-                                  policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable unschedulable pods detection policy.
                                 type: boolean
                               headroom:
-                                description: additional headroom based on cluster's
-                                  total available capacity for on-demand nodes.
+                                description: |-
+                                  demand nodes. (see below for nested schema)
+                                  additional headroom based on cluster's total available capacity for on-demand nodes.
                                 items:
                                   properties:
                                     cpuPercentage:
-                                      description: defines percentage of additional
-                                        CPU capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional CPU capacity to be added.
+                                        defines percentage of additional CPU capacity to be added.
                                       type: number
                                     enabled:
-                                      description: enable/disable headroom policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable headroom policy.
                                       type: boolean
                                     memoryPercentage:
-                                      description: defines percentage of additional
-                                        memory capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional memory capacity to be added.
+                                        defines percentage of additional memory capacity to be added.
                                       type: number
                                   type: object
                                 type: array
                               headroomSpot:
-                                description: additional headroom based on cluster's
-                                  total available capacity for spot nodes.
+                                description: |-
+                                  (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+                                  additional headroom based on cluster's total available capacity for spot nodes.
                                 items:
                                   properties:
                                     cpuPercentage:
-                                      description: defines percentage of additional
-                                        CPU capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional CPU capacity to be added.
+                                        defines percentage of additional CPU capacity to be added.
                                       type: number
                                     enabled:
-                                      description: enable/disable headroom_spot policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable headroom_spot policy.
                                       type: boolean
                                     memoryPercentage:
-                                      description: defines percentage of additional
-                                        memory capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional memory capacity to be added.
+                                        defines percentage of additional memory capacity to be added.
                                       type: number
                                   type: object
                                 type: array
                               nodeConstraints:
-                                description: defines the node constraints that will
-                                  be applied when autoscaling with Unschedulable Pods
-                                  policy.
+                                description: |-
+                                  (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+                                  defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable node constraints
-                                        policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable node constraints policy.
                                       type: boolean
                                     maxCpuCores:
-                                      description: defines max CPU cores for the node
-                                        to pick.
+                                      description: |-
+                                        (Number) defines max CPU cores for the node to pick.
+                                        defines max CPU cores for the node to pick.
                                       type: number
                                     maxRamMib:
-                                      description: defines max RAM in MiB for the
-                                        node to pick.
+                                      description: |-
+                                        (Number) defines max RAM in MiB for the node to pick.
+                                        defines max RAM in MiB for the node to pick.
                                       type: number
                                     minCpuCores:
-                                      description: defines min CPU cores for the node
-                                        to pick.
+                                      description: |-
+                                        (Number) defines min CPU cores for the node to pick.
+                                        defines min CPU cores for the node to pick.
                                       type: number
                                     minRamMib:
-                                      description: defines min RAM in MiB for the
-                                        node to pick.
+                                      description: |-
+                                        (Number) defines min RAM in MiB for the node to pick.
+                                        defines min RAM in MiB for the node to pick.
                                       type: number
+                                  type: object
+                                type: array
+                              podPinner:
+                                description: |-
+                                  (Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)
+                                  defines the Cast AI Pod Pinner components settings.
+                                items:
+                                  properties:
+                                    enabled:
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the Pod Pinner component's automatic management in your cluster. Default: enabled.
+                                      type: boolean
                                   type: object
                                 type: array
                             type: object
@@ -341,7 +386,9 @@ spec:
                       type: object
                     type: array
                   clusterId:
-                    description: CAST AI cluster id
+                    description: |-
+                      (String) CAST AI cluster id
+                      CAST AI cluster id
                     type: string
                   clusterIdRef:
                     description: Reference to a EksClusterId in castai to populate
@@ -434,267 +481,311 @@ spec:
                   autoscaler.
                 properties:
                   autoscalerPoliciesJson:
-                    description: autoscaler policies JSON string to override current
-                      autoscaler settings
+                    description: |-
+                      (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
+                      autoscaler policies JSON string to override current autoscaler settings
                     type: string
                   autoscalerSettings:
-                    description: autoscaler policy definitions to override current
-                      autoscaler settings
+                    description: |-
+                      (Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)
+                      autoscaler policy definitions to override current autoscaler settings
                     items:
                       properties:
                         clusterLimits:
-                          description: defines minimum and maximum amount of CPU the
-                            cluster can have.
+                          description: |-
+                            (Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)
+                            defines minimum and maximum amount of CPU the cluster can have.
                           items:
                             properties:
                               cpu:
-                                description: defines the minimum and maximum amount
-                                  of CPUs for cluster's worker nodes.
+                                description: |-
+                                  (Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster's worker nodes. (see below for nested schema)
+                                  defines the minimum and maximum amount of CPUs for cluster's worker nodes.
                                 items:
                                   properties:
                                     maxCores:
-                                      description: defines the maximum allowed amount
-                                        of vCPUs in the whole cluster.
+                                      description: |-
+                                        (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
+                                        defines the maximum allowed amount of vCPUs in the whole cluster.
                                       type: number
                                     minCores:
-                                      description: defines the minimum allowed amount
-                                        of CPUs in the whole cluster.
+                                      description: |-
+                                        (Number) defines the minimum allowed amount of CPUs in the whole cluster.
+                                        defines the minimum allowed amount of CPUs in the whole cluster.
                                       type: number
                                   type: object
                                 type: array
                               enabled:
-                                description: enable/disable cluster size limits policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable cluster size limits policy.
                                 type: boolean
                             type: object
                           type: array
                         enabled:
-                          description: enable/disable autoscaler policies
+                          description: |-
+                            (Boolean) enable/disable autoscaler policies
+                            enable/disable autoscaler policies
                           type: boolean
                         isScopedMode:
-                          description: run autoscaler in scoped mode. Only marked
-                            pods and nodes will be considered.
+                          description: |-
+                            (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
+                            run autoscaler in scoped mode. Only marked pods and nodes will be considered.
                           type: boolean
                         nodeDownscaler:
-                          description: node downscaler defines policies for removing
-                            nodes based on the configured conditions.
+                          description: |-
+                            (Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)
+                            node downscaler defines policies for removing nodes based on the configured conditions.
                           items:
                             properties:
                               emptyNodes:
-                                description: defines whether Node Downscaler should
-                                  opt in for removing empty worker nodes when possible.
+                                description: |-
+                                  (Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)
+                                  defines whether Node Downscaler should opt in for removing empty worker nodes when possible.
                                 items:
                                   properties:
                                     delaySeconds:
-                                      description: period (in seconds) to wait before
-                                        removing the node. Might be useful to control
-                                        the aggressiveness of the downscaler.
+                                      description: |-
+                                        (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
+                                        period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
                                       type: number
                                     enabled:
-                                      description: enable/disable the empty worker
-                                        nodes policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the empty worker nodes policy.
                                       type: boolean
                                   type: object
                                 type: array
                               enabled:
-                                description: enable/disable node downscaler policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable node downscaler policy.
                                 type: boolean
                               evictor:
-                                description: defines the CAST AI Evictor component
-                                  settings. Evictor watches the pods running in your
-                                  cluster and looks for ways to compact them into
-                                  fewer nodes, making nodes empty, which will be removed
-                                  by the empty worker nodes policy.
+                                description: |-
+                                  (Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)
+                                  defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy.
                                 items:
                                   properties:
                                     aggressiveMode:
-                                      description: enable/disable aggressive mode.
-                                        By default, Evictor does not target nodes
-                                        that are running unreplicated pods. This mode
-                                        will make the Evictor start considering application
-                                        with just a single replica.
+                                      description: |-
+                                        (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
+                                        enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
                                       type: boolean
                                     cycleInterval:
-                                      description: configure the interval duration
-                                        between Evictor operations. This property
-                                        can be used to lower or raise the frequency
-                                        of the Evictor's find-and-drain operations.
+                                      description: |-
+                                        and-drain operations.
+                                        configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
                                       type: string
                                     dryRun:
-                                      description: enable/disable dry-run. This property
-                                        allows you to prevent the Evictor from carrying
-                                        any operations out and preview the actions
-                                        it would take.
+                                      description: |-
+                                        run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
+                                        enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
                                       type: boolean
                                     enabled:
-                                      description: enable/disable the Evictor policy.
-                                        This will either install or uninstall the
-                                        Evictor component in your cluster.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.
                                       type: boolean
                                     ignorePodDisruptionBudgets:
-                                      description: if enabled then Evictor will attempt
-                                        to evict pods that have pod disruption budgets
-                                        configured.
+                                      description: |-
+                                        (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
+                                        if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
                                       type: boolean
                                     nodeGracePeriodMinutes:
-                                      description: configure the node grace period
-                                        which controls the duration which must pass
-                                        after a node has been created before Evictor
-                                        starts considering that node.
+                                      description: |-
+                                        (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
+                                        configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
                                       type: number
                                     podEvictionFailureBackOffInterval:
-                                      description: configure the pod eviction failure
-                                        back off interval. If pod eviction fails then
-                                        Evictor will attempt to evict it again after
-                                        the amount of time specified here.
+                                      description: |-
+                                        (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
+                                        configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
                                       type: string
                                     scopedMode:
-                                      description: enable/disable scoped mode. By
-                                        default, Evictor targets all nodes in the
-                                        cluster. This mode will constrain it to just
-                                        the nodes which were created by CAST AI.
+                                      description: |-
+                                        (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
+                                        enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
                                       type: boolean
                                   type: object
                                 type: array
                             type: object
                           type: array
                         nodeTemplatesPartialMatchingEnabled:
-                          description: marks whether partial matching should be used
-                            when deciding which custom node template to select.
+                          description: |-
+                            (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
+                            marks whether partial matching should be used when deciding which custom node template to select.
                           type: boolean
                         spotInstances:
-                          description: policy defining whether autoscaler can use
-                            spot instances for provisioning additional workloads.
+                          description: |-
+                            (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+                            policy defining whether autoscaler can use spot instances for provisioning additional workloads.
                           items:
                             properties:
                               enabled:
-                                description: enable/disable spot instances policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable spot instances policy.
                                 type: boolean
                               maxReclaimRate:
-                                description: max allowed reclaim rate when choosing
-                                  spot instance type. E.g. if the value is 10%, instance
-                                  types having 10% or higher reclaim rate will not
-                                  be considered. Set to zero to use all instance types
-                                  regardless of reclaim rate.
+                                description: |-
+                                  (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+                                  max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                 type: number
                               spotBackups:
-                                description: policy defining whether autoscaler can
-                                  use spot backups instead of spot instances when
-                                  spot instances are not available.
+                                description: |-
+                                  (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+                                  policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable spot backups policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable spot backups policy.
                                       type: boolean
                                     spotBackupRestoreRateSeconds:
-                                      description: defines interval on how often spot
-                                        backups restore to real spot should occur.
+                                      description: |-
+                                        (Number) defines interval on how often spot backups restore to real spot should occur.
+                                        defines interval on how often spot backups restore to real spot should occur.
                                       type: number
                                   type: object
                                 type: array
                               spotDiversityEnabled:
-                                description: enable/disable spot diversity policy.
-                                  When enabled, autoscaler will try to balance between
-                                  diverse and cost optimal instance types.
+                                description: |-
+                                  (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                                  enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                 type: boolean
                               spotDiversityPriceIncreaseLimit:
-                                description: allowed node configuration price increase
-                                  when diversifying instance types. E.g. if the value
-                                  is 10%, then the overall price of diversified instance
-                                  types can be 10% higher than the price of the optimal
-                                  configuration.
+                                description: |-
+                                  (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                                  allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                 type: number
                               spotInterruptionPredictions:
-                                description: configure the handling of SPOT interruption
-                                  predictions.
+                                description: |-
+                                  (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+                                  configure the handling of SPOT interruption predictions.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable spot interruption
-                                        predictions.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable spot interruption predictions.
                                       type: boolean
                                     spotInterruptionPredictionsType:
-                                      description: define the type of the spot interruption
-                                        prediction to handle. Allowed values are AWSRebalanceRecommendations,
-                                        CASTAIInterruptionPredictions.
+                                      description: |-
+                                        (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+                                        define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
                         unschedulablePods:
-                          description: policy defining autoscaler's behavior when
-                            unschedulable pods were detected.
+                          description: |-
+                            (Block List, Max: 1) policy defining autoscaler's behavior when unschedulable pods were detected. (see below for nested schema)
+                            policy defining autoscaler's behavior when unschedulable pods were detected.
                           items:
                             properties:
                               customInstancesEnabled:
-                                description: enable/disable custom instances policy.
+                                description: |-
+                                  (Boolean) enable/disable custom instances policy.
+                                  enable/disable custom instances policy.
                                 type: boolean
                               enabled:
-                                description: enable/disable unschedulable pods detection
-                                  policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable unschedulable pods detection policy.
                                 type: boolean
                               headroom:
-                                description: additional headroom based on cluster's
-                                  total available capacity for on-demand nodes.
+                                description: |-
+                                  demand nodes. (see below for nested schema)
+                                  additional headroom based on cluster's total available capacity for on-demand nodes.
                                 items:
                                   properties:
                                     cpuPercentage:
-                                      description: defines percentage of additional
-                                        CPU capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional CPU capacity to be added.
+                                        defines percentage of additional CPU capacity to be added.
                                       type: number
                                     enabled:
-                                      description: enable/disable headroom policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable headroom policy.
                                       type: boolean
                                     memoryPercentage:
-                                      description: defines percentage of additional
-                                        memory capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional memory capacity to be added.
+                                        defines percentage of additional memory capacity to be added.
                                       type: number
                                   type: object
                                 type: array
                               headroomSpot:
-                                description: additional headroom based on cluster's
-                                  total available capacity for spot nodes.
+                                description: |-
+                                  (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+                                  additional headroom based on cluster's total available capacity for spot nodes.
                                 items:
                                   properties:
                                     cpuPercentage:
-                                      description: defines percentage of additional
-                                        CPU capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional CPU capacity to be added.
+                                        defines percentage of additional CPU capacity to be added.
                                       type: number
                                     enabled:
-                                      description: enable/disable headroom_spot policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable headroom_spot policy.
                                       type: boolean
                                     memoryPercentage:
-                                      description: defines percentage of additional
-                                        memory capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional memory capacity to be added.
+                                        defines percentage of additional memory capacity to be added.
                                       type: number
                                   type: object
                                 type: array
                               nodeConstraints:
-                                description: defines the node constraints that will
-                                  be applied when autoscaling with Unschedulable Pods
-                                  policy.
+                                description: |-
+                                  (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+                                  defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable node constraints
-                                        policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable node constraints policy.
                                       type: boolean
                                     maxCpuCores:
-                                      description: defines max CPU cores for the node
-                                        to pick.
+                                      description: |-
+                                        (Number) defines max CPU cores for the node to pick.
+                                        defines max CPU cores for the node to pick.
                                       type: number
                                     maxRamMib:
-                                      description: defines max RAM in MiB for the
-                                        node to pick.
+                                      description: |-
+                                        (Number) defines max RAM in MiB for the node to pick.
+                                        defines max RAM in MiB for the node to pick.
                                       type: number
                                     minCpuCores:
-                                      description: defines min CPU cores for the node
-                                        to pick.
+                                      description: |-
+                                        (Number) defines min CPU cores for the node to pick.
+                                        defines min CPU cores for the node to pick.
                                       type: number
                                     minRamMib:
-                                      description: defines min RAM in MiB for the
-                                        node to pick.
+                                      description: |-
+                                        (Number) defines min RAM in MiB for the node to pick.
+                                        defines min RAM in MiB for the node to pick.
                                       type: number
+                                  type: object
+                                type: array
+                              podPinner:
+                                description: |-
+                                  (Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)
+                                  defines the Cast AI Pod Pinner components settings.
+                                items:
+                                  properties:
+                                    enabled:
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the Pod Pinner component's automatic management in your cluster. Default: enabled.
+                                      type: boolean
                                   type: object
                                 type: array
                             type: object
@@ -702,7 +793,9 @@ spec:
                       type: object
                     type: array
                   clusterId:
-                    description: CAST AI cluster id
+                    description: |-
+                      (String) CAST AI cluster id
+                      CAST AI cluster id
                     type: string
                   clusterIdRef:
                     description: Reference to a EksClusterId in castai to populate
@@ -954,270 +1047,316 @@ spec:
               atProvider:
                 properties:
                   autoscalerPolicies:
-                    description: computed value to store full policies configuration
+                    description: |-
+                      (String) computed value to store full policies configuration
+                      computed value to store full policies configuration
                     type: string
                   autoscalerPoliciesJson:
-                    description: autoscaler policies JSON string to override current
-                      autoscaler settings
+                    description: |-
+                      (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
+                      autoscaler policies JSON string to override current autoscaler settings
                     type: string
                   autoscalerSettings:
-                    description: autoscaler policy definitions to override current
-                      autoscaler settings
+                    description: |-
+                      (Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)
+                      autoscaler policy definitions to override current autoscaler settings
                     items:
                       properties:
                         clusterLimits:
-                          description: defines minimum and maximum amount of CPU the
-                            cluster can have.
+                          description: |-
+                            (Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)
+                            defines minimum and maximum amount of CPU the cluster can have.
                           items:
                             properties:
                               cpu:
-                                description: defines the minimum and maximum amount
-                                  of CPUs for cluster's worker nodes.
+                                description: |-
+                                  (Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster's worker nodes. (see below for nested schema)
+                                  defines the minimum and maximum amount of CPUs for cluster's worker nodes.
                                 items:
                                   properties:
                                     maxCores:
-                                      description: defines the maximum allowed amount
-                                        of vCPUs in the whole cluster.
+                                      description: |-
+                                        (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
+                                        defines the maximum allowed amount of vCPUs in the whole cluster.
                                       type: number
                                     minCores:
-                                      description: defines the minimum allowed amount
-                                        of CPUs in the whole cluster.
+                                      description: |-
+                                        (Number) defines the minimum allowed amount of CPUs in the whole cluster.
+                                        defines the minimum allowed amount of CPUs in the whole cluster.
                                       type: number
                                   type: object
                                 type: array
                               enabled:
-                                description: enable/disable cluster size limits policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable cluster size limits policy.
                                 type: boolean
                             type: object
                           type: array
                         enabled:
-                          description: enable/disable autoscaler policies
+                          description: |-
+                            (Boolean) enable/disable autoscaler policies
+                            enable/disable autoscaler policies
                           type: boolean
                         isScopedMode:
-                          description: run autoscaler in scoped mode. Only marked
-                            pods and nodes will be considered.
+                          description: |-
+                            (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
+                            run autoscaler in scoped mode. Only marked pods and nodes will be considered.
                           type: boolean
                         nodeDownscaler:
-                          description: node downscaler defines policies for removing
-                            nodes based on the configured conditions.
+                          description: |-
+                            (Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)
+                            node downscaler defines policies for removing nodes based on the configured conditions.
                           items:
                             properties:
                               emptyNodes:
-                                description: defines whether Node Downscaler should
-                                  opt in for removing empty worker nodes when possible.
+                                description: |-
+                                  (Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)
+                                  defines whether Node Downscaler should opt in for removing empty worker nodes when possible.
                                 items:
                                   properties:
                                     delaySeconds:
-                                      description: period (in seconds) to wait before
-                                        removing the node. Might be useful to control
-                                        the aggressiveness of the downscaler.
+                                      description: |-
+                                        (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
+                                        period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
                                       type: number
                                     enabled:
-                                      description: enable/disable the empty worker
-                                        nodes policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the empty worker nodes policy.
                                       type: boolean
                                   type: object
                                 type: array
                               enabled:
-                                description: enable/disable node downscaler policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable node downscaler policy.
                                 type: boolean
                               evictor:
-                                description: defines the CAST AI Evictor component
-                                  settings. Evictor watches the pods running in your
-                                  cluster and looks for ways to compact them into
-                                  fewer nodes, making nodes empty, which will be removed
-                                  by the empty worker nodes policy.
+                                description: |-
+                                  (Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)
+                                  defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy.
                                 items:
                                   properties:
                                     aggressiveMode:
-                                      description: enable/disable aggressive mode.
-                                        By default, Evictor does not target nodes
-                                        that are running unreplicated pods. This mode
-                                        will make the Evictor start considering application
-                                        with just a single replica.
+                                      description: |-
+                                        (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
+                                        enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
                                       type: boolean
                                     cycleInterval:
-                                      description: configure the interval duration
-                                        between Evictor operations. This property
-                                        can be used to lower or raise the frequency
-                                        of the Evictor's find-and-drain operations.
+                                      description: |-
+                                        and-drain operations.
+                                        configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
                                       type: string
                                     dryRun:
-                                      description: enable/disable dry-run. This property
-                                        allows you to prevent the Evictor from carrying
-                                        any operations out and preview the actions
-                                        it would take.
+                                      description: |-
+                                        run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
+                                        enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
                                       type: boolean
                                     enabled:
-                                      description: enable/disable the Evictor policy.
-                                        This will either install or uninstall the
-                                        Evictor component in your cluster.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.
                                       type: boolean
                                     ignorePodDisruptionBudgets:
-                                      description: if enabled then Evictor will attempt
-                                        to evict pods that have pod disruption budgets
-                                        configured.
+                                      description: |-
+                                        (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
+                                        if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
                                       type: boolean
                                     nodeGracePeriodMinutes:
-                                      description: configure the node grace period
-                                        which controls the duration which must pass
-                                        after a node has been created before Evictor
-                                        starts considering that node.
+                                      description: |-
+                                        (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
+                                        configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
                                       type: number
                                     podEvictionFailureBackOffInterval:
-                                      description: configure the pod eviction failure
-                                        back off interval. If pod eviction fails then
-                                        Evictor will attempt to evict it again after
-                                        the amount of time specified here.
+                                      description: |-
+                                        (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
+                                        configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
                                       type: string
                                     scopedMode:
-                                      description: enable/disable scoped mode. By
-                                        default, Evictor targets all nodes in the
-                                        cluster. This mode will constrain it to just
-                                        the nodes which were created by CAST AI.
+                                      description: |-
+                                        (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
+                                        enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
                                       type: boolean
                                   type: object
                                 type: array
                             type: object
                           type: array
                         nodeTemplatesPartialMatchingEnabled:
-                          description: marks whether partial matching should be used
-                            when deciding which custom node template to select.
+                          description: |-
+                            (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
+                            marks whether partial matching should be used when deciding which custom node template to select.
                           type: boolean
                         spotInstances:
-                          description: policy defining whether autoscaler can use
-                            spot instances for provisioning additional workloads.
+                          description: |-
+                            (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+                            policy defining whether autoscaler can use spot instances for provisioning additional workloads.
                           items:
                             properties:
                               enabled:
-                                description: enable/disable spot instances policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable spot instances policy.
                                 type: boolean
                               maxReclaimRate:
-                                description: max allowed reclaim rate when choosing
-                                  spot instance type. E.g. if the value is 10%, instance
-                                  types having 10% or higher reclaim rate will not
-                                  be considered. Set to zero to use all instance types
-                                  regardless of reclaim rate.
+                                description: |-
+                                  (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+                                  max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                 type: number
                               spotBackups:
-                                description: policy defining whether autoscaler can
-                                  use spot backups instead of spot instances when
-                                  spot instances are not available.
+                                description: |-
+                                  (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+                                  policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable spot backups policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable spot backups policy.
                                       type: boolean
                                     spotBackupRestoreRateSeconds:
-                                      description: defines interval on how often spot
-                                        backups restore to real spot should occur.
+                                      description: |-
+                                        (Number) defines interval on how often spot backups restore to real spot should occur.
+                                        defines interval on how often spot backups restore to real spot should occur.
                                       type: number
                                   type: object
                                 type: array
                               spotDiversityEnabled:
-                                description: enable/disable spot diversity policy.
-                                  When enabled, autoscaler will try to balance between
-                                  diverse and cost optimal instance types.
+                                description: |-
+                                  (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                                  enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                 type: boolean
                               spotDiversityPriceIncreaseLimit:
-                                description: allowed node configuration price increase
-                                  when diversifying instance types. E.g. if the value
-                                  is 10%, then the overall price of diversified instance
-                                  types can be 10% higher than the price of the optimal
-                                  configuration.
+                                description: |-
+                                  (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                                  allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                 type: number
                               spotInterruptionPredictions:
-                                description: configure the handling of SPOT interruption
-                                  predictions.
+                                description: |-
+                                  (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+                                  configure the handling of SPOT interruption predictions.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable spot interruption
-                                        predictions.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable spot interruption predictions.
                                       type: boolean
                                     spotInterruptionPredictionsType:
-                                      description: define the type of the spot interruption
-                                        prediction to handle. Allowed values are AWSRebalanceRecommendations,
-                                        CASTAIInterruptionPredictions.
+                                      description: |-
+                                        (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+                                        define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
                         unschedulablePods:
-                          description: policy defining autoscaler's behavior when
-                            unschedulable pods were detected.
+                          description: |-
+                            (Block List, Max: 1) policy defining autoscaler's behavior when unschedulable pods were detected. (see below for nested schema)
+                            policy defining autoscaler's behavior when unschedulable pods were detected.
                           items:
                             properties:
                               customInstancesEnabled:
-                                description: enable/disable custom instances policy.
+                                description: |-
+                                  (Boolean) enable/disable custom instances policy.
+                                  enable/disable custom instances policy.
                                 type: boolean
                               enabled:
-                                description: enable/disable unschedulable pods detection
-                                  policy.
+                                description: |-
+                                  (Boolean) enable/disable autoscaler policies
+                                  enable/disable unschedulable pods detection policy.
                                 type: boolean
                               headroom:
-                                description: additional headroom based on cluster's
-                                  total available capacity for on-demand nodes.
+                                description: |-
+                                  demand nodes. (see below for nested schema)
+                                  additional headroom based on cluster's total available capacity for on-demand nodes.
                                 items:
                                   properties:
                                     cpuPercentage:
-                                      description: defines percentage of additional
-                                        CPU capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional CPU capacity to be added.
+                                        defines percentage of additional CPU capacity to be added.
                                       type: number
                                     enabled:
-                                      description: enable/disable headroom policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable headroom policy.
                                       type: boolean
                                     memoryPercentage:
-                                      description: defines percentage of additional
-                                        memory capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional memory capacity to be added.
+                                        defines percentage of additional memory capacity to be added.
                                       type: number
                                   type: object
                                 type: array
                               headroomSpot:
-                                description: additional headroom based on cluster's
-                                  total available capacity for spot nodes.
+                                description: |-
+                                  (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+                                  additional headroom based on cluster's total available capacity for spot nodes.
                                 items:
                                   properties:
                                     cpuPercentage:
-                                      description: defines percentage of additional
-                                        CPU capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional CPU capacity to be added.
+                                        defines percentage of additional CPU capacity to be added.
                                       type: number
                                     enabled:
-                                      description: enable/disable headroom_spot policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable headroom_spot policy.
                                       type: boolean
                                     memoryPercentage:
-                                      description: defines percentage of additional
-                                        memory capacity to be added.
+                                      description: |-
+                                        (Number) defines percentage of additional memory capacity to be added.
+                                        defines percentage of additional memory capacity to be added.
                                       type: number
                                   type: object
                                 type: array
                               nodeConstraints:
-                                description: defines the node constraints that will
-                                  be applied when autoscaling with Unschedulable Pods
-                                  policy.
+                                description: |-
+                                  (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+                                  defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
                                 items:
                                   properties:
                                     enabled:
-                                      description: enable/disable node constraints
-                                        policy.
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable node constraints policy.
                                       type: boolean
                                     maxCpuCores:
-                                      description: defines max CPU cores for the node
-                                        to pick.
+                                      description: |-
+                                        (Number) defines max CPU cores for the node to pick.
+                                        defines max CPU cores for the node to pick.
                                       type: number
                                     maxRamMib:
-                                      description: defines max RAM in MiB for the
-                                        node to pick.
+                                      description: |-
+                                        (Number) defines max RAM in MiB for the node to pick.
+                                        defines max RAM in MiB for the node to pick.
                                       type: number
                                     minCpuCores:
-                                      description: defines min CPU cores for the node
-                                        to pick.
+                                      description: |-
+                                        (Number) defines min CPU cores for the node to pick.
+                                        defines min CPU cores for the node to pick.
                                       type: number
                                     minRamMib:
-                                      description: defines min RAM in MiB for the
-                                        node to pick.
+                                      description: |-
+                                        (Number) defines min RAM in MiB for the node to pick.
+                                        defines min RAM in MiB for the node to pick.
                                       type: number
+                                  type: object
+                                type: array
+                              podPinner:
+                                description: |-
+                                  (Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)
+                                  defines the Cast AI Pod Pinner components settings.
+                                items:
+                                  properties:
+                                    enabled:
+                                      description: |-
+                                        (Boolean) enable/disable autoscaler policies
+                                        enable/disable the Pod Pinner component's automatic management in your cluster. Default: enabled.
+                                      type: boolean
                                   type: object
                                 type: array
                             type: object
@@ -1225,9 +1364,12 @@ spec:
                       type: object
                     type: array
                   clusterId:
-                    description: CAST AI cluster id
+                    description: |-
+                      (String) CAST AI cluster id
+                      CAST AI cluster id
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                 type: object
               conditions:

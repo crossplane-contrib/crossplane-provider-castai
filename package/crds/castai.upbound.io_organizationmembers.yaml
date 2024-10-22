@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: OrganizationMembers is the Schema for the OrganizationMemberss
-          API. <no value>
+          API. CAST AI organization members resource to manage organization members
         properties:
           apiVersion:
             description: |-
@@ -74,23 +74,28 @@ spec:
               forProvider:
                 properties:
                   members:
-                    description: A list of email addresses corresponding to users
-                      who should be given member access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+                      A list of email addresses corresponding to users who should be given member access to the organization.
                     items:
                       type: string
                     type: array
                   organizationId:
-                    description: CAST AI organization ID.
+                    description: |-
+                      (String) CAST AI organization ID.
+                      CAST AI organization ID.
                     type: string
                   owners:
-                    description: A list of email addresses corresponding to users
-                      who should be given owner access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+                      A list of email addresses corresponding to users who should be given owner access to the organization.
                     items:
                       type: string
                     type: array
                   viewers:
-                    description: A list of email addresses corresponding to users
-                      who should be given viewer access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+                      A list of email addresses corresponding to users who should be given viewer access to the organization.
                     items:
                       type: string
                     type: array
@@ -109,23 +114,28 @@ spec:
                   autoscaler.
                 properties:
                   members:
-                    description: A list of email addresses corresponding to users
-                      who should be given member access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+                      A list of email addresses corresponding to users who should be given member access to the organization.
                     items:
                       type: string
                     type: array
                   organizationId:
-                    description: CAST AI organization ID.
+                    description: |-
+                      (String) CAST AI organization ID.
+                      CAST AI organization ID.
                     type: string
                   owners:
-                    description: A list of email addresses corresponding to users
-                      who should be given owner access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+                      A list of email addresses corresponding to users who should be given owner access to the organization.
                     items:
                       type: string
                     type: array
                   viewers:
-                    description: A list of email addresses corresponding to users
-                      who should be given viewer access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+                      A list of email addresses corresponding to users who should be given viewer access to the organization.
                     items:
                       type: string
                     type: array
@@ -308,25 +318,31 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   members:
-                    description: A list of email addresses corresponding to users
-                      who should be given member access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+                      A list of email addresses corresponding to users who should be given member access to the organization.
                     items:
                       type: string
                     type: array
                   organizationId:
-                    description: CAST AI organization ID.
+                    description: |-
+                      (String) CAST AI organization ID.
+                      CAST AI organization ID.
                     type: string
                   owners:
-                    description: A list of email addresses corresponding to users
-                      who should be given owner access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+                      A list of email addresses corresponding to users who should be given owner access to the organization.
                     items:
                       type: string
                     type: array
                   viewers:
-                    description: A list of email addresses corresponding to users
-                      who should be given viewer access to the organization.
+                    description: |-
+                      (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+                      A list of email addresses corresponding to users who should be given viewer access to the organization.
                     items:
                       type: string
                     type: array

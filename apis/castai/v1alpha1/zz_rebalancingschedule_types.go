@@ -50,6 +50,10 @@ type ExecutionConditionsParameters struct {
 
 type LaunchConfigurationInitParameters struct {
 
+	// disabled annotation) as not-problematic.
+	// When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsInitParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
 
@@ -80,6 +84,10 @@ type LaunchConfigurationInitParameters struct {
 
 type LaunchConfigurationObservation struct {
 
+	// disabled annotation) as not-problematic.
+	// When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
 
@@ -109,6 +117,11 @@ type LaunchConfigurationObservation struct {
 }
 
 type LaunchConfigurationParameters struct {
+
+	// disabled annotation) as not-problematic.
+	// When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+	// +kubebuilder:validation:Optional
+	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional

@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: EvictorAdvancedConfig is the Schema for the EvictorAdvancedConfigs
-          API. <no value>
+          API. CAST AI eviction config resource to manage evictor properties
         properties:
           apiVersion:
             description: |-
@@ -74,7 +74,9 @@ spec:
               forProvider:
                 properties:
                   clusterId:
-                    description: CAST AI cluster id.
+                    description: |-
+                      (String) CAST AI cluster id.
+                      CAST AI cluster id.
                     type: string
                   clusterIdRef:
                     description: Reference to a EksClusterId in castai to populate
@@ -153,26 +155,39 @@ spec:
                         type: object
                     type: object
                   evictorAdvancedConfig:
-                    description: evictor advanced configuration to target specific
-                      node/pod
+                    description: |-
+                      (Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)
+                      evictor advanced configuration to target specific node/pod
                     items:
                       properties:
                         aggressive:
+                          description: |-
+                            (Boolean) Apply Aggressive mode to Evictor
+                            Apply Aggressive mode to Evictor
                           type: boolean
                         disposable:
+                          description: |-
+                            (Boolean) Mark node as disposable
+                            Mark node as disposable
                           type: boolean
                         nodeSelector:
-                          description: node selector
+                          description: |-
+                            (Block List) node selector (see below for nested schema)
+                            node selector
                           items:
                             properties:
                               matchExpressions:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
+                                      description: (String)
                                       type: string
                                     operator:
+                                      description: (String)
                                       type: string
                                     values:
+                                      description: (List of String)
                                       items:
                                         type: string
                                       type: array
@@ -181,24 +196,32 @@ spec:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: (Map of String)
                                 type: object
                                 x-kubernetes-map-type: granular
                             type: object
                           type: array
                         podSelector:
-                          description: pod selector
+                          description: |-
+                            (Block List) pod selector (see below for nested schema)
+                            pod selector
                           items:
                             properties:
                               kind:
+                                description: (String)
                                 type: string
                               matchExpressions:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
+                                      description: (String)
                                       type: string
                                     operator:
+                                      description: (String)
                                       type: string
                                     values:
+                                      description: (List of String)
                                       items:
                                         type: string
                                       type: array
@@ -207,13 +230,18 @@ spec:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: (Map of String)
                                 type: object
                                 x-kubernetes-map-type: granular
                               namespace:
+                                description: (String)
                                 type: string
                             type: object
                           type: array
                         removalDisabled:
+                          description: |-
+                            (Boolean) Mark pods as removal disabled
+                            Mark pods as removal disabled
                           type: boolean
                       type: object
                     type: array
@@ -232,7 +260,9 @@ spec:
                   autoscaler.
                 properties:
                   clusterId:
-                    description: CAST AI cluster id.
+                    description: |-
+                      (String) CAST AI cluster id.
+                      CAST AI cluster id.
                     type: string
                   clusterIdRef:
                     description: Reference to a EksClusterId in castai to populate
@@ -311,26 +341,39 @@ spec:
                         type: object
                     type: object
                   evictorAdvancedConfig:
-                    description: evictor advanced configuration to target specific
-                      node/pod
+                    description: |-
+                      (Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)
+                      evictor advanced configuration to target specific node/pod
                     items:
                       properties:
                         aggressive:
+                          description: |-
+                            (Boolean) Apply Aggressive mode to Evictor
+                            Apply Aggressive mode to Evictor
                           type: boolean
                         disposable:
+                          description: |-
+                            (Boolean) Mark node as disposable
+                            Mark node as disposable
                           type: boolean
                         nodeSelector:
-                          description: node selector
+                          description: |-
+                            (Block List) node selector (see below for nested schema)
+                            node selector
                           items:
                             properties:
                               matchExpressions:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
+                                      description: (String)
                                       type: string
                                     operator:
+                                      description: (String)
                                       type: string
                                     values:
+                                      description: (List of String)
                                       items:
                                         type: string
                                       type: array
@@ -339,24 +382,32 @@ spec:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: (Map of String)
                                 type: object
                                 x-kubernetes-map-type: granular
                             type: object
                           type: array
                         podSelector:
-                          description: pod selector
+                          description: |-
+                            (Block List) pod selector (see below for nested schema)
+                            pod selector
                           items:
                             properties:
                               kind:
+                                description: (String)
                                 type: string
                               matchExpressions:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
+                                      description: (String)
                                       type: string
                                     operator:
+                                      description: (String)
                                       type: string
                                     values:
+                                      description: (List of String)
                                       items:
                                         type: string
                                       type: array
@@ -365,13 +416,18 @@ spec:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: (Map of String)
                                 type: object
                                 x-kubernetes-map-type: granular
                               namespace:
+                                description: (String)
                                 type: string
                             type: object
                           type: array
                         removalDisabled:
+                          description: |-
+                            (Boolean) Mark pods as removal disabled
+                            Mark pods as removal disabled
                           type: boolean
                       type: object
                     type: array
@@ -555,29 +611,44 @@ spec:
               atProvider:
                 properties:
                   clusterId:
-                    description: CAST AI cluster id.
+                    description: |-
+                      (String) CAST AI cluster id.
+                      CAST AI cluster id.
                     type: string
                   evictorAdvancedConfig:
-                    description: evictor advanced configuration to target specific
-                      node/pod
+                    description: |-
+                      (Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)
+                      evictor advanced configuration to target specific node/pod
                     items:
                       properties:
                         aggressive:
+                          description: |-
+                            (Boolean) Apply Aggressive mode to Evictor
+                            Apply Aggressive mode to Evictor
                           type: boolean
                         disposable:
+                          description: |-
+                            (Boolean) Mark node as disposable
+                            Mark node as disposable
                           type: boolean
                         nodeSelector:
-                          description: node selector
+                          description: |-
+                            (Block List) node selector (see below for nested schema)
+                            node selector
                           items:
                             properties:
                               matchExpressions:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
+                                      description: (String)
                                       type: string
                                     operator:
+                                      description: (String)
                                       type: string
                                     values:
+                                      description: (List of String)
                                       items:
                                         type: string
                                       type: array
@@ -586,24 +657,32 @@ spec:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: (Map of String)
                                 type: object
                                 x-kubernetes-map-type: granular
                             type: object
                           type: array
                         podSelector:
-                          description: pod selector
+                          description: |-
+                            (Block List) pod selector (see below for nested schema)
+                            pod selector
                           items:
                             properties:
                               kind:
+                                description: (String)
                                 type: string
                               matchExpressions:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
+                                      description: (String)
                                       type: string
                                     operator:
+                                      description: (String)
                                       type: string
                                     values:
+                                      description: (List of String)
                                       items:
                                         type: string
                                       type: array
@@ -612,17 +691,23 @@ spec:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: (Map of String)
                                 type: object
                                 x-kubernetes-map-type: granular
                               namespace:
+                                description: (String)
                                 type: string
                             type: object
                           type: array
                         removalDisabled:
+                          description: |-
+                            (Boolean) Mark pods as removal disabled
+                            Mark pods as removal disabled
                           type: boolean
                       type: object
                     type: array
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                 type: object
               conditions:

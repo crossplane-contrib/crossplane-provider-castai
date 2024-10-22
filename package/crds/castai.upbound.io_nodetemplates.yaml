@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NodeTemplate is the Schema for the NodeTemplates API. <no value>
+        description: NodeTemplate is the Schema for the NodeTemplates API. CAST AI
+          node template resource to manage node templates
         properties:
           apiVersion:
             description: |-
@@ -73,7 +74,9 @@ spec:
               forProvider:
                 properties:
                   clusterId:
-                    description: CAST AI cluster id.
+                    description: |-
+                      (String) CAST AI cluster id.
+                      CAST AI cluster id.
                     type: string
                   clusterIdRef:
                     description: Reference to a EksClusterId in castai to populate
@@ -152,8 +155,9 @@ spec:
                         type: object
                     type: object
                   configurationId:
-                    description: CAST AI node configuration id to be used for node
-                      template.
+                    description: |-
+                      (String) CAST AI node configuration id to be used for node template.
+                      CAST AI node configuration id to be used for node template.
                     type: string
                   configurationIdRef:
                     description: Reference to a NodeConfiguration in castai to populate
@@ -232,56 +236,88 @@ spec:
                         type: object
                     type: object
                   constraints:
+                    description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        architecturePriority:
+                          description: |-
+                            (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
+                            Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
+                          items:
+                            type: string
+                          type: array
                         architectures:
-                          description: 'List of acceptable instance CPU architectures,
-                            the default is amd64. Allowed values: amd64, arm64.'
+                          description: |-
+                            (List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
+                            List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
                           items:
                             type: string
                           type: array
                         azs:
-                          description: The list of AZ names to consider for the node
-                            template, if empty or not set all AZs are considered.
+                          description: |-
+                            (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+                            The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
                           items:
                             type: string
                           type: array
                         burstableInstances:
-                          description: 'Will only include burstable instances when
-                            enabled otherwise they will be excluded. Supported values:
-                            `enabled`, `disabled` or “.'
+                          description: |-
+                            (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                            Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
                           type: string
                         computeOptimized:
-                          description: Compute optimized instance constraint (deprecated).
+                          description: |-
+                            (Boolean) Compute optimized instance constraint (deprecated).
+                            Compute optimized instance constraint (deprecated).
                           type: boolean
                         computeOptimizedState:
-                          description: 'Will only include compute optimized nodes
-                            when enabled and exclude compute optimized nodes when
-                            disabled. Empty value won''t have effect on instances
-                            filter. Supported values: `enabled`, `disabled` or empty
-                            string.'
+                          description: |-
+                            (String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: enabled, disabled or empty string.
+                            Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: `enabled`, `disabled` or empty string.
                           type: string
+                        cpuManufacturers:
+                          description: |-
+                            (List of String) List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.
+                            List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.
+                          items:
+                            type: string
+                          type: array
                         customPriority:
+                          description: (Block List) (see below for nested schema)
                           items:
                             properties:
                               instanceFamilies:
-                                description: Instance families to prioritize in this
-                                  tier.
+                                description: |-
+                                  (Block List, Max: 1) (see below for nested schema)
+                                  Instance families to prioritize in this tier.
                                 items:
                                   type: string
                                 type: array
                               onDemand:
-                                description: If true, this tier will apply to on-demand
-                                  instances.
+                                description: |-
+                                  demand instances in the considered pool.
+                                  If true, this tier will apply to on-demand instances.
                                 type: boolean
                               spot:
-                                description: If true, this tier will apply to spot
-                                  instances.
+                                description: |-
+                                  (Boolean) Should include spot instances in the considered pool.
+                                  If true, this tier will apply to spot instances.
                                 type: boolean
                             type: object
                           type: array
+                        customerSpecific:
+                          description: |-
+                            (String) Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                            Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+                          type: string
                         dedicatedNodeAffinity:
                           description: |-
+                            creates preference for instances to be created on sole tenancy or dedicated nodes. This
+                            feature is only available for GCP clusters and sole tenancy nodes with local
+                            SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+                            type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+                            Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+                            the sole tenancy or dedicated node (example: setting min CPU to 16). (see below for nested schema)
                             Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
                             feature is only available for GCP clusters and sole tenancy nodes with local
                             SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
@@ -291,207 +327,255 @@ spec:
                           items:
                             properties:
                               affinity:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
-                                      description: Key of the node affinity selector.
+                                      description: |-
+                                        (String) Key of the node affinity selector.
+                                        Key of the node affinity selector.
                                       type: string
                                     operator:
-                                      description: 'Operator of the node affinity
-                                        selector. Allowed values: In, NotIn, Exists,
-                                        DoesNotExist, Gt, Lt.'
+                                      description: |-
+                                        (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+                                        Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
                                       type: string
                                     values:
-                                      description: Values of the node affinity selector.
+                                      description: |-
+                                        (List of String) Values of the node affinity selector.
+                                        Values of the node affinity selector.
                                       items:
                                         type: string
                                       type: array
                                   type: object
                                 type: array
                               azName:
-                                description: Availability zone name.
+                                description: |-
+                                  (String) Availability zone name.
+                                  Availability zone name.
                                 type: string
                               instanceTypes:
-                                description: Instance/node types in this node group.
+                                description: |-
+                                  (List of String) Instance/node types in this node group.
+                                  Instance/node types in this node group.
                                 items:
                                   type: string
                                 type: array
                               name:
-                                description: Name of node group.
+                                description: |-
+                                  (String) Name of the node template.
+                                  Name of node group.
                                 type: string
                             type: object
                           type: array
                         enableSpotDiversity:
-                          description: Enable/disable spot diversity policy. When
-                            enabled, autoscaler will try to balance between diverse
-                            and cost optimal instance types.
+                          description: |-
+                            (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                            Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                           type: boolean
                         fallbackRestoreRateSeconds:
-                          description: 'Fallback restore rate in seconds: defines
-                            how much time should pass before spot fallback should
-                            be attempted to be restored to real spot.'
+                          description: |-
+                            (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
+                            Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
                         gpu:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               excludeNames:
-                                description: Names of the GPUs to exclude.
+                                description: |-
+                                  (List of String) Names of the GPUs to exclude.
+                                  Names of the GPUs to exclude.
                                 items:
                                   type: string
                                 type: array
                               includeNames:
-                                description: Instance families to include when filtering
-                                  (excludes all other families).
+                                description: |-
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
                               manufacturers:
-                                description: Manufacturers of the gpus to select -
+                                description: |-
                                   NVIDIA, AMD.
+                                  Manufacturers of the gpus to select - NVIDIA, AMD.
                                 items:
                                   type: string
                                 type: array
                               maxCount:
-                                description: Max GPU count for the instance type to
-                                  have.
+                                description: |-
+                                  (Number) Max GPU count for the instance type to have.
+                                  Max GPU count for the instance type to have.
                                 type: number
                               minCount:
-                                description: Min GPU count for the instance type to
-                                  have.
+                                description: |-
+                                  (Number) Min GPU count for the instance type to have.
+                                  Min GPU count for the instance type to have.
                                 type: number
                             type: object
                           type: array
                         instanceFamilies:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               exclude:
-                                description: Instance families to include when filtering
-                                  (excludes all other families).
+                                description: |-
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Instance families to exclude when filtering
-                                  (includes all other families).
+                                description: |-
+                                  (List of String) Instance families to exclude when filtering (includes all other families).
+                                  Instance families to exclude when filtering (includes all other families).
                                 items:
                                   type: string
                                 type: array
                             type: object
                           type: array
                         isGpuOnly:
-                          description: GPU instance constraint - will only pick nodes
-                            with GPU if true
+                          description: |-
+                            will only pick nodes with GPU if true
+                            GPU instance constraint - will only pick nodes with GPU if true
                           type: boolean
                         maxCpu:
-                          description: Max CPU cores per node.
+                          description: |-
+                            (Number) Max CPU cores per node.
+                            Max CPU cores per node.
                           type: number
                         maxMemory:
-                          description: Max Memory (Mib) per node.
+                          description: |-
+                            (Number) Max Memory (Mib) per node.
+                            Max Memory (Mib) per node.
                           type: number
                         minCpu:
-                          description: Min CPU cores per node.
+                          description: |-
+                            (Number) Min CPU cores per node.
+                            Min CPU cores per node.
                           type: number
                         minMemory:
-                          description: Min Memory (Mib) per node.
+                          description: |-
+                            (Number) Min Memory (Mib) per node.
+                            Min Memory (Mib) per node.
                           type: number
                         onDemand:
-                          description: Should include on-demand instances in the considered
-                            pool.
+                          description: |-
+                            demand instances in the considered pool.
+                            Should include on-demand instances in the considered pool.
                           type: boolean
                         os:
-                          description: 'List of acceptable instance Operating Systems,
-                            the default is linux. Allowed values: linux, windows.'
+                          description: |-
+                            (List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
+                            List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
                           items:
                             type: string
                           type: array
                         spot:
-                          description: Should include spot instances in the considered
-                            pool.
+                          description: |-
+                            (Boolean) Should include spot instances in the considered pool.
+                            Should include spot instances in the considered pool.
                           type: boolean
                         spotDiversityPriceIncreaseLimitPercent:
-                          description: Allowed node configuration price increase when
-                            diversifying instance types. E.g. if the value is 10%,
-                            then the overall price of diversified instance types can
-                            be 10% higher than the price of the optimal configuration.
+                          description: |-
+                            (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                            Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                           type: number
                         spotInterruptionPredictionsEnabled:
-                          description: Enable/disable spot interruption predictions.
+                          description: |-
+                            (Boolean) Enable/disable spot interruption predictions.
+                            Enable/disable spot interruption predictions.
                           type: boolean
                         spotInterruptionPredictionsType:
-                          description: Spot interruption predictions type. Can be
-                            either "aws-rebalance-recommendations" or "interruption-predictions".
+                          description: |-
+                            rebalance-recommendations" or "interruption-predictions".
+                            Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
                         storageOptimized:
-                          description: Storage optimized instance constraint (deprecated).
+                          description: |-
+                            (Boolean) Storage optimized instance constraint (deprecated).
+                            Storage optimized instance constraint (deprecated).
                           type: boolean
                         storageOptimizedState:
-                          description: 'Storage optimized instance constraint - will
-                            only pick storage optimized nodes if enabled and won''t
-                            pick if disabled. Empty value will have no effect. Supported
-                            values: `enabled`, `disabled` or empty string.'
+                          description: |-
+                            will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: enabled, disabled or empty string.
+                            Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: `enabled`, `disabled` or empty string.
                           type: string
                         useSpotFallbacks:
-                          description: Spot instance fallback constraint - when true,
-                            on-demand instances will be created, when spots are unavailable.
+                          description: |-
+                            when true, on-demand instances will be created, when spots are unavailable.
+                            Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
                           type: boolean
                       type: object
                     type: array
                   customInstancesEnabled:
-                    description: Marks whether custom instances should be used when
-                      deciding which parts of inventory are available. Custom instances
-                      are only supported in GCP.
+                    description: |-
+                      (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+                      Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
                     type: boolean
                   customInstancesWithExtendedMemoryEnabled:
-                    description: Marks whether custom instances with extended memory
-                      should be used when deciding which parts of inventory are available.
-                      Custom instances are only supported in GCP.
+                    description: |-
+                      (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+                      Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
                     type: boolean
                   customLabels:
                     additionalProperties:
                       type: string
-                    description: Custom labels to be added to nodes created from this
-                      template.
+                    description: |-
+                      (Map of String) Custom labels to be added to nodes created from this template.
+                      Custom labels to be added to nodes created from this template.
                     type: object
                     x-kubernetes-map-type: granular
                   customTaints:
-                    description: Custom taints to be added to the nodes created from
-                      this template. `shouldTaint` has to be `true` in order to create/update
-                      the node template with custom taints. If `shouldTaint` is `true`,
-                      but no custom taints are provided, the nodes will be tainted
-                      with the default node template taint.
+                    description: |-
+                      (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
+                      Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
                     items:
                       properties:
                         effect:
-                          description: 'Effect of a taint to be added to nodes created
-                            from this template, the default is NoSchedule. Allowed
-                            values: NoSchedule, NoExecute.'
+                          description: |-
+                            (String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
+                            Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
                           type: string
                         key:
-                          description: Key of a taint to be added to nodes created
-                            from this template.
+                          description: |-
+                            (String) Key of the node affinity selector.
+                            Key of a taint to be added to nodes created from this template.
                           type: string
                         value:
-                          description: Value of a taint to be added to nodes created
-                            from this template.
+                          description: |-
+                            (String) Value of a taint to be added to nodes created from this template.
+                            Value of a taint to be added to nodes created from this template.
                           type: string
                       type: object
                     type: array
                   isDefault:
-                    description: Flag whether the node template is default.
+                    description: |-
+                      (Boolean) Flag whether the node template is default.
+                      Flag whether the node template is default.
                     type: boolean
                   isEnabled:
-                    description: Flag whether the node template is enabled and considered
-                      for autoscaling.
+                    description: |-
+                      (Boolean) Flag whether the node template is enabled and considered for autoscaling.
+                      Flag whether the node template is enabled and considered for autoscaling.
                     type: boolean
                   name:
-                    description: Name of the node template.
+                    description: |-
+                      (String) Name of the node template.
+                      Name of the node template.
                     type: string
                   rebalancingConfigMinNodes:
-                    description: Minimum nodes that will be kept when rebalancing
-                      nodes using this node template.
+                    description: |-
+                      (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
+                      Minimum nodes that will be kept when rebalancing nodes using this node template.
                     type: number
                   shouldTaint:
-                    description: Marks whether the templated nodes will have a taint.
+                    description: |-
+                      (Boolean) Marks whether the templated nodes will have a taint.
+                      Marks whether the templated nodes will have a taint.
                     type: boolean
                 type: object
               initProvider:
@@ -508,7 +592,9 @@ spec:
                   autoscaler.
                 properties:
                   clusterId:
-                    description: CAST AI cluster id.
+                    description: |-
+                      (String) CAST AI cluster id.
+                      CAST AI cluster id.
                     type: string
                   clusterIdRef:
                     description: Reference to a EksClusterId in castai to populate
@@ -587,8 +673,9 @@ spec:
                         type: object
                     type: object
                   configurationId:
-                    description: CAST AI node configuration id to be used for node
-                      template.
+                    description: |-
+                      (String) CAST AI node configuration id to be used for node template.
+                      CAST AI node configuration id to be used for node template.
                     type: string
                   configurationIdRef:
                     description: Reference to a NodeConfiguration in castai to populate
@@ -667,56 +754,88 @@ spec:
                         type: object
                     type: object
                   constraints:
+                    description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        architecturePriority:
+                          description: |-
+                            (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
+                            Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
+                          items:
+                            type: string
+                          type: array
                         architectures:
-                          description: 'List of acceptable instance CPU architectures,
-                            the default is amd64. Allowed values: amd64, arm64.'
+                          description: |-
+                            (List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
+                            List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
                           items:
                             type: string
                           type: array
                         azs:
-                          description: The list of AZ names to consider for the node
-                            template, if empty or not set all AZs are considered.
+                          description: |-
+                            (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+                            The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
                           items:
                             type: string
                           type: array
                         burstableInstances:
-                          description: 'Will only include burstable instances when
-                            enabled otherwise they will be excluded. Supported values:
-                            `enabled`, `disabled` or “.'
+                          description: |-
+                            (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                            Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
                           type: string
                         computeOptimized:
-                          description: Compute optimized instance constraint (deprecated).
+                          description: |-
+                            (Boolean) Compute optimized instance constraint (deprecated).
+                            Compute optimized instance constraint (deprecated).
                           type: boolean
                         computeOptimizedState:
-                          description: 'Will only include compute optimized nodes
-                            when enabled and exclude compute optimized nodes when
-                            disabled. Empty value won''t have effect on instances
-                            filter. Supported values: `enabled`, `disabled` or empty
-                            string.'
+                          description: |-
+                            (String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: enabled, disabled or empty string.
+                            Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: `enabled`, `disabled` or empty string.
                           type: string
+                        cpuManufacturers:
+                          description: |-
+                            (List of String) List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.
+                            List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.
+                          items:
+                            type: string
+                          type: array
                         customPriority:
+                          description: (Block List) (see below for nested schema)
                           items:
                             properties:
                               instanceFamilies:
-                                description: Instance families to prioritize in this
-                                  tier.
+                                description: |-
+                                  (Block List, Max: 1) (see below for nested schema)
+                                  Instance families to prioritize in this tier.
                                 items:
                                   type: string
                                 type: array
                               onDemand:
-                                description: If true, this tier will apply to on-demand
-                                  instances.
+                                description: |-
+                                  demand instances in the considered pool.
+                                  If true, this tier will apply to on-demand instances.
                                 type: boolean
                               spot:
-                                description: If true, this tier will apply to spot
-                                  instances.
+                                description: |-
+                                  (Boolean) Should include spot instances in the considered pool.
+                                  If true, this tier will apply to spot instances.
                                 type: boolean
                             type: object
                           type: array
+                        customerSpecific:
+                          description: |-
+                            (String) Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                            Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+                          type: string
                         dedicatedNodeAffinity:
                           description: |-
+                            creates preference for instances to be created on sole tenancy or dedicated nodes. This
+                            feature is only available for GCP clusters and sole tenancy nodes with local
+                            SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+                            type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+                            Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+                            the sole tenancy or dedicated node (example: setting min CPU to 16). (see below for nested schema)
                             Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
                             feature is only available for GCP clusters and sole tenancy nodes with local
                             SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
@@ -726,207 +845,255 @@ spec:
                           items:
                             properties:
                               affinity:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
-                                      description: Key of the node affinity selector.
+                                      description: |-
+                                        (String) Key of the node affinity selector.
+                                        Key of the node affinity selector.
                                       type: string
                                     operator:
-                                      description: 'Operator of the node affinity
-                                        selector. Allowed values: In, NotIn, Exists,
-                                        DoesNotExist, Gt, Lt.'
+                                      description: |-
+                                        (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+                                        Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
                                       type: string
                                     values:
-                                      description: Values of the node affinity selector.
+                                      description: |-
+                                        (List of String) Values of the node affinity selector.
+                                        Values of the node affinity selector.
                                       items:
                                         type: string
                                       type: array
                                   type: object
                                 type: array
                               azName:
-                                description: Availability zone name.
+                                description: |-
+                                  (String) Availability zone name.
+                                  Availability zone name.
                                 type: string
                               instanceTypes:
-                                description: Instance/node types in this node group.
+                                description: |-
+                                  (List of String) Instance/node types in this node group.
+                                  Instance/node types in this node group.
                                 items:
                                   type: string
                                 type: array
                               name:
-                                description: Name of node group.
+                                description: |-
+                                  (String) Name of the node template.
+                                  Name of node group.
                                 type: string
                             type: object
                           type: array
                         enableSpotDiversity:
-                          description: Enable/disable spot diversity policy. When
-                            enabled, autoscaler will try to balance between diverse
-                            and cost optimal instance types.
+                          description: |-
+                            (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                            Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                           type: boolean
                         fallbackRestoreRateSeconds:
-                          description: 'Fallback restore rate in seconds: defines
-                            how much time should pass before spot fallback should
-                            be attempted to be restored to real spot.'
+                          description: |-
+                            (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
+                            Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
                         gpu:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               excludeNames:
-                                description: Names of the GPUs to exclude.
+                                description: |-
+                                  (List of String) Names of the GPUs to exclude.
+                                  Names of the GPUs to exclude.
                                 items:
                                   type: string
                                 type: array
                               includeNames:
-                                description: Instance families to include when filtering
-                                  (excludes all other families).
+                                description: |-
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
                               manufacturers:
-                                description: Manufacturers of the gpus to select -
+                                description: |-
                                   NVIDIA, AMD.
+                                  Manufacturers of the gpus to select - NVIDIA, AMD.
                                 items:
                                   type: string
                                 type: array
                               maxCount:
-                                description: Max GPU count for the instance type to
-                                  have.
+                                description: |-
+                                  (Number) Max GPU count for the instance type to have.
+                                  Max GPU count for the instance type to have.
                                 type: number
                               minCount:
-                                description: Min GPU count for the instance type to
-                                  have.
+                                description: |-
+                                  (Number) Min GPU count for the instance type to have.
+                                  Min GPU count for the instance type to have.
                                 type: number
                             type: object
                           type: array
                         instanceFamilies:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               exclude:
-                                description: Instance families to include when filtering
-                                  (excludes all other families).
+                                description: |-
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Instance families to exclude when filtering
-                                  (includes all other families).
+                                description: |-
+                                  (List of String) Instance families to exclude when filtering (includes all other families).
+                                  Instance families to exclude when filtering (includes all other families).
                                 items:
                                   type: string
                                 type: array
                             type: object
                           type: array
                         isGpuOnly:
-                          description: GPU instance constraint - will only pick nodes
-                            with GPU if true
+                          description: |-
+                            will only pick nodes with GPU if true
+                            GPU instance constraint - will only pick nodes with GPU if true
                           type: boolean
                         maxCpu:
-                          description: Max CPU cores per node.
+                          description: |-
+                            (Number) Max CPU cores per node.
+                            Max CPU cores per node.
                           type: number
                         maxMemory:
-                          description: Max Memory (Mib) per node.
+                          description: |-
+                            (Number) Max Memory (Mib) per node.
+                            Max Memory (Mib) per node.
                           type: number
                         minCpu:
-                          description: Min CPU cores per node.
+                          description: |-
+                            (Number) Min CPU cores per node.
+                            Min CPU cores per node.
                           type: number
                         minMemory:
-                          description: Min Memory (Mib) per node.
+                          description: |-
+                            (Number) Min Memory (Mib) per node.
+                            Min Memory (Mib) per node.
                           type: number
                         onDemand:
-                          description: Should include on-demand instances in the considered
-                            pool.
+                          description: |-
+                            demand instances in the considered pool.
+                            Should include on-demand instances in the considered pool.
                           type: boolean
                         os:
-                          description: 'List of acceptable instance Operating Systems,
-                            the default is linux. Allowed values: linux, windows.'
+                          description: |-
+                            (List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
+                            List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
                           items:
                             type: string
                           type: array
                         spot:
-                          description: Should include spot instances in the considered
-                            pool.
+                          description: |-
+                            (Boolean) Should include spot instances in the considered pool.
+                            Should include spot instances in the considered pool.
                           type: boolean
                         spotDiversityPriceIncreaseLimitPercent:
-                          description: Allowed node configuration price increase when
-                            diversifying instance types. E.g. if the value is 10%,
-                            then the overall price of diversified instance types can
-                            be 10% higher than the price of the optimal configuration.
+                          description: |-
+                            (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                            Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                           type: number
                         spotInterruptionPredictionsEnabled:
-                          description: Enable/disable spot interruption predictions.
+                          description: |-
+                            (Boolean) Enable/disable spot interruption predictions.
+                            Enable/disable spot interruption predictions.
                           type: boolean
                         spotInterruptionPredictionsType:
-                          description: Spot interruption predictions type. Can be
-                            either "aws-rebalance-recommendations" or "interruption-predictions".
+                          description: |-
+                            rebalance-recommendations" or "interruption-predictions".
+                            Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
                         storageOptimized:
-                          description: Storage optimized instance constraint (deprecated).
+                          description: |-
+                            (Boolean) Storage optimized instance constraint (deprecated).
+                            Storage optimized instance constraint (deprecated).
                           type: boolean
                         storageOptimizedState:
-                          description: 'Storage optimized instance constraint - will
-                            only pick storage optimized nodes if enabled and won''t
-                            pick if disabled. Empty value will have no effect. Supported
-                            values: `enabled`, `disabled` or empty string.'
+                          description: |-
+                            will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: enabled, disabled or empty string.
+                            Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: `enabled`, `disabled` or empty string.
                           type: string
                         useSpotFallbacks:
-                          description: Spot instance fallback constraint - when true,
-                            on-demand instances will be created, when spots are unavailable.
+                          description: |-
+                            when true, on-demand instances will be created, when spots are unavailable.
+                            Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
                           type: boolean
                       type: object
                     type: array
                   customInstancesEnabled:
-                    description: Marks whether custom instances should be used when
-                      deciding which parts of inventory are available. Custom instances
-                      are only supported in GCP.
+                    description: |-
+                      (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+                      Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
                     type: boolean
                   customInstancesWithExtendedMemoryEnabled:
-                    description: Marks whether custom instances with extended memory
-                      should be used when deciding which parts of inventory are available.
-                      Custom instances are only supported in GCP.
+                    description: |-
+                      (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+                      Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
                     type: boolean
                   customLabels:
                     additionalProperties:
                       type: string
-                    description: Custom labels to be added to nodes created from this
-                      template.
+                    description: |-
+                      (Map of String) Custom labels to be added to nodes created from this template.
+                      Custom labels to be added to nodes created from this template.
                     type: object
                     x-kubernetes-map-type: granular
                   customTaints:
-                    description: Custom taints to be added to the nodes created from
-                      this template. `shouldTaint` has to be `true` in order to create/update
-                      the node template with custom taints. If `shouldTaint` is `true`,
-                      but no custom taints are provided, the nodes will be tainted
-                      with the default node template taint.
+                    description: |-
+                      (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
+                      Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
                     items:
                       properties:
                         effect:
-                          description: 'Effect of a taint to be added to nodes created
-                            from this template, the default is NoSchedule. Allowed
-                            values: NoSchedule, NoExecute.'
+                          description: |-
+                            (String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
+                            Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
                           type: string
                         key:
-                          description: Key of a taint to be added to nodes created
-                            from this template.
+                          description: |-
+                            (String) Key of the node affinity selector.
+                            Key of a taint to be added to nodes created from this template.
                           type: string
                         value:
-                          description: Value of a taint to be added to nodes created
-                            from this template.
+                          description: |-
+                            (String) Value of a taint to be added to nodes created from this template.
+                            Value of a taint to be added to nodes created from this template.
                           type: string
                       type: object
                     type: array
                   isDefault:
-                    description: Flag whether the node template is default.
+                    description: |-
+                      (Boolean) Flag whether the node template is default.
+                      Flag whether the node template is default.
                     type: boolean
                   isEnabled:
-                    description: Flag whether the node template is enabled and considered
-                      for autoscaling.
+                    description: |-
+                      (Boolean) Flag whether the node template is enabled and considered for autoscaling.
+                      Flag whether the node template is enabled and considered for autoscaling.
                     type: boolean
                   name:
-                    description: Name of the node template.
+                    description: |-
+                      (String) Name of the node template.
+                      Name of the node template.
                     type: string
                   rebalancingConfigMinNodes:
-                    description: Minimum nodes that will be kept when rebalancing
-                      nodes using this node template.
+                    description: |-
+                      (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
+                      Minimum nodes that will be kept when rebalancing nodes using this node template.
                     type: number
                   shouldTaint:
-                    description: Marks whether the templated nodes will have a taint.
+                    description: |-
+                      (Boolean) Marks whether the templated nodes will have a taint.
+                      Marks whether the templated nodes will have a taint.
                     type: boolean
                 type: object
               managementPolicies:
@@ -1107,63 +1274,98 @@ spec:
               atProvider:
                 properties:
                   clusterId:
-                    description: CAST AI cluster id.
+                    description: |-
+                      (String) CAST AI cluster id.
+                      CAST AI cluster id.
                     type: string
                   configurationId:
-                    description: CAST AI node configuration id to be used for node
-                      template.
+                    description: |-
+                      (String) CAST AI node configuration id to be used for node template.
+                      CAST AI node configuration id to be used for node template.
                     type: string
                   constraints:
+                    description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        architecturePriority:
+                          description: |-
+                            (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
+                            Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
+                          items:
+                            type: string
+                          type: array
                         architectures:
-                          description: 'List of acceptable instance CPU architectures,
-                            the default is amd64. Allowed values: amd64, arm64.'
+                          description: |-
+                            (List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
+                            List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
                           items:
                             type: string
                           type: array
                         azs:
-                          description: The list of AZ names to consider for the node
-                            template, if empty or not set all AZs are considered.
+                          description: |-
+                            (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+                            The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
                           items:
                             type: string
                           type: array
                         burstableInstances:
-                          description: 'Will only include burstable instances when
-                            enabled otherwise they will be excluded. Supported values:
-                            `enabled`, `disabled` or “.'
+                          description: |-
+                            (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                            Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
                           type: string
                         computeOptimized:
-                          description: Compute optimized instance constraint (deprecated).
+                          description: |-
+                            (Boolean) Compute optimized instance constraint (deprecated).
+                            Compute optimized instance constraint (deprecated).
                           type: boolean
                         computeOptimizedState:
-                          description: 'Will only include compute optimized nodes
-                            when enabled and exclude compute optimized nodes when
-                            disabled. Empty value won''t have effect on instances
-                            filter. Supported values: `enabled`, `disabled` or empty
-                            string.'
+                          description: |-
+                            (String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: enabled, disabled or empty string.
+                            Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won't have effect on instances filter. Supported values: `enabled`, `disabled` or empty string.
                           type: string
+                        cpuManufacturers:
+                          description: |-
+                            (List of String) List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.
+                            List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.
+                          items:
+                            type: string
+                          type: array
                         customPriority:
+                          description: (Block List) (see below for nested schema)
                           items:
                             properties:
                               instanceFamilies:
-                                description: Instance families to prioritize in this
-                                  tier.
+                                description: |-
+                                  (Block List, Max: 1) (see below for nested schema)
+                                  Instance families to prioritize in this tier.
                                 items:
                                   type: string
                                 type: array
                               onDemand:
-                                description: If true, this tier will apply to on-demand
-                                  instances.
+                                description: |-
+                                  demand instances in the considered pool.
+                                  If true, this tier will apply to on-demand instances.
                                 type: boolean
                               spot:
-                                description: If true, this tier will apply to spot
-                                  instances.
+                                description: |-
+                                  (Boolean) Should include spot instances in the considered pool.
+                                  If true, this tier will apply to spot instances.
                                 type: boolean
                             type: object
                           type: array
+                        customerSpecific:
+                          description: |-
+                            (String) Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                            Will include customer specific (preview) instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+                          type: string
                         dedicatedNodeAffinity:
                           description: |-
+                            creates preference for instances to be created on sole tenancy or dedicated nodes. This
+                            feature is only available for GCP clusters and sole tenancy nodes with local
+                            SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
+                            type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.
+                            Other instance constraints are applied when the Autoscaler picks available instance types that can be created on
+                            the sole tenancy or dedicated node (example: setting min CPU to 16). (see below for nested schema)
                             Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This
                             feature is only available for GCP clusters and sole tenancy nodes with local
                             SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance
@@ -1173,209 +1375,258 @@ spec:
                           items:
                             properties:
                               affinity:
+                                description: (Block List) (see below for nested schema)
                                 items:
                                   properties:
                                     key:
-                                      description: Key of the node affinity selector.
+                                      description: |-
+                                        (String) Key of the node affinity selector.
+                                        Key of the node affinity selector.
                                       type: string
                                     operator:
-                                      description: 'Operator of the node affinity
-                                        selector. Allowed values: In, NotIn, Exists,
-                                        DoesNotExist, Gt, Lt.'
+                                      description: |-
+                                        (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+                                        Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
                                       type: string
                                     values:
-                                      description: Values of the node affinity selector.
+                                      description: |-
+                                        (List of String) Values of the node affinity selector.
+                                        Values of the node affinity selector.
                                       items:
                                         type: string
                                       type: array
                                   type: object
                                 type: array
                               azName:
-                                description: Availability zone name.
+                                description: |-
+                                  (String) Availability zone name.
+                                  Availability zone name.
                                 type: string
                               instanceTypes:
-                                description: Instance/node types in this node group.
+                                description: |-
+                                  (List of String) Instance/node types in this node group.
+                                  Instance/node types in this node group.
                                 items:
                                   type: string
                                 type: array
                               name:
-                                description: Name of node group.
+                                description: |-
+                                  (String) Name of the node template.
+                                  Name of node group.
                                 type: string
                             type: object
                           type: array
                         enableSpotDiversity:
-                          description: Enable/disable spot diversity policy. When
-                            enabled, autoscaler will try to balance between diverse
-                            and cost optimal instance types.
+                          description: |-
+                            (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                            Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                           type: boolean
                         fallbackRestoreRateSeconds:
-                          description: 'Fallback restore rate in seconds: defines
-                            how much time should pass before spot fallback should
-                            be attempted to be restored to real spot.'
+                          description: |-
+                            (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
+                            Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
                         gpu:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               excludeNames:
-                                description: Names of the GPUs to exclude.
+                                description: |-
+                                  (List of String) Names of the GPUs to exclude.
+                                  Names of the GPUs to exclude.
                                 items:
                                   type: string
                                 type: array
                               includeNames:
-                                description: Instance families to include when filtering
-                                  (excludes all other families).
+                                description: |-
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
                               manufacturers:
-                                description: Manufacturers of the gpus to select -
+                                description: |-
                                   NVIDIA, AMD.
+                                  Manufacturers of the gpus to select - NVIDIA, AMD.
                                 items:
                                   type: string
                                 type: array
                               maxCount:
-                                description: Max GPU count for the instance type to
-                                  have.
+                                description: |-
+                                  (Number) Max GPU count for the instance type to have.
+                                  Max GPU count for the instance type to have.
                                 type: number
                               minCount:
-                                description: Min GPU count for the instance type to
-                                  have.
+                                description: |-
+                                  (Number) Min GPU count for the instance type to have.
+                                  Min GPU count for the instance type to have.
                                 type: number
                             type: object
                           type: array
                         instanceFamilies:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
                           items:
                             properties:
                               exclude:
-                                description: Instance families to include when filtering
-                                  (excludes all other families).
+                                description: |-
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Instance families to exclude when filtering
-                                  (includes all other families).
+                                description: |-
+                                  (List of String) Instance families to exclude when filtering (includes all other families).
+                                  Instance families to exclude when filtering (includes all other families).
                                 items:
                                   type: string
                                 type: array
                             type: object
                           type: array
                         isGpuOnly:
-                          description: GPU instance constraint - will only pick nodes
-                            with GPU if true
+                          description: |-
+                            will only pick nodes with GPU if true
+                            GPU instance constraint - will only pick nodes with GPU if true
                           type: boolean
                         maxCpu:
-                          description: Max CPU cores per node.
+                          description: |-
+                            (Number) Max CPU cores per node.
+                            Max CPU cores per node.
                           type: number
                         maxMemory:
-                          description: Max Memory (Mib) per node.
+                          description: |-
+                            (Number) Max Memory (Mib) per node.
+                            Max Memory (Mib) per node.
                           type: number
                         minCpu:
-                          description: Min CPU cores per node.
+                          description: |-
+                            (Number) Min CPU cores per node.
+                            Min CPU cores per node.
                           type: number
                         minMemory:
-                          description: Min Memory (Mib) per node.
+                          description: |-
+                            (Number) Min Memory (Mib) per node.
+                            Min Memory (Mib) per node.
                           type: number
                         onDemand:
-                          description: Should include on-demand instances in the considered
-                            pool.
+                          description: |-
+                            demand instances in the considered pool.
+                            Should include on-demand instances in the considered pool.
                           type: boolean
                         os:
-                          description: 'List of acceptable instance Operating Systems,
-                            the default is linux. Allowed values: linux, windows.'
+                          description: |-
+                            (List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
+                            List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
                           items:
                             type: string
                           type: array
                         spot:
-                          description: Should include spot instances in the considered
-                            pool.
+                          description: |-
+                            (Boolean) Should include spot instances in the considered pool.
+                            Should include spot instances in the considered pool.
                           type: boolean
                         spotDiversityPriceIncreaseLimitPercent:
-                          description: Allowed node configuration price increase when
-                            diversifying instance types. E.g. if the value is 10%,
-                            then the overall price of diversified instance types can
-                            be 10% higher than the price of the optimal configuration.
+                          description: |-
+                            (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                            Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                           type: number
                         spotInterruptionPredictionsEnabled:
-                          description: Enable/disable spot interruption predictions.
+                          description: |-
+                            (Boolean) Enable/disable spot interruption predictions.
+                            Enable/disable spot interruption predictions.
                           type: boolean
                         spotInterruptionPredictionsType:
-                          description: Spot interruption predictions type. Can be
-                            either "aws-rebalance-recommendations" or "interruption-predictions".
+                          description: |-
+                            rebalance-recommendations" or "interruption-predictions".
+                            Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
                         storageOptimized:
-                          description: Storage optimized instance constraint (deprecated).
+                          description: |-
+                            (Boolean) Storage optimized instance constraint (deprecated).
+                            Storage optimized instance constraint (deprecated).
                           type: boolean
                         storageOptimizedState:
-                          description: 'Storage optimized instance constraint - will
-                            only pick storage optimized nodes if enabled and won''t
-                            pick if disabled. Empty value will have no effect. Supported
-                            values: `enabled`, `disabled` or empty string.'
+                          description: |-
+                            will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: enabled, disabled or empty string.
+                            Storage optimized instance constraint - will only pick storage optimized nodes if enabled and won't pick if disabled. Empty value will have no effect. Supported values: `enabled`, `disabled` or empty string.
                           type: string
                         useSpotFallbacks:
-                          description: Spot instance fallback constraint - when true,
-                            on-demand instances will be created, when spots are unavailable.
+                          description: |-
+                            when true, on-demand instances will be created, when spots are unavailable.
+                            Spot instance fallback constraint - when true, on-demand instances will be created, when spots are unavailable.
                           type: boolean
                       type: object
                     type: array
                   customInstancesEnabled:
-                    description: Marks whether custom instances should be used when
-                      deciding which parts of inventory are available. Custom instances
-                      are only supported in GCP.
+                    description: |-
+                      (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+                      Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
                     type: boolean
                   customInstancesWithExtendedMemoryEnabled:
-                    description: Marks whether custom instances with extended memory
-                      should be used when deciding which parts of inventory are available.
-                      Custom instances are only supported in GCP.
+                    description: |-
+                      (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
+                      Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
                     type: boolean
                   customLabels:
                     additionalProperties:
                       type: string
-                    description: Custom labels to be added to nodes created from this
-                      template.
+                    description: |-
+                      (Map of String) Custom labels to be added to nodes created from this template.
+                      Custom labels to be added to nodes created from this template.
                     type: object
                     x-kubernetes-map-type: granular
                   customTaints:
-                    description: Custom taints to be added to the nodes created from
-                      this template. `shouldTaint` has to be `true` in order to create/update
-                      the node template with custom taints. If `shouldTaint` is `true`,
-                      but no custom taints are provided, the nodes will be tainted
-                      with the default node template taint.
+                    description: |-
+                      (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
+                      Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
                     items:
                       properties:
                         effect:
-                          description: 'Effect of a taint to be added to nodes created
-                            from this template, the default is NoSchedule. Allowed
-                            values: NoSchedule, NoExecute.'
+                          description: |-
+                            (String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
+                            Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.
                           type: string
                         key:
-                          description: Key of a taint to be added to nodes created
-                            from this template.
+                          description: |-
+                            (String) Key of the node affinity selector.
+                            Key of a taint to be added to nodes created from this template.
                           type: string
                         value:
-                          description: Value of a taint to be added to nodes created
-                            from this template.
+                          description: |-
+                            (String) Value of a taint to be added to nodes created from this template.
+                            Value of a taint to be added to nodes created from this template.
                           type: string
                       type: object
                     type: array
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   isDefault:
-                    description: Flag whether the node template is default.
+                    description: |-
+                      (Boolean) Flag whether the node template is default.
+                      Flag whether the node template is default.
                     type: boolean
                   isEnabled:
-                    description: Flag whether the node template is enabled and considered
-                      for autoscaling.
+                    description: |-
+                      (Boolean) Flag whether the node template is enabled and considered for autoscaling.
+                      Flag whether the node template is enabled and considered for autoscaling.
                     type: boolean
                   name:
-                    description: Name of the node template.
+                    description: |-
+                      (String) Name of the node template.
+                      Name of the node template.
                     type: string
                   rebalancingConfigMinNodes:
-                    description: Minimum nodes that will be kept when rebalancing
-                      nodes using this node template.
+                    description: |-
+                      (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
+                      Minimum nodes that will be kept when rebalancing nodes using this node template.
                     type: number
                   shouldTaint:
-                    description: Marks whether the templated nodes will have a taint.
+                    description: |-
+                      (Boolean) Marks whether the templated nodes will have a taint.
+                      Marks whether the templated nodes will have a taint.
                     type: boolean
                 type: object
               conditions:

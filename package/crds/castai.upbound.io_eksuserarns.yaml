@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: EksUserArn is the Schema for the EksUserArns API. <no value>
+        description: EksUserArn is the Schema for the EksUserArns API. Retrieve EKS
+          Cluster User ARN
         properties:
           apiVersion:
             description: |-
@@ -73,6 +74,7 @@ spec:
               forProvider:
                 properties:
                   clusterId:
+                    description: (String)
                     type: string
                   clusterIdRef:
                     description: Reference to a EksCluster in castai to populate clusterId.
@@ -163,6 +165,7 @@ spec:
                   autoscaler.
                 properties:
                   clusterId:
+                    description: (String)
                     type: string
                   clusterIdRef:
                     description: Reference to a EksCluster in castai to populate clusterId.
@@ -412,10 +415,13 @@ spec:
               atProvider:
                 properties:
                   arn:
+                    description: (String)
                     type: string
                   clusterId:
+                    description: (String)
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                 type: object
               conditions:

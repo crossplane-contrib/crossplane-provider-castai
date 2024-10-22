@@ -15,6 +15,14 @@ import (
 
 type AksInitParameters struct {
 
+	// linux)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
+
+	// (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Loadboalancer configuration for CAST provisioned nodes
+	Loadbalancers []LoadbalancersInitParameters `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
+
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
@@ -26,6 +34,14 @@ type AksInitParameters struct {
 
 type AksObservation struct {
 
+	// linux)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
+
+	// (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Loadboalancer configuration for CAST provisioned nodes
+	Loadbalancers []LoadbalancersObservation `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
+
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
@@ -36,6 +52,16 @@ type AksObservation struct {
 }
 
 type AksParameters struct {
+
+	// linux)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+	// +kubebuilder:validation:Optional
+	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
+
+	// (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Loadboalancer configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	Loadbalancers []LoadbalancersParameters `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
 
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
@@ -53,6 +79,10 @@ type EksInitParameters struct {
 	// (String) IP address to use for DNS queries within the cluster
 	// IP address to use for DNS queries within the cluster
 	DNSClusterIP *string `json:"dnsClusterIp,omitempty" tf:"dns_cluster_ip,omitempty"`
+
+	// (String) Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
+	// Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
+	EksImageFamily *string `json:"eksImageFamily,omitempty" tf:"eks_image_family,omitempty"`
 
 	// (Number) Allow configure the IMDSv2 hop limit, the default is 2
 	// Allow configure the IMDSv2 hop limit, the default is 2
@@ -74,16 +104,20 @@ type EksInitParameters struct {
 	// AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
 
-	// (String) Formula to calculate the maximum number of pods that can be run on a node.
-	// Formula to calculate the maximum number of pods that can be run on a node.
+	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+	// Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
 	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
+
+	// (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+	// Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+	NodeGroupArn *string `json:"nodeGroupArn,omitempty" tf:"node_group_arn,omitempty"`
 
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
 	SecurityGroups []*string `json:"securityGroups,omitempty" tf:"security_groups,omitempty"`
 
-	// (Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)
-	// AWS target group configuration for CAST provisioned nodes
+	// (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
+	// AWS target groups configuration for CAST provisioned nodes
 	TargetGroup []TargetGroupInitParameters `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
 
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -109,6 +143,10 @@ type EksObservation struct {
 	// IP address to use for DNS queries within the cluster
 	DNSClusterIP *string `json:"dnsClusterIp,omitempty" tf:"dns_cluster_ip,omitempty"`
 
+	// (String) Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
+	// Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
+	EksImageFamily *string `json:"eksImageFamily,omitempty" tf:"eks_image_family,omitempty"`
+
 	// (Number) Allow configure the IMDSv2 hop limit, the default is 2
 	// Allow configure the IMDSv2 hop limit, the default is 2
 	ImdsHopLimit *float64 `json:"imdsHopLimit,omitempty" tf:"imds_hop_limit,omitempty"`
@@ -129,16 +167,20 @@ type EksObservation struct {
 	// AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
 
-	// (String) Formula to calculate the maximum number of pods that can be run on a node.
-	// Formula to calculate the maximum number of pods that can be run on a node.
+	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+	// Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
 	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
+
+	// (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+	// Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+	NodeGroupArn *string `json:"nodeGroupArn,omitempty" tf:"node_group_arn,omitempty"`
 
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
 	SecurityGroups []*string `json:"securityGroups,omitempty" tf:"security_groups,omitempty"`
 
-	// (Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)
-	// AWS target group configuration for CAST provisioned nodes
+	// (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
+	// AWS target groups configuration for CAST provisioned nodes
 	TargetGroup []TargetGroupObservation `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
 
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -165,6 +207,11 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	DNSClusterIP *string `json:"dnsClusterIp,omitempty" tf:"dns_cluster_ip,omitempty"`
 
+	// (String) Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
+	// Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
+	// +kubebuilder:validation:Optional
+	EksImageFamily *string `json:"eksImageFamily,omitempty" tf:"eks_image_family,omitempty"`
+
 	// (Number) Allow configure the IMDSv2 hop limit, the default is 2
 	// Allow configure the IMDSv2 hop limit, the default is 2
 	// +kubebuilder:validation:Optional
@@ -190,18 +237,23 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
 
-	// (String) Formula to calculate the maximum number of pods that can be run on a node.
-	// Formula to calculate the maximum number of pods that can be run on a node.
+	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+	// Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
 	// +kubebuilder:validation:Optional
 	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
+
+	// (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+	// Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+	// +kubebuilder:validation:Optional
+	NodeGroupArn *string `json:"nodeGroupArn,omitempty" tf:"node_group_arn,omitempty"`
 
 	// (List of String) Cluster's security groups configuration for CAST provisioned nodes
 	// Cluster's security groups configuration for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
 	SecurityGroups []*string `json:"securityGroups" tf:"security_groups,omitempty"`
 
-	// (Block List, Max: 1) AWS target group configuration for CAST provisioned nodes (see below for nested schema)
-	// AWS target group configuration for CAST provisioned nodes
+	// (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
+	// AWS target groups configuration for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
 	TargetGroup []TargetGroupParameters `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
 
@@ -300,6 +352,28 @@ type GkeParameters struct {
 	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
+type IPBasedBackendPoolsInitParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the ip based backend pool
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type IPBasedBackendPoolsObservation struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the ip based backend pool
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type IPBasedBackendPoolsParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the ip based backend pool
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+}
+
 type KopsInitParameters struct {
 
 	// (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
@@ -320,6 +394,41 @@ type KopsParameters struct {
 	// AWS key pair ID to be used for provisioned nodes. Has priority over sshPublicKey
 	// +kubebuilder:validation:Optional
 	KeyPairID *string `json:"keyPairId,omitempty" tf:"key_pair_id,omitempty"`
+}
+
+type LoadbalancersInitParameters struct {
+
+	// (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
+	// IP based backend pools configuration for CAST provisioned nodes
+	IPBasedBackendPools []IPBasedBackendPoolsInitParameters `json:"ipBasedBackendPools,omitempty" tf:"ip_based_backend_pools,omitempty"`
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of loadbalancer
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type LoadbalancersObservation struct {
+
+	// (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
+	// IP based backend pools configuration for CAST provisioned nodes
+	IPBasedBackendPools []IPBasedBackendPoolsObservation `json:"ipBasedBackendPools,omitempty" tf:"ip_based_backend_pools,omitempty"`
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of loadbalancer
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type LoadbalancersParameters struct {
+
+	// (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
+	// IP based backend pools configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	IPBasedBackendPools []IPBasedBackendPoolsParameters `json:"ipBasedBackendPools,omitempty" tf:"ip_based_backend_pools,omitempty"`
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of loadbalancer
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type NodeConfigurationInitParameters struct {
@@ -362,8 +471,8 @@ type NodeConfigurationInitParameters struct {
 	// (Block List, Max: 1) (see below for nested schema)
 	Gke []GkeInitParameters `json:"gke,omitempty" tf:"gke,omitempty"`
 
-	// (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
-	// Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
+	// (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
+	// Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
 	Image *string `json:"image,omitempty" tf:"image,omitempty"`
 
 	// (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
@@ -433,8 +542,8 @@ type NodeConfigurationObservation struct {
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
-	// Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
+	// (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
+	// Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
 	Image *string `json:"image,omitempty" tf:"image,omitempty"`
 
 	// (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
@@ -518,8 +627,8 @@ type NodeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	Gke []GkeParameters `json:"gke,omitempty" tf:"gke,omitempty"`
 
-	// (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
-	// Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Kubernetes version if possible
+	// (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
+	// Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
 	// +kubebuilder:validation:Optional
 	Image *string `json:"image,omitempty" tf:"image,omitempty"`
 

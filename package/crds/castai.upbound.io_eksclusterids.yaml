@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: EksClusterId is the Schema for the EksClusterIds API. <no value>
+        description: EksClusterId is the Schema for the EksClusterIds API. Retrieve
+          CAST AI clusterid
         properties:
           apiVersion:
             description: |-
@@ -73,10 +74,13 @@ spec:
               forProvider:
                 properties:
                   accountId:
+                    description: (String)
                     type: string
                   clusterName:
+                    description: (String)
                     type: string
                   region:
+                    description: (String)
                     type: string
                 type: object
               initProvider:
@@ -93,10 +97,13 @@ spec:
                   autoscaler.
                 properties:
                   accountId:
+                    description: (String)
                     type: string
                   clusterName:
+                    description: (String)
                     type: string
                   region:
+                    description: (String)
                     type: string
                 type: object
               managementPolicies:
@@ -285,12 +292,16 @@ spec:
               atProvider:
                 properties:
                   accountId:
+                    description: (String)
                     type: string
                   clusterName:
+                    description: (String)
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   region:
+                    description: (String)
                     type: string
                 type: object
               conditions:

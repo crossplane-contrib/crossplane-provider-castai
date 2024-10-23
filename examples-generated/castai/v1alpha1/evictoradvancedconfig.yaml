@@ -1,0 +1,20 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EvictorAdvancedConfig
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/evictoradvancedconfig
+  labels:
+    testing.upbound.io/example-name: config
+  name: config
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    evictorAdvancedConfig:
+    - aggressive: true
+      podSelector:
+      - kind: Job
+        matchLabels:
+          job: test
+        namespace: test

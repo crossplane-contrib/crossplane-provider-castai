@@ -15,12 +15,15 @@ import (
 
 type AutoScalerInitParameters struct {
 
+	// (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
 	// autoscaler policies JSON string to override current autoscaler settings
 	AutoscalerPoliciesJSON *string `json:"autoscalerPoliciesJson,omitempty" tf:"autoscaler_policies_json,omitempty"`
 
+	// (Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)
 	// autoscaler policy definitions to override current autoscaler settings
 	AutoscalerSettings []AutoscalerSettingsInitParameters `json:"autoscalerSettings,omitempty" tf:"autoscaler_settings,omitempty"`
 
+	// (String) CAST AI cluster id
 	// CAST AI cluster id
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
@@ -36,31 +39,39 @@ type AutoScalerInitParameters struct {
 
 type AutoScalerObservation struct {
 
+	// (String) computed value to store full policies configuration
 	// computed value to store full policies configuration
 	AutoscalerPolicies *string `json:"autoscalerPolicies,omitempty" tf:"autoscaler_policies,omitempty"`
 
+	// (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
 	// autoscaler policies JSON string to override current autoscaler settings
 	AutoscalerPoliciesJSON *string `json:"autoscalerPoliciesJson,omitempty" tf:"autoscaler_policies_json,omitempty"`
 
+	// (Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)
 	// autoscaler policy definitions to override current autoscaler settings
 	AutoscalerSettings []AutoscalerSettingsObservation `json:"autoscalerSettings,omitempty" tf:"autoscaler_settings,omitempty"`
 
+	// (String) CAST AI cluster id
 	// CAST AI cluster id
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type AutoScalerParameters struct {
 
+	// (String, Deprecated) autoscaler policies JSON string to override current autoscaler settings
 	// autoscaler policies JSON string to override current autoscaler settings
 	// +kubebuilder:validation:Optional
 	AutoscalerPoliciesJSON *string `json:"autoscalerPoliciesJson,omitempty" tf:"autoscaler_policies_json,omitempty"`
 
+	// (Block List, Max: 1) autoscaler policy definitions to override current autoscaler settings (see below for nested schema)
 	// autoscaler policy definitions to override current autoscaler settings
 	// +kubebuilder:validation:Optional
 	AutoscalerSettings []AutoscalerSettingsParameters `json:"autoscalerSettings,omitempty" tf:"autoscaler_settings,omitempty"`
 
+	// (String) CAST AI cluster id
 	// CAST AI cluster id
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
@@ -77,78 +88,99 @@ type AutoScalerParameters struct {
 
 type AutoscalerSettingsInitParameters struct {
 
+	// (Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)
 	// defines minimum and maximum amount of CPU the cluster can have.
 	ClusterLimits []ClusterLimitsInitParameters `json:"clusterLimits,omitempty" tf:"cluster_limits,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable autoscaler policies
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
 	// run autoscaler in scoped mode. Only marked pods and nodes will be considered.
 	IsScopedMode *bool `json:"isScopedMode,omitempty" tf:"is_scoped_mode,omitempty"`
 
+	// (Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)
 	// node downscaler defines policies for removing nodes based on the configured conditions.
 	NodeDownscaler []NodeDownscalerInitParameters `json:"nodeDownscaler,omitempty" tf:"node_downscaler,omitempty"`
 
+	// (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
 	// marks whether partial matching should be used when deciding which custom node template to select.
 	NodeTemplatesPartialMatchingEnabled *bool `json:"nodeTemplatesPartialMatchingEnabled,omitempty" tf:"node_templates_partial_matching_enabled,omitempty"`
 
+	// (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
 	// policy defining whether autoscaler can use spot instances for provisioning additional workloads.
 	SpotInstances []SpotInstancesInitParameters `json:"spotInstances,omitempty" tf:"spot_instances,omitempty"`
 
+	// (Block List, Max: 1) policy defining autoscaler's behavior when unschedulable pods were detected. (see below for nested schema)
 	// policy defining autoscaler's behavior when unschedulable pods were detected.
 	UnschedulablePods []UnschedulablePodsInitParameters `json:"unschedulablePods,omitempty" tf:"unschedulable_pods,omitempty"`
 }
 
 type AutoscalerSettingsObservation struct {
 
+	// (Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)
 	// defines minimum and maximum amount of CPU the cluster can have.
 	ClusterLimits []ClusterLimitsObservation `json:"clusterLimits,omitempty" tf:"cluster_limits,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable autoscaler policies
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
 	// run autoscaler in scoped mode. Only marked pods and nodes will be considered.
 	IsScopedMode *bool `json:"isScopedMode,omitempty" tf:"is_scoped_mode,omitempty"`
 
+	// (Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)
 	// node downscaler defines policies for removing nodes based on the configured conditions.
 	NodeDownscaler []NodeDownscalerObservation `json:"nodeDownscaler,omitempty" tf:"node_downscaler,omitempty"`
 
+	// (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
 	// marks whether partial matching should be used when deciding which custom node template to select.
 	NodeTemplatesPartialMatchingEnabled *bool `json:"nodeTemplatesPartialMatchingEnabled,omitempty" tf:"node_templates_partial_matching_enabled,omitempty"`
 
+	// (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
 	// policy defining whether autoscaler can use spot instances for provisioning additional workloads.
 	SpotInstances []SpotInstancesObservation `json:"spotInstances,omitempty" tf:"spot_instances,omitempty"`
 
+	// (Block List, Max: 1) policy defining autoscaler's behavior when unschedulable pods were detected. (see below for nested schema)
 	// policy defining autoscaler's behavior when unschedulable pods were detected.
 	UnschedulablePods []UnschedulablePodsObservation `json:"unschedulablePods,omitempty" tf:"unschedulable_pods,omitempty"`
 }
 
 type AutoscalerSettingsParameters struct {
 
+	// (Block List, Max: 1) defines minimum and maximum amount of CPU the cluster can have. (see below for nested schema)
 	// defines minimum and maximum amount of CPU the cluster can have.
 	// +kubebuilder:validation:Optional
 	ClusterLimits []ClusterLimitsParameters `json:"clusterLimits,omitempty" tf:"cluster_limits,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable autoscaler policies
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) run autoscaler in scoped mode. Only marked pods and nodes will be considered.
 	// run autoscaler in scoped mode. Only marked pods and nodes will be considered.
 	// +kubebuilder:validation:Optional
 	IsScopedMode *bool `json:"isScopedMode,omitempty" tf:"is_scoped_mode,omitempty"`
 
+	// (Block List, Max: 1) node downscaler defines policies for removing nodes based on the configured conditions. (see below for nested schema)
 	// node downscaler defines policies for removing nodes based on the configured conditions.
 	// +kubebuilder:validation:Optional
 	NodeDownscaler []NodeDownscalerParameters `json:"nodeDownscaler,omitempty" tf:"node_downscaler,omitempty"`
 
+	// (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
 	// marks whether partial matching should be used when deciding which custom node template to select.
 	// +kubebuilder:validation:Optional
 	NodeTemplatesPartialMatchingEnabled *bool `json:"nodeTemplatesPartialMatchingEnabled,omitempty" tf:"node_templates_partial_matching_enabled,omitempty"`
 
+	// (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
 	// policy defining whether autoscaler can use spot instances for provisioning additional workloads.
 	// +kubebuilder:validation:Optional
 	SpotInstances []SpotInstancesParameters `json:"spotInstances,omitempty" tf:"spot_instances,omitempty"`
 
+	// (Block List, Max: 1) policy defining autoscaler's behavior when unschedulable pods were detected. (see below for nested schema)
 	// policy defining autoscaler's behavior when unschedulable pods were detected.
 	// +kubebuilder:validation:Optional
 	UnschedulablePods []UnschedulablePodsParameters `json:"unschedulablePods,omitempty" tf:"unschedulable_pods,omitempty"`
@@ -156,28 +188,34 @@ type AutoscalerSettingsParameters struct {
 
 type CPUInitParameters struct {
 
+	// (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
 	// defines the maximum allowed amount of vCPUs in the whole cluster.
 	MaxCores *float64 `json:"maxCores,omitempty" tf:"max_cores,omitempty"`
 
+	// (Number) defines the minimum allowed amount of CPUs in the whole cluster.
 	// defines the minimum allowed amount of CPUs in the whole cluster.
 	MinCores *float64 `json:"minCores,omitempty" tf:"min_cores,omitempty"`
 }
 
 type CPUObservation struct {
 
+	// (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
 	// defines the maximum allowed amount of vCPUs in the whole cluster.
 	MaxCores *float64 `json:"maxCores,omitempty" tf:"max_cores,omitempty"`
 
+	// (Number) defines the minimum allowed amount of CPUs in the whole cluster.
 	// defines the minimum allowed amount of CPUs in the whole cluster.
 	MinCores *float64 `json:"minCores,omitempty" tf:"min_cores,omitempty"`
 }
 
 type CPUParameters struct {
 
+	// (Number) defines the maximum allowed amount of vCPUs in the whole cluster.
 	// defines the maximum allowed amount of vCPUs in the whole cluster.
 	// +kubebuilder:validation:Optional
 	MaxCores *float64 `json:"maxCores,omitempty" tf:"max_cores,omitempty"`
 
+	// (Number) defines the minimum allowed amount of CPUs in the whole cluster.
 	// defines the minimum allowed amount of CPUs in the whole cluster.
 	// +kubebuilder:validation:Optional
 	MinCores *float64 `json:"minCores,omitempty" tf:"min_cores,omitempty"`
@@ -185,28 +223,34 @@ type CPUParameters struct {
 
 type ClusterLimitsInitParameters struct {
 
+	// (Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster's worker nodes. (see below for nested schema)
 	// defines the minimum and maximum amount of CPUs for cluster's worker nodes.
 	CPU []CPUInitParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable cluster size limits policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type ClusterLimitsObservation struct {
 
+	// (Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster's worker nodes. (see below for nested schema)
 	// defines the minimum and maximum amount of CPUs for cluster's worker nodes.
 	CPU []CPUObservation `json:"cpu,omitempty" tf:"cpu,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable cluster size limits policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type ClusterLimitsParameters struct {
 
+	// (Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster's worker nodes. (see below for nested schema)
 	// defines the minimum and maximum amount of CPUs for cluster's worker nodes.
 	// +kubebuilder:validation:Optional
 	CPU []CPUParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable cluster size limits policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
@@ -214,28 +258,34 @@ type ClusterLimitsParameters struct {
 
 type EmptyNodesInitParameters struct {
 
+	// (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
 	// period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
 	DelaySeconds *float64 `json:"delaySeconds,omitempty" tf:"delay_seconds,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable the empty worker nodes policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type EmptyNodesObservation struct {
 
+	// (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
 	// period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
 	DelaySeconds *float64 `json:"delaySeconds,omitempty" tf:"delay_seconds,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable the empty worker nodes policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type EmptyNodesParameters struct {
 
+	// (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
 	// period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
 	// +kubebuilder:validation:Optional
 	DelaySeconds *float64 `json:"delaySeconds,omitempty" tf:"delay_seconds,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable the empty worker nodes policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
@@ -243,88 +293,112 @@ type EmptyNodesParameters struct {
 
 type EvictorInitParameters struct {
 
+	// (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
 	// enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
+	// and-drain operations.
 	// configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
 	CycleInterval *string `json:"cycleInterval,omitempty" tf:"cycle_interval,omitempty"`
 
+	// run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
 	// enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
 	DryRun *bool `json:"dryRun,omitempty" tf:"dry_run,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
 	// if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
 	IgnorePodDisruptionBudgets *bool `json:"ignorePodDisruptionBudgets,omitempty" tf:"ignore_pod_disruption_budgets,omitempty"`
 
+	// (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
 	// configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
 	NodeGracePeriodMinutes *float64 `json:"nodeGracePeriodMinutes,omitempty" tf:"node_grace_period_minutes,omitempty"`
 
+	// (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
 	// configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
 	PodEvictionFailureBackOffInterval *string `json:"podEvictionFailureBackOffInterval,omitempty" tf:"pod_eviction_failure_back_off_interval,omitempty"`
 
+	// (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
 	// enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
 	ScopedMode *bool `json:"scopedMode,omitempty" tf:"scoped_mode,omitempty"`
 }
 
 type EvictorObservation struct {
 
+	// (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
 	// enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
+	// and-drain operations.
 	// configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
 	CycleInterval *string `json:"cycleInterval,omitempty" tf:"cycle_interval,omitempty"`
 
+	// run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
 	// enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
 	DryRun *bool `json:"dryRun,omitempty" tf:"dry_run,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
 	// if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
 	IgnorePodDisruptionBudgets *bool `json:"ignorePodDisruptionBudgets,omitempty" tf:"ignore_pod_disruption_budgets,omitempty"`
 
+	// (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
 	// configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
 	NodeGracePeriodMinutes *float64 `json:"nodeGracePeriodMinutes,omitempty" tf:"node_grace_period_minutes,omitempty"`
 
+	// (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
 	// configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
 	PodEvictionFailureBackOffInterval *string `json:"podEvictionFailureBackOffInterval,omitempty" tf:"pod_eviction_failure_back_off_interval,omitempty"`
 
+	// (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
 	// enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
 	ScopedMode *bool `json:"scopedMode,omitempty" tf:"scoped_mode,omitempty"`
 }
 
 type EvictorParameters struct {
 
+	// (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
 	// enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
 	// +kubebuilder:validation:Optional
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
+	// and-drain operations.
 	// configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
 	// +kubebuilder:validation:Optional
 	CycleInterval *string `json:"cycleInterval,omitempty" tf:"cycle_interval,omitempty"`
 
+	// run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
 	// enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
 	// +kubebuilder:validation:Optional
 	DryRun *bool `json:"dryRun,omitempty" tf:"dry_run,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
 	// if enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.
 	// +kubebuilder:validation:Optional
 	IgnorePodDisruptionBudgets *bool `json:"ignorePodDisruptionBudgets,omitempty" tf:"ignore_pod_disruption_budgets,omitempty"`
 
+	// (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
 	// configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
 	// +kubebuilder:validation:Optional
 	NodeGracePeriodMinutes *float64 `json:"nodeGracePeriodMinutes,omitempty" tf:"node_grace_period_minutes,omitempty"`
 
+	// (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
 	// configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
 	// +kubebuilder:validation:Optional
 	PodEvictionFailureBackOffInterval *string `json:"podEvictionFailureBackOffInterval,omitempty" tf:"pod_eviction_failure_back_off_interval,omitempty"`
 
+	// (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
 	// enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
 	// +kubebuilder:validation:Optional
 	ScopedMode *bool `json:"scopedMode,omitempty" tf:"scoped_mode,omitempty"`
@@ -332,38 +406,47 @@ type EvictorParameters struct {
 
 type HeadroomInitParameters struct {
 
+	// (Number) defines percentage of additional CPU capacity to be added.
 	// defines percentage of additional CPU capacity to be added.
 	CPUPercentage *float64 `json:"cpuPercentage,omitempty" tf:"cpu_percentage,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable headroom policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines percentage of additional memory capacity to be added.
 	// defines percentage of additional memory capacity to be added.
 	MemoryPercentage *float64 `json:"memoryPercentage,omitempty" tf:"memory_percentage,omitempty"`
 }
 
 type HeadroomObservation struct {
 
+	// (Number) defines percentage of additional CPU capacity to be added.
 	// defines percentage of additional CPU capacity to be added.
 	CPUPercentage *float64 `json:"cpuPercentage,omitempty" tf:"cpu_percentage,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable headroom policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines percentage of additional memory capacity to be added.
 	// defines percentage of additional memory capacity to be added.
 	MemoryPercentage *float64 `json:"memoryPercentage,omitempty" tf:"memory_percentage,omitempty"`
 }
 
 type HeadroomParameters struct {
 
+	// (Number) defines percentage of additional CPU capacity to be added.
 	// defines percentage of additional CPU capacity to be added.
 	// +kubebuilder:validation:Optional
 	CPUPercentage *float64 `json:"cpuPercentage,omitempty" tf:"cpu_percentage,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable headroom policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines percentage of additional memory capacity to be added.
 	// defines percentage of additional memory capacity to be added.
 	// +kubebuilder:validation:Optional
 	MemoryPercentage *float64 `json:"memoryPercentage,omitempty" tf:"memory_percentage,omitempty"`
@@ -371,38 +454,47 @@ type HeadroomParameters struct {
 
 type HeadroomSpotInitParameters struct {
 
+	// (Number) defines percentage of additional CPU capacity to be added.
 	// defines percentage of additional CPU capacity to be added.
 	CPUPercentage *float64 `json:"cpuPercentage,omitempty" tf:"cpu_percentage,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable headroom_spot policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines percentage of additional memory capacity to be added.
 	// defines percentage of additional memory capacity to be added.
 	MemoryPercentage *float64 `json:"memoryPercentage,omitempty" tf:"memory_percentage,omitempty"`
 }
 
 type HeadroomSpotObservation struct {
 
+	// (Number) defines percentage of additional CPU capacity to be added.
 	// defines percentage of additional CPU capacity to be added.
 	CPUPercentage *float64 `json:"cpuPercentage,omitempty" tf:"cpu_percentage,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable headroom_spot policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines percentage of additional memory capacity to be added.
 	// defines percentage of additional memory capacity to be added.
 	MemoryPercentage *float64 `json:"memoryPercentage,omitempty" tf:"memory_percentage,omitempty"`
 }
 
 type HeadroomSpotParameters struct {
 
+	// (Number) defines percentage of additional CPU capacity to be added.
 	// defines percentage of additional CPU capacity to be added.
 	// +kubebuilder:validation:Optional
 	CPUPercentage *float64 `json:"cpuPercentage,omitempty" tf:"cpu_percentage,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable headroom_spot policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines percentage of additional memory capacity to be added.
 	// defines percentage of additional memory capacity to be added.
 	// +kubebuilder:validation:Optional
 	MemoryPercentage *float64 `json:"memoryPercentage,omitempty" tf:"memory_percentage,omitempty"`
@@ -410,58 +502,73 @@ type HeadroomSpotParameters struct {
 
 type NodeConstraintsInitParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable node constraints policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines max CPU cores for the node to pick.
 	// defines max CPU cores for the node to pick.
 	MaxCPUCores *float64 `json:"maxCpuCores,omitempty" tf:"max_cpu_cores,omitempty"`
 
+	// (Number) defines max RAM in MiB for the node to pick.
 	// defines max RAM in MiB for the node to pick.
 	MaxRAMMib *float64 `json:"maxRamMib,omitempty" tf:"max_ram_mib,omitempty"`
 
+	// (Number) defines min CPU cores for the node to pick.
 	// defines min CPU cores for the node to pick.
 	MinCPUCores *float64 `json:"minCpuCores,omitempty" tf:"min_cpu_cores,omitempty"`
 
+	// (Number) defines min RAM in MiB for the node to pick.
 	// defines min RAM in MiB for the node to pick.
 	MinRAMMib *float64 `json:"minRamMib,omitempty" tf:"min_ram_mib,omitempty"`
 }
 
 type NodeConstraintsObservation struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable node constraints policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines max CPU cores for the node to pick.
 	// defines max CPU cores for the node to pick.
 	MaxCPUCores *float64 `json:"maxCpuCores,omitempty" tf:"max_cpu_cores,omitempty"`
 
+	// (Number) defines max RAM in MiB for the node to pick.
 	// defines max RAM in MiB for the node to pick.
 	MaxRAMMib *float64 `json:"maxRamMib,omitempty" tf:"max_ram_mib,omitempty"`
 
+	// (Number) defines min CPU cores for the node to pick.
 	// defines min CPU cores for the node to pick.
 	MinCPUCores *float64 `json:"minCpuCores,omitempty" tf:"min_cpu_cores,omitempty"`
 
+	// (Number) defines min RAM in MiB for the node to pick.
 	// defines min RAM in MiB for the node to pick.
 	MinRAMMib *float64 `json:"minRamMib,omitempty" tf:"min_ram_mib,omitempty"`
 }
 
 type NodeConstraintsParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable node constraints policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines max CPU cores for the node to pick.
 	// defines max CPU cores for the node to pick.
 	// +kubebuilder:validation:Optional
 	MaxCPUCores *float64 `json:"maxCpuCores,omitempty" tf:"max_cpu_cores,omitempty"`
 
+	// (Number) defines max RAM in MiB for the node to pick.
 	// defines max RAM in MiB for the node to pick.
 	// +kubebuilder:validation:Optional
 	MaxRAMMib *float64 `json:"maxRamMib,omitempty" tf:"max_ram_mib,omitempty"`
 
+	// (Number) defines min CPU cores for the node to pick.
 	// defines min CPU cores for the node to pick.
 	// +kubebuilder:validation:Optional
 	MinCPUCores *float64 `json:"minCpuCores,omitempty" tf:"min_cpu_cores,omitempty"`
 
+	// (Number) defines min RAM in MiB for the node to pick.
 	// defines min RAM in MiB for the node to pick.
 	// +kubebuilder:validation:Optional
 	MinRAMMib *float64 `json:"minRamMib,omitempty" tf:"min_ram_mib,omitempty"`
@@ -469,67 +576,104 @@ type NodeConstraintsParameters struct {
 
 type NodeDownscalerInitParameters struct {
 
+	// (Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)
 	// defines whether Node Downscaler should opt in for removing empty worker nodes when possible.
 	EmptyNodes []EmptyNodesInitParameters `json:"emptyNodes,omitempty" tf:"empty_nodes,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable node downscaler policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)
 	// defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy.
 	Evictor []EvictorInitParameters `json:"evictor,omitempty" tf:"evictor,omitempty"`
 }
 
 type NodeDownscalerObservation struct {
 
+	// (Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)
 	// defines whether Node Downscaler should opt in for removing empty worker nodes when possible.
 	EmptyNodes []EmptyNodesObservation `json:"emptyNodes,omitempty" tf:"empty_nodes,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable node downscaler policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)
 	// defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy.
 	Evictor []EvictorObservation `json:"evictor,omitempty" tf:"evictor,omitempty"`
 }
 
 type NodeDownscalerParameters struct {
 
+	// (Block List, Max: 1) defines whether Node Downscaler should opt in for removing empty worker nodes when possible. (see below for nested schema)
 	// defines whether Node Downscaler should opt in for removing empty worker nodes when possible.
 	// +kubebuilder:validation:Optional
 	EmptyNodes []EmptyNodesParameters `json:"emptyNodes,omitempty" tf:"empty_nodes,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable node downscaler policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Block List, Max: 1) defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy. (see below for nested schema)
 	// defines the CAST AI Evictor component settings. Evictor watches the pods running in your cluster and looks for ways to compact them into fewer nodes, making nodes empty, which will be removed by the empty worker nodes policy.
 	// +kubebuilder:validation:Optional
 	Evictor []EvictorParameters `json:"evictor,omitempty" tf:"evictor,omitempty"`
 }
 
+type PodPinnerInitParameters struct {
+
+	// (Boolean) enable/disable autoscaler policies
+	// enable/disable the Pod Pinner component's automatic management in your cluster. Default: enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type PodPinnerObservation struct {
+
+	// (Boolean) enable/disable autoscaler policies
+	// enable/disable the Pod Pinner component's automatic management in your cluster. Default: enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type PodPinnerParameters struct {
+
+	// (Boolean) enable/disable autoscaler policies
+	// enable/disable the Pod Pinner component's automatic management in your cluster. Default: enabled.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
 type SpotBackupsInitParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot backups policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines interval on how often spot backups restore to real spot should occur.
 	// defines interval on how often spot backups restore to real spot should occur.
 	SpotBackupRestoreRateSeconds *float64 `json:"spotBackupRestoreRateSeconds,omitempty" tf:"spot_backup_restore_rate_seconds,omitempty"`
 }
 
 type SpotBackupsObservation struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot backups policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines interval on how often spot backups restore to real spot should occur.
 	// defines interval on how often spot backups restore to real spot should occur.
 	SpotBackupRestoreRateSeconds *float64 `json:"spotBackupRestoreRateSeconds,omitempty" tf:"spot_backup_restore_rate_seconds,omitempty"`
 }
 
 type SpotBackupsParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot backups policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) defines interval on how often spot backups restore to real spot should occur.
 	// defines interval on how often spot backups restore to real spot should occur.
 	// +kubebuilder:validation:Optional
 	SpotBackupRestoreRateSeconds *float64 `json:"spotBackupRestoreRateSeconds,omitempty" tf:"spot_backup_restore_rate_seconds,omitempty"`
@@ -537,68 +681,86 @@ type SpotBackupsParameters struct {
 
 type SpotInstancesInitParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot instances policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	MaxReclaimRate *float64 `json:"maxReclaimRate,omitempty" tf:"max_reclaim_rate,omitempty"`
 
+	// (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
 	// policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
 	SpotBackups []SpotBackupsInitParameters `json:"spotBackups,omitempty" tf:"spot_backups,omitempty"`
 
+	// (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	SpotDiversityEnabled *bool `json:"spotDiversityEnabled,omitempty" tf:"spot_diversity_enabled,omitempty"`
 
+	// (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	SpotDiversityPriceIncreaseLimit *float64 `json:"spotDiversityPriceIncreaseLimit,omitempty" tf:"spot_diversity_price_increase_limit,omitempty"`
 
+	// (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
 	// configure the handling of SPOT interruption predictions.
 	SpotInterruptionPredictions []SpotInterruptionPredictionsInitParameters `json:"spotInterruptionPredictions,omitempty" tf:"spot_interruption_predictions,omitempty"`
 }
 
 type SpotInstancesObservation struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot instances policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	MaxReclaimRate *float64 `json:"maxReclaimRate,omitempty" tf:"max_reclaim_rate,omitempty"`
 
+	// (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
 	// policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
 	SpotBackups []SpotBackupsObservation `json:"spotBackups,omitempty" tf:"spot_backups,omitempty"`
 
+	// (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	SpotDiversityEnabled *bool `json:"spotDiversityEnabled,omitempty" tf:"spot_diversity_enabled,omitempty"`
 
+	// (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	SpotDiversityPriceIncreaseLimit *float64 `json:"spotDiversityPriceIncreaseLimit,omitempty" tf:"spot_diversity_price_increase_limit,omitempty"`
 
+	// (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
 	// configure the handling of SPOT interruption predictions.
 	SpotInterruptionPredictions []SpotInterruptionPredictionsObservation `json:"spotInterruptionPredictions,omitempty" tf:"spot_interruption_predictions,omitempty"`
 }
 
 type SpotInstancesParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot instances policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// +kubebuilder:validation:Optional
 	MaxReclaimRate *float64 `json:"maxReclaimRate,omitempty" tf:"max_reclaim_rate,omitempty"`
 
+	// (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
 	// policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
 	// +kubebuilder:validation:Optional
 	SpotBackups []SpotBackupsParameters `json:"spotBackups,omitempty" tf:"spot_backups,omitempty"`
 
+	// (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// +kubebuilder:validation:Optional
 	SpotDiversityEnabled *bool `json:"spotDiversityEnabled,omitempty" tf:"spot_diversity_enabled,omitempty"`
 
+	// (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// +kubebuilder:validation:Optional
 	SpotDiversityPriceIncreaseLimit *float64 `json:"spotDiversityPriceIncreaseLimit,omitempty" tf:"spot_diversity_price_increase_limit,omitempty"`
 
+	// (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
 	// configure the handling of SPOT interruption predictions.
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictions []SpotInterruptionPredictionsParameters `json:"spotInterruptionPredictions,omitempty" tf:"spot_interruption_predictions,omitempty"`
@@ -606,28 +768,34 @@ type SpotInstancesParameters struct {
 
 type SpotInterruptionPredictionsInitParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot interruption predictions.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
 	// define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 }
 
 type SpotInterruptionPredictionsObservation struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot interruption predictions.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
 	// define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 }
 
 type SpotInterruptionPredictionsParameters struct {
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable spot interruption predictions.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
 	// define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
@@ -635,61 +803,89 @@ type SpotInterruptionPredictionsParameters struct {
 
 type UnschedulablePodsInitParameters struct {
 
+	// (Boolean) enable/disable custom instances policy.
 	// enable/disable custom instances policy.
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable unschedulable pods detection policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// demand nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for on-demand nodes.
 	Headroom []HeadroomInitParameters `json:"headroom,omitempty" tf:"headroom,omitempty"`
 
+	// (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for spot nodes.
 	HeadroomSpot []HeadroomSpotInitParameters `json:"headroomSpot,omitempty" tf:"headroom_spot,omitempty"`
 
+	// (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
 	// defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
 	NodeConstraints []NodeConstraintsInitParameters `json:"nodeConstraints,omitempty" tf:"node_constraints,omitempty"`
+
+	// (Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)
+	// defines the Cast AI Pod Pinner components settings.
+	PodPinner []PodPinnerInitParameters `json:"podPinner,omitempty" tf:"pod_pinner,omitempty"`
 }
 
 type UnschedulablePodsObservation struct {
 
+	// (Boolean) enable/disable custom instances policy.
 	// enable/disable custom instances policy.
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable unschedulable pods detection policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// demand nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for on-demand nodes.
 	Headroom []HeadroomObservation `json:"headroom,omitempty" tf:"headroom,omitempty"`
 
+	// (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for spot nodes.
 	HeadroomSpot []HeadroomSpotObservation `json:"headroomSpot,omitempty" tf:"headroom_spot,omitempty"`
 
+	// (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
 	// defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
 	NodeConstraints []NodeConstraintsObservation `json:"nodeConstraints,omitempty" tf:"node_constraints,omitempty"`
+
+	// (Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)
+	// defines the Cast AI Pod Pinner components settings.
+	PodPinner []PodPinnerObservation `json:"podPinner,omitempty" tf:"pod_pinner,omitempty"`
 }
 
 type UnschedulablePodsParameters struct {
 
+	// (Boolean) enable/disable custom instances policy.
 	// enable/disable custom instances policy.
 	// +kubebuilder:validation:Optional
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
+	// (Boolean) enable/disable autoscaler policies
 	// enable/disable unschedulable pods detection policy.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// demand nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for on-demand nodes.
 	// +kubebuilder:validation:Optional
 	Headroom []HeadroomParameters `json:"headroom,omitempty" tf:"headroom,omitempty"`
 
+	// (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for spot nodes.
 	// +kubebuilder:validation:Optional
 	HeadroomSpot []HeadroomSpotParameters `json:"headroomSpot,omitempty" tf:"headroom_spot,omitempty"`
 
+	// (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
 	// defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
 	// +kubebuilder:validation:Optional
 	NodeConstraints []NodeConstraintsParameters `json:"nodeConstraints,omitempty" tf:"node_constraints,omitempty"`
+
+	// (Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)
+	// defines the Cast AI Pod Pinner components settings.
+	// +kubebuilder:validation:Optional
+	PodPinner []PodPinnerParameters `json:"podPinner,omitempty" tf:"pod_pinner,omitempty"`
 }
 
 // AutoScalerSpec defines the desired state of AutoScaler
@@ -719,7 +915,7 @@ type AutoScalerStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// AutoScaler is the Schema for the AutoScalers API. <no value>
+// AutoScaler is the Schema for the AutoScalers API. CAST AI autoscaler resource to manage autoscaler settings
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

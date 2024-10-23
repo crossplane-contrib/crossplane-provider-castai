@@ -15,6 +15,7 @@ import (
 
 type EksUserArnInitParameters struct {
 
+	// (String)
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksCluster
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
@@ -28,15 +29,20 @@ type EksUserArnInitParameters struct {
 }
 
 type EksUserArnObservation struct {
+
+	// (String)
 	Arn *string `json:"arn,omitempty" tf:"arn,omitempty"`
 
+	// (String)
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type EksUserArnParameters struct {
 
+	// (String)
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksCluster
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
@@ -77,7 +83,7 @@ type EksUserArnStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// EksUserArn is the Schema for the EksUserArns API. <no value>
+// EksUserArn is the Schema for the EksUserArns API. Retrieve EKS Cluster User ARN
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

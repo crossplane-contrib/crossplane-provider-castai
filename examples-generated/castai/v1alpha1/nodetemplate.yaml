@@ -1,0 +1,57 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: NodeTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/nodetemplate
+  labels:
+    testing.upbound.io/example-name: default_by_castai
+  name: default-by-castai
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    configurationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    constraints:
+    - architectures:
+      - amd64
+      azs:
+      - us-east-2a
+      - us-east-2b
+      burstableInstances: disabled
+      computeOptimizedState: disabled
+      customPriority:
+      - instanceFamilies:
+        - c5
+        onDemand: true
+        spot: false
+      customerSpecific: disabled
+      enableSpotDiversity: true
+      fallbackRestoreRateSeconds: 300
+      instanceFamilies:
+      - include:
+        - c5
+      isGpuOnly: false
+      maxCpu: 8
+      maxMemory: 16384
+      minCpu: 2
+      minMemory: 4096
+      onDemand: true
+      spot: false
+      spotDiversityPriceIncreaseLimitPercent: 20
+      spotInterruptionPredictionsEnabled: true
+      spotInterruptionPredictionsType: aws-rebalance-recommendations
+      storageOptimizedState: disabled
+      useSpotFallbacks: true
+    customLabels:
+      env: production
+    customTaints:
+    - effect: NoSchedule
+      key: dedicated
+      value: backend
+    isDefault: true
+    isEnabled: true
+    name: default-by-castai
+    shouldTaint: true

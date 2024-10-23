@@ -14,55 +14,82 @@ import (
 )
 
 type EvictorAdvancedConfigEvictorAdvancedConfigInitParameters struct {
+
+	// (Boolean) Apply Aggressive mode to Evictor
+	// Apply Aggressive mode to Evictor
 	Aggressive *bool `json:"aggressive,omitempty" tf:"aggressive,omitempty"`
 
+	// (Boolean) Mark node as disposable
+	// Mark node as disposable
 	Disposable *bool `json:"disposable,omitempty" tf:"disposable,omitempty"`
 
+	// (Block List) node selector (see below for nested schema)
 	// node selector
 	NodeSelector []NodeSelectorInitParameters `json:"nodeSelector,omitempty" tf:"node_selector,omitempty"`
 
+	// (Block List) pod selector (see below for nested schema)
 	// pod selector
 	PodSelector []PodSelectorInitParameters `json:"podSelector,omitempty" tf:"pod_selector,omitempty"`
 
+	// (Boolean) Mark pods as removal disabled
+	// Mark pods as removal disabled
 	RemovalDisabled *bool `json:"removalDisabled,omitempty" tf:"removal_disabled,omitempty"`
 }
 
 type EvictorAdvancedConfigEvictorAdvancedConfigObservation struct {
+
+	// (Boolean) Apply Aggressive mode to Evictor
+	// Apply Aggressive mode to Evictor
 	Aggressive *bool `json:"aggressive,omitempty" tf:"aggressive,omitempty"`
 
+	// (Boolean) Mark node as disposable
+	// Mark node as disposable
 	Disposable *bool `json:"disposable,omitempty" tf:"disposable,omitempty"`
 
+	// (Block List) node selector (see below for nested schema)
 	// node selector
 	NodeSelector []NodeSelectorObservation `json:"nodeSelector,omitempty" tf:"node_selector,omitempty"`
 
+	// (Block List) pod selector (see below for nested schema)
 	// pod selector
 	PodSelector []PodSelectorObservation `json:"podSelector,omitempty" tf:"pod_selector,omitempty"`
 
+	// (Boolean) Mark pods as removal disabled
+	// Mark pods as removal disabled
 	RemovalDisabled *bool `json:"removalDisabled,omitempty" tf:"removal_disabled,omitempty"`
 }
 
 type EvictorAdvancedConfigEvictorAdvancedConfigParameters struct {
 
+	// (Boolean) Apply Aggressive mode to Evictor
+	// Apply Aggressive mode to Evictor
 	// +kubebuilder:validation:Optional
 	Aggressive *bool `json:"aggressive,omitempty" tf:"aggressive,omitempty"`
 
+	// (Boolean) Mark node as disposable
+	// Mark node as disposable
 	// +kubebuilder:validation:Optional
 	Disposable *bool `json:"disposable,omitempty" tf:"disposable,omitempty"`
 
+	// (Block List) node selector (see below for nested schema)
 	// node selector
 	// +kubebuilder:validation:Optional
 	NodeSelector []NodeSelectorParameters `json:"nodeSelector,omitempty" tf:"node_selector,omitempty"`
 
+	// (Block List) pod selector (see below for nested schema)
 	// pod selector
 	// +kubebuilder:validation:Optional
 	PodSelector []PodSelectorParameters `json:"podSelector,omitempty" tf:"pod_selector,omitempty"`
 
+	// (Boolean) Mark pods as removal disabled
+	// Mark pods as removal disabled
 	// +kubebuilder:validation:Optional
 	RemovalDisabled *bool `json:"removalDisabled,omitempty" tf:"removal_disabled,omitempty"`
 }
 
 type EvictorAdvancedConfigInitParameters struct {
 
+	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
@@ -75,23 +102,28 @@ type EvictorAdvancedConfigInitParameters struct {
 	// +kubebuilder:validation:Optional
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
+	// (Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)
 	// evictor advanced configuration to target specific node/pod
 	EvictorAdvancedConfig []EvictorAdvancedConfigEvictorAdvancedConfigInitParameters `json:"evictorAdvancedConfig,omitempty" tf:"evictor_advanced_config,omitempty"`
 }
 
 type EvictorAdvancedConfigObservation struct {
 
+	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
+	// (Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)
 	// evictor advanced configuration to target specific node/pod
 	EvictorAdvancedConfig []EvictorAdvancedConfigEvictorAdvancedConfigObservation `json:"evictorAdvancedConfig,omitempty" tf:"evictor_advanced_config,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type EvictorAdvancedConfigParameters struct {
 
+	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EksClusterId
 	// +kubebuilder:validation:Optional
@@ -105,125 +137,170 @@ type EvictorAdvancedConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
+	// (Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)
 	// evictor advanced configuration to target specific node/pod
 	// +kubebuilder:validation:Optional
 	EvictorAdvancedConfig []EvictorAdvancedConfigEvictorAdvancedConfigParameters `json:"evictorAdvancedConfig,omitempty" tf:"evictor_advanced_config,omitempty"`
 }
 
 type MatchExpressionsInitParameters struct {
+
+	// (String)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// (String)
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (List of String)
 	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type MatchExpressionsObservation struct {
+
+	// (String)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// (String)
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (List of String)
 	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type MatchExpressionsParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key" tf:"key,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type NodeSelectorInitParameters struct {
+
+	// (Block List) (see below for nested schema)
 	MatchExpressions []MatchExpressionsInitParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// (Map of String)
 	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 }
 
 type NodeSelectorObservation struct {
+
+	// (Block List) (see below for nested schema)
 	MatchExpressions []MatchExpressionsObservation `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// (Map of String)
 	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 }
 
 type NodeSelectorParameters struct {
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	MatchExpressions []MatchExpressionsParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// (Map of String)
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 }
 
 type PodSelectorInitParameters struct {
+
+	// (String)
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	MatchExpressions []PodSelectorMatchExpressionsInitParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// (Map of String)
 	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 
+	// (String)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
 
 type PodSelectorMatchExpressionsInitParameters struct {
+
+	// (String)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// (String)
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (List of String)
 	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type PodSelectorMatchExpressionsObservation struct {
+
+	// (String)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// (String)
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (List of String)
 	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type PodSelectorMatchExpressionsParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key" tf:"key,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type PodSelectorObservation struct {
+
+	// (String)
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	MatchExpressions []PodSelectorMatchExpressionsObservation `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// (Map of String)
 	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 
+	// (String)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
 
 type PodSelectorParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	MatchExpressions []PodSelectorMatchExpressionsParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
 
+	// (Map of String)
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	MatchLabels map[string]*string `json:"matchLabels,omitempty" tf:"match_labels,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
@@ -255,7 +332,7 @@ type EvictorAdvancedConfigStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// EvictorAdvancedConfig is the Schema for the EvictorAdvancedConfigs API. <no value>
+// EvictorAdvancedConfig is the Schema for the EvictorAdvancedConfigs API. CAST AI eviction config resource to manage evictor properties
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

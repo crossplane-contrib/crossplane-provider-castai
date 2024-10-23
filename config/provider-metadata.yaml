@@ -44,11 +44,65 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_autoscaler Resource - terraform-provider-castai:
+    castai_autoscaler:
         subCategory: ""
         description: CAST AI autoscaler resource to manage autoscaler settings
-        name: castai_autoscaler Resource - terraform-provider-castai
+        name: castai_autoscaler
         title: castai_autoscaler Resource - terraform-provider-castai
+        examples:
+            - name: castai_autoscaler_policy
+              manifest: |-
+                {
+                  "autoscaler_settings": [
+                    {
+                      "cluster_limits": [
+                        {
+                          "cpu": [
+                            {
+                              "max_cores": 10,
+                              "min_cores": 1
+                            }
+                          ],
+                          "enabled": true
+                        }
+                      ],
+                      "enabled": true,
+                      "is_scoped_mode": false,
+                      "node_downscaler": [
+                        {
+                          "empty_nodes": [
+                            {
+                              "delay_seconds": 90,
+                              "enabled": true
+                            }
+                          ],
+                          "enabled": true,
+                          "evictor": [
+                            {
+                              "aggressive_mode": false,
+                              "cycle_interval": "60s",
+                              "dry_run": false,
+                              "enabled": true,
+                              "ignore_pod_disruption_budgets": false,
+                              "node_grace_period_minutes": 10,
+                              "pod_eviction_failure_back_off_interval": "30s",
+                              "scoped_mode": false
+                            }
+                          ]
+                        }
+                      ],
+                      "node_templates_partial_matching_enabled": false,
+                      "unschedulable_pods": [
+                        {
+                          "enabled": true
+                        }
+                      ]
+                    }
+                  ],
+                  "cluster_id": "${castai_eks_cluster.test.id}"
+                }
+              references:
+                cluster_id: castai_eks_cluster.test.id
         argumentDocs:
             aggressive_mode: (Boolean) enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.
             autoscaler_policies: (String) computed value to store full policies configuration
@@ -84,6 +138,7 @@ resources:
             node_grace_period_minutes: (Number) configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.
             node_templates_partial_matching_enabled: (Boolean) marks whether partial matching should be used when deciding which custom node template to select.
             pod_eviction_failure_back_off_interval: (String) configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.
+            pod_pinner: '(Block List, Max: 1) defines the Cast AI Pod Pinner components settings. (see below for nested schema)'
             scoped_mode: (Boolean) enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.
             spot_backup_restore_rate_seconds: (Number) defines interval on how often spot backups restore to real spot should occur.
             spot_backups: '(Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)'
@@ -229,35 +284,79 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_eks_clusterid Resource - terraform-provider-castai:
+    castai_eks_clusterid:
         subCategory: ""
-        name: castai_eks_clusterid Resource - terraform-provider-castai
+        description: Retrieve CAST AI clusterid
+        name: castai_eks_clusterid
         title: castai_eks_clusterid Resource - terraform-provider-castai
+        examples:
+            - name: cluster_id
+              manifest: |-
+                {
+                  "account_id": "${data.aws_caller_identity.current.account_id}",
+                  "cluster_name": "${var.cluster_name}",
+                  "region": "${var.cluster_region}"
+                }
+              references:
+                account_id: data.aws_caller_identity.current.account_id
+                cluster_name: var.cluster_name
+                region: var.cluster_region
         argumentDocs:
             account_id: (String)
             cluster_name: (String)
             id: (String) The ID of this resource.
             region: (String)
         importStatements: []
-    castai_eks_user_arn Resource - terraform-provider-castai:
+    castai_eks_user_arn:
         subCategory: ""
-        name: castai_eks_user_arn Resource - terraform-provider-castai
+        description: Retrieve EKS Cluster User ARN
+        name: castai_eks_user_arn
         title: castai_eks_user_arn Resource - terraform-provider-castai
+        examples:
+            - name: castai_user_arn
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_clusterid.cluster_id.id}"
+                }
+              references:
+                cluster_id: castai_eks_clusterid.cluster_id.id
         argumentDocs:
             arn: (String)
             cluster_id: (String)
             id: (String) The ID of this resource.
         importStatements: []
-    castai_evictor_advanced_config Resource - terraform-provider-castai:
+    castai_evictor_advanced_config:
         subCategory: ""
         description: CAST AI eviction config resource to manage evictor properties
-        name: castai_evictor_advanced_config Resource - terraform-provider-castai
+        name: castai_evictor_advanced_config
         title: castai_evictor_advanced_config Resource - terraform-provider-castai
+        examples:
+            - name: config
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_cluster.test.id}",
+                  "evictor_advanced_config": [
+                    {
+                      "aggressive": true,
+                      "pod_selector": [
+                        {
+                          "kind": "Job",
+                          "match_labels": {
+                            "job": "test"
+                          },
+                          "namespace": "test"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                cluster_id: castai_eks_cluster.test.id
         argumentDocs:
-            aggressive: (Boolean)
+            aggressive: (Boolean) Apply Aggressive mode to Evictor
             cluster_id: (String) CAST AI cluster id.
             create: (String)
-            disposable: (Boolean)
+            disposable: (Boolean) Mark node as disposable
             evictor_advanced_config: '(Block List, Min: 1) evictor advanced configuration to target specific node/pod (see below for nested schema)'
             id: (String) The ID of this resource.
             key: (String)
@@ -268,7 +367,7 @@ resources:
             node_selector: (Block List) node selector (see below for nested schema)
             operator: (String)
             pod_selector: (Block List) pod selector (see below for nested schema)
-            removal_disabled: (Boolean)
+            removal_disabled: (Boolean) Mark pods as removal disabled
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             values: (List of String)
@@ -301,6 +400,24 @@ resources:
             credentials_json: (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
             delete: (String)
             delete_nodes_on_disconnect: (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect
+            id: (String) The ID of this resource.
+            location: (String) GCP cluster zone in case of zonal or region in case of regional cluster
+            name: (String) GKE cluster name
+            project_id: (String) GCP project id
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements: []
+    castai_gke_cluster_id Resource - terraform-provider-castai:
+        subCategory: ""
+        description: GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
+        name: castai_gke_cluster_id Resource - terraform-provider-castai
+        title: castai_gke_cluster_id Resource - terraform-provider-castai
+        argumentDocs:
+            cast_service_account: (String) Service account email in cast project
+            client_service_account: (String) Service account email in client project
+            cluster_token: (String, Sensitive) CAST.AI agent cluster token
+            create: (String)
+            delete: (String)
             id: (String) The ID of this resource.
             location: (String) GCP cluster zone in case of zonal or region in case of regional cluster
             name: (String) GKE cluster name
@@ -346,6 +463,7 @@ resources:
               manifest: '{}'
         argumentDocs:
             aks: '(Block List, Max: 1) (see below for nested schema)'
+            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)'
             arn: (String) AWS target group ARN for CAST provisioned nodes
             cluster_id: (String) CAST AI cluster id
             container_runtime: '(String) Optional container runtime to be used by kubelet. Applicable for EKS only.  Supported values include: dockerd, containerd'
@@ -357,7 +475,7 @@ resources:
             docker_config: (String) Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             drain_timeout_sec: (Number) Timeout in seconds for draining the node. Defaults to 0
             eks: '(Block List, Max: 1) (see below for nested schema)'
-            eks_image_family: (String) Image OS Family to use when provisioning node. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details.
+            eks_image_family: '(String) Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)'
             gke: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
             image: (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
@@ -365,15 +483,18 @@ resources:
             imds_v1: (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
             init_script: (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
             instance_profile_arn: (String) Cluster's instance profile ARN used for CAST provisioned nodes
+            ip_based_backend_pools: (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
             ips_per_prefix: (Number) Number of IPs per prefix to be used for calculating max pods.
             key_pair_id: (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
             kops: '(Block List, Max: 1) (see below for nested schema)'
             kubelet_config: (String) Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
+            loadbalancers: (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
             max_pods_per_node: (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
             max_pods_per_node_formula: '(String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .'
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
+            node_group_arn: (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
             os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
             port: (Number) Port for AWS target group for CAST provisioned nodes
             read: (String)
@@ -416,13 +537,82 @@ resources:
             read: (String)
             timeouts: (Block, Optional) (see below for nested schema)
         importStatements: []
-    castai_node_template Resource - terraform-provider-castai:
+    castai_node_template:
         subCategory: ""
         description: CAST AI node template resource to manage node templates
-        name: castai_node_template Resource - terraform-provider-castai
+        name: castai_node_template
         title: castai_node_template Resource - terraform-provider-castai
+        examples:
+            - name: default_by_castai
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_cluster.test.id}",
+                  "configuration_id": "${castai_node_configuration.default.id}",
+                  "constraints": [
+                    {
+                      "architectures": [
+                        "amd64"
+                      ],
+                      "azs": [
+                        "us-east-2a",
+                        "us-east-2b"
+                      ],
+                      "burstable_instances": "disabled",
+                      "compute_optimized_state": "disabled",
+                      "custom_priority": [
+                        {
+                          "instance_families": [
+                            "c5"
+                          ],
+                          "on_demand": true,
+                          "spot": false
+                        }
+                      ],
+                      "customer_specific": "disabled",
+                      "enable_spot_diversity": true,
+                      "fallback_restore_rate_seconds": 300,
+                      "instance_families": [
+                        {
+                          "include": [
+                            "c5"
+                          ]
+                        }
+                      ],
+                      "is_gpu_only": false,
+                      "max_cpu": 8,
+                      "max_memory": 16384,
+                      "min_cpu": 2,
+                      "min_memory": 4096,
+                      "on_demand": true,
+                      "spot": false,
+                      "spot_diversity_price_increase_limit_percent": 20,
+                      "spot_interruption_predictions_enabled": true,
+                      "spot_interruption_predictions_type": "aws-rebalance-recommendations",
+                      "storage_optimized_state": "disabled",
+                      "use_spot_fallbacks": true
+                    }
+                  ],
+                  "custom_labels": {
+                    "env": "production"
+                  },
+                  "custom_taints": [
+                    {
+                      "effect": "NoSchedule",
+                      "key": "dedicated",
+                      "value": "backend"
+                    }
+                  ],
+                  "is_default": true,
+                  "is_enabled": true,
+                  "name": "default-by-castai",
+                  "should_taint": true
+                }
+              references:
+                cluster_id: castai_eks_cluster.test.id
+                configuration_id: castai_node_configuration.default.id
         argumentDocs:
             affinity: (Block List) (see below for nested schema)
+            architecture_priority: '(List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.'
             architectures: '(List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.'
             az_name: (String) Availability zone name.
             azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -432,6 +622,7 @@ resources:
             compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'
             configuration_id: (String) CAST AI node configuration id to be used for node template.
             constraints: '(Block List, Max: 1) (see below for nested schema)'
+            cpu_manufacturers: '(List of String) List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.'
             create: (String)
             custom_instances_enabled: (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
             custom_instances_with_extended_memory_enabled: (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
@@ -491,11 +682,26 @@ resources:
             - |-
               # Import node template by specifying cluster ID and node template name.
               terraform import castai_node_template.default_by_castai 105e6fa3-20b1-424e-v589-9a64d1eeabea/default-by-castai
-    castai_organization_members Resource - terraform-provider-castai:
+    castai_organization_members:
         subCategory: ""
         description: CAST AI organization members resource to manage organization members
-        name: castai_organization_members Resource - terraform-provider-castai
+        name: castai_organization_members
         title: castai_organization_members Resource - terraform-provider-castai
+        examples:
+            - name: dev
+              manifest: |-
+                {
+                  "members": [
+                    "member@test.ai"
+                  ],
+                  "organization_id": "${data.castai_organization.dev.id}",
+                  "owners": [
+                    "owner@test.ai"
+                  ],
+                  "viewers": []
+                }
+              references:
+                organization_id: data.castai_organization.dev.id
         argumentDocs:
             create: (String)
             delete: (String)
@@ -678,3 +884,95 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
+    castai_workload_scaling_policy:
+        subCategory: ""
+        description: Manage workload scaling policy. Scaling policy reference https://docs.cast.ai/docs/woop-scaling-policies
+        name: castai_workload_scaling_policy
+        title: castai_workload_scaling_policy Resource - terraform-provider-castai
+        examples:
+            - name: services
+              manifest: |-
+                {
+                  "anti_affinity": [
+                    {
+                      "consider_anti_affinity": false
+                    }
+                  ],
+                  "apply_type": "IMMEDIATE",
+                  "cluster_id": "${castai_gke_cluster.dev.id}",
+                  "cpu": [
+                    {
+                      "apply_threshold": 0.1,
+                      "args": [
+                        "0.9"
+                      ],
+                      "function": "QUANTILE",
+                      "look_back_period_seconds": 172800,
+                      "max": 1,
+                      "min": 0.1,
+                      "overhead": 0.15
+                    }
+                  ],
+                  "downscaling": [
+                    {
+                      "apply_type": "DEFERRED"
+                    }
+                  ],
+                  "management_option": "MANAGED",
+                  "memory": [
+                    {
+                      "apply_threshold": 0.2,
+                      "function": "MAX",
+                      "overhead": 0.35
+                    }
+                  ],
+                  "memory_event": [
+                    {
+                      "apply_type": "IMMEDIATE"
+                    }
+                  ],
+                  "name": "services",
+                  "startup": [
+                    {
+                      "period_seconds": 240
+                    }
+                  ]
+                }
+              references:
+                cluster_id: castai_gke_cluster.dev.id
+            - name: services
+              manifest: '{}'
+        argumentDocs:
+            anti_affinity: '(Block List, Max: 1) (see below for nested schema)'
+            apply_threshold: (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+            apply_type: (String) Recommendation apply type.
+            args: (List of String) The arguments for the function - i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
+            cluster_id: (String) CAST AI cluster id
+            consider_anti_affinity: |-
+                (Boolean) Defines if anti-affinity should be considered when scaling the workload.
+                If enabled, requiring host ports, or having anti-affinity on hostname will force all recommendations to be deferred.
+            cpu: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            create: (String)
+            delete: (String)
+            downscaling: '(Block List, Max: 1) (see below for nested schema)'
+            function: '(String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX'
+            id: (String) The ID of this resource.
+            look_back_period_seconds: (Number) The look back period in seconds for the recommendation.
+            management_option: (String) Defines possible options for workload management.
+            max: (Number) Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+            memory: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            memory_event: '(Block List, Max: 1) (see below for nested schema)'
+            min: (Number) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+            name: (String) Scaling policy name
+            overhead: (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
+            period_seconds: |-
+                (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                When set, recommendations will be adjusted to disregard resource spikes within this period.
+                If not specified, the workload will receive standard recommendations without startup considerations.
+            read: (String)
+            startup: '(Block List, Max: 1) (see below for nested schema)'
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements:
+            - $ terraform import castai_workload_scaling_policy.services <cluster_id>/services
+            - $ terraform import 'module.castai-eks-cluster.castai_workload_scaling_policy.this["services"]' <cluster_id>/services

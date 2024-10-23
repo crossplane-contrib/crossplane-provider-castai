@@ -14,31 +14,43 @@ import (
 )
 
 type EksClusterIdInitParameters struct {
+
+	// (String)
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// (String)
 	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
 
+	// (String)
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type EksClusterIdObservation struct {
+
+	// (String)
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// (String)
 	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String)
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type EksClusterIdParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
@@ -70,7 +82,7 @@ type EksClusterIdStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// EksClusterId is the Schema for the EksClusterIds API. <no value>
+// EksClusterId is the Schema for the EksClusterIds API. Retrieve CAST AI clusterid
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

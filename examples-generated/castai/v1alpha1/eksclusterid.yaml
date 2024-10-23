@@ -1,0 +1,13 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EksClusterId
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/eksclusterid
+  labels:
+    testing.upbound.io/example-name: cluster_id
+  name: cluster-id
+spec:
+  forProvider:
+    accountId: ${data.aws_caller_identity.current.account_id}
+    clusterName: ${var.cluster_name}
+    region: ${var.cluster_region}

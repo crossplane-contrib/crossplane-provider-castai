@@ -1,0 +1,35 @@
+apiVersion: workload.castai.upbound.io/v1alpha1
+kind: ScalingPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: workload/v1alpha1/scalingpolicy
+  labels:
+    testing.upbound.io/example-name: services
+  name: services
+spec:
+  forProvider:
+    antiAffinity:
+    - considerAntiAffinity: false
+    applyType: IMMEDIATE
+    clusterId: ${castai_gke_cluster.dev.id}
+    cpu:
+    - applyThreshold: 0.1
+      args:
+      - "0.9"
+      function: QUANTILE
+      lookBackPeriodSeconds: 172800
+      max: 1
+      min: 0.1
+      overhead: 0.15
+    downscaling:
+    - applyType: DEFERRED
+    managementOption: MANAGED
+    memory:
+    - applyThreshold: 0.2
+      function: MAX
+      overhead: 0.35
+    memoryEvent:
+    - applyType: IMMEDIATE
+    name: services
+    startup:
+    - periodSeconds: 240

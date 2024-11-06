@@ -13,6 +13,7 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1"
 	v1alpha1apis "github.com/crossplane-contrib/crossplane-provider-castai/apis/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/crossplane-provider-castai/apis/v1beta1"
+	v1alpha1workload "github.com/crossplane-contrib/crossplane-provider-castai/apis/workload/v1alpha1"
 )
 
 func init() {
@@ -21,6 +22,7 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
+		v1alpha1workload.SchemeBuilder.AddToScheme,
 	)
 }
 

@@ -25,6 +25,7 @@ import (
 	reservations "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/reservations"
 	ssoconnection "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ssoconnection"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/providerconfig"
+	scalingpolicy "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/workload/scalingpolicy"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -47,6 +48,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		reservations.Setup,
 		ssoconnection.Setup,
 		providerconfig.Setup,
+		scalingpolicy.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

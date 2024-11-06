@@ -8,6 +8,6 @@ import (
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("castai_workload_scaling_policy", func(r *config.Resource) {
 		r.ShortGroup = ""
-		r.Kind = "WorkloadScalingPolicy"
+		r.Kind = "ScalingPolicy"
 	})
 }

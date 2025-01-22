@@ -19,8 +19,8 @@ type AksInitParameters struct {
 	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
 
-	// (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
-	// Loadboalancer configuration for CAST provisioned nodes
+	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Load balancer configuration for CAST provisioned nodes
 	Loadbalancers []LoadbalancersInitParameters `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
 
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
@@ -38,8 +38,8 @@ type AksObservation struct {
 	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
 
-	// (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
-	// Loadboalancer configuration for CAST provisioned nodes
+	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Load balancer configuration for CAST provisioned nodes
 	Loadbalancers []LoadbalancersObservation `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
 
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
@@ -58,8 +58,8 @@ type AksParameters struct {
 	// +kubebuilder:validation:Optional
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
 
-	// (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
-	// Loadboalancer configuration for CAST provisioned nodes
+	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Load balancer configuration for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
 	Loadbalancers []LoadbalancersParameters `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
 
@@ -284,6 +284,10 @@ type GkeInitParameters struct {
 	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
 	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
 
+	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Loadboalancer configuration for CAST provisioned nodes
+	Loadbalancers []GkeLoadbalancersInitParameters `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
+
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
@@ -301,11 +305,50 @@ type GkeInitParameters struct {
 	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
+type GkeLoadbalancersInitParameters struct {
+
+	// (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
+	// Target backend pools configuration for CAST provisioned nodes
+	TargetBackendPools []TargetBackendPoolsInitParameters `json:"targetBackendPools,omitempty" tf:"target_backend_pools,omitempty"`
+
+	// (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
+	// Unmanaged instance groups configuration for CAST provisioned nodes
+	UnmanagedInstanceGroups []UnmanagedInstanceGroupsInitParameters `json:"unmanagedInstanceGroups,omitempty" tf:"unmanaged_instance_groups,omitempty"`
+}
+
+type GkeLoadbalancersObservation struct {
+
+	// (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
+	// Target backend pools configuration for CAST provisioned nodes
+	TargetBackendPools []TargetBackendPoolsObservation `json:"targetBackendPools,omitempty" tf:"target_backend_pools,omitempty"`
+
+	// (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
+	// Unmanaged instance groups configuration for CAST provisioned nodes
+	UnmanagedInstanceGroups []UnmanagedInstanceGroupsObservation `json:"unmanagedInstanceGroups,omitempty" tf:"unmanaged_instance_groups,omitempty"`
+}
+
+type GkeLoadbalancersParameters struct {
+
+	// (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
+	// Target backend pools configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	TargetBackendPools []TargetBackendPoolsParameters `json:"targetBackendPools,omitempty" tf:"target_backend_pools,omitempty"`
+
+	// (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
+	// Unmanaged instance groups configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	UnmanagedInstanceGroups []UnmanagedInstanceGroupsParameters `json:"unmanagedInstanceGroups,omitempty" tf:"unmanaged_instance_groups,omitempty"`
+}
+
 type GkeObservation struct {
 
 	// standard, pd-balanced, pd-ssd, pd-extreme
 	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
 	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
+
+	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Loadboalancer configuration for CAST provisioned nodes
+	Loadbalancers []GkeLoadbalancersObservation `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
 
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
@@ -330,6 +373,11 @@ type GkeParameters struct {
 	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
 	// +kubebuilder:validation:Optional
 	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
+
+	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+	// Loadboalancer configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	Loadbalancers []GkeLoadbalancersParameters `json:"loadbalancers,omitempty" tf:"loadbalancers,omitempty"`
 
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
@@ -398,27 +446,48 @@ type KopsParameters struct {
 
 type LoadbalancersInitParameters struct {
 
+	// (String) The ID of this resource.
+	// The full ID of the load balancer in azure.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
 	// (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
 	// IP based backend pools configuration for CAST provisioned nodes
 	IPBasedBackendPools []IPBasedBackendPoolsInitParameters `json:"ipBasedBackendPools,omitempty" tf:"ip_based_backend_pools,omitempty"`
 
 	// (String) Name of the node configuration. It must be unique within the cluster.
-	// Name of loadbalancer
+	// Name of load balancer
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
+	// NIC based backend pools configuration for CAST provisioned nodes.
+	NicBasedBackendPools []NicBasedBackendPoolsInitParameters `json:"nicBasedBackendPools,omitempty" tf:"nic_based_backend_pools,omitempty"`
 }
 
 type LoadbalancersObservation struct {
+
+	// (String) The ID of this resource.
+	// The full ID of the load balancer in azure.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
 	// IP based backend pools configuration for CAST provisioned nodes
 	IPBasedBackendPools []IPBasedBackendPoolsObservation `json:"ipBasedBackendPools,omitempty" tf:"ip_based_backend_pools,omitempty"`
 
 	// (String) Name of the node configuration. It must be unique within the cluster.
-	// Name of loadbalancer
+	// Name of load balancer
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
+	// NIC based backend pools configuration for CAST provisioned nodes.
+	NicBasedBackendPools []NicBasedBackendPoolsObservation `json:"nicBasedBackendPools,omitempty" tf:"nic_based_backend_pools,omitempty"`
 }
 
 type LoadbalancersParameters struct {
+
+	// (String) The ID of this resource.
+	// The full ID of the load balancer in azure.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
 	// IP based backend pools configuration for CAST provisioned nodes
@@ -426,7 +495,34 @@ type LoadbalancersParameters struct {
 	IPBasedBackendPools []IPBasedBackendPoolsParameters `json:"ipBasedBackendPools,omitempty" tf:"ip_based_backend_pools,omitempty"`
 
 	// (String) Name of the node configuration. It must be unique within the cluster.
-	// Name of loadbalancer
+	// Name of load balancer
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
+	// NIC based backend pools configuration for CAST provisioned nodes.
+	// +kubebuilder:validation:Optional
+	NicBasedBackendPools []NicBasedBackendPoolsParameters `json:"nicBasedBackendPools,omitempty" tf:"nic_based_backend_pools,omitempty"`
+}
+
+type NicBasedBackendPoolsInitParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the NIC based backend pool
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type NicBasedBackendPoolsObservation struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the NIC based backend pool
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type NicBasedBackendPoolsParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the NIC based backend pool
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 }
@@ -673,6 +769,28 @@ type NodeConfigurationParameters struct {
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
+type TargetBackendPoolsInitParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the target group
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type TargetBackendPoolsObservation struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the target group
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type TargetBackendPoolsParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the target group
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+}
+
 type TargetGroupInitParameters struct {
 
 	// (String) AWS target group ARN for CAST provisioned nodes
@@ -706,6 +824,41 @@ type TargetGroupParameters struct {
 	// Port for AWS target group for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+}
+
+type UnmanagedInstanceGroupsInitParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the instance group
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) Zone of the instance group
+	// Zone of the instance group
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
+}
+
+type UnmanagedInstanceGroupsObservation struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the instance group
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) Zone of the instance group
+	// Zone of the instance group
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
+}
+
+type UnmanagedInstanceGroupsParameters struct {
+
+	// (String) Name of the node configuration. It must be unique within the cluster.
+	// Name of the instance group
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// (String) Zone of the instance group
+	// Zone of the instance group
+	// +kubebuilder:validation:Optional
+	Zone *string `json:"zone" tf:"zone,omitempty"`
 }
 
 // NodeConfigurationSpec defines the desired state of NodeConfiguration

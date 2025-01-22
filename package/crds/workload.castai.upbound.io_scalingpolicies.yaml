@@ -105,9 +105,28 @@ spec:
                       properties:
                         applyThreshold:
                           description: |-
-                            (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                            (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                             The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                           type: number
+                        applyThresholdStrategy:
+                          description: |-
+                            (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+                            Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+                          items:
+                            properties:
+                              percentage:
+                                description: |-
+                                  (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                  Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines apply theshold strategy type.
+                                  - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                type: string
+                            type: object
+                          type: array
                         args:
                           description: |-
                             i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
@@ -120,11 +139,36 @@ spec:
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
                             The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
                           type: string
+                        limit:
+                          description: |-
+                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            Resource limit settings
+                          items:
+                            properties:
+                              multiplier:
+                                description: |-
+                                  (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                  Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines limit strategy type.
+                                  - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+                                type: string
+                            type: object
+                          type: array
                         lookBackPeriodSeconds:
                           description: |-
                             (Number) The look back period in seconds for the recommendation.
                             The look back period in seconds for the recommendation.
                           type: number
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+                          type: string
                         max:
                           description: |-
                             this is in MiB, for CPU - this is in cores.
@@ -169,9 +213,28 @@ spec:
                       properties:
                         applyThreshold:
                           description: |-
-                            (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                            (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                             The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                           type: number
+                        applyThresholdStrategy:
+                          description: |-
+                            (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+                            Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+                          items:
+                            properties:
+                              percentage:
+                                description: |-
+                                  (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                  Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines apply theshold strategy type.
+                                  - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                type: string
+                            type: object
+                          type: array
                         args:
                           description: |-
                             i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
@@ -184,11 +247,36 @@ spec:
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
                             The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
                           type: string
+                        limit:
+                          description: |-
+                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            Resource limit settings
+                          items:
+                            properties:
+                              multiplier:
+                                description: |-
+                                  (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                  Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines limit strategy type.
+                                  - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+                                type: string
+                            type: object
+                          type: array
                         lookBackPeriodSeconds:
                           description: |-
                             (Number) The look back period in seconds for the recommendation.
                             The look back period in seconds for the recommendation.
                           type: number
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+                          type: string
                         max:
                           description: |-
                             this is in MiB, for CPU - this is in cores.
@@ -285,9 +373,28 @@ spec:
                       properties:
                         applyThreshold:
                           description: |-
-                            (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                            (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                             The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                           type: number
+                        applyThresholdStrategy:
+                          description: |-
+                            (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+                            Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+                          items:
+                            properties:
+                              percentage:
+                                description: |-
+                                  (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                  Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines apply theshold strategy type.
+                                  - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                type: string
+                            type: object
+                          type: array
                         args:
                           description: |-
                             i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
@@ -300,11 +407,36 @@ spec:
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
                             The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
                           type: string
+                        limit:
+                          description: |-
+                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            Resource limit settings
+                          items:
+                            properties:
+                              multiplier:
+                                description: |-
+                                  (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                  Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines limit strategy type.
+                                  - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+                                type: string
+                            type: object
+                          type: array
                         lookBackPeriodSeconds:
                           description: |-
                             (Number) The look back period in seconds for the recommendation.
                             The look back period in seconds for the recommendation.
                           type: number
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+                          type: string
                         max:
                           description: |-
                             this is in MiB, for CPU - this is in cores.
@@ -349,9 +481,28 @@ spec:
                       properties:
                         applyThreshold:
                           description: |-
-                            (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                            (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                             The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                           type: number
+                        applyThresholdStrategy:
+                          description: |-
+                            (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+                            Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+                          items:
+                            properties:
+                              percentage:
+                                description: |-
+                                  (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                  Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines apply theshold strategy type.
+                                  - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                type: string
+                            type: object
+                          type: array
                         args:
                           description: |-
                             i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
@@ -364,11 +515,36 @@ spec:
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
                             The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
                           type: string
+                        limit:
+                          description: |-
+                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            Resource limit settings
+                          items:
+                            properties:
+                              multiplier:
+                                description: |-
+                                  (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                  Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines limit strategy type.
+                                  - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+                                type: string
+                            type: object
+                          type: array
                         lookBackPeriodSeconds:
                           description: |-
                             (Number) The look back period in seconds for the recommendation.
                             The look back period in seconds for the recommendation.
                           type: number
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+                          type: string
                         max:
                           description: |-
                             this is in MiB, for CPU - this is in cores.
@@ -649,9 +825,28 @@ spec:
                       properties:
                         applyThreshold:
                           description: |-
-                            (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                            (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                             The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                           type: number
+                        applyThresholdStrategy:
+                          description: |-
+                            (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+                            Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+                          items:
+                            properties:
+                              percentage:
+                                description: |-
+                                  (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                  Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines apply theshold strategy type.
+                                  - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                type: string
+                            type: object
+                          type: array
                         args:
                           description: |-
                             i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
@@ -664,11 +859,36 @@ spec:
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
                             The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
                           type: string
+                        limit:
+                          description: |-
+                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            Resource limit settings
+                          items:
+                            properties:
+                              multiplier:
+                                description: |-
+                                  (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                  Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines limit strategy type.
+                                  - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+                                type: string
+                            type: object
+                          type: array
                         lookBackPeriodSeconds:
                           description: |-
                             (Number) The look back period in seconds for the recommendation.
                             The look back period in seconds for the recommendation.
                           type: number
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+                          type: string
                         max:
                           description: |-
                             this is in MiB, for CPU - this is in cores.
@@ -716,9 +936,28 @@ spec:
                       properties:
                         applyThreshold:
                           description: |-
-                            (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                            (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                             The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
                           type: number
+                        applyThresholdStrategy:
+                          description: |-
+                            (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+                            Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+                          items:
+                            properties:
+                              percentage:
+                                description: |-
+                                  (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                  Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines apply theshold strategy type.
+                                  - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                type: string
+                            type: object
+                          type: array
                         args:
                           description: |-
                             i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
@@ -731,11 +970,36 @@ spec:
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
                             The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
                           type: string
+                        limit:
+                          description: |-
+                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            Resource limit settings
+                          items:
+                            properties:
+                              multiplier:
+                                description: |-
+                                  (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                  Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
+                                type: number
+                              type:
+                                description: |-
+                                  (String) Defines apply theshold strategy type.
+                                  Defines limit strategy type.
+                                  - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+                                type: string
+                            type: object
+                          type: array
                         lookBackPeriodSeconds:
                           description: |-
                             (Number) The look back period in seconds for the recommendation.
                             The look back period in seconds for the recommendation.
                           type: number
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+                          type: string
                         max:
                           description: |-
                             this is in MiB, for CPU - this is in cores.

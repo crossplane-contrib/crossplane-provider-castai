@@ -13,7 +13,9 @@ spec:
     applyType: IMMEDIATE
     clusterId: ${castai_gke_cluster.dev.id}
     cpu:
-    - applyThreshold: 0.1
+    - applyThresholdStrategy:
+      - percentage: 0.1
+        type: PERCENTAGE
       args:
       - "0.9"
       function: QUANTILE
@@ -25,8 +27,14 @@ spec:
     - applyType: DEFERRED
     managementOption: MANAGED
     memory:
-    - applyThreshold: 0.2
+    - applyThresholdStrategy:
+      - percentage: 0.2
+        type: PERCENTAGE
       function: MAX
+      limit:
+      - multiplier: 1.5
+        type: MULTIPLIER
+      managementOption: READ_ONLY
       overhead: 0.35
     memoryEvent:
     - applyType: IMMEDIATE

@@ -488,12 +488,13 @@ resources:
             key_pair_id: (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
             kops: '(Block List, Max: 1) (see below for nested schema)'
             kubelet_config: (String) Optional kubelet configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
-            loadbalancers: (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
+            loadbalancers: (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
             max_pods_per_node: (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
             max_pods_per_node_formula: '(String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .'
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
+            nic_based_backend_pools: (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
             node_group_arn: (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
             os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
             port: (Number) Port for AWS target group for CAST provisioned nodes
@@ -502,14 +503,17 @@ resources:
             ssh_public_key: (String) SSH public key to be used for provisioned nodes
             subnets: (List of String) Subnet ids to be used for provisioned nodes
             tags: (Map of String) Tags to be added on cloud instances for provisioned nodes
+            target_backend_pools: (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
             target_group: (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
             timeouts: (Block, Optional) (see below for nested schema)
+            unmanaged_instance_groups: (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
             update: (String)
             use_ephemeral_storage_local_ssd: (Boolean) Use ephemeral storage local SSD. Defaults to false
             volume_iops: (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
             volume_kms_key_arn: (String) AWS KMS key ARN for encrypting EBS volume attached to the node
             volume_throughput: (Number) AWS EBS volume throughput in MiB/s to be used for CAST provisioned nodes
             volume_type: '(String) AWS EBS volume type to be used for CAST provisioned nodes. One of: gp3, gp2, io1, io2'
+            zone: (String) Zone of the instance group
             zones: (List of String, Deprecated) List of preferred availability zones to choose from when provisioning new nodes.
         importStatements:
             - $ terraform import castai_node_configuration.default <cluster_id>/default
@@ -682,6 +686,25 @@ resources:
             - |-
               # Import node template by specifying cluster ID and node template name.
               terraform import castai_node_template.default_by_castai 105e6fa3-20b1-424e-v589-9a64d1eeabea/default-by-castai
+    castai_organization_group Resource - terraform-provider-castai:
+        subCategory: ""
+        description: CAST AI organization group resource to manage organization groups
+        name: castai_organization_group Resource - terraform-provider-castai
+        title: castai_organization_group Resource - terraform-provider-castai
+        argumentDocs:
+            create: (String)
+            delete: (String)
+            description: (String) Description of the group.
+            email: (String)
+            id: (String) The ID of this resource.
+            kind: '(String) Kind of the member. Supported values include: user, service_account.'
+            member: (Block List) (see below for nested schema)
+            members: (Block List) (see below for nested schema)
+            name: (String) Name of the group.
+            organization_id: (String) CAST AI organization ID.
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements: []
     castai_organization_members:
         subCategory: ""
         description: CAST AI organization members resource to manage organization members
@@ -845,6 +868,89 @@ resources:
             - |-
               # Import reservations of an organization.
               terraform import 'castai_reservations.test' 5b046e29-e947-470f-9952-bfdf369ecca6
+    castai_role_bindings Resource - terraform-provider-castai:
+        subCategory: ""
+        description: CAST AI organization group resource to manage organization groups
+        name: castai_role_bindings Resource - terraform-provider-castai
+        title: castai_role_bindings Resource - terraform-provider-castai
+        argumentDocs:
+            create: (String)
+            delete: (String)
+            description: (String) Description of the role binding.
+            group_id: (String) Optional, required only if kind is group.
+            id: (String) The ID of this resource.
+            kind: '(String) Scope of the role binding Supported values include: organization, cluster.'
+            name: (String) Name of role binding.
+            organization_id: (String) CAST AI organization ID.
+            resource_id: (String) ID of the scope resource.
+            role_id: (String) ID of role from role binding.
+            scope: '(Block List, Min: 1, Max: 1) Scope of the role binding. (see below for nested schema)'
+            service_account_id: (String) Optional, required only if kind is service_account.
+            subject: (Block List) (see below for nested schema)
+            subjects: '(Block List, Min: 1) (see below for nested schema)'
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+            user_id: (String) Optional, required only if kind is user.
+        importStatements: []
+    castai_service_account:
+        subCategory: ""
+        description: Service account resource allows managing CAST AI service accounts.
+        name: castai_service_account
+        title: castai_service_account Resource - terraform-provider-castai
+        examples:
+            - name: service_account
+              manifest: |-
+                {
+                  "description": "service account description",
+                  "name": "example-service-account",
+                  "organization_id": "${organization.id}"
+                }
+              references:
+                organization_id: organization.id
+              dependencies:
+                castai_service_account_key.service_account_key: |-
+                    {
+                      "active": true,
+                      "expires_at": "2025-01-01T00:00:00Z",
+                      "name": "example-key",
+                      "organization_id": "${data.castai_organization.test.id}",
+                      "service_account_id": "${castai_service_account.service_account.id}"
+                    }
+        argumentDocs:
+            author: (List of Object) Author of the service account. (see below for nested schema)
+            create: (String)
+            delete: (String)
+            description: (String) Description of the service account.
+            email: (String) Email of the service account.
+            id: (String) The ID of this resource.
+            kind: (String)
+            name: (String) Name of the service account.
+            organization_id: (String) ID of the organization.
+            read: (String)
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements: []
+    castai_service_account_key Resource - terraform-provider-castai:
+        subCategory: ""
+        description: Service account key resource allows managing CAST AI service account keys.
+        name: castai_service_account_key Resource - terraform-provider-castai
+        title: castai_service_account_key Resource - terraform-provider-castai
+        argumentDocs:
+            active: (Boolean) Whether the service account key is active. Defaults to true.
+            create: (String)
+            delete: (String)
+            expires_at: (String) The expiration time of the service account key in RFC3339 format. Defaults to an empty string.
+            id: (String) The ID of this resource.
+            last_used_at: (String) Last time the service account key was used.
+            name: (String) Name of the service account key.
+            organization_id: (String) ID of the organization.
+            prefix: (String) Prefix of the service account key.
+            read: (String)
+            service_account_id: (String) ID of the service account.
+            timeouts: (Block, Optional) (see below for nested schema)
+            token: (String) The token of the service account key used for authentication.
+            update: (String)
+        importStatements: []
     castai_sso_connection:
         subCategory: ""
         description: SSO Connection resource allows creating SSO trust relationship with CAST AI.
@@ -902,7 +1008,12 @@ resources:
                   "cluster_id": "${castai_gke_cluster.dev.id}",
                   "cpu": [
                     {
-                      "apply_threshold": 0.1,
+                      "apply_threshold_strategy": [
+                        {
+                          "percentage": 0.1,
+                          "type": "PERCENTAGE"
+                        }
+                      ],
                       "args": [
                         "0.9"
                       ],
@@ -921,8 +1032,20 @@ resources:
                   "management_option": "MANAGED",
                   "memory": [
                     {
-                      "apply_threshold": 0.2,
+                      "apply_threshold_strategy": [
+                        {
+                          "percentage": 0.2,
+                          "type": "PERCENTAGE"
+                        }
+                      ],
                       "function": "MAX",
+                      "limit": [
+                        {
+                          "multiplier": 1.5,
+                          "type": "MULTIPLIER"
+                        }
+                      ],
+                      "management_option": "READ_ONLY",
                       "overhead": 0.35
                     }
                   ],
@@ -944,7 +1067,8 @@ resources:
               manifest: '{}'
         argumentDocs:
             anti_affinity: '(Block List, Max: 1) (see below for nested schema)'
-            apply_threshold: (Number) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+            apply_threshold: (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+            apply_threshold_strategy: '(Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)'
             apply_type: (String) Recommendation apply type.
             args: (List of String) The arguments for the function - i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
             cluster_id: (String) CAST AI cluster id
@@ -957,14 +1081,17 @@ resources:
             downscaling: '(Block List, Max: 1) (see below for nested schema)'
             function: '(String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX'
             id: (String) The ID of this resource.
+            limit: '(Block List, Max: 1) Resource limit settings (see below for nested schema)'
             look_back_period_seconds: (Number) The look back period in seconds for the recommendation.
             management_option: (String) Defines possible options for workload management.
             max: (Number) Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             memory: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             memory_event: '(Block List, Max: 1) (see below for nested schema)'
             min: (Number) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+            multiplier: (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
             name: (String) Scaling policy name
             overhead: (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
+            percentage: (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
             period_seconds: |-
                 (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
                 When set, recommendations will be adjusted to disregard resource spikes within this period.
@@ -972,6 +1099,7 @@ resources:
             read: (String)
             startup: '(Block List, Max: 1) (see below for nested schema)'
             timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) Defines apply theshold strategy type.
             update: (String)
         importStatements:
             - $ terraform import castai_workload_scaling_policy.services <cluster_id>/services

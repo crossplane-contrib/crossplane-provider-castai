@@ -85,10 +85,15 @@ spec:
                           type: string
                         loadbalancers:
                           description: |-
-                            (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
-                            Loadboalancer configuration for CAST provisioned nodes
+                            (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+                            Load balancer configuration for CAST provisioned nodes
                           items:
                             properties:
+                              id:
+                                description: |-
+                                  (String) The ID of this resource.
+                                  The full ID of the load balancer in azure.
+                                type: string
                               ipBasedBackendPools:
                                 description: |-
                                   (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
@@ -105,8 +110,21 @@ spec:
                               name:
                                 description: |-
                                   (String) Name of the node configuration. It must be unique within the cluster.
-                                  Name of loadbalancer
+                                  Name of load balancer
                                 type: string
+                              nicBasedBackendPools:
+                                description: |-
+                                  (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
+                                  NIC based backend pools configuration for CAST provisioned nodes.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the NIC based backend pool
+                                      type: string
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         maxPodsPerNode:
@@ -327,6 +345,45 @@ spec:
                             standard, pd-balanced, pd-ssd, pd-extreme
                             Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
                           type: string
+                        loadbalancers:
+                          description: |-
+                            (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+                            Loadboalancer configuration for CAST provisioned nodes
+                          items:
+                            properties:
+                              targetBackendPools:
+                                description: |-
+                                  (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
+                                  Target backend pools configuration for CAST provisioned nodes
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the target group
+                                      type: string
+                                  type: object
+                                type: array
+                              unmanagedInstanceGroups:
+                                description: |-
+                                  (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
+                                  Unmanaged instance groups configuration for CAST provisioned nodes
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the instance group
+                                      type: string
+                                    zone:
+                                      description: |-
+                                        (String) Zone of the instance group
+                                        Zone of the instance group
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         maxPodsPerNode:
                           description: |-
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
@@ -434,10 +491,15 @@ spec:
                           type: string
                         loadbalancers:
                           description: |-
-                            (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
-                            Loadboalancer configuration for CAST provisioned nodes
+                            (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+                            Load balancer configuration for CAST provisioned nodes
                           items:
                             properties:
+                              id:
+                                description: |-
+                                  (String) The ID of this resource.
+                                  The full ID of the load balancer in azure.
+                                type: string
                               ipBasedBackendPools:
                                 description: |-
                                   (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
@@ -454,8 +516,21 @@ spec:
                               name:
                                 description: |-
                                   (String) Name of the node configuration. It must be unique within the cluster.
-                                  Name of loadbalancer
+                                  Name of load balancer
                                 type: string
+                              nicBasedBackendPools:
+                                description: |-
+                                  (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
+                                  NIC based backend pools configuration for CAST provisioned nodes.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the NIC based backend pool
+                                      type: string
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         maxPodsPerNode:
@@ -676,6 +751,45 @@ spec:
                             standard, pd-balanced, pd-ssd, pd-extreme
                             Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
                           type: string
+                        loadbalancers:
+                          description: |-
+                            (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+                            Loadboalancer configuration for CAST provisioned nodes
+                          items:
+                            properties:
+                              targetBackendPools:
+                                description: |-
+                                  (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
+                                  Target backend pools configuration for CAST provisioned nodes
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the target group
+                                      type: string
+                                  type: object
+                                type: array
+                              unmanagedInstanceGroups:
+                                description: |-
+                                  (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
+                                  Unmanaged instance groups configuration for CAST provisioned nodes
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the instance group
+                                      type: string
+                                    zone:
+                                      description: |-
+                                        (String) Zone of the instance group
+                                        Zone of the instance group
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         maxPodsPerNode:
                           description: |-
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
@@ -951,10 +1065,15 @@ spec:
                           type: string
                         loadbalancers:
                           description: |-
-                            (Block List) Loadboalancer configuration for CAST provisioned nodes (see below for nested schema)
-                            Loadboalancer configuration for CAST provisioned nodes
+                            (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+                            Load balancer configuration for CAST provisioned nodes
                           items:
                             properties:
+                              id:
+                                description: |-
+                                  (String) The ID of this resource.
+                                  The full ID of the load balancer in azure.
+                                type: string
                               ipBasedBackendPools:
                                 description: |-
                                   (Block List) IP based backend pools configuration for CAST provisioned nodes (see below for nested schema)
@@ -971,8 +1090,21 @@ spec:
                               name:
                                 description: |-
                                   (String) Name of the node configuration. It must be unique within the cluster.
-                                  Name of loadbalancer
+                                  Name of load balancer
                                 type: string
+                              nicBasedBackendPools:
+                                description: |-
+                                  (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
+                                  NIC based backend pools configuration for CAST provisioned nodes.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the NIC based backend pool
+                                      type: string
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         maxPodsPerNode:
@@ -1117,6 +1249,45 @@ spec:
                             standard, pd-balanced, pd-ssd, pd-extreme
                             Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
                           type: string
+                        loadbalancers:
+                          description: |-
+                            (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
+                            Loadboalancer configuration for CAST provisioned nodes
+                          items:
+                            properties:
+                              targetBackendPools:
+                                description: |-
+                                  (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
+                                  Target backend pools configuration for CAST provisioned nodes
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the target group
+                                      type: string
+                                  type: object
+                                type: array
+                              unmanagedInstanceGroups:
+                                description: |-
+                                  (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
+                                  Unmanaged instance groups configuration for CAST provisioned nodes
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) Name of the node configuration. It must be unique within the cluster.
+                                        Name of the instance group
+                                      type: string
+                                    zone:
+                                      description: |-
+                                        (String) Zone of the instance group
+                                        Zone of the instance group
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         maxPodsPerNode:
                           description: |-
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30

@@ -15,9 +15,17 @@ import (
 
 type AksInitParameters struct {
 
-	// linux)
-	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+	// linux,windows2019,windows2022)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
+
+	// (List of String) Application security groups to be used for provisioned nodes
+	// Application security groups to be used for provisioned nodes
+	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty" tf:"application_security_groups,omitempty"`
+
+	// (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
+	// Ephemeral OS disk configuration for CAST provisioned nodes
+	EphemeralOsDisk []EphemeralOsDiskInitParameters `json:"ephemeralOsDisk,omitempty" tf:"ephemeral_os_disk,omitempty"`
 
 	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
 	// Load balancer configuration for CAST provisioned nodes
@@ -27,16 +35,32 @@ type AksInitParameters struct {
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
 
+	// (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
+	// Network security group to be used for provisioned nodes, if not provided default security group from `castpool` will be used
+	NetworkSecurityGroup *string `json:"networkSecurityGroup,omitempty" tf:"network_security_group,omitempty"`
+
 	// ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
+
+	// (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
+	// Public IP configuration for CAST AI provisioned nodes
+	PublicIP []PublicIPInitParameters `json:"publicIp,omitempty" tf:"public_ip,omitempty"`
 }
 
 type AksObservation struct {
 
-	// linux)
-	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+	// linux,windows2019,windows2022)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
+
+	// (List of String) Application security groups to be used for provisioned nodes
+	// Application security groups to be used for provisioned nodes
+	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty" tf:"application_security_groups,omitempty"`
+
+	// (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
+	// Ephemeral OS disk configuration for CAST provisioned nodes
+	EphemeralOsDisk []EphemeralOsDiskObservation `json:"ephemeralOsDisk,omitempty" tf:"ephemeral_os_disk,omitempty"`
 
 	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
 	// Load balancer configuration for CAST provisioned nodes
@@ -46,17 +70,35 @@ type AksObservation struct {
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
 
+	// (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
+	// Network security group to be used for provisioned nodes, if not provided default security group from `castpool` will be used
+	NetworkSecurityGroup *string `json:"networkSecurityGroup,omitempty" tf:"network_security_group,omitempty"`
+
 	// ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
+
+	// (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
+	// Public IP configuration for CAST AI provisioned nodes
+	PublicIP []PublicIPObservation `json:"publicIp,omitempty" tf:"public_ip,omitempty"`
 }
 
 type AksParameters struct {
 
-	// linux)
-	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+	// linux,windows2019,windows2022)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
 	// +kubebuilder:validation:Optional
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
+
+	// (List of String) Application security groups to be used for provisioned nodes
+	// Application security groups to be used for provisioned nodes
+	// +kubebuilder:validation:Optional
+	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty" tf:"application_security_groups,omitempty"`
+
+	// (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
+	// Ephemeral OS disk configuration for CAST provisioned nodes
+	// +kubebuilder:validation:Optional
+	EphemeralOsDisk []EphemeralOsDiskParameters `json:"ephemeralOsDisk,omitempty" tf:"ephemeral_os_disk,omitempty"`
 
 	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
 	// Load balancer configuration for CAST provisioned nodes
@@ -68,10 +110,20 @@ type AksParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
 
+	// (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
+	// Network security group to be used for provisioned nodes, if not provided default security group from `castpool` will be used
+	// +kubebuilder:validation:Optional
+	NetworkSecurityGroup *string `json:"networkSecurityGroup,omitempty" tf:"network_security_group,omitempty"`
+
 	// ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	// +kubebuilder:validation:Optional
 	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
+
+	// (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
+	// Public IP configuration for CAST AI provisioned nodes
+	// +kubebuilder:validation:Optional
+	PublicIP []PublicIPParameters `json:"publicIp,omitempty" tf:"public_ip,omitempty"`
 }
 
 type EksInitParameters struct {
@@ -278,6 +330,41 @@ type EksParameters struct {
 	VolumeType *string `json:"volumeType,omitempty" tf:"volume_type,omitempty"`
 }
 
+type EphemeralOsDiskInitParameters struct {
+
+	// (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	Cache *string `json:"cache,omitempty" tf:"cache,omitempty"`
+
+	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	Placement *string `json:"placement,omitempty" tf:"placement,omitempty"`
+}
+
+type EphemeralOsDiskObservation struct {
+
+	// (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	Cache *string `json:"cache,omitempty" tf:"cache,omitempty"`
+
+	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	Placement *string `json:"placement,omitempty" tf:"placement,omitempty"`
+}
+
+type EphemeralOsDiskParameters struct {
+
+	// (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// +kubebuilder:validation:Optional
+	Cache *string `json:"cache,omitempty" tf:"cache,omitempty"`
+
+	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// +kubebuilder:validation:Optional
+	Placement *string `json:"placement" tf:"placement,omitempty"`
+}
+
 type GkeInitParameters struct {
 
 	// standard, pd-balanced, pd-ssd, pd-extreme
@@ -295,6 +382,10 @@ type GkeInitParameters struct {
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
+	// Secondary IP range configuration for pods in GKE nodes
+	SecondaryIPRange []SecondaryIPRangeInitParameters `json:"secondaryIpRange,omitempty" tf:"secondary_ip_range,omitempty"`
 
 	// (Boolean) Use ephemeral storage local SSD. Defaults to false
 	// Use ephemeral storage local SSD. Defaults to false
@@ -358,6 +449,10 @@ type GkeObservation struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
 
+	// (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
+	// Secondary IP range configuration for pods in GKE nodes
+	SecondaryIPRange []SecondaryIPRangeObservation `json:"secondaryIpRange,omitempty" tf:"secondary_ip_range,omitempty"`
+
 	// (Boolean) Use ephemeral storage local SSD. Defaults to false
 	// Use ephemeral storage local SSD. Defaults to false
 	UseEphemeralStorageLocalSsd *bool `json:"useEphemeralStorageLocalSsd,omitempty" tf:"use_ephemeral_storage_local_ssd,omitempty"`
@@ -388,6 +483,11 @@ type GkeParameters struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	// +kubebuilder:validation:Optional
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
+	// Secondary IP range configuration for pods in GKE nodes
+	// +kubebuilder:validation:Optional
+	SecondaryIPRange []SecondaryIPRangeParameters `json:"secondaryIpRange,omitempty" tf:"secondary_ip_range,omitempty"`
 
 	// (Boolean) Use ephemeral storage local SSD. Defaults to false
 	// Use ephemeral storage local SSD. Defaults to false
@@ -767,6 +867,76 @@ type NodeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type PublicIPInitParameters struct {
+
+	// (Number) Idle timeout in minutes for public IP
+	// Idle timeout in minutes for public IP
+	IdleTimeoutInMinutes *float64 `json:"idleTimeoutInMinutes,omitempty" tf:"idle_timeout_in_minutes,omitempty"`
+
+	// (String) Public IP prefix to be used for provisioned nodes
+	// Public IP prefix to be used for provisioned nodes
+	PublicIPPrefix *string `json:"publicIpPrefix,omitempty" tf:"public_ip_prefix,omitempty"`
+
+	// (Map of String) Tags to be added on cloud instances for provisioned nodes
+	// +mapType=granular
+	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type PublicIPObservation struct {
+
+	// (Number) Idle timeout in minutes for public IP
+	// Idle timeout in minutes for public IP
+	IdleTimeoutInMinutes *float64 `json:"idleTimeoutInMinutes,omitempty" tf:"idle_timeout_in_minutes,omitempty"`
+
+	// (String) Public IP prefix to be used for provisioned nodes
+	// Public IP prefix to be used for provisioned nodes
+	PublicIPPrefix *string `json:"publicIpPrefix,omitempty" tf:"public_ip_prefix,omitempty"`
+
+	// (Map of String) Tags to be added on cloud instances for provisioned nodes
+	// +mapType=granular
+	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type PublicIPParameters struct {
+
+	// (Number) Idle timeout in minutes for public IP
+	// Idle timeout in minutes for public IP
+	// +kubebuilder:validation:Optional
+	IdleTimeoutInMinutes *float64 `json:"idleTimeoutInMinutes,omitempty" tf:"idle_timeout_in_minutes,omitempty"`
+
+	// (String) Public IP prefix to be used for provisioned nodes
+	// Public IP prefix to be used for provisioned nodes
+	// +kubebuilder:validation:Optional
+	PublicIPPrefix *string `json:"publicIpPrefix,omitempty" tf:"public_ip_prefix,omitempty"`
+
+	// (Map of String) Tags to be added on cloud instances for provisioned nodes
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type SecondaryIPRangeInitParameters struct {
+
+	// (String) Name of the secondary IP range
+	// Name of the secondary IP range
+	RangeName *string `json:"rangeName,omitempty" tf:"range_name,omitempty"`
+}
+
+type SecondaryIPRangeObservation struct {
+
+	// (String) Name of the secondary IP range
+	// Name of the secondary IP range
+	RangeName *string `json:"rangeName,omitempty" tf:"range_name,omitempty"`
+}
+
+type SecondaryIPRangeParameters struct {
+
+	// (String) Name of the secondary IP range
+	// Name of the secondary IP range
+	// +kubebuilder:validation:Optional
+	RangeName *string `json:"rangeName" tf:"range_name,omitempty"`
 }
 
 type TargetBackendPoolsInitParameters struct {

@@ -154,6 +154,9 @@ type ConstraintsInitParameters struct {
 	// List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
 	Os []*string `json:"os,omitempty" tf:"os,omitempty"`
 
+	// (Block List, Max: 1) (see below for nested schema)
+	ResourceLimits []ResourceLimitsInitParameters `json:"resourceLimits,omitempty" tf:"resource_limits,omitempty"`
+
 	// (Boolean) Should include spot instances in the considered pool.
 	// Should include spot instances in the considered pool.
 	Spot *bool `json:"spot,omitempty" tf:"spot,omitempty"`
@@ -275,6 +278,9 @@ type ConstraintsObservation struct {
 	// (List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
 	// List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
 	Os []*string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ResourceLimits []ResourceLimitsObservation `json:"resourceLimits,omitempty" tf:"resource_limits,omitempty"`
 
 	// (Boolean) Should include spot instances in the considered pool.
 	// Should include spot instances in the considered pool.
@@ -418,6 +424,10 @@ type ConstraintsParameters struct {
 	// List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
 	// +kubebuilder:validation:Optional
 	Os []*string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	ResourceLimits []ResourceLimitsParameters `json:"resourceLimits,omitempty" tf:"resource_limits,omitempty"`
 
 	// (Boolean) Should include spot instances in the considered pool.
 	// Should include spot instances in the considered pool.
@@ -920,6 +930,41 @@ type NodeTemplateParameters struct {
 	// Marks whether the templated nodes will have a taint.
 	// +kubebuilder:validation:Optional
 	ShouldTaint *bool `json:"shouldTaint,omitempty" tf:"should_taint,omitempty"`
+}
+
+type ResourceLimitsInitParameters struct {
+
+	// (Boolean) Controls CPU limit enforcement for the node template.
+	// Controls CPU limit enforcement for the node template.
+	CPULimitEnabled *bool `json:"cpuLimitEnabled,omitempty" tf:"cpu_limit_enabled,omitempty"`
+
+	// (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+	// Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+	CPULimitMaxCores *float64 `json:"cpuLimitMaxCores,omitempty" tf:"cpu_limit_max_cores,omitempty"`
+}
+
+type ResourceLimitsObservation struct {
+
+	// (Boolean) Controls CPU limit enforcement for the node template.
+	// Controls CPU limit enforcement for the node template.
+	CPULimitEnabled *bool `json:"cpuLimitEnabled,omitempty" tf:"cpu_limit_enabled,omitempty"`
+
+	// (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+	// Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+	CPULimitMaxCores *float64 `json:"cpuLimitMaxCores,omitempty" tf:"cpu_limit_max_cores,omitempty"`
+}
+
+type ResourceLimitsParameters struct {
+
+	// (Boolean) Controls CPU limit enforcement for the node template.
+	// Controls CPU limit enforcement for the node template.
+	// +kubebuilder:validation:Optional
+	CPULimitEnabled *bool `json:"cpuLimitEnabled,omitempty" tf:"cpu_limit_enabled,omitempty"`
+
+	// (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+	// Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+	// +kubebuilder:validation:Optional
+	CPULimitMaxCores *float64 `json:"cpuLimitMaxCores,omitempty" tf:"cpu_limit_max_cores,omitempty"`
 }
 
 // NodeTemplateSpec defines the desired state of NodeTemplate

@@ -102,6 +102,31 @@ spec:
                       (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
                       Should CAST AI remove nodes managed by CAST.AI on disconnect.
                     type: boolean
+                  httpProxyConfig:
+                    description: |-
+                      (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
+                      HTTP proxy configuration for CAST AI nodes and node components.
+                    items:
+                      properties:
+                        httpProxy:
+                          description: |-
+                            (String) Address to use for proxying HTTP requests.
+                            Address to use for proxying HTTP requests.
+                          type: string
+                        httpsProxy:
+                          description: |-
+                            (String) Address to use for proxying HTTPS/TLS requests.
+                            Address to use for proxying HTTPS/TLS requests.
+                          type: string
+                        noProxy:
+                          description: |-
+                            (List of String) List of destinations that should not go through proxy.
+                            List of destinations that should not go through proxy.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   name:
                     description: |-
                       (String) AKS cluster name.
@@ -151,6 +176,31 @@ spec:
                       (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
                       Should CAST AI remove nodes managed by CAST.AI on disconnect.
                     type: boolean
+                  httpProxyConfig:
+                    description: |-
+                      (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
+                      HTTP proxy configuration for CAST AI nodes and node components.
+                    items:
+                      properties:
+                        httpProxy:
+                          description: |-
+                            (String) Address to use for proxying HTTP requests.
+                            Address to use for proxying HTTP requests.
+                          type: string
+                        httpsProxy:
+                          description: |-
+                            (String) Address to use for proxying HTTPS/TLS requests.
+                            Address to use for proxying HTTPS/TLS requests.
+                          type: string
+                        noProxy:
+                          description: |-
+                            (List of String) List of destinations that should not go through proxy.
+                            List of destinations that should not go through proxy.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   name:
                     description: |-
                       (String) AKS cluster name.
@@ -392,6 +442,31 @@ spec:
                       (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
                       Should CAST AI remove nodes managed by CAST.AI on disconnect.
                     type: boolean
+                  httpProxyConfig:
+                    description: |-
+                      (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
+                      HTTP proxy configuration for CAST AI nodes and node components.
+                    items:
+                      properties:
+                        httpProxy:
+                          description: |-
+                            (String) Address to use for proxying HTTP requests.
+                            Address to use for proxying HTTP requests.
+                          type: string
+                        httpsProxy:
+                          description: |-
+                            (String) Address to use for proxying HTTPS/TLS requests.
+                            Address to use for proxying HTTPS/TLS requests.
+                          type: string
+                        noProxy:
+                          description: |-
+                            (List of String) List of destinations that should not go through proxy.
+                            List of destinations that should not go through proxy.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   id:
                     description: (String) The ID of this resource.
                     type: string

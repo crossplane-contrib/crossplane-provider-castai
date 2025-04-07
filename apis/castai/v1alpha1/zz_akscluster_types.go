@@ -23,6 +23,10 @@ type AksClusterInitParameters struct {
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
+	// (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
+	// HTTP proxy configuration for CAST AI nodes and node components.
+	HTTPProxyConfig []HTTPProxyConfigInitParameters `json:"httpProxyConfig,omitempty" tf:"http_proxy_config,omitempty"`
+
 	// (String) AKS cluster name.
 	// AKS cluster name.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -57,6 +61,10 @@ type AksClusterObservation struct {
 	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
+
+	// (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
+	// HTTP proxy configuration for CAST AI nodes and node components.
+	HTTPProxyConfig []HTTPProxyConfigObservation `json:"httpProxyConfig,omitempty" tf:"http_proxy_config,omitempty"`
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -99,6 +107,11 @@ type AksClusterParameters struct {
 	// +kubebuilder:validation:Optional
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
+	// (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
+	// HTTP proxy configuration for CAST AI nodes and node components.
+	// +kubebuilder:validation:Optional
+	HTTPProxyConfig []HTTPProxyConfigParameters `json:"httpProxyConfig,omitempty" tf:"http_proxy_config,omitempty"`
+
 	// (String) AKS cluster name.
 	// AKS cluster name.
 	// +kubebuilder:validation:Optional
@@ -123,6 +136,54 @@ type AksClusterParameters struct {
 	// Azure AD tenant ID from the used subscription.
 	// +kubebuilder:validation:Optional
 	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
+}
+
+type HTTPProxyConfigInitParameters struct {
+
+	// (String) Address to use for proxying HTTP requests.
+	// Address to use for proxying HTTP requests.
+	HTTPProxy *string `json:"httpProxy,omitempty" tf:"http_proxy,omitempty"`
+
+	// (String) Address to use for proxying HTTPS/TLS requests.
+	// Address to use for proxying HTTPS/TLS requests.
+	HTTPSProxy *string `json:"httpsProxy,omitempty" tf:"https_proxy,omitempty"`
+
+	// (List of String) List of destinations that should not go through proxy.
+	// List of destinations that should not go through proxy.
+	NoProxy []*string `json:"noProxy,omitempty" tf:"no_proxy,omitempty"`
+}
+
+type HTTPProxyConfigObservation struct {
+
+	// (String) Address to use for proxying HTTP requests.
+	// Address to use for proxying HTTP requests.
+	HTTPProxy *string `json:"httpProxy,omitempty" tf:"http_proxy,omitempty"`
+
+	// (String) Address to use for proxying HTTPS/TLS requests.
+	// Address to use for proxying HTTPS/TLS requests.
+	HTTPSProxy *string `json:"httpsProxy,omitempty" tf:"https_proxy,omitempty"`
+
+	// (List of String) List of destinations that should not go through proxy.
+	// List of destinations that should not go through proxy.
+	NoProxy []*string `json:"noProxy,omitempty" tf:"no_proxy,omitempty"`
+}
+
+type HTTPProxyConfigParameters struct {
+
+	// (String) Address to use for proxying HTTP requests.
+	// Address to use for proxying HTTP requests.
+	// +kubebuilder:validation:Optional
+	HTTPProxy *string `json:"httpProxy,omitempty" tf:"http_proxy,omitempty"`
+
+	// (String) Address to use for proxying HTTPS/TLS requests.
+	// Address to use for proxying HTTPS/TLS requests.
+	// +kubebuilder:validation:Optional
+	HTTPSProxy *string `json:"httpsProxy,omitempty" tf:"https_proxy,omitempty"`
+
+	// (List of String) List of destinations that should not go through proxy.
+	// List of destinations that should not go through proxy.
+	// +kubebuilder:validation:Optional
+	NoProxy []*string `json:"noProxy,omitempty" tf:"no_proxy,omitempty"`
 }
 
 // AksClusterSpec defines the desired state of AksCluster

@@ -98,6 +98,19 @@ spec:
                       (String) CAST AI cluster id
                       CAST AI cluster id
                     type: string
+                  confidence:
+                    description: |-
+                      (Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)
+                      Defines the confidence settings for applying recommendations.
+                    items:
+                      properties:
+                        threshold:
+                          description: |-
+                            changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+                            Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+                          type: number
+                      type: object
+                    type: array
                   cpu:
                     description: '(Block List, Min: 1, Max: 1) (see below for nested
                       schema)'
@@ -114,6 +127,24 @@ spec:
                             Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
                           items:
                             properties:
+                              denominator:
+                                description: |-
+                                  (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: string
+                              exponent:
+                                description: |-
+                                  (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+                                  - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+                                  It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
+                              numerator:
+                                description: |-
+                                  smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
                               percentage:
                                 description: |-
                                   (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -124,6 +155,8 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines apply theshold strategy type.
                                   - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                  - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+                                  - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
                                 type: string
                             type: object
                           type: array
@@ -222,6 +255,24 @@ spec:
                             Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
                           items:
                             properties:
+                              denominator:
+                                description: |-
+                                  (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: string
+                              exponent:
+                                description: |-
+                                  (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+                                  - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+                                  It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
+                              numerator:
+                                description: |-
+                                  smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
                               percentage:
                                 description: |-
                                   (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -232,6 +283,8 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines apply theshold strategy type.
                                   - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                  - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+                                  - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
                                 type: string
                             type: object
                           type: array
@@ -366,6 +419,19 @@ spec:
                       (String) CAST AI cluster id
                       CAST AI cluster id
                     type: string
+                  confidence:
+                    description: |-
+                      (Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)
+                      Defines the confidence settings for applying recommendations.
+                    items:
+                      properties:
+                        threshold:
+                          description: |-
+                            changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+                            Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+                          type: number
+                      type: object
+                    type: array
                   cpu:
                     description: '(Block List, Min: 1, Max: 1) (see below for nested
                       schema)'
@@ -382,6 +448,24 @@ spec:
                             Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
                           items:
                             properties:
+                              denominator:
+                                description: |-
+                                  (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: string
+                              exponent:
+                                description: |-
+                                  (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+                                  - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+                                  It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
+                              numerator:
+                                description: |-
+                                  smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
                               percentage:
                                 description: |-
                                   (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -392,6 +476,8 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines apply theshold strategy type.
                                   - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                  - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+                                  - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
                                 type: string
                             type: object
                           type: array
@@ -490,6 +576,24 @@ spec:
                             Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
                           items:
                             properties:
+                              denominator:
+                                description: |-
+                                  (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: string
+                              exponent:
+                                description: |-
+                                  (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+                                  - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+                                  It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
+                              numerator:
+                                description: |-
+                                  smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
                               percentage:
                                 description: |-
                                   (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -500,6 +604,8 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines apply theshold strategy type.
                                   - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                  - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+                                  - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
                                 type: string
                             type: object
                           type: array
@@ -818,6 +924,19 @@ spec:
                       (String) CAST AI cluster id
                       CAST AI cluster id
                     type: string
+                  confidence:
+                    description: |-
+                      (Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)
+                      Defines the confidence settings for applying recommendations.
+                    items:
+                      properties:
+                        threshold:
+                          description: |-
+                            changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+                            Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+                          type: number
+                      type: object
+                    type: array
                   cpu:
                     description: '(Block List, Min: 1, Max: 1) (see below for nested
                       schema)'
@@ -834,6 +953,24 @@ spec:
                             Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
                           items:
                             properties:
+                              denominator:
+                                description: |-
+                                  (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: string
+                              exponent:
+                                description: |-
+                                  (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+                                  - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+                                  It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
+                              numerator:
+                                description: |-
+                                  smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
                               percentage:
                                 description: |-
                                   (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -844,6 +981,8 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines apply theshold strategy type.
                                   - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                  - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+                                  - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
                                 type: string
                             type: object
                           type: array
@@ -945,6 +1084,24 @@ spec:
                             Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
                           items:
                             properties:
+                              denominator:
+                                description: |-
+                                  (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: string
+                              exponent:
+                                description: |-
+                                  (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+                                  - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+                                  - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+                                  It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
+                              numerator:
+                                description: |-
+                                  smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                  The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+                                type: number
                               percentage:
                                 description: |-
                                   (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -955,6 +1112,8 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines apply theshold strategy type.
                                   - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+                                  - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+                                  - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
                                 type: string
                             type: object
                           type: array

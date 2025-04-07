@@ -43,6 +43,21 @@ type AntiAffinityParameters struct {
 
 type ApplyThresholdStrategyInitParameters struct {
 
+	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Denominator *string `json:"denominator,omitempty" tf:"denominator,omitempty"`
+
+	// (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+	// - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+	// It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Exponent *float64 `json:"exponent,omitempty" tf:"exponent,omitempty"`
+
+	// smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Numerator *float64 `json:"numerator,omitempty" tf:"numerator,omitempty"`
+
 	// (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	// Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	Percentage *float64 `json:"percentage,omitempty" tf:"percentage,omitempty"`
@@ -50,11 +65,28 @@ type ApplyThresholdStrategyInitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines apply theshold strategy type.
 	// - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ApplyThresholdStrategyObservation struct {
 
+	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Denominator *string `json:"denominator,omitempty" tf:"denominator,omitempty"`
+
+	// (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+	// - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+	// It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Exponent *float64 `json:"exponent,omitempty" tf:"exponent,omitempty"`
+
+	// smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Numerator *float64 `json:"numerator,omitempty" tf:"numerator,omitempty"`
+
 	// (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	// Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	Percentage *float64 `json:"percentage,omitempty" tf:"percentage,omitempty"`
@@ -62,10 +94,30 @@ type ApplyThresholdStrategyObservation struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines apply theshold strategy type.
 	// - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ApplyThresholdStrategyParameters struct {
+
+	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// +kubebuilder:validation:Optional
+	Denominator *string `json:"denominator,omitempty" tf:"denominator,omitempty"`
+
+	// (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+	// - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+	// It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// +kubebuilder:validation:Optional
+	Exponent *float64 `json:"exponent,omitempty" tf:"exponent,omitempty"`
+
+	// smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// +kubebuilder:validation:Optional
+	Numerator *float64 `json:"numerator,omitempty" tf:"numerator,omitempty"`
 
 	// (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	// Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -75,6 +127,8 @@ type ApplyThresholdStrategyParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines apply theshold strategy type.
 	// - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
@@ -218,6 +272,28 @@ type CPUParameters struct {
 	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
 }
 
+type ConfidenceInitParameters struct {
+
+	// changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+	// Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+	Threshold *float64 `json:"threshold,omitempty" tf:"threshold,omitempty"`
+}
+
+type ConfidenceObservation struct {
+
+	// changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+	// Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+	Threshold *float64 `json:"threshold,omitempty" tf:"threshold,omitempty"`
+}
+
+type ConfidenceParameters struct {
+
+	// changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+	// Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
+	// +kubebuilder:validation:Optional
+	Threshold *float64 `json:"threshold,omitempty" tf:"threshold,omitempty"`
+}
+
 type DownscalingInitParameters struct {
 
 	// (String) Recommendation apply type.
@@ -289,6 +365,21 @@ type LimitParameters struct {
 
 type MemoryApplyThresholdStrategyInitParameters struct {
 
+	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Denominator *string `json:"denominator,omitempty" tf:"denominator,omitempty"`
+
+	// (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+	// - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+	// It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Exponent *float64 `json:"exponent,omitempty" tf:"exponent,omitempty"`
+
+	// smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Numerator *float64 `json:"numerator,omitempty" tf:"numerator,omitempty"`
+
 	// (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	// Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	Percentage *float64 `json:"percentage,omitempty" tf:"percentage,omitempty"`
@@ -296,11 +387,28 @@ type MemoryApplyThresholdStrategyInitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines apply theshold strategy type.
 	// - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MemoryApplyThresholdStrategyObservation struct {
 
+	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Denominator *string `json:"denominator,omitempty" tf:"denominator,omitempty"`
+
+	// (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+	// - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+	// It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Exponent *float64 `json:"exponent,omitempty" tf:"exponent,omitempty"`
+
+	// smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	Numerator *float64 `json:"numerator,omitempty" tf:"numerator,omitempty"`
+
 	// (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	// Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	Percentage *float64 `json:"percentage,omitempty" tf:"percentage,omitempty"`
@@ -308,10 +416,30 @@ type MemoryApplyThresholdStrategyObservation struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines apply theshold strategy type.
 	// - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MemoryApplyThresholdStrategyParameters struct {
+
+	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// +kubebuilder:validation:Optional
+	Denominator *string `json:"denominator,omitempty" tf:"denominator,omitempty"`
+
+	// (Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:
+	// - if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold
+	// - if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold
+	// It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// +kubebuilder:validation:Optional
+	Exponent *float64 `json:"exponent,omitempty" tf:"exponent,omitempty"`
+
+	// smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+	// +kubebuilder:validation:Optional
+	Numerator *float64 `json:"numerator,omitempty" tf:"numerator,omitempty"`
 
 	// (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
 	// Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
@@ -321,6 +449,8 @@ type MemoryApplyThresholdStrategyParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines apply theshold strategy type.
 	// - PERCENTAGE - recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// - DEFAULT_ADAPTIVE - will pick larger threshold percentage for small workloads and smaller percentage for large workloads.
+	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
@@ -551,6 +681,10 @@ type ScalingPolicyInitParameters struct {
 	// CAST AI cluster id
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
+	// (Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)
+	// Defines the confidence settings for applying recommendations.
+	Confidence []ConfidenceInitParameters `json:"confidence,omitempty" tf:"confidence,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	Downscaling []DownscalingInitParameters `json:"downscaling,omitempty" tf:"downscaling,omitempty"`
 
@@ -591,6 +725,10 @@ type ScalingPolicyObservation struct {
 	// (String) CAST AI cluster id
 	// CAST AI cluster id
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// (Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)
+	// Defines the confidence settings for applying recommendations.
+	Confidence []ConfidenceObservation `json:"confidence,omitempty" tf:"confidence,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	Downscaling []DownscalingObservation `json:"downscaling,omitempty" tf:"downscaling,omitempty"`
@@ -639,6 +777,11 @@ type ScalingPolicyParameters struct {
 	// CAST AI cluster id
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// (Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)
+	// Defines the confidence settings for applying recommendations.
+	// +kubebuilder:validation:Optional
+	Confidence []ConfidenceParameters `json:"confidence,omitempty" tf:"confidence,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional

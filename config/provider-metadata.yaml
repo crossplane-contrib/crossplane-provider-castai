@@ -35,8 +35,12 @@ resources:
             credentials_id: (String) CAST AI internal credentials ID
             delete: (String)
             delete_nodes_on_disconnect: (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
+            http_proxy: (String) Address to use for proxying HTTP requests.
+            http_proxy_config: '(Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)'
+            https_proxy: (String) Address to use for proxying HTTPS/TLS requests.
             id: (String) The ID of this resource.
             name: (String) AKS cluster name.
+            no_proxy: (List of String) List of destinations that should not go through proxy.
             node_resource_group: (String) Azure resource group in which nodes are and will be created.
             region: (String) AKS cluster region.
             subscription_id: (String) ID of the Azure subscription.
@@ -113,7 +117,7 @@ resources:
             cpu: '(Block List, Max: 1) defines the minimum and maximum amount of CPUs for cluster''s worker nodes. (see below for nested schema)'
             cpu_percentage: (Number) defines percentage of additional CPU capacity to be added.
             create: (String)
-            custom_instances_enabled: (Boolean) enable/disable custom instances policy.
+            custom_instances_enabled: (Boolean, Deprecated) enable/disable custom instances policy.
             cycle_interval: (String) configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.
             delay_seconds: (Number) period (in seconds) to wait before removing the node. Might be useful to control the aggressiveness of the downscaler.
             dry_run: (Boolean) enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.
@@ -463,8 +467,10 @@ resources:
               manifest: '{}'
         argumentDocs:
             aks: '(Block List, Max: 1) (see below for nested schema)'
-            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)'
+            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)'
+            application_security_groups: (List of String) Application security groups to be used for provisioned nodes
             arn: (String) AWS target group ARN for CAST provisioned nodes
+            cache: '(String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite'
             cluster_id: (String) CAST AI cluster id
             container_runtime: '(String) Optional container runtime to be used by kubelet. Applicable for EKS only.  Supported values include: dockerd, containerd'
             create: (String)
@@ -476,8 +482,10 @@ resources:
             drain_timeout_sec: (Number) Timeout in seconds for draining the node. Defaults to 0
             eks: '(Block List, Max: 1) (see below for nested schema)'
             eks_image_family: '(String) Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)'
+            ephemeral_os_disk: '(Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)'
             gke: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
+            idle_timeout_in_minutes: (Number) Idle timeout in minutes for public IP
             image: (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
             imds_hop_limit: (Number) Allow configure the IMDSv2 hop limit, the default is 2
             imds_v1: (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
@@ -493,12 +501,18 @@ resources:
             max_pods_per_node_formula: '(String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .'
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
+            network_security_group: (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
             nic_based_backend_pools: (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
             node_group_arn: (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
             os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
+            placement: '(String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk'
             port: (Number) Port for AWS target group for CAST provisioned nodes
+            public_ip: '(Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)'
+            public_ip_prefix: (String) Public IP prefix to be used for provisioned nodes
+            range_name: (String) Name of the secondary IP range
             read: (String)
+            secondary_ip_range: '(Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)'
             security_groups: (List of String) Cluster's security groups configuration for CAST provisioned nodes
             ssh_public_key: (String) SSH public key to be used for provisioned nodes
             subnets: (List of String) Subnet ids to be used for provisioned nodes
@@ -626,6 +640,8 @@ resources:
             compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'
             configuration_id: (String) CAST AI node configuration id to be used for node template.
             constraints: '(Block List, Max: 1) (see below for nested schema)'
+            cpu_limit_enabled: (Boolean) Controls CPU limit enforcement for the node template.
+            cpu_limit_max_cores: (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
             cpu_manufacturers: '(List of String) List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.'
             create: (String)
             custom_instances_enabled: (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
@@ -670,6 +686,7 @@ resources:
             os: '(List of String) List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.'
             read: (String)
             rebalancing_config_min_nodes: (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
+            resource_limits: '(Block List, Max: 1) (see below for nested schema)'
             should_taint: (Boolean) Marks whether the templated nodes will have a taint.
             spot: (Boolean) Should include spot instances in the considered pool.
             spot_diversity_price_increase_limit_percent: (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
@@ -807,12 +824,17 @@ resources:
             CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
             achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
             aggressive_mode: (Boolean) When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+            aggressive_mode_config: '(Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)'
             create: (String)
             cron: (String) Cron expression defining when the schedule should trigger.
             delete: (String)
             enabled: (Boolean) Enables or disables the execution conditions.
             execution_conditions: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
+            ignore_local_persistent_volumes: (Boolean) Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+            ignore_problem_job_pods: '(Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.'
+            ignore_problem_pods_without_controller: '(Boolean) Pods that don''t have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.'
+            ignore_problem_removal_disabled_pods: '(Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.'
             ignore_savings: (Boolean) If true, the savings percentage will be ignored and the rebalancing will be triggered regardless of the savings percentage.
             keep_drain_timeout_nodes: (Boolean) Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
             launch_configuration: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
@@ -868,11 +890,77 @@ resources:
             - |-
               # Import reservations of an organization.
               terraform import 'castai_reservations.test' 5b046e29-e947-470f-9952-bfdf369ecca6
-    castai_role_bindings Resource - terraform-provider-castai:
+    castai_role_bindings:
         subCategory: ""
         description: CAST AI organization group resource to manage organization groups
-        name: castai_role_bindings Resource - terraform-provider-castai
+        name: castai_role_bindings
         title: castai_role_bindings Resource - terraform-provider-castai
+        examples:
+            - name: owner_test
+              manifest: |-
+                {
+                  "description": "Owner access for whole organization.",
+                  "name": "Role binding owner",
+                  "organization_id": "${data.castai_organization.test.id}",
+                  "role_id": "3e1050c7-6593-4298-94bb-154637911d78",
+                  "scope": [
+                    {
+                      "kind": "organization",
+                      "resource_id": "${data.castai_organization.test.id}"
+                    }
+                  ],
+                  "subjects": [
+                    {
+                      "subject": [
+                        {
+                          "kind": "user",
+                          "user_id": "21c133e2-a899-4f51-b297-830bc62e51d6"
+                        },
+                        {
+                          "kind": "user",
+                          "user_id": "0d1efe35-7ecb-4821-a52d-fd56c9710a64"
+                        },
+                        {
+                          "group_id": "651734a7-0d0c-49f3-9654-dd92175febaa",
+                          "kind": "group"
+                        },
+                        {
+                          "kind": "service_account",
+                          "service_account_id": "3bf49513-3e9c-4a12-962c-af3bb1a85074"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                organization_id: data.castai_organization.test.id
+                scope.resource_id: data.castai_organization.test.id
+            - name: viewer_test
+              manifest: |-
+                {
+                  "description": "Viewer access for on of the clusters.",
+                  "name": "Role binding viewer for cluster 7063d31c-897e-48ef-a322-bdfda6fdbcfb",
+                  "organization_id": "${data.castai_organization.test.id}",
+                  "role_id": "6fc95bd7-6049-4735-80b0-ce5ccde71cb1",
+                  "scope": [
+                    {
+                      "kind": "cluster",
+                      "resource_id": "7063d31c-897e-48ef-a322-bdfda6fdbcfb"
+                    }
+                  ],
+                  "subjects": [
+                    {
+                      "subject": [
+                        {
+                          "kind": "user",
+                          "user_id": "21c133e2-a899-4f51-b297-830bc62e51d6"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                organization_id: data.castai_organization.test.id
         argumentDocs:
             create: (String)
             delete: (String)
@@ -907,15 +995,6 @@ resources:
                 }
               references:
                 organization_id: organization.id
-              dependencies:
-                castai_service_account_key.service_account_key: |-
-                    {
-                      "active": true,
-                      "expires_at": "2025-01-01T00:00:00Z",
-                      "name": "example-key",
-                      "organization_id": "${data.castai_organization.test.id}",
-                      "service_account_id": "${castai_service_account.service_account.id}"
-                    }
         argumentDocs:
             author: (List of Object) Author of the service account. (see below for nested schema)
             create: (String)
@@ -930,11 +1009,24 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_service_account_key Resource - terraform-provider-castai:
+    castai_service_account_key:
         subCategory: ""
         description: Service account key resource allows managing CAST AI service account keys.
-        name: castai_service_account_key Resource - terraform-provider-castai
+        name: castai_service_account_key
         title: castai_service_account_key Resource - terraform-provider-castai
+        examples:
+            - name: service_account_key
+              manifest: |-
+                {
+                  "active": true,
+                  "expires_at": "2026-01-01T00:00:00Z",
+                  "name": "example-key",
+                  "organization_id": "${data.castai_organization.test.id}",
+                  "service_account_id": "${castai_service_account.service_account.id}"
+                }
+              references:
+                organization_id: data.castai_organization.test.id
+                service_account_id: castai_service_account.service_account.id
         argumentDocs:
             active: (Boolean) Whether the service account key is active. Defaults to true.
             create: (String)
@@ -1006,6 +1098,11 @@ resources:
                   ],
                   "apply_type": "IMMEDIATE",
                   "cluster_id": "${castai_gke_cluster.dev.id}",
+                  "confidence": [
+                    {
+                      "threshold": 0.9
+                    }
+                  ],
                   "cpu": [
                     {
                       "apply_threshold_strategy": [
@@ -1034,8 +1131,7 @@ resources:
                     {
                       "apply_threshold_strategy": [
                         {
-                          "percentage": 0.2,
-                          "type": "PERCENTAGE"
+                          "type": "DEFAULT_ADAPTIVE"
                         }
                       ],
                       "function": "MAX",
@@ -1072,13 +1168,16 @@ resources:
             apply_type: (String) Recommendation apply type.
             args: (List of String) The arguments for the function - i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
             cluster_id: (String) CAST AI cluster id
+            confidence: '(Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)'
             consider_anti_affinity: |-
                 (Boolean) Defines if anti-affinity should be considered when scaling the workload.
                 If enabled, requiring host ports, or having anti-affinity on hostname will force all recommendations to be deferred.
             cpu: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             create: (String)
             delete: (String)
+            denominator: (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
             downscaling: '(Block List, Max: 1) (see below for nested schema)'
+            exponent: '(Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:'
             function: '(String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX'
             id: (String) The ID of this resource.
             limit: '(Block List, Max: 1) Resource limit settings (see below for nested schema)'
@@ -1090,6 +1189,7 @@ resources:
             min: (Number) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             multiplier: (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
             name: (String) Scaling policy name
+            numerator: (Number) The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
             overhead: (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
             percentage: (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
             period_seconds: |-
@@ -1098,9 +1198,14 @@ resources:
                 If not specified, the workload will receive standard recommendations without startup considerations.
             read: (String)
             startup: '(Block List, Max: 1) (see below for nested schema)'
+            threshold: (Number) Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
             timeouts: (Block, Optional) (see below for nested schema)
             type: (String) Defines apply theshold strategy type.
             update: (String)
         importStatements:
+            - terraform plan -out=import.plan -var-file=tf.vars -generate-config-out=generated.tf
+            - terraform apply "import.plan"
+            - terraform plan -out=import.plan -var-file=tf.vars
+            - terraform apply "import.plan"
             - $ terraform import castai_workload_scaling_policy.services <cluster_id>/services
             - $ terraform import 'module.castai-eks-cluster.castai_workload_scaling_policy.this["services"]' <cluster_id>/services

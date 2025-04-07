@@ -83,6 +83,34 @@ spec:
                             disabled annotation) as not-problematic.
                             When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
+                        aggressiveModeConfig:
+                          description: |-
+                            (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
+                            Advanced configuration for aggressive rebalancing mode.
+                          items:
+                            properties:
+                              ignoreLocalPersistentVolumes:
+                                description: |-
+                                  path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+                                  Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+                                type: boolean
+                              ignoreProblemJobPods:
+                                description: |-
+                                  (Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+                                  Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+                                type: boolean
+                              ignoreProblemPodsWithoutController:
+                                description: |-
+                                  (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+                                  Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+                                type: boolean
+                              ignoreProblemRemovalDisabledPods:
+                                description: |-
+                                  (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+                                  Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+                                type: boolean
+                            type: object
+                          type: array
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -209,6 +237,34 @@ spec:
                             disabled annotation) as not-problematic.
                             When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
+                        aggressiveModeConfig:
+                          description: |-
+                            (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
+                            Advanced configuration for aggressive rebalancing mode.
+                          items:
+                            properties:
+                              ignoreLocalPersistentVolumes:
+                                description: |-
+                                  path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+                                  Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+                                type: boolean
+                              ignoreProblemJobPods:
+                                description: |-
+                                  (Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+                                  Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+                                type: boolean
+                              ignoreProblemPodsWithoutController:
+                                description: |-
+                                  (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+                                  Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+                                type: boolean
+                              ignoreProblemRemovalDisabledPods:
+                                description: |-
+                                  (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+                                  Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+                                type: boolean
+                            type: object
+                          type: array
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -514,6 +570,34 @@ spec:
                             disabled annotation) as not-problematic.
                             When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
+                        aggressiveModeConfig:
+                          description: |-
+                            (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
+                            Advanced configuration for aggressive rebalancing mode.
+                          items:
+                            properties:
+                              ignoreLocalPersistentVolumes:
+                                description: |-
+                                  path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+                                  Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+                                type: boolean
+                              ignoreProblemJobPods:
+                                description: |-
+                                  (Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+                                  Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+                                type: boolean
+                              ignoreProblemPodsWithoutController:
+                                description: |-
+                                  (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+                                  Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+                                type: boolean
+                              ignoreProblemRemovalDisabledPods:
+                                description: |-
+                                  (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+                                  Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+                                type: boolean
+                            type: object
+                          type: array
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'

@@ -13,6 +13,67 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AggressiveModeConfigInitParameters struct {
+
+	// path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+	// Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+	IgnoreLocalPersistentVolumes *bool `json:"ignoreLocalPersistentVolumes,omitempty" tf:"ignore_local_persistent_volumes,omitempty"`
+
+	// (Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+	// Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+	IgnoreProblemJobPods *bool `json:"ignoreProblemJobPods,omitempty" tf:"ignore_problem_job_pods,omitempty"`
+
+	// (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+	// Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+	IgnoreProblemPodsWithoutController *bool `json:"ignoreProblemPodsWithoutController,omitempty" tf:"ignore_problem_pods_without_controller,omitempty"`
+
+	// (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+	// Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+	IgnoreProblemRemovalDisabledPods *bool `json:"ignoreProblemRemovalDisabledPods,omitempty" tf:"ignore_problem_removal_disabled_pods,omitempty"`
+}
+
+type AggressiveModeConfigObservation struct {
+
+	// path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+	// Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+	IgnoreLocalPersistentVolumes *bool `json:"ignoreLocalPersistentVolumes,omitempty" tf:"ignore_local_persistent_volumes,omitempty"`
+
+	// (Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+	// Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+	IgnoreProblemJobPods *bool `json:"ignoreProblemJobPods,omitempty" tf:"ignore_problem_job_pods,omitempty"`
+
+	// (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+	// Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+	IgnoreProblemPodsWithoutController *bool `json:"ignoreProblemPodsWithoutController,omitempty" tf:"ignore_problem_pods_without_controller,omitempty"`
+
+	// (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+	// Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+	IgnoreProblemRemovalDisabledPods *bool `json:"ignoreProblemRemovalDisabledPods,omitempty" tf:"ignore_problem_removal_disabled_pods,omitempty"`
+}
+
+type AggressiveModeConfigParameters struct {
+
+	// path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+	// Rebalance workloads that use local-path Persistent Volumes. THIS WILL RESULT IN DATA LOSS.
+	// +kubebuilder:validation:Optional
+	IgnoreLocalPersistentVolumes *bool `json:"ignoreLocalPersistentVolumes" tf:"ignore_local_persistent_volumes,omitempty"`
+
+	// (Boolean) Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+	// Pods spawned by Jobs or CronJobs will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, pods spawned by Jobs or CronJobs will be terminated if the Rebalancer picks a node that runs them. As such, they are likely to lose their progress.
+	// +kubebuilder:validation:Optional
+	IgnoreProblemJobPods *bool `json:"ignoreProblemJobPods" tf:"ignore_problem_job_pods,omitempty"`
+
+	// (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+	// Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
+	// +kubebuilder:validation:Optional
+	IgnoreProblemPodsWithoutController *bool `json:"ignoreProblemPodsWithoutController" tf:"ignore_problem_pods_without_controller,omitempty"`
+
+	// (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+	// Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
+	// +kubebuilder:validation:Optional
+	IgnoreProblemRemovalDisabledPods *bool `json:"ignoreProblemRemovalDisabledPods" tf:"ignore_problem_removal_disabled_pods,omitempty"`
+}
+
 type ExecutionConditionsInitParameters struct {
 
 	// (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
@@ -54,6 +115,10 @@ type LaunchConfigurationInitParameters struct {
 	// When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
+	// (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
+	// Advanced configuration for aggressive rebalancing mode.
+	AggressiveModeConfig []AggressiveModeConfigInitParameters `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsInitParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
 
@@ -87,6 +152,10 @@ type LaunchConfigurationObservation struct {
 	// disabled annotation) as not-problematic.
 	// When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
+
+	// (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
+	// Advanced configuration for aggressive rebalancing mode.
+	AggressiveModeConfig []AggressiveModeConfigObservation `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
@@ -122,6 +191,11 @@ type LaunchConfigurationParameters struct {
 	// When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
 	// +kubebuilder:validation:Optional
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
+
+	// (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
+	// Advanced configuration for aggressive rebalancing mode.
+	// +kubebuilder:validation:Optional
+	AggressiveModeConfig []AggressiveModeConfigParameters `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional

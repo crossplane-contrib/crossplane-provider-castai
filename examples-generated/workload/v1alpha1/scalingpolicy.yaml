@@ -12,6 +12,8 @@ spec:
     - considerAntiAffinity: false
     applyType: IMMEDIATE
     clusterId: ${castai_gke_cluster.dev.id}
+    confidence:
+    - threshold: 0.9
     cpu:
     - applyThresholdStrategy:
       - percentage: 0.1
@@ -28,8 +30,7 @@ spec:
     managementOption: MANAGED
     memory:
     - applyThresholdStrategy:
-      - percentage: 0.2
-        type: PERCENTAGE
+      - type: DEFAULT_ADAPTIVE
       function: MAX
       limit:
       - multiplier: 1.5

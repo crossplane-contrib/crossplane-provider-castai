@@ -474,6 +474,23 @@ spec:
                           items:
                             type: string
                           type: array
+                        resourceLimits:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              cpuLimitEnabled:
+                                description: |-
+                                  (Boolean) Controls CPU limit enforcement for the node template.
+                                  Controls CPU limit enforcement for the node template.
+                                type: boolean
+                              cpuLimitMaxCores:
+                                description: |-
+                                  (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+                                  Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+                                type: number
+                            type: object
+                          type: array
                         spot:
                           description: |-
                             (Boolean) Should include spot instances in the considered pool.
@@ -991,6 +1008,23 @@ spec:
                             List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
                           items:
                             type: string
+                          type: array
+                        resourceLimits:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              cpuLimitEnabled:
+                                description: |-
+                                  (Boolean) Controls CPU limit enforcement for the node template.
+                                  Controls CPU limit enforcement for the node template.
+                                type: boolean
+                              cpuLimitMaxCores:
+                                description: |-
+                                  (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+                                  Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+                                type: number
+                            type: object
                           type: array
                         spot:
                           description: |-
@@ -1521,6 +1555,23 @@ spec:
                             List of acceptable instance Operating Systems, the default is linux. Allowed values: linux, windows.
                           items:
                             type: string
+                          type: array
+                        resourceLimits:
+                          description: '(Block List, Max: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              cpuLimitEnabled:
+                                description: |-
+                                  (Boolean) Controls CPU limit enforcement for the node template.
+                                  Controls CPU limit enforcement for the node template.
+                                type: boolean
+                              cpuLimitMaxCores:
+                                description: |-
+                                  (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+                                  Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
+                                type: number
+                            type: object
                           type: array
                         spot:
                           description: |-

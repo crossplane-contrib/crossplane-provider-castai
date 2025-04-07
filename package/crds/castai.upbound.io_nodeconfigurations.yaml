@@ -80,9 +80,34 @@ spec:
                       properties:
                         aksImageFamily:
                           description: |-
-                            linux)
-                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+                            linux,windows2019,windows2022)
+                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
                           type: string
+                        applicationSecurityGroups:
+                          description: |-
+                            (List of String) Application security groups to be used for provisioned nodes
+                            Application security groups to be used for provisioned nodes
+                          items:
+                            type: string
+                          type: array
+                        ephemeralOsDisk:
+                          description: |-
+                            (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
+                            Ephemeral OS disk configuration for CAST provisioned nodes
+                          items:
+                            properties:
+                              cache:
+                                description: |-
+                                  (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                  Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                type: string
+                              placement:
+                                description: |-
+                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                type: string
+                            type: object
+                          type: array
                         loadbalancers:
                           description: |-
                             (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
@@ -132,11 +157,41 @@ spec:
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                             Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                           type: number
+                        networkSecurityGroup:
+                          description: |-
+                            (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
+                            Network security group to be used for provisioned nodes, if not provided default security group from `castpool` will be used
+                          type: string
                         osDiskType:
                           description: |-
                             ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                             Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                           type: string
+                        publicIp:
+                          description: |-
+                            (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
+                            Public IP configuration for CAST AI provisioned nodes
+                          items:
+                            properties:
+                              idleTimeoutInMinutes:
+                                description: |-
+                                  (Number) Idle timeout in minutes for public IP
+                                  Idle timeout in minutes for public IP
+                                type: number
+                              publicIpPrefix:
+                                description: |-
+                                  (String) Public IP prefix to be used for provisioned nodes
+                                  Public IP prefix to be used for provisioned nodes
+                                type: string
+                              tags:
+                                additionalProperties:
+                                  type: string
+                                description: (Map of String) Tags to be added on cloud
+                                  instances for provisioned nodes
+                                type: object
+                                x-kubernetes-map-type: granular
+                            type: object
+                          type: array
                       type: object
                     type: array
                   clusterId:
@@ -395,6 +450,19 @@ spec:
                             Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
                           items:
                             type: string
+                          type: array
+                        secondaryIpRange:
+                          description: |-
+                            (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
+                            Secondary IP range configuration for pods in GKE nodes
+                          items:
+                            properties:
+                              rangeName:
+                                description: |-
+                                  (String) Name of the secondary IP range
+                                  Name of the secondary IP range
+                                type: string
+                            type: object
                           type: array
                         useEphemeralStorageLocalSsd:
                           description: |-
@@ -486,9 +554,34 @@ spec:
                       properties:
                         aksImageFamily:
                           description: |-
-                            linux)
-                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+                            linux,windows2019,windows2022)
+                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
                           type: string
+                        applicationSecurityGroups:
+                          description: |-
+                            (List of String) Application security groups to be used for provisioned nodes
+                            Application security groups to be used for provisioned nodes
+                          items:
+                            type: string
+                          type: array
+                        ephemeralOsDisk:
+                          description: |-
+                            (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
+                            Ephemeral OS disk configuration for CAST provisioned nodes
+                          items:
+                            properties:
+                              cache:
+                                description: |-
+                                  (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                  Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                type: string
+                              placement:
+                                description: |-
+                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                type: string
+                            type: object
+                          type: array
                         loadbalancers:
                           description: |-
                             (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
@@ -538,11 +631,41 @@ spec:
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                             Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                           type: number
+                        networkSecurityGroup:
+                          description: |-
+                            (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
+                            Network security group to be used for provisioned nodes, if not provided default security group from `castpool` will be used
+                          type: string
                         osDiskType:
                           description: |-
                             ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                             Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                           type: string
+                        publicIp:
+                          description: |-
+                            (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
+                            Public IP configuration for CAST AI provisioned nodes
+                          items:
+                            properties:
+                              idleTimeoutInMinutes:
+                                description: |-
+                                  (Number) Idle timeout in minutes for public IP
+                                  Idle timeout in minutes for public IP
+                                type: number
+                              publicIpPrefix:
+                                description: |-
+                                  (String) Public IP prefix to be used for provisioned nodes
+                                  Public IP prefix to be used for provisioned nodes
+                                type: string
+                              tags:
+                                additionalProperties:
+                                  type: string
+                                description: (Map of String) Tags to be added on cloud
+                                  instances for provisioned nodes
+                                type: object
+                                x-kubernetes-map-type: granular
+                            type: object
+                          type: array
                       type: object
                     type: array
                   clusterId:
@@ -801,6 +924,19 @@ spec:
                             Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
                           items:
                             type: string
+                          type: array
+                        secondaryIpRange:
+                          description: |-
+                            (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
+                            Secondary IP range configuration for pods in GKE nodes
+                          items:
+                            properties:
+                              rangeName:
+                                description: |-
+                                  (String) Name of the secondary IP range
+                                  Name of the secondary IP range
+                                type: string
+                            type: object
                           type: array
                         useEphemeralStorageLocalSsd:
                           description: |-
@@ -1060,9 +1196,34 @@ spec:
                       properties:
                         aksImageFamily:
                           description: |-
-                            linux)
-                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux)
+                            linux,windows2019,windows2022)
+                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
                           type: string
+                        applicationSecurityGroups:
+                          description: |-
+                            (List of String) Application security groups to be used for provisioned nodes
+                            Application security groups to be used for provisioned nodes
+                          items:
+                            type: string
+                          type: array
+                        ephemeralOsDisk:
+                          description: |-
+                            (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
+                            Ephemeral OS disk configuration for CAST provisioned nodes
+                          items:
+                            properties:
+                              cache:
+                                description: |-
+                                  (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                  Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                type: string
+                              placement:
+                                description: |-
+                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                type: string
+                            type: object
+                          type: array
                         loadbalancers:
                           description: |-
                             (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
@@ -1112,11 +1273,41 @@ spec:
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                             Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                           type: number
+                        networkSecurityGroup:
+                          description: |-
+                            (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
+                            Network security group to be used for provisioned nodes, if not provided default security group from `castpool` will be used
+                          type: string
                         osDiskType:
                           description: |-
                             ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                             Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                           type: string
+                        publicIp:
+                          description: |-
+                            (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
+                            Public IP configuration for CAST AI provisioned nodes
+                          items:
+                            properties:
+                              idleTimeoutInMinutes:
+                                description: |-
+                                  (Number) Idle timeout in minutes for public IP
+                                  Idle timeout in minutes for public IP
+                                type: number
+                              publicIpPrefix:
+                                description: |-
+                                  (String) Public IP prefix to be used for provisioned nodes
+                                  Public IP prefix to be used for provisioned nodes
+                                type: string
+                              tags:
+                                additionalProperties:
+                                  type: string
+                                description: (Map of String) Tags to be added on cloud
+                                  instances for provisioned nodes
+                                type: object
+                                x-kubernetes-map-type: granular
+                            type: object
+                          type: array
                       type: object
                     type: array
                   clusterId:
@@ -1299,6 +1490,19 @@ spec:
                             Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
                           items:
                             type: string
+                          type: array
+                        secondaryIpRange:
+                          description: |-
+                            (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
+                            Secondary IP range configuration for pods in GKE nodes
+                          items:
+                            properties:
+                              rangeName:
+                                description: |-
+                                  (String) Name of the secondary IP range
+                                  Name of the secondary IP range
+                                type: string
+                            type: object
                           type: array
                         useEphemeralStorageLocalSsd:
                           description: |-

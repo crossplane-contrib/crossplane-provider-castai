@@ -281,7 +281,7 @@ spec:
                             properties:
                               customInstancesEnabled:
                                 description: |-
-                                  (Boolean) enable/disable custom instances policy.
+                                  (Boolean, Deprecated) enable/disable custom instances policy.
                                   enable/disable custom instances policy.
                                 type: boolean
                               enabled:
@@ -688,7 +688,7 @@ spec:
                             properties:
                               customInstancesEnabled:
                                 description: |-
-                                  (Boolean) enable/disable custom instances policy.
+                                  (Boolean, Deprecated) enable/disable custom instances policy.
                                   enable/disable custom instances policy.
                                 type: boolean
                               enabled:
@@ -1259,7 +1259,7 @@ spec:
                             properties:
                               customInstancesEnabled:
                                 description: |-
-                                  (Boolean) enable/disable custom instances policy.
+                                  (Boolean, Deprecated) enable/disable custom instances policy.
                                   enable/disable custom instances policy.
                                 type: boolean
                               enabled:

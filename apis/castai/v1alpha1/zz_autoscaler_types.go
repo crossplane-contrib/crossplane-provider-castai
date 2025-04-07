@@ -803,7 +803,7 @@ type SpotInterruptionPredictionsParameters struct {
 
 type UnschedulablePodsInitParameters struct {
 
-	// (Boolean) enable/disable custom instances policy.
+	// (Boolean, Deprecated) enable/disable custom instances policy.
 	// enable/disable custom instances policy.
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
@@ -830,7 +830,7 @@ type UnschedulablePodsInitParameters struct {
 
 type UnschedulablePodsObservation struct {
 
-	// (Boolean) enable/disable custom instances policy.
+	// (Boolean, Deprecated) enable/disable custom instances policy.
 	// enable/disable custom instances policy.
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`
 
@@ -857,7 +857,7 @@ type UnschedulablePodsObservation struct {
 
 type UnschedulablePodsParameters struct {
 
-	// (Boolean) enable/disable custom instances policy.
+	// (Boolean, Deprecated) enable/disable custom instances policy.
 	// enable/disable custom instances policy.
 	// +kubebuilder:validation:Optional
 	CustomInstancesEnabled *bool `json:"customInstancesEnabled,omitempty" tf:"custom_instances_enabled,omitempty"`

@@ -260,6 +260,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        bareMetal:
+                          description: |-
+                            bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+                            Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+                          type: string
                         burstableInstances:
                           description: |-
                             (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
@@ -795,6 +800,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        bareMetal:
+                          description: |-
+                            bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+                            Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+                          type: string
                         burstableInstances:
                           description: |-
                             (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
@@ -1342,6 +1352,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        bareMetal:
+                          description: |-
+                            bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+                            Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+                          type: string
                         burstableInstances:
                           description: |-
                             (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.

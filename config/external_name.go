@@ -25,6 +25,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"castai_reservations":               config.IdentifierFromProvider,
 	"castai_sso_connection":             config.IdentifierFromProvider,
 	"castai_workload_scaling_policy":    config.IdentifierFromProvider,
+	"castai_gke_cluster_id":             config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

@@ -429,6 +429,114 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
+    castai_hibernation_schedule:
+        subCategory: ""
+        description: CAST AI hibernation schedule resource to manage hibernation schedules.
+        name: castai_hibernation_schedule
+        title: castai_hibernation_schedule Resource - terraform-provider-castai
+        examples:
+            - name: my_schedule
+              manifest: |-
+                {
+                  "cluster_assignments": [
+                    {
+                      "assignment": [
+                        {
+                          "cluster_id": "38a49ce8-e900-4a10-be89-48fb2efb1025"
+                        }
+                      ]
+                    }
+                  ],
+                  "enabled": false,
+                  "name": "workday",
+                  "pause_config": [
+                    {
+                      "enabled": true,
+                      "schedule": [
+                        {
+                          "cron_expression": "0 17 * * 1-5"
+                        }
+                      ]
+                    }
+                  ],
+                  "resume_config": [
+                    {
+                      "enabled": true,
+                      "job_config": [
+                        {
+                          "node_config": [
+                            {
+                              "instance_type": "e2-standard-4"
+                            }
+                          ]
+                        }
+                      ],
+                      "schedule": [
+                        {
+                          "cron_expression": "0 9 * * 1-5"
+                        }
+                      ]
+                    }
+                  ]
+                }
+        argumentDocs:
+            CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
+            affinity: (Block List) (see below for nested schema)
+            assignment: (Block List) (see below for nested schema)
+            chunk_size_kb: (Number) Specify the RAID0 chunk size in kilobytes, this parameter affects the read/write in the disk array and must be tailored for the type of data written by the workloads in the node. If not provided it will default to 64KB
+            cluster_assignments: '(Block List, Max: 1) (see below for nested schema)'
+            cluster_id: (String) ID of the cluster.
+            config_id: (String) ID reference of Node Configuration to be used for node creation. Supersedes 'config_name' parameter.
+            config_name: (String) Name reference of Node Configuration to be used for node creation. Superseded if 'config_id' parameter is provided.
+            count: (Number) Number of GPUs.
+            create: (String)
+            cron: expression can optionally include the CRON_TZ variable at the beginning to specify the timezone in which the schedule should be interpreted.
+            cron_expression: (String) Cron expression defining when the schedule should trigger.
+            dedicated_group: (String) Key of a taint to be added to nodes created from this template.
+            delete: (String)
+            effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'
+            enabled: (Boolean) Enables or disables the schedule.
+            gpu_config: '(Block List, Max: 1) (see below for nested schema)'
+            id: (String) The ID of this resource.
+            instance_type: (String) Instance type.
+            job_config: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            key: (String) Key of a taint to be added to nodes created from this template.
+            kubernetes_labels: (Map of String) Custom labels to be added to the node.
+            kubernetes_taints: (Block List) Custom taints to be added to the node created from this configuration. (see below for nested schema)
+            name: (String) Name of the schedule.
+            node_affinity: (Block List) Custom taints to be added to the node created from this configuration. (see below for nested schema)
+            node_config: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            operator: '(String) Operator of the node affinity selector. Allowed values: DOES_NOT_EXIST, EXISTS, GT, IN, LT, NOT_IN.'
+            organization_id: (String) ID of the organization. If not provided, then will attempt to infer it using CAST AI API client.
+            pause_config: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            price_hourly: (String) Spot instance price. Applicable only for AWS nodes.
+            raid_config: (Block List) (see below for nested schema)
+            read: (String)
+            resume_config: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            schedule: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            size_gib: (Number) Volume size in GiB.
+            spot: (Boolean) Whether node should be created as spot instance.
+            spot_config: (Block List) Custom taints to be added to the node created from this configuration. (see below for nested schema)
+            subnet_id: (String) Node subnet ID.
+            timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) GPU type.
+            update: (String)
+            value: (String) Value of a taint to be added to nodes created from this template.
+            values: (List of String) Values of the node affinity selector.
+            volume: (Block List) (see below for nested schema)
+            zone: (String) Zone of the node.
+        importStatements:
+            - |-
+              # Associate terraform resource "my_schedule" with a hibernation schedule named "workday".
+              # Will use the default organization ID, that is associated with the API token.
+              terraform import 'castai_hibernation_schedule.my_schedule' workday
+
+              # Importing via direct schedule ID is also possible.
+              # Will use the default organization ID, that is associated with the API token.
+              terraform import 'castai_hibernation_schedule.my_schedule' e5ee784d-2c4b-4820-ab4e-16e4b81534a4
+
+              # Import using organization ID and schedule name/ID in format <organization id>/<schedule id|schedule name>.
+              terraform import 'castai_hibernation_schedule.my_schedule' 63895dfe-dc8b-49b6-959c-3f3545de525a/workday
     castai_node_configuration:
         subCategory: ""
         description: Create node configuration for given cluster. Node configuration reference https://docs.cast.ai/docs/node-configuration
@@ -634,6 +742,7 @@ resources:
             architectures: '(List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.'
             az_name: (String) Availability zone name.
             azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
+            bare_metal: '(String) Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.'
             burstable_instances: '(String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint (deprecated).
@@ -703,11 +812,62 @@ resources:
             - |-
               # Import node template by specifying cluster ID and node template name.
               terraform import castai_node_template.default_by_castai 105e6fa3-20b1-424e-v589-9a64d1eeabea/default-by-castai
-    castai_organization_group Resource - terraform-provider-castai:
+    castai_organization_group:
         subCategory: ""
         description: CAST AI organization group resource to manage organization groups
-        name: castai_organization_group Resource - terraform-provider-castai
+        name: castai_organization_group
         title: castai_organization_group Resource - terraform-provider-castai
+        examples:
+            - name: first_group
+              manifest: |-
+                {
+                  "description": "A description of the first group.",
+                  "members": [
+                    {
+                      "member": [
+                        {
+                          "email": "first-user@cast.ai",
+                          "id": "21c133e2-a899-4f51-b297-830bc62e51d6",
+                          "kind": "user"
+                        },
+                        {
+                          "email": "second-user@cast.ai",
+                          "id": "21c133e2-a899-4f51-b297-830bc62e51d7",
+                          "kind": "user"
+                        },
+                        {
+                          "email": "service_account-2@cast.ai",
+                          "id": "21c133e2-a899-4f51-b297-830bc62e51d9",
+                          "kind": "service_account"
+                        }
+                      ]
+                    }
+                  ],
+                  "name": "first-group",
+                  "organization_id": "${data.castai_organization.test.id}"
+                }
+              references:
+                organization_id: data.castai_organization.test.id
+            - name: second_group
+              manifest: |-
+                {
+                  "description": "A description of the second group.",
+                  "members": [
+                    {
+                      "member": [
+                        {
+                          "email": "first-user@cast.ai",
+                          "id": "21c133e2-a899-4f51-b297-830bc62e51d6",
+                          "kind": "user"
+                        }
+                      ]
+                    }
+                  ],
+                  "name": "second-group",
+                  "organization_id": "${data.castai_organization.test.id}"
+                }
+              references:
+                organization_id: data.castai_organization.test.id
         argumentDocs:
             create: (String)
             delete: (String)
@@ -903,7 +1063,7 @@ resources:
                   "name": "Role binding owner",
                   "organization_id": "${data.castai_organization.test.id}",
                   "role_id": "3e1050c7-6593-4298-94bb-154637911d78",
-                  "scope": [
+                  "scopes": [
                     {
                       "kind": "organization",
                       "resource_id": "${data.castai_organization.test.id}"
@@ -934,7 +1094,7 @@ resources:
                 }
               references:
                 organization_id: data.castai_organization.test.id
-                scope.resource_id: data.castai_organization.test.id
+                scopes.resource_id: data.castai_organization.test.id
             - name: viewer_test
               manifest: |-
                 {
@@ -942,10 +1102,14 @@ resources:
                   "name": "Role binding viewer for cluster 7063d31c-897e-48ef-a322-bdfda6fdbcfb",
                   "organization_id": "${data.castai_organization.test.id}",
                   "role_id": "6fc95bd7-6049-4735-80b0-ce5ccde71cb1",
-                  "scope": [
+                  "scopes": [
                     {
                       "kind": "cluster",
                       "resource_id": "7063d31c-897e-48ef-a322-bdfda6fdbcfb"
+                    },
+                    {
+                      "kind": "cluster",
+                      "resource_id": "9872e54f-1122-33ef-b456-cdef98765432"
                     }
                   ],
                   "subjects": [
@@ -967,18 +1131,42 @@ resources:
             description: (String) Description of the role binding.
             group_id: (String) Optional, required only if kind is group.
             id: (String) The ID of this resource.
-            kind: '(String) Scope of the role binding Supported values include: organization, cluster.'
+            kind: '(String) Kind of the subject. Supported values include: user, service_account, group.'
             name: (String) Name of role binding.
             organization_id: (String) CAST AI organization ID.
             resource_id: (String) ID of the scope resource.
             role_id: (String) ID of role from role binding.
-            scope: '(Block List, Min: 1, Max: 1) Scope of the role binding. (see below for nested schema)'
+            scopes: (Block List) Scopes of the role binding. (see below for nested schema)
             service_account_id: (String) Optional, required only if kind is service_account.
             subject: (Block List) (see below for nested schema)
             subjects: '(Block List, Min: 1) (see below for nested schema)'
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             user_id: (String) Optional, required only if kind is user.
+        importStatements: []
+    castai_security_runtime_rule Resource - terraform-provider-castai:
+        subCategory: ""
+        description: Manages a CAST AI security runtime rule.
+        name: castai_security_runtime_rule Resource - terraform-provider-castai
+        title: castai_security_runtime_rule Resource - terraform-provider-castai
+        argumentDocs:
+            anomalies_count: (Number) Number of anomalies detected using this rule.
+            category: (String) Category of the rule.
+            create: (String)
+            delete: (String)
+            enabled: (Boolean) Whether the rule is enabled.
+            id: (String) The ID of this resource.
+            is_built_in: (Boolean) Indicates whether the rule is a built-in rule.
+            labels: (Map of String) Key-value labels attached to the rule.
+            name: (String) Unique name of the runtime security rule. Name is used as resource identifier in Terraform.
+            read: (String)
+            resource_selector: (String) Optional CEL expression for resource selection.
+            rule_engine_type: (String) The engine type used to evaluate the rule. Only RULE_ENGINE_TYPE_CEL is currently supported.
+            rule_text: (String) CEL rule expression text.
+            severity: (String) Severity of the rule. One of SEVERITY_CRITICAL, SEVERITY_HIGH, SEVERITY_MEDIUM, SEVERITY_LOW, SEVERITY_NONE.
+            timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) Type of the rule (internal value).
+            used_custom_lists: (List of String) Custom lists used in this rule, if any.
         importStatements: []
     castai_service_account:
         subCategory: ""

@@ -16,6 +16,7 @@ import (
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksuserarn"
 	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/evictoradvancedconfig"
 	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkecluster"
+	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkeclusterid"
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodetemplate"
@@ -24,7 +25,6 @@ import (
 	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/rebalancingschedule"
 	reservations "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/reservations"
 	ssoconnection "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ssoconnection"
-	clusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/gke/clusterid"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/providerconfig"
 	scalingpolicy "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/workload/scalingpolicy"
 )
@@ -40,6 +40,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		eksuserarn.Setup,
 		evictoradvancedconfig.Setup,
 		gkecluster.Setup,
+		gkeclusterid.Setup,
 		nodeconfiguration.Setup,
 		nodeconfigurationdefault.Setup,
 		nodetemplate.Setup,
@@ -48,7 +49,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		rebalancingschedule.Setup,
 		reservations.Setup,
 		ssoconnection.Setup,
-		clusterid.Setup,
 		providerconfig.Setup,
 		scalingpolicy.Setup,
 	} {

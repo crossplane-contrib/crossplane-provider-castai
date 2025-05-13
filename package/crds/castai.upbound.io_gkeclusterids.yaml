@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: clusterids.gke.castai.upbound.io
+  name: gkeclusterids.castai.upbound.io
 spec:
-  group: gke.castai.upbound.io
+  group: castai.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - castai
-    kind: ClusterID
-    listKind: ClusterIDList
-    plural: clusterids
-    singular: clusterid
+    kind: GkeClusterId
+    listKind: GkeClusterIdList
+    plural: gkeclusterids
+    singular: gkeclusterid
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ClusterID is the Schema for the ClusterIDs API. <no value>
+        description: GkeClusterId is the Schema for the GkeClusterIds API. <no value>
         properties:
           apiVersion:
             description: |-
@@ -54,7 +54,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ClusterIDSpec defines the desired state of ClusterID
+            description: GkeClusterIdSpec defines the desired state of GkeClusterId
             properties:
               deletionPolicy:
                 default: Delete
@@ -300,7 +300,7 @@ spec:
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.projectId)
                 || (has(self.initProvider) && has(self.initProvider.projectId))'
           status:
-            description: ClusterIDStatus defines the observed state of ClusterID.
+            description: GkeClusterIdStatus defines the observed state of GkeClusterId.
             properties:
               atProvider:
                 properties:

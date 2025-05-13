@@ -1365,6 +1365,11 @@ func (in *ConstraintsInitParameters) DeepCopyInto(out *ConstraintsInitParameters
 			}
 		}
 	}
+	if in.BareMetal != nil {
+		in, out := &in.BareMetal, &out.BareMetal
+		*out = new(string)
+		**out = **in
+	}
 	if in.BurstableInstances != nil {
 		in, out := &in.BurstableInstances, &out.BurstableInstances
 		*out = new(string)
@@ -1565,6 +1570,11 @@ func (in *ConstraintsObservation) DeepCopyInto(out *ConstraintsObservation) {
 			}
 		}
 	}
+	if in.BareMetal != nil {
+		in, out := &in.BareMetal, &out.BareMetal
+		*out = new(string)
+		**out = **in
+	}
 	if in.BurstableInstances != nil {
 		in, out := &in.BurstableInstances, &out.BurstableInstances
 		*out = new(string)
@@ -1764,6 +1774,11 @@ func (in *ConstraintsParameters) DeepCopyInto(out *ConstraintsParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.BareMetal != nil {
+		in, out := &in.BareMetal, &out.BareMetal
+		*out = new(string)
+		**out = **in
 	}
 	if in.BurstableInstances != nil {
 		in, out := &in.BurstableInstances, &out.BurstableInstances

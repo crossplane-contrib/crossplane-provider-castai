@@ -17,6 +17,7 @@ import (
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
 	"github.com/crossplane-contrib/crossplane-provider-castai/config/evictoradvancedconfig"
 	"github.com/crossplane-contrib/crossplane-provider-castai/config/gkecluster"
+	"github.com/crossplane-contrib/crossplane-provider-castai/config/gkeclusterid"
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/config/nodetemplate"
@@ -64,6 +65,7 @@ func GetProvider() *ujconfig.Provider {
 		organizationmembers.Configure,
 		reservations.Configure,
 		ssoconnation.Configure,
+		gkeclusterid.Configure,
 	} {
 		configure(pc)
 	}

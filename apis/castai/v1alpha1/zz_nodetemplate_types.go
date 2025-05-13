@@ -75,6 +75,10 @@ type ConstraintsInitParameters struct {
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
 
+	// bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+	// Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+	BareMetal *string `json:"bareMetal,omitempty" tf:"bare_metal,omitempty"`
+
 	// (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
 	// Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
 	BurstableInstances *string `json:"burstableInstances,omitempty" tf:"burstable_instances,omitempty"`
@@ -199,6 +203,10 @@ type ConstraintsObservation struct {
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
+
+	// bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+	// Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+	BareMetal *string `json:"bareMetal,omitempty" tf:"bare_metal,omitempty"`
 
 	// (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
 	// Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
@@ -327,6 +335,11 @@ type ConstraintsParameters struct {
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// +kubebuilder:validation:Optional
 	Azs []*string `json:"azs,omitempty" tf:"azs,omitempty"`
+
+	// bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+	// Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.
+	// +kubebuilder:validation:Optional
+	BareMetal *string `json:"bareMetal,omitempty" tf:"bare_metal,omitempty"`
 
 	// (String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
 	// Will include burstable instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.

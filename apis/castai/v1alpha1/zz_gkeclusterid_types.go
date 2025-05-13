@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ClusterIDInitParameters struct {
+type GkeClusterIdInitParameters struct {
 
 	// Service account email in cast project
 	CastServiceAccount *string `json:"castServiceAccount,omitempty" tf:"cast_service_account,omitempty"`
@@ -31,7 +31,7 @@ type ClusterIDInitParameters struct {
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
-type ClusterIDObservation struct {
+type GkeClusterIdObservation struct {
 
 	// Service account email in cast project
 	CastServiceAccount *string `json:"castServiceAccount,omitempty" tf:"cast_service_account,omitempty"`
@@ -51,7 +51,7 @@ type ClusterIDObservation struct {
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
-type ClusterIDParameters struct {
+type GkeClusterIdParameters struct {
 
 	// Service account email in cast project
 	// +kubebuilder:validation:Optional
@@ -74,10 +74,10 @@ type ClusterIDParameters struct {
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
-// ClusterIDSpec defines the desired state of ClusterID
-type ClusterIDSpec struct {
+// GkeClusterIdSpec defines the desired state of GkeClusterId
+type GkeClusterIdSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     ClusterIDParameters `json:"forProvider"`
+	ForProvider     GkeClusterIdParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -88,52 +88,52 @@ type ClusterIDSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider ClusterIDInitParameters `json:"initProvider,omitempty"`
+	InitProvider GkeClusterIdInitParameters `json:"initProvider,omitempty"`
 }
 
-// ClusterIDStatus defines the observed state of ClusterID.
-type ClusterIDStatus struct {
+// GkeClusterIdStatus defines the observed state of GkeClusterId.
+type GkeClusterIdStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        ClusterIDObservation `json:"atProvider,omitempty"`
+	AtProvider        GkeClusterIdObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ClusterID is the Schema for the ClusterIDs API. <no value>
+// GkeClusterId is the Schema for the GkeClusterIds API. <no value>
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,castai}
-type ClusterID struct {
+type GkeClusterId struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.location) || (has(self.initProvider) && has(self.initProvider.location))",message="spec.forProvider.location is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
-	Spec   ClusterIDSpec   `json:"spec"`
-	Status ClusterIDStatus `json:"status,omitempty"`
+	Spec   GkeClusterIdSpec   `json:"spec"`
+	Status GkeClusterIdStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// ClusterIDList contains a list of ClusterIDs
-type ClusterIDList struct {
+// GkeClusterIdList contains a list of GkeClusterIds
+type GkeClusterIdList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ClusterID `json:"items"`
+	Items           []GkeClusterId `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	ClusterID_Kind             = "ClusterID"
-	ClusterID_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ClusterID_Kind}.String()
-	ClusterID_KindAPIVersion   = ClusterID_Kind + "." + CRDGroupVersion.String()
-	ClusterID_GroupVersionKind = CRDGroupVersion.WithKind(ClusterID_Kind)
+	GkeClusterId_Kind             = "GkeClusterId"
+	GkeClusterId_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: GkeClusterId_Kind}.String()
+	GkeClusterId_KindAPIVersion   = GkeClusterId_Kind + "." + CRDGroupVersion.String()
+	GkeClusterId_GroupVersionKind = CRDGroupVersion.WithKind(GkeClusterId_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&ClusterID{}, &ClusterIDList{})
+	SchemeBuilder.Register(&GkeClusterId{}, &GkeClusterIdList{})
 }

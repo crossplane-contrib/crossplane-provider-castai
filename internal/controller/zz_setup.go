@@ -24,6 +24,7 @@ import (
 	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/rebalancingschedule"
 	reservations "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/reservations"
 	ssoconnection "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ssoconnection"
+	clusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/gke/clusterid"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/providerconfig"
 	scalingpolicy "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/workload/scalingpolicy"
 )
@@ -47,6 +48,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		rebalancingschedule.Setup,
 		reservations.Setup,
 		ssoconnection.Setup,
+		clusterid.Setup,
 		providerconfig.Setup,
 		scalingpolicy.Setup,
 	} {

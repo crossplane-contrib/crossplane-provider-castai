@@ -28,6 +28,9 @@ func (tr *EvictorAdvancedConfig) Hub() {}
 func (tr *GkeCluster) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *GkeClusterId) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *NodeConfiguration) Hub() {}
 
 // Hub marks this type as a conversion hub.

@@ -384,8 +384,8 @@ spec:
                             Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
                         gpu:
-                          description: '(Block List, Max: 1) (see below for nested
-                            schema)'
+                          description: '(Block List, Max: 1) GPU configuration. (see
+                            below for nested schema)'
                           items:
                             properties:
                               excludeNames:
@@ -516,6 +516,16 @@ spec:
                             rebalance-recommendations" or "interruption-predictions".
                             Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
+                        spotReliabilityEnabled:
+                          description: |-
+                            (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+                            Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+                          type: boolean
+                        spotReliabilityPriceIncreaseLimitPercent:
+                          description: |-
+                            (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+                            Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+                          type: number
                         storageOptimized:
                           description: |-
                             (Boolean) Storage optimized instance constraint (deprecated).
@@ -572,6 +582,42 @@ spec:
                             (String) Value of a taint to be added to nodes created from this template.
                             Value of a taint to be added to nodes created from this template.
                           type: string
+                      type: object
+                    type: array
+                  gpu:
+                    description: |-
+                      (Block List, Max: 1) GPU configuration. (see below for nested schema)
+                      GPU configuration.
+                    items:
+                      properties:
+                        defaultSharedClientsPerGpu:
+                          description: |-
+                            (Number) Defines default number of shared clients per GPU.
+                            Defines default number of shared clients per GPU.
+                          type: number
+                        enableTimeSharing:
+                          description: |-
+                            sharing.
+                            Enable/disable GPU time-sharing.
+                          type: boolean
+                        sharingConfiguration:
+                          description: |-
+                            (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
+                            Defines GPU sharing configurations for GPU devices.
+                          items:
+                            properties:
+                              gpuName:
+                                description: |-
+                                  (String) GPU name.
+                                  GPU name.
+                                type: string
+                              sharedClientsPerGpu:
+                                description: |-
+                                  (Number) Defines number of shared clients for specific GPU device.
+                                  Defines number of shared clients for specific GPU device.
+                                type: number
+                            type: object
+                          type: array
                       type: object
                     type: array
                   isDefault:
@@ -924,8 +970,8 @@ spec:
                             Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
                         gpu:
-                          description: '(Block List, Max: 1) (see below for nested
-                            schema)'
+                          description: '(Block List, Max: 1) GPU configuration. (see
+                            below for nested schema)'
                           items:
                             properties:
                               excludeNames:
@@ -1056,6 +1102,16 @@ spec:
                             rebalance-recommendations" or "interruption-predictions".
                             Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
+                        spotReliabilityEnabled:
+                          description: |-
+                            (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+                            Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+                          type: boolean
+                        spotReliabilityPriceIncreaseLimitPercent:
+                          description: |-
+                            (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+                            Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+                          type: number
                         storageOptimized:
                           description: |-
                             (Boolean) Storage optimized instance constraint (deprecated).
@@ -1112,6 +1168,42 @@ spec:
                             (String) Value of a taint to be added to nodes created from this template.
                             Value of a taint to be added to nodes created from this template.
                           type: string
+                      type: object
+                    type: array
+                  gpu:
+                    description: |-
+                      (Block List, Max: 1) GPU configuration. (see below for nested schema)
+                      GPU configuration.
+                    items:
+                      properties:
+                        defaultSharedClientsPerGpu:
+                          description: |-
+                            (Number) Defines default number of shared clients per GPU.
+                            Defines default number of shared clients per GPU.
+                          type: number
+                        enableTimeSharing:
+                          description: |-
+                            sharing.
+                            Enable/disable GPU time-sharing.
+                          type: boolean
+                        sharingConfiguration:
+                          description: |-
+                            (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
+                            Defines GPU sharing configurations for GPU devices.
+                          items:
+                            properties:
+                              gpuName:
+                                description: |-
+                                  (String) GPU name.
+                                  GPU name.
+                                type: string
+                              sharedClientsPerGpu:
+                                description: |-
+                                  (Number) Defines number of shared clients for specific GPU device.
+                                  Defines number of shared clients for specific GPU device.
+                                type: number
+                            type: object
+                          type: array
                       type: object
                     type: array
                   isDefault:
@@ -1476,8 +1568,8 @@ spec:
                             Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
                         gpu:
-                          description: '(Block List, Max: 1) (see below for nested
-                            schema)'
+                          description: '(Block List, Max: 1) GPU configuration. (see
+                            below for nested schema)'
                           items:
                             properties:
                               excludeNames:
@@ -1608,6 +1700,16 @@ spec:
                             rebalance-recommendations" or "interruption-predictions".
                             Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
                           type: string
+                        spotReliabilityEnabled:
+                          description: |-
+                            (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+                            Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+                          type: boolean
+                        spotReliabilityPriceIncreaseLimitPercent:
+                          description: |-
+                            (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+                            Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+                          type: number
                         storageOptimized:
                           description: |-
                             (Boolean) Storage optimized instance constraint (deprecated).
@@ -1664,6 +1766,42 @@ spec:
                             (String) Value of a taint to be added to nodes created from this template.
                             Value of a taint to be added to nodes created from this template.
                           type: string
+                      type: object
+                    type: array
+                  gpu:
+                    description: |-
+                      (Block List, Max: 1) GPU configuration. (see below for nested schema)
+                      GPU configuration.
+                    items:
+                      properties:
+                        defaultSharedClientsPerGpu:
+                          description: |-
+                            (Number) Defines default number of shared clients per GPU.
+                            Defines default number of shared clients per GPU.
+                          type: number
+                        enableTimeSharing:
+                          description: |-
+                            sharing.
+                            Enable/disable GPU time-sharing.
+                          type: boolean
+                        sharingConfiguration:
+                          description: |-
+                            (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
+                            Defines GPU sharing configurations for GPU devices.
+                          items:
+                            properties:
+                              gpuName:
+                                description: |-
+                                  (String) GPU name.
+                                  GPU name.
+                                type: string
+                              sharedClientsPerGpu:
+                                description: |-
+                                  (Number) Defines number of shared clients for specific GPU device.
+                                  Defines number of shared clients for specific GPU device.
+                                type: number
+                            type: object
+                          type: array
                       type: object
                     type: array
                   id:

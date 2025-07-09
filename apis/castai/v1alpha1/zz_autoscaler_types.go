@@ -108,7 +108,7 @@ type AutoscalerSettingsInitParameters struct {
 	// marks whether partial matching should be used when deciding which custom node template to select.
 	NodeTemplatesPartialMatchingEnabled *bool `json:"nodeTemplatesPartialMatchingEnabled,omitempty" tf:"node_templates_partial_matching_enabled,omitempty"`
 
-	// (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
 	// policy defining whether autoscaler can use spot instances for provisioning additional workloads.
 	SpotInstances []SpotInstancesInitParameters `json:"spotInstances,omitempty" tf:"spot_instances,omitempty"`
 
@@ -139,7 +139,7 @@ type AutoscalerSettingsObservation struct {
 	// marks whether partial matching should be used when deciding which custom node template to select.
 	NodeTemplatesPartialMatchingEnabled *bool `json:"nodeTemplatesPartialMatchingEnabled,omitempty" tf:"node_templates_partial_matching_enabled,omitempty"`
 
-	// (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
 	// policy defining whether autoscaler can use spot instances for provisioning additional workloads.
 	SpotInstances []SpotInstancesObservation `json:"spotInstances,omitempty" tf:"spot_instances,omitempty"`
 
@@ -175,7 +175,7 @@ type AutoscalerSettingsParameters struct {
 	// +kubebuilder:validation:Optional
 	NodeTemplatesPartialMatchingEnabled *bool `json:"nodeTemplatesPartialMatchingEnabled,omitempty" tf:"node_templates_partial_matching_enabled,omitempty"`
 
-	// (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
 	// policy defining whether autoscaler can use spot instances for provisioning additional workloads.
 	// +kubebuilder:validation:Optional
 	SpotInstances []SpotInstancesParameters `json:"spotInstances,omitempty" tf:"spot_instances,omitempty"`
@@ -685,23 +685,23 @@ type SpotInstancesInitParameters struct {
 	// enable/disable spot instances policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
-	// (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+	// (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	MaxReclaimRate *float64 `json:"maxReclaimRate,omitempty" tf:"max_reclaim_rate,omitempty"`
 
-	// (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
 	// policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
 	SpotBackups []SpotBackupsInitParameters `json:"spotBackups,omitempty" tf:"spot_backups,omitempty"`
 
-	// (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+	// (Boolean, Deprecated) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	SpotDiversityEnabled *bool `json:"spotDiversityEnabled,omitempty" tf:"spot_diversity_enabled,omitempty"`
 
-	// (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+	// (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	SpotDiversityPriceIncreaseLimit *float64 `json:"spotDiversityPriceIncreaseLimit,omitempty" tf:"spot_diversity_price_increase_limit,omitempty"`
 
-	// (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)
 	// configure the handling of SPOT interruption predictions.
 	SpotInterruptionPredictions []SpotInterruptionPredictionsInitParameters `json:"spotInterruptionPredictions,omitempty" tf:"spot_interruption_predictions,omitempty"`
 }
@@ -712,23 +712,23 @@ type SpotInstancesObservation struct {
 	// enable/disable spot instances policy.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
-	// (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+	// (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	MaxReclaimRate *float64 `json:"maxReclaimRate,omitempty" tf:"max_reclaim_rate,omitempty"`
 
-	// (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
 	// policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
 	SpotBackups []SpotBackupsObservation `json:"spotBackups,omitempty" tf:"spot_backups,omitempty"`
 
-	// (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+	// (Boolean, Deprecated) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	SpotDiversityEnabled *bool `json:"spotDiversityEnabled,omitempty" tf:"spot_diversity_enabled,omitempty"`
 
-	// (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+	// (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	SpotDiversityPriceIncreaseLimit *float64 `json:"spotDiversityPriceIncreaseLimit,omitempty" tf:"spot_diversity_price_increase_limit,omitempty"`
 
-	// (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)
 	// configure the handling of SPOT interruption predictions.
 	SpotInterruptionPredictions []SpotInterruptionPredictionsObservation `json:"spotInterruptionPredictions,omitempty" tf:"spot_interruption_predictions,omitempty"`
 }
@@ -740,27 +740,27 @@ type SpotInstancesParameters struct {
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
-	// (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+	// (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
 	// +kubebuilder:validation:Optional
 	MaxReclaimRate *float64 `json:"maxReclaimRate,omitempty" tf:"max_reclaim_rate,omitempty"`
 
-	// (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
 	// policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
 	// +kubebuilder:validation:Optional
 	SpotBackups []SpotBackupsParameters `json:"spotBackups,omitempty" tf:"spot_backups,omitempty"`
 
-	// (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+	// (Boolean, Deprecated) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
 	// +kubebuilder:validation:Optional
 	SpotDiversityEnabled *bool `json:"spotDiversityEnabled,omitempty" tf:"spot_diversity_enabled,omitempty"`
 
-	// (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+	// (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
 	// +kubebuilder:validation:Optional
 	SpotDiversityPriceIncreaseLimit *float64 `json:"spotDiversityPriceIncreaseLimit,omitempty" tf:"spot_diversity_price_increase_limit,omitempty"`
 
-	// (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)
 	// configure the handling of SPOT interruption predictions.
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictions []SpotInterruptionPredictionsParameters `json:"spotInterruptionPredictions,omitempty" tf:"spot_interruption_predictions,omitempty"`
@@ -815,11 +815,11 @@ type UnschedulablePodsInitParameters struct {
 	// additional headroom based on cluster's total available capacity for on-demand nodes.
 	Headroom []HeadroomInitParameters `json:"headroom,omitempty" tf:"headroom,omitempty"`
 
-	// (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for spot nodes.
 	HeadroomSpot []HeadroomSpotInitParameters `json:"headroomSpot,omitempty" tf:"headroom_spot,omitempty"`
 
-	// (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
 	// defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
 	NodeConstraints []NodeConstraintsInitParameters `json:"nodeConstraints,omitempty" tf:"node_constraints,omitempty"`
 
@@ -842,11 +842,11 @@ type UnschedulablePodsObservation struct {
 	// additional headroom based on cluster's total available capacity for on-demand nodes.
 	Headroom []HeadroomObservation `json:"headroom,omitempty" tf:"headroom,omitempty"`
 
-	// (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for spot nodes.
 	HeadroomSpot []HeadroomSpotObservation `json:"headroomSpot,omitempty" tf:"headroom_spot,omitempty"`
 
-	// (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
 	// defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
 	NodeConstraints []NodeConstraintsObservation `json:"nodeConstraints,omitempty" tf:"node_constraints,omitempty"`
 
@@ -872,12 +872,12 @@ type UnschedulablePodsParameters struct {
 	// +kubebuilder:validation:Optional
 	Headroom []HeadroomParameters `json:"headroom,omitempty" tf:"headroom,omitempty"`
 
-	// (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
 	// additional headroom based on cluster's total available capacity for spot nodes.
 	// +kubebuilder:validation:Optional
 	HeadroomSpot []HeadroomSpotParameters `json:"headroomSpot,omitempty" tf:"headroom_spot,omitempty"`
 
-	// (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+	// (Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
 	// defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
 	// +kubebuilder:validation:Optional
 	NodeConstraints []NodeConstraintsParameters `json:"nodeConstraints,omitempty" tf:"node_constraints,omitempty"`

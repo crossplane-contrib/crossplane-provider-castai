@@ -133,6 +133,25 @@ type ApplyThresholdStrategyParameters struct {
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
+type AssignmentRulesInitParameters struct {
+
+	// (Block List, Min: 1) (see below for nested schema)
+	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
+}
+
+type AssignmentRulesObservation struct {
+
+	// (Block List, Min: 1) (see below for nested schema)
+	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+}
+
+type AssignmentRulesParameters struct {
+
+	// (Block List, Min: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Rules []RulesParameters `json:"rules" tf:"rules,omitempty"`
+}
+
 type CPUInitParameters struct {
 
 	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
@@ -320,6 +339,54 @@ type DownscalingParameters struct {
 	// - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
 	// +kubebuilder:validation:Optional
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
+}
+
+type LabelsExpressionsInitParameters struct {
+
+	// (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+	// The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) The operator to use for matching the label.
+	// The operator to use for matching the label.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+	// A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type LabelsExpressionsObservation struct {
+
+	// (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+	// The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) The operator to use for matching the label.
+	// The operator to use for matching the label.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+	// A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type LabelsExpressionsParameters struct {
+
+	// (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+	// The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) The operator to use for matching the label.
+	// The operator to use for matching the label.
+	// +kubebuilder:validation:Optional
+	Operator *string `json:"operator" tf:"operator,omitempty"`
+
+	// (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+	// A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type LimitInitParameters struct {
@@ -663,6 +730,132 @@ type MemoryParameters struct {
 	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
 }
 
+type NamespaceInitParameters struct {
+
+	// (List of String) Defines matching by namespace names.
+	// Defines matching by namespace names.
+	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
+}
+
+type NamespaceObservation struct {
+
+	// (List of String) Defines matching by namespace names.
+	// Defines matching by namespace names.
+	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
+}
+
+type NamespaceParameters struct {
+
+	// (List of String) Defines matching by namespace names.
+	// Defines matching by namespace names.
+	// +kubebuilder:validation:Optional
+	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
+}
+
+type PredictiveScalingCPUInitParameters struct {
+
+	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// Defines if predictive scaling is enabled for resource.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type PredictiveScalingCPUObservation struct {
+
+	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// Defines if predictive scaling is enabled for resource.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type PredictiveScalingCPUParameters struct {
+
+	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// Defines if predictive scaling is enabled for resource.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+}
+
+type PredictiveScalingInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// Defines predictive scaling resource configuration.
+	CPU []PredictiveScalingCPUInitParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
+}
+
+type PredictiveScalingObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// Defines predictive scaling resource configuration.
+	CPU []PredictiveScalingCPUObservation `json:"cpu,omitempty" tf:"cpu,omitempty"`
+}
+
+type PredictiveScalingParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// Defines predictive scaling resource configuration.
+	// +kubebuilder:validation:Optional
+	CPU []PredictiveScalingCPUParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
+}
+
+type RolloutBehaviorInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// Defines the rollout type to be used when applying recommendations.
+	// - NO_DISRUPTION - pods are restarted without causing service disruption.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type RolloutBehaviorObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	// Defines the rollout type to be used when applying recommendations.
+	// - NO_DISRUPTION - pods are restarted without causing service disruption.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type RolloutBehaviorParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// Defines the rollout type to be used when applying recommendations.
+	// - NO_DISRUPTION - pods are restarted without causing service disruption.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type RulesInitParameters struct {
+
+	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's namespace. (see below for nested schema)
+	// Allows assigning a scaling policy based on the workload's namespace.
+	Namespace []NamespaceInitParameters `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
+	// Allows assigning a scaling policy based on the workload's metadata.
+	Workload []WorkloadInitParameters `json:"workload,omitempty" tf:"workload,omitempty"`
+}
+
+type RulesObservation struct {
+
+	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's namespace. (see below for nested schema)
+	// Allows assigning a scaling policy based on the workload's namespace.
+	Namespace []NamespaceObservation `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
+	// Allows assigning a scaling policy based on the workload's metadata.
+	Workload []WorkloadObservation `json:"workload,omitempty" tf:"workload,omitempty"`
+}
+
+type RulesParameters struct {
+
+	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's namespace. (see below for nested schema)
+	// Allows assigning a scaling policy based on the workload's namespace.
+	// +kubebuilder:validation:Optional
+	Namespace []NamespaceParameters `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
+	// Allows assigning a scaling policy based on the workload's metadata.
+	// +kubebuilder:validation:Optional
+	Workload []WorkloadParameters `json:"workload,omitempty" tf:"workload,omitempty"`
+}
+
 type ScalingPolicyInitParameters struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
@@ -673,6 +866,10 @@ type ScalingPolicyInitParameters struct {
 	// - IMMEDIATE - pods are restarted immediately when new recommendation is generated.
 	// - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
+
+	// (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+	// Allows defining conditions for automatically assigning workloads to this scaling policy.
+	AssignmentRules []AssignmentRulesInitParameters `json:"assignmentRules,omitempty" tf:"assignment_rules,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	CPU []CPUInitParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
@@ -705,6 +902,18 @@ type ScalingPolicyInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
+	PredictiveScaling []PredictiveScalingInitParameters `json:"predictiveScaling,omitempty" tf:"predictive_scaling,omitempty"`
+
+	// (Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:
+	// Defines the rollout behavior used when applying recommendations. Prerequisites:
+	// - Applicable to Deployment resources that support running as multi-replica.
+	// - Deployment is running with single replica (replica count = 1).
+	// - Deployment's rollout strategy allows for downtime.
+	// - Recommendation apply type is "immediate".
+	// - Cluster has workload-autoscaler component version v0.35.3 or higher.
+	RolloutBehavior []RolloutBehaviorInitParameters `json:"rolloutBehavior,omitempty" tf:"rollout_behavior,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
 	Startup []StartupInitParameters `json:"startup,omitempty" tf:"startup,omitempty"`
 }
 
@@ -718,6 +927,10 @@ type ScalingPolicyObservation struct {
 	// - IMMEDIATE - pods are restarted immediately when new recommendation is generated.
 	// - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
+
+	// (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+	// Allows defining conditions for automatically assigning workloads to this scaling policy.
+	AssignmentRules []AssignmentRulesObservation `json:"assignmentRules,omitempty" tf:"assignment_rules,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	CPU []CPUObservation `json:"cpu,omitempty" tf:"cpu,omitempty"`
@@ -753,6 +966,18 @@ type ScalingPolicyObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
+	PredictiveScaling []PredictiveScalingObservation `json:"predictiveScaling,omitempty" tf:"predictive_scaling,omitempty"`
+
+	// (Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:
+	// Defines the rollout behavior used when applying recommendations. Prerequisites:
+	// - Applicable to Deployment resources that support running as multi-replica.
+	// - Deployment is running with single replica (replica count = 1).
+	// - Deployment's rollout strategy allows for downtime.
+	// - Recommendation apply type is "immediate".
+	// - Cluster has workload-autoscaler component version v0.35.3 or higher.
+	RolloutBehavior []RolloutBehaviorObservation `json:"rolloutBehavior,omitempty" tf:"rollout_behavior,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
 	Startup []StartupObservation `json:"startup,omitempty" tf:"startup,omitempty"`
 }
 
@@ -768,6 +993,11 @@ type ScalingPolicyParameters struct {
 	// - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
 	// +kubebuilder:validation:Optional
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
+
+	// (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+	// Allows defining conditions for automatically assigning workloads to this scaling policy.
+	// +kubebuilder:validation:Optional
+	AssignmentRules []AssignmentRulesParameters `json:"assignmentRules,omitempty" tf:"assignment_rules,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -809,6 +1039,20 @@ type ScalingPolicyParameters struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
+	PredictiveScaling []PredictiveScalingParameters `json:"predictiveScaling,omitempty" tf:"predictive_scaling,omitempty"`
+
+	// (Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:
+	// Defines the rollout behavior used when applying recommendations. Prerequisites:
+	// - Applicable to Deployment resources that support running as multi-replica.
+	// - Deployment is running with single replica (replica count = 1).
+	// - Deployment's rollout strategy allows for downtime.
+	// - Recommendation apply type is "immediate".
+	// - Cluster has workload-autoscaler component version v0.35.3 or higher.
+	// +kubebuilder:validation:Optional
+	RolloutBehavior []RolloutBehaviorParameters `json:"rolloutBehavior,omitempty" tf:"rollout_behavior,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
 	Startup []StartupParameters `json:"startup,omitempty" tf:"startup,omitempty"`
 }
 
@@ -844,6 +1088,56 @@ type StartupParameters struct {
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	// +kubebuilder:validation:Optional
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+}
+
+type WorkloadInitParameters struct {
+
+	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// - only kind, e.g. "Deployment"
+	// - group and kind: e.g."Deployment.apps"
+	// - group, version and kind: e.g."Deployment.v1.apps"
+	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	LabelsExpressions []LabelsExpressionsInitParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+}
+
+type WorkloadObservation struct {
+
+	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// - only kind, e.g. "Deployment"
+	// - group and kind: e.g."Deployment.apps"
+	// - group, version and kind: e.g."Deployment.v1.apps"
+	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	LabelsExpressions []LabelsExpressionsObservation `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+}
+
+type WorkloadParameters struct {
+
+	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// - only kind, e.g. "Deployment"
+	// - group and kind: e.g."Deployment.apps"
+	// - group, version and kind: e.g."Deployment.v1.apps"
+	// +kubebuilder:validation:Optional
+	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	// +kubebuilder:validation:Optional
+	LabelsExpressions []LabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 }
 
 // ScalingPolicySpec defines the desired state of ScalingPolicy

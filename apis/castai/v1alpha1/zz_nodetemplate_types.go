@@ -124,7 +124,7 @@ type ConstraintsInitParameters struct {
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
 
-	// (Block List, Max: 1) (see below for nested schema)
+	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	Gpu []GpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
@@ -176,6 +176,14 @@ type ConstraintsInitParameters struct {
 	// rebalance-recommendations" or "interruption-predictions".
 	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
+
+	// (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+	// Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+	SpotReliabilityEnabled *bool `json:"spotReliabilityEnabled,omitempty" tf:"spot_reliability_enabled,omitempty"`
+
+	// (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+	// Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+	SpotReliabilityPriceIncreaseLimitPercent *float64 `json:"spotReliabilityPriceIncreaseLimitPercent,omitempty" tf:"spot_reliability_price_increase_limit_percent,omitempty"`
 
 	// (Boolean) Storage optimized instance constraint (deprecated).
 	// Storage optimized instance constraint (deprecated).
@@ -253,7 +261,7 @@ type ConstraintsObservation struct {
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
 
-	// (Block List, Max: 1) (see below for nested schema)
+	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	Gpu []GpuObservation `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
@@ -305,6 +313,14 @@ type ConstraintsObservation struct {
 	// rebalance-recommendations" or "interruption-predictions".
 	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
+
+	// (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+	// Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+	SpotReliabilityEnabled *bool `json:"spotReliabilityEnabled,omitempty" tf:"spot_reliability_enabled,omitempty"`
+
+	// (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+	// Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+	SpotReliabilityPriceIncreaseLimitPercent *float64 `json:"spotReliabilityPriceIncreaseLimitPercent,omitempty" tf:"spot_reliability_price_increase_limit_percent,omitempty"`
 
 	// (Boolean) Storage optimized instance constraint (deprecated).
 	// Storage optimized instance constraint (deprecated).
@@ -395,7 +411,7 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
 
-	// (Block List, Max: 1) (see below for nested schema)
+	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Gpu []GpuParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
@@ -461,6 +477,16 @@ type ConstraintsParameters struct {
 	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
+
+	// (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+	// Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
+	// +kubebuilder:validation:Optional
+	SpotReliabilityEnabled *bool `json:"spotReliabilityEnabled,omitempty" tf:"spot_reliability_enabled,omitempty"`
+
+	// (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+	// Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
+	// +kubebuilder:validation:Optional
+	SpotReliabilityPriceIncreaseLimitPercent *float64 `json:"spotReliabilityPriceIncreaseLimitPercent,omitempty" tf:"spot_reliability_price_increase_limit_percent,omitempty"`
 
 	// (Boolean) Storage optimized instance constraint (deprecated).
 	// Storage optimized instance constraint (deprecated).
@@ -741,6 +767,54 @@ type InstanceFamiliesParameters struct {
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type NodeTemplateGpuInitParameters struct {
+
+	// (Number) Defines default number of shared clients per GPU.
+	// Defines default number of shared clients per GPU.
+	DefaultSharedClientsPerGpu *float64 `json:"defaultSharedClientsPerGpu,omitempty" tf:"default_shared_clients_per_gpu,omitempty"`
+
+	// sharing.
+	// Enable/disable GPU time-sharing.
+	EnableTimeSharing *bool `json:"enableTimeSharing,omitempty" tf:"enable_time_sharing,omitempty"`
+
+	// (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
+	// Defines GPU sharing configurations for GPU devices.
+	SharingConfiguration []SharingConfigurationInitParameters `json:"sharingConfiguration,omitempty" tf:"sharing_configuration,omitempty"`
+}
+
+type NodeTemplateGpuObservation struct {
+
+	// (Number) Defines default number of shared clients per GPU.
+	// Defines default number of shared clients per GPU.
+	DefaultSharedClientsPerGpu *float64 `json:"defaultSharedClientsPerGpu,omitempty" tf:"default_shared_clients_per_gpu,omitempty"`
+
+	// sharing.
+	// Enable/disable GPU time-sharing.
+	EnableTimeSharing *bool `json:"enableTimeSharing,omitempty" tf:"enable_time_sharing,omitempty"`
+
+	// (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
+	// Defines GPU sharing configurations for GPU devices.
+	SharingConfiguration []SharingConfigurationObservation `json:"sharingConfiguration,omitempty" tf:"sharing_configuration,omitempty"`
+}
+
+type NodeTemplateGpuParameters struct {
+
+	// (Number) Defines default number of shared clients per GPU.
+	// Defines default number of shared clients per GPU.
+	// +kubebuilder:validation:Optional
+	DefaultSharedClientsPerGpu *float64 `json:"defaultSharedClientsPerGpu,omitempty" tf:"default_shared_clients_per_gpu,omitempty"`
+
+	// sharing.
+	// Enable/disable GPU time-sharing.
+	// +kubebuilder:validation:Optional
+	EnableTimeSharing *bool `json:"enableTimeSharing,omitempty" tf:"enable_time_sharing,omitempty"`
+
+	// (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
+	// Defines GPU sharing configurations for GPU devices.
+	// +kubebuilder:validation:Optional
+	SharingConfiguration []SharingConfigurationParameters `json:"sharingConfiguration,omitempty" tf:"sharing_configuration,omitempty"`
+}
+
 type NodeTemplateInitParameters struct {
 
 	// (String) CAST AI cluster id.
@@ -788,6 +862,10 @@ type NodeTemplateInitParameters struct {
 	// (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	CustomTaints []CustomTaintsInitParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
+
+	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
+	// GPU configuration.
+	Gpu []NodeTemplateGpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
 	// (Boolean) Flag whether the node template is default.
 	// Flag whether the node template is default.
@@ -839,6 +917,10 @@ type NodeTemplateObservation struct {
 	// (Block List) Custom taints to be added to the nodes created from this template. shouldTaint has to be true in order to create/update the node template with custom taints. If shouldTaint is true, but no custom taints are provided, the nodes will be tainted with the default node template taint. (see below for nested schema)
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	CustomTaints []CustomTaintsObservation `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
+
+	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
+	// GPU configuration.
+	Gpu []NodeTemplateGpuObservation `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -919,6 +1001,11 @@ type NodeTemplateParameters struct {
 	// +kubebuilder:validation:Optional
 	CustomTaints []CustomTaintsParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
+	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
+	// GPU configuration.
+	// +kubebuilder:validation:Optional
+	Gpu []NodeTemplateGpuParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
+
 	// (Boolean) Flag whether the node template is default.
 	// Flag whether the node template is default.
 	// +kubebuilder:validation:Optional
@@ -978,6 +1065,41 @@ type ResourceLimitsParameters struct {
 	// Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
 	// +kubebuilder:validation:Optional
 	CPULimitMaxCores *float64 `json:"cpuLimitMaxCores,omitempty" tf:"cpu_limit_max_cores,omitempty"`
+}
+
+type SharingConfigurationInitParameters struct {
+
+	// (String) GPU name.
+	// GPU name.
+	GpuName *string `json:"gpuName,omitempty" tf:"gpu_name,omitempty"`
+
+	// (Number) Defines number of shared clients for specific GPU device.
+	// Defines number of shared clients for specific GPU device.
+	SharedClientsPerGpu *float64 `json:"sharedClientsPerGpu,omitempty" tf:"shared_clients_per_gpu,omitempty"`
+}
+
+type SharingConfigurationObservation struct {
+
+	// (String) GPU name.
+	// GPU name.
+	GpuName *string `json:"gpuName,omitempty" tf:"gpu_name,omitempty"`
+
+	// (Number) Defines number of shared clients for specific GPU device.
+	// Defines number of shared clients for specific GPU device.
+	SharedClientsPerGpu *float64 `json:"sharedClientsPerGpu,omitempty" tf:"shared_clients_per_gpu,omitempty"`
+}
+
+type SharingConfigurationParameters struct {
+
+	// (String) GPU name.
+	// GPU name.
+	// +kubebuilder:validation:Optional
+	GpuName *string `json:"gpuName" tf:"gpu_name,omitempty"`
+
+	// (Number) Defines number of shared clients for specific GPU device.
+	// Defines number of shared clients for specific GPU device.
+	// +kubebuilder:validation:Optional
+	SharedClientsPerGpu *float64 `json:"sharedClientsPerGpu" tf:"shared_clients_per_gpu,omitempty"`
 }
 
 // NodeTemplateSpec defines the desired state of NodeTemplate

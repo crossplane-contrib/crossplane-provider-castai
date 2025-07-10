@@ -93,6 +93,81 @@ spec:
                       - IMMEDIATE - pods are restarted immediately when new recommendation is generated.
                       - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
                     type: string
+                  assignmentRules:
+                    description: |-
+                      (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+                      Allows defining conditions for automatically assigning workloads to this scaling policy.
+                    items:
+                      properties:
+                        rules:
+                          description: '(Block List, Min: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              namespace:
+                                description: |-
+                                  (Block List, Max: 1) Allows assigning a scaling policy based on the workload's namespace. (see below for nested schema)
+                                  Allows assigning a scaling policy based on the workload's namespace.
+                                items:
+                                  properties:
+                                    names:
+                                      description: |-
+                                        (List of String) Defines matching by namespace names.
+                                        Defines matching by namespace names.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              workload:
+                                description: |-
+                                  (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
+                                  Allows assigning a scaling policy based on the workload's metadata.
+                                items:
+                                  properties:
+                                    gvk:
+                                      description: |-
+                                        (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+                                        It can be either:
+                                        Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+                                        It can be either:
+                                        - only kind, e.g. "Deployment"
+                                        - group and kind: e.g."Deployment.apps"
+                                        - group, version and kind: e.g."Deployment.v1.apps"
+                                      items:
+                                        type: string
+                                      type: array
+                                    labelsExpressions:
+                                      description: |-
+                                        (Block List) Defines matching by label selector requirements. (see below for nested schema)
+                                        Defines matching by label selector requirements.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: |-
+                                              (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+                                              The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+                                            type: string
+                                          operator:
+                                            description: |-
+                                              (String) The operator to use for matching the label.
+                                              The operator to use for matching the label.
+                                            type: string
+                                          values:
+                                            description: |-
+                                              (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+                                              A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id
@@ -365,6 +440,44 @@ spec:
                       (String) Scaling policy name
                       Scaling policy name
                     type: string
+                  predictiveScaling:
+                    description: '(Block List, Max: 1) (see below for nested schema)'
+                    items:
+                      properties:
+                        cpu:
+                          description: |-
+                            (Block List, Min: 1, Max: 1) (see below for nested schema)
+                            Defines predictive scaling resource configuration.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  Defines if predictive scaling is enabled for resource.
+                                type: boolean
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  rolloutBehavior:
+                    description: |-
+                      (Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:
+                      Defines the rollout behavior used when applying recommendations. Prerequisites:
+                      - Applicable to Deployment resources that support running as multi-replica.
+                      - Deployment is running with single replica (replica count = 1).
+                      - Deployment's rollout strategy allows for downtime.
+                      - Recommendation apply type is "immediate".
+                      - Cluster has workload-autoscaler component version v0.35.3 or higher.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            Defines the rollout type to be used when applying recommendations.
+                            - NO_DISRUPTION - pods are restarted without causing service disruption.
+                          type: string
+                      type: object
+                    type: array
                   startup:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
@@ -414,6 +527,81 @@ spec:
                       - IMMEDIATE - pods are restarted immediately when new recommendation is generated.
                       - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
                     type: string
+                  assignmentRules:
+                    description: |-
+                      (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+                      Allows defining conditions for automatically assigning workloads to this scaling policy.
+                    items:
+                      properties:
+                        rules:
+                          description: '(Block List, Min: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              namespace:
+                                description: |-
+                                  (Block List, Max: 1) Allows assigning a scaling policy based on the workload's namespace. (see below for nested schema)
+                                  Allows assigning a scaling policy based on the workload's namespace.
+                                items:
+                                  properties:
+                                    names:
+                                      description: |-
+                                        (List of String) Defines matching by namespace names.
+                                        Defines matching by namespace names.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              workload:
+                                description: |-
+                                  (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
+                                  Allows assigning a scaling policy based on the workload's metadata.
+                                items:
+                                  properties:
+                                    gvk:
+                                      description: |-
+                                        (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+                                        It can be either:
+                                        Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+                                        It can be either:
+                                        - only kind, e.g. "Deployment"
+                                        - group and kind: e.g."Deployment.apps"
+                                        - group, version and kind: e.g."Deployment.v1.apps"
+                                      items:
+                                        type: string
+                                      type: array
+                                    labelsExpressions:
+                                      description: |-
+                                        (Block List) Defines matching by label selector requirements. (see below for nested schema)
+                                        Defines matching by label selector requirements.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: |-
+                                              (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+                                              The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+                                            type: string
+                                          operator:
+                                            description: |-
+                                              (String) The operator to use for matching the label.
+                                              The operator to use for matching the label.
+                                            type: string
+                                          values:
+                                            description: |-
+                                              (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+                                              A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id
@@ -686,6 +874,44 @@ spec:
                       (String) Scaling policy name
                       Scaling policy name
                     type: string
+                  predictiveScaling:
+                    description: '(Block List, Max: 1) (see below for nested schema)'
+                    items:
+                      properties:
+                        cpu:
+                          description: |-
+                            (Block List, Min: 1, Max: 1) (see below for nested schema)
+                            Defines predictive scaling resource configuration.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  Defines if predictive scaling is enabled for resource.
+                                type: boolean
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  rolloutBehavior:
+                    description: |-
+                      (Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:
+                      Defines the rollout behavior used when applying recommendations. Prerequisites:
+                      - Applicable to Deployment resources that support running as multi-replica.
+                      - Deployment is running with single replica (replica count = 1).
+                      - Deployment's rollout strategy allows for downtime.
+                      - Recommendation apply type is "immediate".
+                      - Cluster has workload-autoscaler component version v0.35.3 or higher.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            Defines the rollout type to be used when applying recommendations.
+                            - NO_DISRUPTION - pods are restarted without causing service disruption.
+                          type: string
+                      type: object
+                    type: array
                   startup:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
@@ -919,6 +1145,81 @@ spec:
                       - IMMEDIATE - pods are restarted immediately when new recommendation is generated.
                       - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
                     type: string
+                  assignmentRules:
+                    description: |-
+                      (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+                      Allows defining conditions for automatically assigning workloads to this scaling policy.
+                    items:
+                      properties:
+                        rules:
+                          description: '(Block List, Min: 1) (see below for nested
+                            schema)'
+                          items:
+                            properties:
+                              namespace:
+                                description: |-
+                                  (Block List, Max: 1) Allows assigning a scaling policy based on the workload's namespace. (see below for nested schema)
+                                  Allows assigning a scaling policy based on the workload's namespace.
+                                items:
+                                  properties:
+                                    names:
+                                      description: |-
+                                        (List of String) Defines matching by namespace names.
+                                        Defines matching by namespace names.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              workload:
+                                description: |-
+                                  (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
+                                  Allows assigning a scaling policy based on the workload's metadata.
+                                items:
+                                  properties:
+                                    gvk:
+                                      description: |-
+                                        (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+                                        It can be either:
+                                        Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+                                        It can be either:
+                                        - only kind, e.g. "Deployment"
+                                        - group and kind: e.g."Deployment.apps"
+                                        - group, version and kind: e.g."Deployment.v1.apps"
+                                      items:
+                                        type: string
+                                      type: array
+                                    labelsExpressions:
+                                      description: |-
+                                        (Block List) Defines matching by label selector requirements. (see below for nested schema)
+                                        Defines matching by label selector requirements.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: |-
+                                              (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+                                              The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+                                            type: string
+                                          operator:
+                                            description: |-
+                                              (String) The operator to use for matching the label.
+                                              The operator to use for matching the label.
+                                            type: string
+                                          values:
+                                            description: |-
+                                              (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+                                              A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id
@@ -1194,6 +1495,44 @@ spec:
                       (String) Scaling policy name
                       Scaling policy name
                     type: string
+                  predictiveScaling:
+                    description: '(Block List, Max: 1) (see below for nested schema)'
+                    items:
+                      properties:
+                        cpu:
+                          description: |-
+                            (Block List, Min: 1, Max: 1) (see below for nested schema)
+                            Defines predictive scaling resource configuration.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  Defines if predictive scaling is enabled for resource.
+                                type: boolean
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  rolloutBehavior:
+                    description: |-
+                      (Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:
+                      Defines the rollout behavior used when applying recommendations. Prerequisites:
+                      - Applicable to Deployment resources that support running as multi-replica.
+                      - Deployment is running with single replica (replica count = 1).
+                      - Deployment's rollout strategy allows for downtime.
+                      - Recommendation apply type is "immediate".
+                      - Cluster has workload-autoscaler component version v0.35.3 or higher.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            Defines the rollout type to be used when applying recommendations.
+                            - NO_DISRUPTION - pods are restarted without causing service disruption.
+                          type: string
+                      type: object
+                    type: array
                   startup:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:

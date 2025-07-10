@@ -28,7 +28,7 @@ spec:
         onDemand: true
         spot: false
       customerSpecific: disabled
-      enableSpotDiversity: true
+      enable_spot_reliability: true
       fallbackRestoreRateSeconds: 300
       instanceFamilies:
       - include:
@@ -40,7 +40,7 @@ spec:
       minMemory: 4096
       onDemand: true
       spot: false
-      spotDiversityPriceIncreaseLimitPercent: 20
+      spot_reliabiliy_price_increase_limit_percent: 20
       spotInterruptionPredictionsEnabled: true
       spotInterruptionPredictionsType: aws-rebalance-recommendations
       storageOptimizedState: disabled

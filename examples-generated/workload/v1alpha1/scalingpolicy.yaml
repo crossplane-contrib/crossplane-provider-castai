@@ -11,6 +11,24 @@ spec:
     antiAffinity:
     - considerAntiAffinity: false
     applyType: IMMEDIATE
+    assignmentRules:
+    - rules:
+      - namespace:
+        - names:
+          - default
+          - kube-system
+      - workload:
+        - gvk:
+          - Deployment
+          - StatefulSet
+          labelsExpressions:
+          - key: region
+            operator: NotIn
+            values:
+            - eu-west-1
+            - eu-west-2
+          - key: helm.sh/chart
+            operator: Exists
     clusterId: ${castai_gke_cluster.dev.id}
     confidence:
     - threshold: 0.9
@@ -40,5 +58,10 @@ spec:
     memoryEvent:
     - applyType: IMMEDIATE
     name: services
+    predictiveScaling:
+    - cpu:
+      - enabled: true
+    rolloutBehavior:
+    - type: NO_DISRUPTION
     startup:
     - periodSeconds: 240

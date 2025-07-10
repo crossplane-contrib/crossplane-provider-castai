@@ -211,7 +211,7 @@ spec:
                           type: boolean
                         spotInstances:
                           description: |-
-                            (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+                            (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
                             policy defining whether autoscaler can use spot instances for provisioning additional workloads.
                           items:
                             properties:
@@ -222,12 +222,12 @@ spec:
                                 type: boolean
                               maxReclaimRate:
                                 description: |-
-                                  (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+                                  (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                   max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                 type: number
                               spotBackups:
                                 description: |-
-                                  (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
                                   policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
                                 items:
                                   properties:
@@ -245,17 +245,17 @@ spec:
                                 type: array
                               spotDiversityEnabled:
                                 description: |-
-                                  (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                                  (Boolean, Deprecated) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                   enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                 type: boolean
                               spotDiversityPriceIncreaseLimit:
                                 description: |-
-                                  (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                                  (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                   allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                 type: number
                               spotInterruptionPredictions:
                                 description: |-
-                                  (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)
                                   configure the handling of SPOT interruption predictions.
                                 items:
                                   properties:
@@ -314,7 +314,7 @@ spec:
                                 type: array
                               headroomSpot:
                                 description: |-
-                                  (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
                                   additional headroom based on cluster's total available capacity for spot nodes.
                                 items:
                                   properties:
@@ -337,7 +337,7 @@ spec:
                                 type: array
                               nodeConstraints:
                                 description: |-
-                                  (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
                                   defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
                                 items:
                                   properties:
@@ -618,7 +618,7 @@ spec:
                           type: boolean
                         spotInstances:
                           description: |-
-                            (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+                            (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
                             policy defining whether autoscaler can use spot instances for provisioning additional workloads.
                           items:
                             properties:
@@ -629,12 +629,12 @@ spec:
                                 type: boolean
                               maxReclaimRate:
                                 description: |-
-                                  (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+                                  (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                   max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                 type: number
                               spotBackups:
                                 description: |-
-                                  (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
                                   policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
                                 items:
                                   properties:
@@ -652,17 +652,17 @@ spec:
                                 type: array
                               spotDiversityEnabled:
                                 description: |-
-                                  (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                                  (Boolean, Deprecated) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                   enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                 type: boolean
                               spotDiversityPriceIncreaseLimit:
                                 description: |-
-                                  (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                                  (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                   allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                 type: number
                               spotInterruptionPredictions:
                                 description: |-
-                                  (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)
                                   configure the handling of SPOT interruption predictions.
                                 items:
                                   properties:
@@ -721,7 +721,7 @@ spec:
                                 type: array
                               headroomSpot:
                                 description: |-
-                                  (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
                                   additional headroom based on cluster's total available capacity for spot nodes.
                                 items:
                                   properties:
@@ -744,7 +744,7 @@ spec:
                                 type: array
                               nodeConstraints:
                                 description: |-
-                                  (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
                                   defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
                                 items:
                                   properties:
@@ -1189,7 +1189,7 @@ spec:
                           type: boolean
                         spotInstances:
                           description: |-
-                            (Block List, Max: 1) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
+                            (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)
                             policy defining whether autoscaler can use spot instances for provisioning additional workloads.
                           items:
                             properties:
@@ -1200,12 +1200,12 @@ spec:
                                 type: boolean
                               maxReclaimRate:
                                 description: |-
-                                  (Number) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
+                                  (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                   max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
                                 type: number
                               spotBackups:
                                 description: |-
-                                  (Block List, Max: 1) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available. (see below for nested schema)
                                   policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.
                                 items:
                                   properties:
@@ -1223,17 +1223,17 @@ spec:
                                 type: array
                               spotDiversityEnabled:
                                 description: |-
-                                  (Boolean) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
+                                  (Boolean, Deprecated) enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                   enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
                                 type: boolean
                               spotDiversityPriceIncreaseLimit:
                                 description: |-
-                                  (Number) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
+                                  (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                   allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
                                 type: number
                               spotInterruptionPredictions:
                                 description: |-
-                                  (Block List, Max: 1) configure the handling of SPOT interruption predictions. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)
                                   configure the handling of SPOT interruption predictions.
                                 items:
                                   properties:
@@ -1292,7 +1292,7 @@ spec:
                                 type: array
                               headroomSpot:
                                 description: |-
-                                  (Block List, Max: 1) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) additional headroom based on cluster's total available capacity for spot nodes. (see below for nested schema)
                                   additional headroom based on cluster's total available capacity for spot nodes.
                                 items:
                                   properties:
@@ -1315,7 +1315,7 @@ spec:
                                 type: array
                               nodeConstraints:
                                 description: |-
-                                  (Block List, Max: 1) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
+                                  (Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)
                                   defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.
                                 items:
                                   properties:

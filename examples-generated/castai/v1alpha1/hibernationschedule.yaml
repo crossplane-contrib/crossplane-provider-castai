@@ -1,0 +1,26 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: HibernationSchedule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/hibernationschedule
+  labels:
+    testing.upbound.io/example-name: my_schedule
+  name: my-schedule
+spec:
+  forProvider:
+    clusterAssignments:
+    - assignment:
+      - clusterId: 38a49ce8-e900-4a10-be89-48fb2efb1025
+    enabled: false
+    name: workday
+    pauseConfig:
+    - enabled: true
+      schedule:
+      - cronExpression: 0 17 * * 1-5
+    resumeConfig:
+    - enabled: true
+      jobConfig:
+      - nodeConfig:
+        - instanceType: e2-standard-4
+      schedule:
+      - cronExpression: 0 9 * * 1-5

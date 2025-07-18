@@ -10,22 +10,32 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	"github.com/crossplane-contrib/crossplane-provider-castai/config/akscluster"
+	akscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/akscluster"
+	allocationgroup "github.com/crossplane-contrib/crossplane-provider-castai/config/allocationgroup"
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/config/autoscaler"
+	commitments "github.com/crossplane-contrib/crossplane-provider-castai/config/commitments"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/eksclusterid"
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
-	"github.com/crossplane-contrib/crossplane-provider-castai/config/evictoradvancedconfig"
-	"github.com/crossplane-contrib/crossplane-provider-castai/config/gkecluster"
+	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/config/evictoradvancedconfig"
+	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/config/gkecluster"
 	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/gkeclusterid"
+	hibernationschedule "github.com/crossplane-contrib/crossplane-provider-castai/config/hibernationschedule"
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/config/nodetemplate"
-	"github.com/crossplane-contrib/crossplane-provider-castai/config/organizationmembers"
+	organizationgroup "github.com/crossplane-contrib/crossplane-provider-castai/config/organizationgroup"
+	organizationmembers "github.com/crossplane-contrib/crossplane-provider-castai/config/organizationmembers"
 	rebalancingjob "github.com/crossplane-contrib/crossplane-provider-castai/config/rebalancingjob"
 	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/config/rebalancingschedule"
-	"github.com/crossplane-contrib/crossplane-provider-castai/config/reservations"
+	reservations "github.com/crossplane-contrib/crossplane-provider-castai/config/reservations"
+	rolebindings "github.com/crossplane-contrib/crossplane-provider-castai/config/rolebindings"
+	securityruntimerule "github.com/crossplane-contrib/crossplane-provider-castai/config/securityruntimerule"
+	serviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/config/serviceaccount"
+	serviceaccountkey "github.com/crossplane-contrib/crossplane-provider-castai/config/serviceaccountkey"
 	ssoconnation "github.com/crossplane-contrib/crossplane-provider-castai/config/ssoconnection"
+	workloadscalingpolicy "github.com/crossplane-contrib/crossplane-provider-castai/config/workloadscalingpolicy"
+	workloadscalingpolicyorder "github.com/crossplane-contrib/crossplane-provider-castai/config/workloadscalingpolicyorder"
 )
 
 const (
@@ -50,22 +60,32 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		ekscluster.Configure,
+		akscluster.Configure,
+		allocationgroup.Configure,
 		autoscaler.Configure,
-		nodeconfiguration.Configure,
-		nodeconfigurationdefault.Configure,
-		nodetemplate.Configure,
-		rebalancingjob.Configure,
-		rebalancingschedule.Configure,
+		commitments.Configure,
+		ekscluster.Configure,
 		eksclusterid.Configure,
 		eksuserarn.Configure,
-		akscluster.Configure,
 		evictoradvancedconfig.Configure,
 		gkecluster.Configure,
 		gkeclusterid.Configure,
+		hibernationschedule.Configure,
+		nodeconfiguration.Configure,
+		nodeconfigurationdefault.Configure,
+		nodetemplate.Configure,
+		organizationgroup.Configure,
 		organizationmembers.Configure,
+		rebalancingjob.Configure,
+		rebalancingschedule.Configure,
 		reservations.Configure,
+		rolebindings.Configure,
+		securityruntimerule.Configure,
+		serviceaccount.Configure,
+		serviceaccountkey.Configure,
 		ssoconnation.Configure,
+		workloadscalingpolicy.Configure,
+		workloadscalingpolicyorder.Configure,
 	} {
 		configure(pc)
 	}

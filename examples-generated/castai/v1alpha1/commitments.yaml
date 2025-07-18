@@ -1,0 +1,23 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: Commitments
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/commitments
+  labels:
+    testing.upbound.io/example-name: gcp_test
+  name: gcp-test
+spec:
+  forProvider:
+    commitmentConfigs:
+    - allowedUsage: 0.6
+      assignments:
+      - clusterId: cluster-id-1
+      - clusterId: cluster-id-2
+      matcher:
+      - name: test
+        region: us-east4
+        type: COMPUTE_OPTIMIZED_C2D
+      prioritization: true
+      scalingStrategy: Default
+      status: Inactive
+    gcpCudsJson: ${file("./cuds.json")}

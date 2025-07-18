@@ -1,0 +1,22 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: AllocationGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/allocationgroup
+  labels:
+    testing.upbound.io/example-name: ag_example
+  name: ag-example
+spec:
+  forProvider:
+    clusterIds:
+    - 1a58d6b4-bc0e-4417-b9c7-31d15c313f3f
+    - d204b988-5db5-472e-a258-bf763a0f4a93
+    labels:
+      app.kubernetes.io/name: app-name
+      environment: production
+      team: my-team
+    labelsOperator: AND
+    name: ag_example
+    namespaces:
+    - namespace-a
+    - namespace-b

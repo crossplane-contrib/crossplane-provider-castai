@@ -10,7 +10,13 @@ package v1alpha1
 func (tr *AksCluster) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *AllocationGroup) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *AutoScaler) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Commitments) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *EksCluster) Hub() {}
@@ -31,6 +37,9 @@ func (tr *GkeCluster) Hub() {}
 func (tr *GkeClusterId) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *HibernationSchedule) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *NodeConfiguration) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -38,6 +47,9 @@ func (tr *NodeConfigurationDefault) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *NodeTemplate) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationGroup) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationMembers) Hub() {}
@@ -52,4 +64,22 @@ func (tr *RebalancingSchedule) Hub() {}
 func (tr *Reservations) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *RoleBindings) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecurityRuntimeRule) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ServiceAccount) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ServiceAccountKey) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *SSOConnection) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ScalingPolicy) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ScalingPolicyOrder) Hub() {}

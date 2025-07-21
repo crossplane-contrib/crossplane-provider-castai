@@ -13,54 +13,6 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AffinityInitParameters struct {
-
-	// (String) Key of the node affinity selector.
-	// Key of the node affinity selector.
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
-
-	// (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
-	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
-	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
-
-	// (List of String) Values of the node affinity selector.
-	// Values of the node affinity selector.
-	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
-}
-
-type AffinityObservation struct {
-
-	// (String) Key of the node affinity selector.
-	// Key of the node affinity selector.
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
-
-	// (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
-	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
-	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
-
-	// (List of String) Values of the node affinity selector.
-	// Values of the node affinity selector.
-	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
-}
-
-type AffinityParameters struct {
-
-	// (String) Key of the node affinity selector.
-	// Key of the node affinity selector.
-	// +kubebuilder:validation:Optional
-	Key *string `json:"key" tf:"key,omitempty"`
-
-	// (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
-	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
-	// +kubebuilder:validation:Optional
-	Operator *string `json:"operator" tf:"operator,omitempty"`
-
-	// (List of String) Values of the node affinity selector.
-	// Values of the node affinity selector.
-	// +kubebuilder:validation:Optional
-	Values []*string `json:"values" tf:"values,omitempty"`
-}
-
 type ConstraintsInitParameters struct {
 
 	// (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
@@ -600,10 +552,58 @@ type CustomTaintsParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type DedicatedNodeAffinityAffinityInitParameters struct {
+
+	// (String) Key of the node affinity selector.
+	// Key of the node affinity selector.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (List of String) Values of the node affinity selector.
+	// Values of the node affinity selector.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type DedicatedNodeAffinityAffinityObservation struct {
+
+	// (String) Key of the node affinity selector.
+	// Key of the node affinity selector.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (List of String) Values of the node affinity selector.
+	// Values of the node affinity selector.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type DedicatedNodeAffinityAffinityParameters struct {
+
+	// (String) Key of the node affinity selector.
+	// Key of the node affinity selector.
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key" tf:"key,omitempty"`
+
+	// (String) Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	// Operator of the node affinity selector. Allowed values: In, NotIn, Exists, DoesNotExist, Gt, Lt.
+	// +kubebuilder:validation:Optional
+	Operator *string `json:"operator" tf:"operator,omitempty"`
+
+	// (List of String) Values of the node affinity selector.
+	// Values of the node affinity selector.
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values" tf:"values,omitempty"`
+}
+
 type DedicatedNodeAffinityInitParameters struct {
 
 	// (Block List) (see below for nested schema)
-	Affinity []AffinityInitParameters `json:"affinity,omitempty" tf:"affinity,omitempty"`
+	Affinity []DedicatedNodeAffinityAffinityInitParameters `json:"affinity,omitempty" tf:"affinity,omitempty"`
 
 	// (String) Availability zone name.
 	// Availability zone name.
@@ -621,7 +621,7 @@ type DedicatedNodeAffinityInitParameters struct {
 type DedicatedNodeAffinityObservation struct {
 
 	// (Block List) (see below for nested schema)
-	Affinity []AffinityObservation `json:"affinity,omitempty" tf:"affinity,omitempty"`
+	Affinity []DedicatedNodeAffinityAffinityObservation `json:"affinity,omitempty" tf:"affinity,omitempty"`
 
 	// (String) Availability zone name.
 	// Availability zone name.
@@ -640,7 +640,7 @@ type DedicatedNodeAffinityParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Affinity []AffinityParameters `json:"affinity,omitempty" tf:"affinity,omitempty"`
+	Affinity []DedicatedNodeAffinityAffinityParameters `json:"affinity,omitempty" tf:"affinity,omitempty"`
 
 	// (String) Availability zone name.
 	// Availability zone name.

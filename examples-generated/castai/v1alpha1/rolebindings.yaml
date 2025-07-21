@@ -1,0 +1,27 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: RoleBindings
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/rolebindings
+  labels:
+    testing.upbound.io/example-name: owner_test
+  name: owner-test
+spec:
+  forProvider:
+    description: Owner access for whole organization.
+    name: Role binding owner
+    organizationId: ${data.castai_organization.test.id}
+    roleId: 3e1050c7-6593-4298-94bb-154637911d78
+    scopes:
+    - kind: organization
+      resourceId: ${data.castai_organization.test.id}
+    subjects:
+    - subject:
+      - kind: user
+        userId: 21c133e2-a899-4f51-b297-830bc62e51d6
+      - kind: user
+        userId: 0d1efe35-7ecb-4821-a52d-fd56c9710a64
+      - groupId: 651734a7-0d0c-49f3-9654-dd92175febaa
+        kind: group
+      - kind: service_account
+        serviceAccountId: 3bf49513-3e9c-4a12-962c-af3bb1a85074

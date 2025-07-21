@@ -735,7 +735,6 @@ resources:
                         }
                       ],
                       "customer_specific": "disabled",
-                      "enable_spot_reliability": true,
                       "fallback_restore_rate_seconds": 300,
                       "instance_families": [
                         {
@@ -753,6 +752,7 @@ resources:
                       "spot": false,
                       "spot_interruption_predictions_enabled": true,
                       "spot_interruption_predictions_type": "aws-rebalance-recommendations",
+                      "spot_reliability_enabled": true,
                       "spot_reliabiliy_price_increase_limit_percent": 20,
                       "storage_optimized_state": "disabled",
                       "use_spot_fallbacks": true

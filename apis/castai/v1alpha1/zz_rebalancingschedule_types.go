@@ -242,7 +242,7 @@ type RebalancingScheduleInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
-	Schedule []ScheduleInitParameters `json:"schedule,omitempty" tf:"schedule,omitempty"`
+	Schedule []RebalancingScheduleScheduleInitParameters `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	TriggerConditions []TriggerConditionsInitParameters `json:"triggerConditions,omitempty" tf:"trigger_conditions,omitempty"`
@@ -261,7 +261,7 @@ type RebalancingScheduleObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
-	Schedule []ScheduleObservation `json:"schedule,omitempty" tf:"schedule,omitempty"`
+	Schedule []RebalancingScheduleScheduleObservation `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	TriggerConditions []TriggerConditionsObservation `json:"triggerConditions,omitempty" tf:"trigger_conditions,omitempty"`
@@ -280,14 +280,14 @@ type RebalancingScheduleParameters struct {
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Schedule []ScheduleParameters `json:"schedule,omitempty" tf:"schedule,omitempty"`
+	Schedule []RebalancingScheduleScheduleParameters `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	TriggerConditions []TriggerConditionsParameters `json:"triggerConditions,omitempty" tf:"trigger_conditions,omitempty"`
 }
 
-type ScheduleInitParameters struct {
+type RebalancingScheduleScheduleInitParameters struct {
 
 	// (String) Cron expression defining when the schedule should trigger.
 	// Cron expression defining when the schedule should trigger.
@@ -308,7 +308,7 @@ type ScheduleInitParameters struct {
 	Cron *string `json:"cron,omitempty" tf:"cron,omitempty"`
 }
 
-type ScheduleObservation struct {
+type RebalancingScheduleScheduleObservation struct {
 
 	// (String) Cron expression defining when the schedule should trigger.
 	// Cron expression defining when the schedule should trigger.
@@ -329,7 +329,7 @@ type ScheduleObservation struct {
 	Cron *string `json:"cron,omitempty" tf:"cron,omitempty"`
 }
 
-type ScheduleParameters struct {
+type RebalancingScheduleScheduleParameters struct {
 
 	// (String) Cron expression defining when the schedule should trigger.
 	// Cron expression defining when the schedule should trigger.

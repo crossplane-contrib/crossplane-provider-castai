@@ -40,6 +40,10 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
+# GOLANGCILINT_VERSION is inherited from build submodule by default.
+# Uncomment below if you need to override the version.
+GOLANGCILINT_VERSION ?= 1.64.8
+
 GO_REQUIRED_VERSION ?= 1.20
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
@@ -49,7 +53,6 @@ GO_SUBDIRS += cmd internal apis
 # ====================================================================================
 # Setup Kubernetes tools
 
-KUBECTL_VERSION ?= v1.32.2
 KIND_VERSION = v0.27.0
 UP_VERSION = v0.38.4
 UP_CHANNEL = stable

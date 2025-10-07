@@ -369,6 +369,32 @@ resources:
             cluster_id: (String)
             id: (String) The ID of this resource.
         importStatements: []
+    castai_enterprise_group Resource - terraform-provider-castai:
+        subCategory: ""
+        description: CAST AI Enterprise Group resource.
+        name: castai_enterprise_group Resource - terraform-provider-castai
+        title: castai_enterprise_group Resource - terraform-provider-castai
+        argumentDocs:
+            cluster: (String) Cluster ID scope.
+            create: (String)
+            delete: (String)
+            description: (String) Description of the group.
+            enterprise_id: (String) Enterprise organization ID.
+            id: (String) Group ID assigned by the API.
+            kind: '(String) Kind of the member. Supported values: user, service_account.'
+            member: (Block List) Group member configuration. (see below for nested schema)
+            members: (Block List) List of group members. (see below for nested schema)
+            name: (String) Name of the group.
+            organization: (String) Organization ID scope.
+            organization_id: (String) Target organization ID for the group.
+            role_binding: (Block List) Role binding configuration. (see below for nested schema)
+            role_bindings: (Block List) List of role bindings for the group. (see below for nested schema)
+            role_id: (String) Role UUID.
+            scope: (Block List) Scope configuration. (see below for nested schema)
+            scopes: '(Block List, Min: 1) List of scopes for the role binding. (see below for nested schema)'
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements: []
     castai_evictor_advanced_config:
         subCategory: ""
         description: CAST AI eviction config resource to manage evictor properties
@@ -653,8 +679,10 @@ resources:
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
             nic_based_backend_pools: (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
             node_group_arn: (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
+            on_host_maintenance: (String) Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
             os_disk_type: '(String) Type of managed os disk attached to the node. (See disk types). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)'
             placement: '(String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk'
+            pod_subnet_id: (String) ID of pod subnet to be used for provisioned nodes.
             port: (Number) Port for AWS target group for CAST provisioned nodes
             public_ip: '(Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)'
             public_ip_prefix: (String) Public IP prefix to be used for provisioned nodes
@@ -667,6 +695,7 @@ resources:
             tags: (Map of String) Tags to be added on cloud instances for provisioned nodes
             target_backend_pools: (Block List) Target backend pools configuration for CAST provisioned nodes (see below for nested schema)
             target_group: (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
+            threads_per_cpu: (Number) Number of threads per core.
             timeouts: (Block, Optional) (see below for nested schema)
             unmanaged_instance_groups: (Block List) Unmanaged instance groups configuration for CAST provisioned nodes (see below for nested schema)
             update: (String)
@@ -753,7 +782,7 @@ resources:
                       "spot_interruption_predictions_enabled": true,
                       "spot_interruption_predictions_type": "aws-rebalance-recommendations",
                       "spot_reliability_enabled": true,
-                      "spot_reliabiliy_price_increase_limit_percent": 20,
+                      "spot_reliability_price_increase_limit_percent": 20,
                       "storage_optimized_state": "disabled",
                       "use_spot_fallbacks": true
                     }
@@ -784,6 +813,7 @@ resources:
             azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
             bare_metal: '(String) Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.'
             burstable_instances: '(String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
+            clm_enabled: (Boolean) Marks whether CLM should be enabled for nodes created from this template.
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint (deprecated).
             compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'
@@ -811,13 +841,13 @@ resources:
             effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'
             enable_spot_diversity: (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
             enable_time_sharing: (Boolean) Enable/disable GPU time-sharing.
-            exclude: (List of String) Instance families to include when filtering (excludes all other families).
+            exclude: (List of String) Instance families to exclude when filtering (includes all other families).
             exclude_names: (List of String) Names of the GPUs to exclude.
             fallback_restore_rate_seconds: '(Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.'
             gpu: '(Block List, Max: 1) GPU configuration. (see below for nested schema)'
             gpu_name: (String) GPU name.
             id: (String) The ID of this resource.
-            include: (List of String) Instance families to exclude when filtering (includes all other families).
+            include: (List of String) Instance families to include when filtering (excludes all other families).
             include_names: (List of String) Instance families to include when filtering (excludes all other families).
             instance_families: '(Block List, Max: 1) (see below for nested schema)'
             instance_types: (List of String) Instance/node types in this node group.
@@ -953,12 +983,12 @@ resources:
             create: (String)
             delete: (String)
             id: (String) The ID of this resource.
-            members: (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+            members: (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
             organization_id: (String) CAST AI organization ID.
-            owners: (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+            owners: (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
-            viewers: (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+            viewers: (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
         importStatements: []
     castai_rebalancing_job:
         subCategory: ""
@@ -1496,6 +1526,7 @@ resources:
                 When set, recommendations will be adjusted to disregard resource spikes within this period.
                 If not specified, the workload will receive standard recommendations without startup considerations.
             predictive_scaling: '(Block List, Max: 1) (see below for nested schema)'
+            prefer_one_by_one: (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
             read: (String)
             rollout_behavior: '(Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:'
             rules: '(Block List, Min: 1) (see below for nested schema)'
@@ -1521,23 +1552,11 @@ resources:
             - name: custom
               manifest: |-
                 {
-                  "cluster_id": "${castai_gke_cluster.dev.id}",
-                  "policy_ids": [
-                    "be61e44b-0f7c-44da-b60e-0594d6fd3634",
-                    "f60b79f0-d21e-4eda-a59f-f5daa846d289",
-                    "834e4f2c-0d67-4f97-9898-77ec9350fda8",
-                    "d2a79ea2-91eb-4737-b719-c60b9abffe36",
-                    "c51810d9-f020-47e0-836f-047789d2e900",
-                    "23f8c959-28fa-454e-b193-5255c4334946",
-                    "b239ebdb-1cd0-454d-a3d1-faf6842d48b6",
-                    "7d713728-9ffd-4b9e-9ca9-7a8a19f2b701",
-                    "4f1f625f-4b63-4047-89c9-b945d28a701a",
-                    "9040688a-ae73-474c-bad5-aadd72a14ac4",
-                    "7162cde3-8f17-459e-b308-a4eb2a264364"
-                  ]
+                  "cluster_id": "${castai_gke_cluster.cluster.id}",
+                  "policy_ids": "${concat(local.ordered_policy_ids, sort(local.unordered_policy_ids))}"
                 }
               references:
-                cluster_id: castai_gke_cluster.dev.id
+                cluster_id: castai_gke_cluster.cluster.id
         argumentDocs:
             cluster_id: (String) CAST AI cluster id
             create: (String)

@@ -67,6 +67,12 @@ func (tr *Reservations) Hub() {}
 func (tr *RoleBindings) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *ScalingPolicy) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ScalingPolicyOrder) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *SecurityRuntimeRule) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -77,9 +83,3 @@ func (tr *ServiceAccountKey) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *SSOConnection) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *ScalingPolicy) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *ScalingPolicyOrder) Hub() {}

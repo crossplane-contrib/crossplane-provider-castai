@@ -75,7 +75,7 @@ spec:
                 properties:
                   members:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
                       A list of email addresses corresponding to users who should be given member access to the organization.
                     items:
                       type: string
@@ -87,14 +87,14 @@ spec:
                     type: string
                   owners:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
                       A list of email addresses corresponding to users who should be given owner access to the organization.
                     items:
                       type: string
                     type: array
                   viewers:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
                       A list of email addresses corresponding to users who should be given viewer access to the organization.
                     items:
                       type: string
@@ -115,7 +115,7 @@ spec:
                 properties:
                   members:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
                       A list of email addresses corresponding to users who should be given member access to the organization.
                     items:
                       type: string
@@ -127,14 +127,14 @@ spec:
                     type: string
                   owners:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
                       A list of email addresses corresponding to users who should be given owner access to the organization.
                     items:
                       type: string
                     type: array
                   viewers:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
                       A list of email addresses corresponding to users who should be given viewer access to the organization.
                     items:
                       type: string
@@ -322,7 +322,7 @@ spec:
                     type: string
                   members:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
                       A list of email addresses corresponding to users who should be given member access to the organization.
                     items:
                       type: string
@@ -334,14 +334,14 @@ spec:
                     type: string
                   owners:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
                       A list of email addresses corresponding to users who should be given owner access to the organization.
                     items:
                       type: string
                     type: array
                   viewers:
                     description: |-
-                      (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+                      (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
                       A list of email addresses corresponding to users who should be given viewer access to the organization.
                     items:
                       type: string

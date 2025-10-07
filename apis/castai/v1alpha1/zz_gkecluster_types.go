@@ -15,6 +15,10 @@ import (
 
 type GkeClusterInitParameters struct {
 
+	// (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
+	// GCP credentials.json from ServiceAccount with credentials for CAST AI
+	CredentialsJSONSecretRef *v1.SecretKeySelector `json:"credentialsJsonSecretRef,omitempty" tf:"-"`
+
 	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`

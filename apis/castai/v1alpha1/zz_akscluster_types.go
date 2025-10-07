@@ -19,6 +19,10 @@ type AksClusterInitParameters struct {
 	// Azure AD application ID that is created and used by CAST AI.
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	// (String, Sensitive) Azure AD application password that will be used by CAST AI.
+	// Azure AD application password that will be used by CAST AI.
+	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+
 	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`

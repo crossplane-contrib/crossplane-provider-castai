@@ -17,5 +17,8 @@ func Configure(p *config.Provider) {
 				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.NodeConfiguration",
 			},
 		}
+		r.LateInitializer = config.LateInitializer{
+			IgnoredFields: []string{"custom_labels"},
+		}
 	})
 }

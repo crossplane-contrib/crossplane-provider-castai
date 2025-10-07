@@ -21,7 +21,7 @@ func (mg *GkeCluster) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this GkeCluster
 func (tr *GkeCluster) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"cluster_token": "status.atProvider.clusterToken", "credentials_json": "spec.forProvider.credentialsJsonSecretRef"}
+	return map[string]string{"cluster_token": "status.atProvider.clusterToken", "credentials_json": "credentialsJsonSecretRef"}
 }
 
 // GetObservation of this GkeCluster

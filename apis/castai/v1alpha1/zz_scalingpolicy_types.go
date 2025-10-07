@@ -259,6 +259,7 @@ type LimitInitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -272,6 +273,7 @@ type LimitObservation struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -286,6 +288,7 @@ type LimitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
@@ -463,6 +466,7 @@ type MemoryLimitInitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -476,6 +480,7 @@ type MemoryLimitObservation struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -490,6 +495,7 @@ type MemoryLimitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
@@ -659,6 +665,10 @@ type PredictiveScalingParameters struct {
 
 type RolloutBehaviorInitParameters struct {
 
+	// (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
+	// Defines if pods should be restarted one by one to avoid service disruption.
+	PreferOneByOne *bool `json:"preferOneByOne,omitempty" tf:"prefer_one_by_one,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines the rollout type to be used when applying recommendations.
 	// - NO_DISRUPTION - pods are restarted without causing service disruption.
@@ -666,6 +676,10 @@ type RolloutBehaviorInitParameters struct {
 }
 
 type RolloutBehaviorObservation struct {
+
+	// (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
+	// Defines if pods should be restarted one by one to avoid service disruption.
+	PreferOneByOne *bool `json:"preferOneByOne,omitempty" tf:"prefer_one_by_one,omitempty"`
 
 	// (String) Defines apply theshold strategy type.
 	// Defines the rollout type to be used when applying recommendations.
@@ -675,11 +689,16 @@ type RolloutBehaviorObservation struct {
 
 type RolloutBehaviorParameters struct {
 
+	// (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
+	// Defines if pods should be restarted one by one to avoid service disruption.
+	// +kubebuilder:validation:Optional
+	PreferOneByOne *bool `json:"preferOneByOne,omitempty" tf:"prefer_one_by_one,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines the rollout type to be used when applying recommendations.
 	// - NO_DISRUPTION - pods are restarted without causing service disruption.
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type" tf:"type,omitempty"`
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type RulesInitParameters struct {

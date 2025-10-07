@@ -734,35 +734,35 @@ type GpuParameters struct {
 
 type InstanceFamiliesInitParameters struct {
 
-	// (List of String) Instance families to include when filtering (excludes all other families).
-	// Instance families to include when filtering (excludes all other families).
-	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
-
 	// (List of String) Instance families to exclude when filtering (includes all other families).
 	// Instance families to exclude when filtering (includes all other families).
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// (List of String) Instance families to include when filtering (excludes all other families).
+	// Instance families to include when filtering (excludes all other families).
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type InstanceFamiliesObservation struct {
 
-	// (List of String) Instance families to include when filtering (excludes all other families).
-	// Instance families to include when filtering (excludes all other families).
-	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
-
 	// (List of String) Instance families to exclude when filtering (includes all other families).
 	// Instance families to exclude when filtering (includes all other families).
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// (List of String) Instance families to include when filtering (excludes all other families).
+	// Instance families to include when filtering (excludes all other families).
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type InstanceFamiliesParameters struct {
 
-	// (List of String) Instance families to include when filtering (excludes all other families).
-	// Instance families to include when filtering (excludes all other families).
+	// (List of String) Instance families to exclude when filtering (includes all other families).
+	// Instance families to exclude when filtering (includes all other families).
 	// +kubebuilder:validation:Optional
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
-	// (List of String) Instance families to exclude when filtering (includes all other families).
-	// Instance families to exclude when filtering (includes all other families).
+	// (List of String) Instance families to include when filtering (excludes all other families).
+	// Instance families to include when filtering (excludes all other families).
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
@@ -816,6 +816,10 @@ type NodeTemplateGpuParameters struct {
 }
 
 type NodeTemplateInitParameters struct {
+
+	// (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+	// Marks whether CLM should be enabled for nodes created from this template.
+	ClmEnabled *bool `json:"clmEnabled,omitempty" tf:"clm_enabled,omitempty"`
 
 	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
@@ -890,6 +894,10 @@ type NodeTemplateInitParameters struct {
 
 type NodeTemplateObservation struct {
 
+	// (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+	// Marks whether CLM should be enabled for nodes created from this template.
+	ClmEnabled *bool `json:"clmEnabled,omitempty" tf:"clm_enabled,omitempty"`
+
 	// (String) CAST AI cluster id.
 	// CAST AI cluster id.
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
@@ -947,6 +955,11 @@ type NodeTemplateObservation struct {
 }
 
 type NodeTemplateParameters struct {
+
+	// (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+	// Marks whether CLM should be enabled for nodes created from this template.
+	// +kubebuilder:validation:Optional
+	ClmEnabled *bool `json:"clmEnabled,omitempty" tf:"clm_enabled,omitempty"`
 
 	// (String) CAST AI cluster id.
 	// CAST AI cluster id.

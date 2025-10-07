@@ -21,7 +21,7 @@ func (mg *SSOConnection) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this SSOConnection
 func (tr *SSOConnection) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"aad[*].client_secret": "spec.forProvider.aad[*].clientSecretSecretRef", "okta[*].client_secret": "spec.forProvider.okta[*].clientSecretSecretRef"}
+	return map[string]string{"aad[*].client_secret": "aad[*].clientSecretSecretRef", "okta[*].client_secret": "okta[*].clientSecretSecretRef"}
 }
 
 // GetObservation of this SSOConnection

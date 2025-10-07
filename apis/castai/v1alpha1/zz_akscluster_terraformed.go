@@ -21,7 +21,7 @@ func (mg *AksCluster) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this AksCluster
 func (tr *AksCluster) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"client_secret": "spec.forProvider.clientSecretSecretRef", "cluster_token": "status.atProvider.clusterToken"}
+	return map[string]string{"client_secret": "clientSecretSecretRef", "cluster_token": "status.atProvider.clusterToken"}
 }
 
 // GetObservation of this AksCluster

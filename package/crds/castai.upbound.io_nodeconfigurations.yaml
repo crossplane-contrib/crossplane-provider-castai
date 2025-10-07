@@ -167,6 +167,11 @@ spec:
                             ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                             Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                           type: string
+                        podSubnetId:
+                          description: |-
+                            (String) ID of pod subnet to be used for provisioned nodes.
+                            ID of pod subnet to be used for provisioned nodes.
+                          type: string
                         publicIp:
                           description: |-
                             (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
@@ -369,6 +374,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        threadsPerCpu:
+                          description: |-
+                            (Number) Number of threads per core.
+                            Number of threads per core.
+                          type: number
                         volumeIops:
                           description: |-
                             (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -451,6 +461,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        onHostMaintenance:
+                          description: |-
+                            spot nodes, it is migrate.
+                            Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
+                          type: string
                         secondaryIpRange:
                           description: |-
                             (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
@@ -641,6 +656,11 @@ spec:
                             ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                             Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                           type: string
+                        podSubnetId:
+                          description: |-
+                            (String) ID of pod subnet to be used for provisioned nodes.
+                            ID of pod subnet to be used for provisioned nodes.
+                          type: string
                         publicIp:
                           description: |-
                             (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
@@ -843,6 +863,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        threadsPerCpu:
+                          description: |-
+                            (Number) Number of threads per core.
+                            Number of threads per core.
+                          type: number
                         volumeIops:
                           description: |-
                             (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -925,6 +950,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        onHostMaintenance:
+                          description: |-
+                            spot nodes, it is migrate.
+                            Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
+                          type: string
                         secondaryIpRange:
                           description: |-
                             (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
@@ -1283,6 +1313,11 @@ spec:
                             ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                             Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
                           type: string
+                        podSubnetId:
+                          description: |-
+                            (String) ID of pod subnet to be used for provisioned nodes.
+                            ID of pod subnet to be used for provisioned nodes.
+                          type: string
                         publicIp:
                           description: |-
                             (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
@@ -1409,6 +1444,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        threadsPerCpu:
+                          description: |-
+                            (Number) Number of threads per core.
+                            Number of threads per core.
+                          type: number
                         volumeIops:
                           description: |-
                             (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -1491,6 +1531,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        onHostMaintenance:
+                          description: |-
+                            spot nodes, it is migrate.
+                            Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
+                          type: string
                         secondaryIpRange:
                           description: |-
                             (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)

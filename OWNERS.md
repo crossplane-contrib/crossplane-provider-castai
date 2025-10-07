@@ -7,7 +7,7 @@ organization](https://github.com/upbound/) will list their repository maintainer
 
 ## Maintainers
 
-* Alper Ulucinar <alper@upbound.com> ([ulucinar](https://github.com/ulucinar))
-* Sergen Yalcin <sergen@upbound.com> ([sergenyalcin](https://github.com/sergenyalcin))
+* Christopher Haar ([haarchri](https://github.com/haarchri))
+* Kim-Norman Sahm ([kisahm](https://github.com/kisahm))
 
 See [CODEOWNERS](./CODEOWNERS) for automatic PR assignment.

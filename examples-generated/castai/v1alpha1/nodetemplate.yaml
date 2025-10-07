@@ -39,10 +39,10 @@ spec:
       minMemory: 4096
       onDemand: true
       spot: false
-      spot_reliabiliy_price_increase_limit_percent: 20
       spotInterruptionPredictionsEnabled: true
       spotInterruptionPredictionsType: aws-rebalance-recommendations
       spotReliabilityEnabled: true
+      spotReliabilityPriceIncreaseLimitPercent: 20
       storageOptimizedState: disabled
       useSpotFallbacks: true
     customLabels:

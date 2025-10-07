@@ -263,6 +263,7 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines limit strategy type.
                                   - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
                                   - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
                                 type: string
                             type: object
@@ -391,6 +392,7 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines limit strategy type.
                                   - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
                                   - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
                                 type: string
                             type: object
@@ -470,6 +472,11 @@ spec:
                       - Cluster has workload-autoscaler component version v0.35.3 or higher.
                     items:
                       properties:
+                        preferOneByOne:
+                          description: |-
+                            (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
+                            Defines if pods should be restarted one by one to avoid service disruption.
+                          type: boolean
                         type:
                           description: |-
                             (String) Defines apply theshold strategy type.
@@ -697,6 +704,7 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines limit strategy type.
                                   - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
                                   - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
                                 type: string
                             type: object
@@ -825,6 +833,7 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines limit strategy type.
                                   - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
                                   - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
                                 type: string
                             type: object
@@ -904,6 +913,11 @@ spec:
                       - Cluster has workload-autoscaler component version v0.35.3 or higher.
                     items:
                       properties:
+                        preferOneByOne:
+                          description: |-
+                            (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
+                            Defines if pods should be restarted one by one to avoid service disruption.
+                          type: boolean
                         type:
                           description: |-
                             (String) Defines apply theshold strategy type.
@@ -1315,6 +1329,7 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines limit strategy type.
                                   - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
                                   - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
                                 type: string
                             type: object
@@ -1446,6 +1461,7 @@ spec:
                                   (String) Defines apply theshold strategy type.
                                   Defines limit strategy type.
                                   - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
+                                  - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
                                   - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
                                 type: string
                             type: object
@@ -1525,6 +1541,11 @@ spec:
                       - Cluster has workload-autoscaler component version v0.35.3 or higher.
                     items:
                       properties:
+                        preferOneByOne:
+                          description: |-
+                            (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
+                            Defines if pods should be restarted one by one to avoid service disruption.
+                          type: boolean
                         type:
                           description: |-
                             (String) Defines apply theshold strategy type.

@@ -4,14 +4,14 @@
 PROJECT_NAME ?= crossplane-provider-castai
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.3.3
+export TERRAFORM_VERSION ?= 1.5.7
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai
-export TERRAFORM_PROVIDER_VERSION ?= 7.60.3
+export TERRAFORM_PROVIDER_VERSION ?= 7.68.2
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-castai
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v7.60.3
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v7.68.2
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
@@ -49,16 +49,17 @@ GO_SUBDIRS += cmd internal apis
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.15.0
-UP_VERSION = v0.31.0
+KUBECTL_VERSION ?= v1.32.2
+KIND_VERSION = v0.27.0
+UP_VERSION = v0.38.4
 UP_CHANNEL = stable
-UPTEST_VERSION = v0.11.1
+UPTEST_VERSION = v1.3.0
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
 # Setup Images
 
-REGISTRY_ORGS ?= xpkg.upbound.io/castai
+REGISTRY_ORGS ?= xpkg.upbound.io/crossplane-contrib
 IMAGES = $(PROJECT_NAME)
 -include build/makelib/imagelight.mk
 

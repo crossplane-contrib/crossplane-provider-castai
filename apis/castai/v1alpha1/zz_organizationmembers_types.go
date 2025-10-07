@@ -15,7 +15,7 @@ import (
 
 type OrganizationMembersInitParameters struct {
 
-	// (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
 	// A list of email addresses corresponding to users who should be given member access to the organization.
 	Members []*string `json:"members,omitempty" tf:"members,omitempty"`
 
@@ -23,11 +23,11 @@ type OrganizationMembersInitParameters struct {
 	// CAST AI organization ID.
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
 	// A list of email addresses corresponding to users who should be given owner access to the organization.
 	Owners []*string `json:"owners,omitempty" tf:"owners,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
 	// A list of email addresses corresponding to users who should be given viewer access to the organization.
 	Viewers []*string `json:"viewers,omitempty" tf:"viewers,omitempty"`
 }
@@ -37,7 +37,7 @@ type OrganizationMembersObservation struct {
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
 	// A list of email addresses corresponding to users who should be given member access to the organization.
 	Members []*string `json:"members,omitempty" tf:"members,omitempty"`
 
@@ -45,18 +45,18 @@ type OrganizationMembersObservation struct {
 	// CAST AI organization ID.
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
 	// A list of email addresses corresponding to users who should be given owner access to the organization.
 	Owners []*string `json:"owners,omitempty" tf:"owners,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
 	// A list of email addresses corresponding to users who should be given viewer access to the organization.
 	Viewers []*string `json:"viewers,omitempty" tf:"viewers,omitempty"`
 }
 
 type OrganizationMembersParameters struct {
 
-	// (List of String) A list of email addresses corresponding to users who should be given member access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given member access to the organization.
 	// A list of email addresses corresponding to users who should be given member access to the organization.
 	// +kubebuilder:validation:Optional
 	Members []*string `json:"members,omitempty" tf:"members,omitempty"`
@@ -66,12 +66,12 @@ type OrganizationMembersParameters struct {
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given owner access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given owner access to the organization.
 	// A list of email addresses corresponding to users who should be given owner access to the organization.
 	// +kubebuilder:validation:Optional
 	Owners []*string `json:"owners,omitempty" tf:"owners,omitempty"`
 
-	// (List of String) A list of email addresses corresponding to users who should be given viewer access to the organization.
+	// (List of String, Deprecated) A list of email addresses corresponding to users who should be given viewer access to the organization.
 	// A list of email addresses corresponding to users who should be given viewer access to the organization.
 	// +kubebuilder:validation:Optional
 	Viewers []*string `json:"viewers,omitempty" tf:"viewers,omitempty"`

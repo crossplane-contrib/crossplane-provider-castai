@@ -22,6 +22,10 @@ type AadInitParameters struct {
 	// (String) Azure AD client ID
 	// Azure AD client ID
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String, Sensitive) Azure AD client secret
+	// Azure AD client secret
+	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
 }
 
 type AadObservation struct {
@@ -49,7 +53,7 @@ type AadParameters struct {
 
 	// (String, Sensitive) Azure AD client secret
 	// Azure AD client secret
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
 }
 
@@ -58,6 +62,10 @@ type OktaInitParameters struct {
 	// (String) Azure AD client ID
 	// Okta client ID
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String, Sensitive) Azure AD client secret
+	// Okta client secret
+	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
 
 	// (String) Okta domain
 	// Okta domain
@@ -84,7 +92,7 @@ type OktaParameters struct {
 
 	// (String, Sensitive) Azure AD client secret
 	// Okta client secret
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
 
 	// (String) Okta domain

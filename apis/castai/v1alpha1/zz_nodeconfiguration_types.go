@@ -43,6 +43,10 @@ type AksInitParameters struct {
 	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
 
+	// (String) ID of pod subnet to be used for provisioned nodes.
+	// ID of pod subnet to be used for provisioned nodes.
+	PodSubnetID *string `json:"podSubnetId,omitempty" tf:"pod_subnet_id,omitempty"`
+
 	// (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
 	// Public IP configuration for CAST AI provisioned nodes
 	PublicIP []PublicIPInitParameters `json:"publicIp,omitempty" tf:"public_ip,omitempty"`
@@ -77,6 +81,10 @@ type AksObservation struct {
 	// ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
+
+	// (String) ID of pod subnet to be used for provisioned nodes.
+	// ID of pod subnet to be used for provisioned nodes.
+	PodSubnetID *string `json:"podSubnetId,omitempty" tf:"pod_subnet_id,omitempty"`
 
 	// (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
 	// Public IP configuration for CAST AI provisioned nodes
@@ -119,6 +127,11 @@ type AksParameters struct {
 	// Type of managed os disk attached to the node. (See [disk types](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types)). One of: standard, standard-ssd, premium-ssd (ultra and premium-ssd-v2 are not supported for os disk)
 	// +kubebuilder:validation:Optional
 	OsDiskType *string `json:"osDiskType,omitempty" tf:"os_disk_type,omitempty"`
+
+	// (String) ID of pod subnet to be used for provisioned nodes.
+	// ID of pod subnet to be used for provisioned nodes.
+	// +kubebuilder:validation:Optional
+	PodSubnetID *string `json:"podSubnetId,omitempty" tf:"pod_subnet_id,omitempty"`
 
 	// (Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)
 	// Public IP configuration for CAST AI provisioned nodes
@@ -171,6 +184,10 @@ type EksInitParameters struct {
 	// (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
 	// AWS target groups configuration for CAST provisioned nodes
 	TargetGroup []TargetGroupInitParameters `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
+
+	// (Number) Number of threads per core.
+	// Number of threads per core.
+	ThreadsPerCPU *float64 `json:"threadsPerCpu,omitempty" tf:"threads_per_cpu,omitempty"`
 
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -234,6 +251,10 @@ type EksObservation struct {
 	// (Block List) AWS target groups configuration for CAST provisioned nodes (see below for nested schema)
 	// AWS target groups configuration for CAST provisioned nodes
 	TargetGroup []TargetGroupObservation `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
+
+	// (Number) Number of threads per core.
+	// Number of threads per core.
+	ThreadsPerCPU *float64 `json:"threadsPerCpu,omitempty" tf:"threads_per_cpu,omitempty"`
 
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
@@ -309,6 +330,11 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	TargetGroup []TargetGroupParameters `json:"targetGroup,omitempty" tf:"target_group,omitempty"`
 
+	// (Number) Number of threads per core.
+	// Number of threads per core.
+	// +kubebuilder:validation:Optional
+	ThreadsPerCPU *float64 `json:"threadsPerCpu,omitempty" tf:"threads_per_cpu,omitempty"`
+
 	// (Number) AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// AWS EBS volume IOPS to be used for CAST provisioned nodes
 	// +kubebuilder:validation:Optional
@@ -383,6 +409,10 @@ type GkeInitParameters struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
 
+	// spot nodes, it is migrate.
+	// Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty" tf:"on_host_maintenance,omitempty"`
+
 	// (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
 	// Secondary IP range configuration for pods in GKE nodes
 	SecondaryIPRange []SecondaryIPRangeInitParameters `json:"secondaryIpRange,omitempty" tf:"secondary_ip_range,omitempty"`
@@ -449,6 +479,10 @@ type GkeObservation struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
 
+	// spot nodes, it is migrate.
+	// Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty" tf:"on_host_maintenance,omitempty"`
+
 	// (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
 	// Secondary IP range configuration for pods in GKE nodes
 	SecondaryIPRange []SecondaryIPRangeObservation `json:"secondaryIpRange,omitempty" tf:"secondary_ip_range,omitempty"`
@@ -483,6 +517,11 @@ type GkeParameters struct {
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	// +kubebuilder:validation:Optional
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
+
+	// spot nodes, it is migrate.
+	// Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
+	// +kubebuilder:validation:Optional
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty" tf:"on_host_maintenance,omitempty"`
 
 	// (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
 	// Secondary IP range configuration for pods in GKE nodes

@@ -171,6 +171,25 @@ spec:
                       (String) Azure AD application ID that is created and used by CAST AI.
                       Azure AD application ID that is created and used by CAST AI.
                     type: string
+                  clientSecretSecretRef:
+                    description: |-
+                      (String, Sensitive) Azure AD application password that will be used by CAST AI.
+                      Azure AD application password that will be used by CAST AI.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   deleteNodesOnDisconnect:
                     description: |-
                       (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
@@ -226,6 +245,8 @@ spec:
                       (String) Azure AD tenant ID from the used subscription.
                       Azure AD tenant ID from the used subscription.
                     type: string
+                required:
+                - clientSecretSecretRef
                 type: object
               managementPolicies:
                 default:

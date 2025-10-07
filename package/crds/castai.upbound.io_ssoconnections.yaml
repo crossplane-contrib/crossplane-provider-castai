@@ -108,6 +108,111 @@ spec:
                           - name
                           - namespace
                           type: object
+                      type: object
+                    type: array
+                  additionalEmailDomains:
+                    description: |-
+                      (List of String) Additional email domains that will be allowed to sign in via the connection
+                      Additional email domains that will be allowed to sign in via the connection
+                    items:
+                      type: string
+                    type: array
+                  emailDomain:
+                    description: |-
+                      (String) Email domain of the connection
+                      Email domain of the connection
+                    type: string
+                  name:
+                    description: |-
+                      (String) Connection name
+                      Connection name
+                    type: string
+                  okta:
+                    description: |-
+                      (Block List, Max: 1) Okta connector (see below for nested schema)
+                      Okta connector
+                    items:
+                      properties:
+                        clientId:
+                          description: |-
+                            (String) Azure AD client ID
+                            Okta client ID
+                          type: string
+                        clientSecretSecretRef:
+                          description: |-
+                            (String, Sensitive) Azure AD client secret
+                            Okta client secret
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        oktaDomain:
+                          description: |-
+                            (String) Okta domain
+                            Okta domain
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  aad:
+                    description: |-
+                      (Block List, Max: 1) Azure AD connector (see below for nested schema)
+                      Azure AD connector
+                    items:
+                      properties:
+                        adDomain:
+                          description: |-
+                            (String) Azure AD domain
+                            Azure AD domain
+                          type: string
+                        clientId:
+                          description: |-
+                            (String) Azure AD client ID
+                            Azure AD client ID
+                          type: string
+                        clientSecretSecretRef:
+                          description: |-
+                            (String, Sensitive) Azure AD client secret
+                            Azure AD client secret
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
                       required:
                       - clientSecretSecretRef
                       type: object
@@ -166,73 +271,6 @@ spec:
                           type: string
                       required:
                       - clientSecretSecretRef
-                      type: object
-                    type: array
-                type: object
-              initProvider:
-                description: |-
-                  THIS IS A BETA FIELD. It will be honored
-                  unless the Management Policies feature flag is disabled.
-                  InitProvider holds the same fields as ForProvider, with the exception
-                  of Identifier and other resource reference fields. The fields that are
-                  in InitProvider are merged into ForProvider when the resource is created.
-                  The same fields are also added to the terraform ignore_changes hook, to
-                  avoid updating them after creation. This is useful for fields that are
-                  required on creation, but we do not desire to update them after creation,
-                  for example because of an external controller is managing them, like an
-                  autoscaler.
-                properties:
-                  aad:
-                    description: |-
-                      (Block List, Max: 1) Azure AD connector (see below for nested schema)
-                      Azure AD connector
-                    items:
-                      properties:
-                        adDomain:
-                          description: |-
-                            (String) Azure AD domain
-                            Azure AD domain
-                          type: string
-                        clientId:
-                          description: |-
-                            (String) Azure AD client ID
-                            Azure AD client ID
-                          type: string
-                      type: object
-                    type: array
-                  additionalEmailDomains:
-                    description: |-
-                      (List of String) Additional email domains that will be allowed to sign in via the connection
-                      Additional email domains that will be allowed to sign in via the connection
-                    items:
-                      type: string
-                    type: array
-                  emailDomain:
-                    description: |-
-                      (String) Email domain of the connection
-                      Email domain of the connection
-                    type: string
-                  name:
-                    description: |-
-                      (String) Connection name
-                      Connection name
-                    type: string
-                  okta:
-                    description: |-
-                      (Block List, Max: 1) Okta connector (see below for nested schema)
-                      Okta connector
-                    items:
-                      properties:
-                        clientId:
-                          description: |-
-                            (String) Azure AD client ID
-                            Okta client ID
-                          type: string
-                        oktaDomain:
-                          description: |-
-                            (String) Okta domain
-                            Okta domain
-                          type: string
                       type: object
                     type: array
                 type: object

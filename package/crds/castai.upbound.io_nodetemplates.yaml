@@ -73,6 +73,11 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  clmEnabled:
+                    description: |-
+                      (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+                      Marks whether CLM should be enabled for nodes created from this template.
+                    type: boolean
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id.
@@ -428,15 +433,15 @@ spec:
                             properties:
                               exclude:
                                 description: |-
-                                  (List of String) Instance families to include when filtering (excludes all other families).
-                                  Instance families to include when filtering (excludes all other families).
+                                  (List of String) Instance families to exclude when filtering (includes all other families).
+                                  Instance families to exclude when filtering (includes all other families).
                                 items:
                                   type: string
                                 type: array
                               include:
                                 description: |-
-                                  (List of String) Instance families to exclude when filtering (includes all other families).
-                                  Instance families to exclude when filtering (includes all other families).
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
@@ -659,6 +664,11 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  clmEnabled:
+                    description: |-
+                      (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+                      Marks whether CLM should be enabled for nodes created from this template.
+                    type: boolean
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id.
@@ -1014,15 +1024,15 @@ spec:
                             properties:
                               exclude:
                                 description: |-
-                                  (List of String) Instance families to include when filtering (excludes all other families).
-                                  Instance families to include when filtering (excludes all other families).
+                                  (List of String) Instance families to exclude when filtering (includes all other families).
+                                  Instance families to exclude when filtering (includes all other families).
                                 items:
                                   type: string
                                 type: array
                               include:
                                 description: |-
-                                  (List of String) Instance families to exclude when filtering (includes all other families).
-                                  Instance families to exclude when filtering (includes all other families).
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array
@@ -1409,6 +1419,11 @@ spec:
             properties:
               atProvider:
                 properties:
+                  clmEnabled:
+                    description: |-
+                      (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+                      Marks whether CLM should be enabled for nodes created from this template.
+                    type: boolean
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id.
@@ -1612,15 +1627,15 @@ spec:
                             properties:
                               exclude:
                                 description: |-
-                                  (List of String) Instance families to include when filtering (excludes all other families).
-                                  Instance families to include when filtering (excludes all other families).
+                                  (List of String) Instance families to exclude when filtering (includes all other families).
+                                  Instance families to exclude when filtering (includes all other families).
                                 items:
                                   type: string
                                 type: array
                               include:
                                 description: |-
-                                  (List of String) Instance families to exclude when filtering (includes all other families).
-                                  Instance families to exclude when filtering (includes all other families).
+                                  (List of String) Instance families to include when filtering (excludes all other families).
+                                  Instance families to include when filtering (excludes all other families).
                                 items:
                                   type: string
                                 type: array

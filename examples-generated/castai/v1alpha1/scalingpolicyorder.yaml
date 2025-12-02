@@ -9,4 +9,6 @@ metadata:
 spec:
   forProvider:
     clusterId: ${castai_gke_cluster.cluster.id}
-    policyIds: ${concat(local.ordered_policy_ids, sort(local.unordered_policy_ids))}
+    policyIdsSelector:
+      matchLabels:
+        testing.upbound.io/example-name: ordered_policy_ids, sort(local

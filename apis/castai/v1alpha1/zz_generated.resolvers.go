@@ -401,3 +401,45 @@ func (mg *RebalancingJob) ResolveReferences(ctx context.Context, c client.Reader
 
 	return nil
 }
+
+// ResolveReferences of this ScalingPolicyOrder.
+func (mg *ScalingPolicyOrder) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var mrsp reference.MultiResolutionResponse
+	var err error
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.PolicyIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.PolicyIdsRefs,
+		Selector:      mg.Spec.ForProvider.PolicyIdsSelector,
+		To: reference.To{
+			List:    &ScalingPolicyList{},
+			Managed: &ScalingPolicy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.PolicyIds")
+	}
+	mg.Spec.ForProvider.PolicyIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.PolicyIdsRefs = mrsp.ResolvedReferences
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.PolicyIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.PolicyIdsRefs,
+		Selector:      mg.Spec.InitProvider.PolicyIdsSelector,
+		To: reference.To{
+			List:    &ScalingPolicyList{},
+			Managed: &ScalingPolicy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.PolicyIds")
+	}
+	mg.Spec.InitProvider.PolicyIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.PolicyIdsRefs = mrsp.ResolvedReferences
+
+	return nil
+}

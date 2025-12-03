@@ -21,7 +21,16 @@ type ScalingPolicyOrderInitParameters struct {
 
 	// (List of String) List of scaling policy IDs in the order they should be applied.
 	// List of scaling policy IDs in the order they should be applied.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.ScalingPolicy
 	PolicyIds []*string `json:"policyIds,omitempty" tf:"policy_ids,omitempty"`
+
+	// References to ScalingPolicy in castai to populate policyIds.
+	// +kubebuilder:validation:Optional
+	PolicyIdsRefs []v1.Reference `json:"policyIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of ScalingPolicy in castai to populate policyIds.
+	// +kubebuilder:validation:Optional
+	PolicyIdsSelector *v1.Selector `json:"policyIdsSelector,omitempty" tf:"-"`
 }
 
 type ScalingPolicyOrderObservation struct {
@@ -47,8 +56,17 @@ type ScalingPolicyOrderParameters struct {
 
 	// (List of String) List of scaling policy IDs in the order they should be applied.
 	// List of scaling policy IDs in the order they should be applied.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.ScalingPolicy
 	// +kubebuilder:validation:Optional
 	PolicyIds []*string `json:"policyIds,omitempty" tf:"policy_ids,omitempty"`
+
+	// References to ScalingPolicy in castai to populate policyIds.
+	// +kubebuilder:validation:Optional
+	PolicyIdsRefs []v1.Reference `json:"policyIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of ScalingPolicy in castai to populate policyIds.
+	// +kubebuilder:validation:Optional
+	PolicyIdsSelector *v1.Selector `json:"policyIdsSelector,omitempty" tf:"-"`
 }
 
 // ScalingPolicyOrderSpec defines the desired state of ScalingPolicyOrder
@@ -88,7 +106,6 @@ type ScalingPolicyOrder struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterId) || (has(self.initProvider) && has(self.initProvider.clusterId))",message="spec.forProvider.clusterId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.policyIds) || (has(self.initProvider) && has(self.initProvider.policyIds))",message="spec.forProvider.policyIds is a required parameter"
 	Spec   ScalingPolicyOrderSpec   `json:"spec"`
 	Status ScalingPolicyOrderStatus `json:"status,omitempty"`
 }

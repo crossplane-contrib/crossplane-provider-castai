@@ -8,6 +8,7 @@ package v1alpha1
 import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
+	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -411,7 +412,7 @@ func (mg *ScalingPolicyOrder) ResolveReferences(ctx context.Context, c client.Re
 
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.PolicyIds),
-		Extract:       reference.ExternalName(),
+		Extract:       resource.ExtractResourceID(),
 		References:    mg.Spec.ForProvider.PolicyIdsRefs,
 		Selector:      mg.Spec.ForProvider.PolicyIdsSelector,
 		To: reference.To{
@@ -427,7 +428,7 @@ func (mg *ScalingPolicyOrder) ResolveReferences(ctx context.Context, c client.Re
 
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.PolicyIds),
-		Extract:       reference.ExternalName(),
+		Extract:       resource.ExtractResourceID(),
 		References:    mg.Spec.InitProvider.PolicyIdsRefs,
 		Selector:      mg.Spec.InitProvider.PolicyIdsSelector,
 		To: reference.To{

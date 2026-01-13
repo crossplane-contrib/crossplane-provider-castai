@@ -12,6 +12,8 @@ func Configure(p *config.Provider) {
 		r.References = config.References{
 			"policy_ids": {
 				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.ScalingPolicy",
+				// Use status.atProvider.id instead of external-name for reference resolution
+				Extractor: `github.com/crossplane/upjet/pkg/resource.ExtractResourceID()`,
 			},
 		}
 	})

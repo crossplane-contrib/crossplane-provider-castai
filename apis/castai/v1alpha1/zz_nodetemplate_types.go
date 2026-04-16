@@ -13,6 +13,76 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AwsInitParameters struct {
+
+	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+	// Capacity reservations that this template can use for provisioning.
+	CapacityReservations []CapacityReservationsInitParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
+}
+
+type AwsObservation struct {
+
+	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+	// Capacity reservations that this template can use for provisioning.
+	CapacityReservations []CapacityReservationsObservation `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
+}
+
+type AwsParameters struct {
+
+	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+	// Capacity reservations that this template can use for provisioning.
+	// +kubebuilder:validation:Optional
+	CapacityReservations []CapacityReservationsParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
+}
+
+type CapacityReservationsInitParameters struct {
+
+	// (String) Capacity resource group ARN for UltraServer capacity blocks.
+	// Capacity resource group ARN for UltraServer capacity blocks.
+	CapacityResourceGroupArn *string `json:"capacityResourceGroupArn,omitempty" tf:"capacity_resource_group_arn,omitempty"`
+
+	// (String) The ID of this resource.
+	// AWS capacity reservation ID.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+	// Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type CapacityReservationsObservation struct {
+
+	// (String) Capacity resource group ARN for UltraServer capacity blocks.
+	// Capacity resource group ARN for UltraServer capacity blocks.
+	CapacityResourceGroupArn *string `json:"capacityResourceGroupArn,omitempty" tf:"capacity_resource_group_arn,omitempty"`
+
+	// (String) The ID of this resource.
+	// AWS capacity reservation ID.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+	// Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type CapacityReservationsParameters struct {
+
+	// (String) Capacity resource group ARN for UltraServer capacity blocks.
+	// Capacity resource group ARN for UltraServer capacity blocks.
+	// +kubebuilder:validation:Optional
+	CapacityResourceGroupArn *string `json:"capacityResourceGroupArn,omitempty" tf:"capacity_resource_group_arn,omitempty"`
+
+	// (String) The ID of this resource.
+	// AWS capacity reservation ID.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+	// Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ConstraintsInitParameters struct {
 
 	// (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
@@ -22,6 +92,10 @@ type ConstraintsInitParameters struct {
 	// (List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
+
+	// specific constraints for the node template. (see below for nested schema)
+	// AWS-specific constraints for the node template.
+	Aws []AwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -159,6 +233,10 @@ type ConstraintsObservation struct {
 	// (List of String) List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
+
+	// specific constraints for the node template. (see below for nested schema)
+	// AWS-specific constraints for the node template.
+	Aws []AwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -298,6 +376,11 @@ type ConstraintsParameters struct {
 	// List of acceptable instance CPU architectures, the default is amd64. Allowed values: amd64, arm64.
 	// +kubebuilder:validation:Optional
 	Architectures []*string `json:"architectures,omitempty" tf:"architectures,omitempty"`
+
+	// specific constraints for the node template. (see below for nested schema)
+	// AWS-specific constraints for the node template.
+	// +kubebuilder:validation:Optional
+	Aws []AwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -664,6 +747,10 @@ type GpuInitParameters struct {
 	// Names of the GPUs to exclude.
 	ExcludeNames []*string `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
 
+	// (String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+	// Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	FractionalGpus *string `json:"fractionalGpus,omitempty" tf:"fractional_gpus,omitempty"`
+
 	// (List of String) Instance families to include when filtering (excludes all other families).
 	// Instance families to include when filtering (excludes all other families).
 	IncludeNames []*string `json:"includeNames,omitempty" tf:"include_names,omitempty"`
@@ -686,6 +773,10 @@ type GpuObservation struct {
 	// (List of String) Names of the GPUs to exclude.
 	// Names of the GPUs to exclude.
 	ExcludeNames []*string `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
+
+	// (String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+	// Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	FractionalGpus *string `json:"fractionalGpus,omitempty" tf:"fractional_gpus,omitempty"`
 
 	// (List of String) Instance families to include when filtering (excludes all other families).
 	// Instance families to include when filtering (excludes all other families).
@@ -710,6 +801,11 @@ type GpuParameters struct {
 	// Names of the GPUs to exclude.
 	// +kubebuilder:validation:Optional
 	ExcludeNames []*string `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
+
+	// (String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+	// Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+	// +kubebuilder:validation:Optional
+	FractionalGpus *string `json:"fractionalGpus,omitempty" tf:"fractional_gpus,omitempty"`
 
 	// (List of String) Instance families to include when filtering (excludes all other families).
 	// Instance families to include when filtering (excludes all other families).
@@ -773,13 +869,21 @@ type NodeTemplateGpuInitParameters struct {
 	// Defines default number of shared clients per GPU.
 	DefaultSharedClientsPerGpu *float64 `json:"defaultSharedClientsPerGpu,omitempty" tf:"default_shared_clients_per_gpu,omitempty"`
 
-	// sharing.
-	// Enable/disable GPU time-sharing.
+	// sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
+	// Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
 	EnableTimeSharing *bool `json:"enableTimeSharing,omitempty" tf:"enable_time_sharing,omitempty"`
 
 	// (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
 	// Defines GPU sharing configurations for GPU devices.
 	SharingConfiguration []SharingConfigurationInitParameters `json:"sharingConfiguration,omitempty" tf:"sharing_configuration,omitempty"`
+
+	// slicing, mps.
+	// GPU sharing strategy. Supported values: `time-slicing`, `mps`.
+	SharingStrategy *string `json:"sharingStrategy,omitempty" tf:"sharing_strategy,omitempty"`
+
+	// managed GPU drivers (for GKE clusters only).
+	// Enable/disable user-managed GPU drivers (for GKE clusters only).
+	UserManagedGpuDrivers *bool `json:"userManagedGpuDrivers,omitempty" tf:"user_managed_gpu_drivers,omitempty"`
 }
 
 type NodeTemplateGpuObservation struct {
@@ -788,13 +892,21 @@ type NodeTemplateGpuObservation struct {
 	// Defines default number of shared clients per GPU.
 	DefaultSharedClientsPerGpu *float64 `json:"defaultSharedClientsPerGpu,omitempty" tf:"default_shared_clients_per_gpu,omitempty"`
 
-	// sharing.
-	// Enable/disable GPU time-sharing.
+	// sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
+	// Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
 	EnableTimeSharing *bool `json:"enableTimeSharing,omitempty" tf:"enable_time_sharing,omitempty"`
 
 	// (Block List) Defines GPU sharing configurations for GPU devices. (see below for nested schema)
 	// Defines GPU sharing configurations for GPU devices.
 	SharingConfiguration []SharingConfigurationObservation `json:"sharingConfiguration,omitempty" tf:"sharing_configuration,omitempty"`
+
+	// slicing, mps.
+	// GPU sharing strategy. Supported values: `time-slicing`, `mps`.
+	SharingStrategy *string `json:"sharingStrategy,omitempty" tf:"sharing_strategy,omitempty"`
+
+	// managed GPU drivers (for GKE clusters only).
+	// Enable/disable user-managed GPU drivers (for GKE clusters only).
+	UserManagedGpuDrivers *bool `json:"userManagedGpuDrivers,omitempty" tf:"user_managed_gpu_drivers,omitempty"`
 }
 
 type NodeTemplateGpuParameters struct {
@@ -804,8 +916,8 @@ type NodeTemplateGpuParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultSharedClientsPerGpu *float64 `json:"defaultSharedClientsPerGpu,omitempty" tf:"default_shared_clients_per_gpu,omitempty"`
 
-	// sharing.
-	// Enable/disable GPU time-sharing.
+	// sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
+	// Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
 	// +kubebuilder:validation:Optional
 	EnableTimeSharing *bool `json:"enableTimeSharing,omitempty" tf:"enable_time_sharing,omitempty"`
 
@@ -813,6 +925,16 @@ type NodeTemplateGpuParameters struct {
 	// Defines GPU sharing configurations for GPU devices.
 	// +kubebuilder:validation:Optional
 	SharingConfiguration []SharingConfigurationParameters `json:"sharingConfiguration,omitempty" tf:"sharing_configuration,omitempty"`
+
+	// slicing, mps.
+	// GPU sharing strategy. Supported values: `time-slicing`, `mps`.
+	// +kubebuilder:validation:Optional
+	SharingStrategy *string `json:"sharingStrategy,omitempty" tf:"sharing_strategy,omitempty"`
+
+	// managed GPU drivers (for GKE clusters only).
+	// Enable/disable user-managed GPU drivers (for GKE clusters only).
+	// +kubebuilder:validation:Optional
+	UserManagedGpuDrivers *bool `json:"userManagedGpuDrivers,omitempty" tf:"user_managed_gpu_drivers,omitempty"`
 }
 
 type NodeTemplateInitParameters struct {
@@ -867,6 +989,10 @@ type NodeTemplateInitParameters struct {
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	CustomTaints []CustomTaintsInitParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
+	// (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	EdgeLocationIds []*string `json:"edgeLocationIds,omitempty" tf:"edge_location_ids,omitempty"`
+
 	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	// GPU configuration.
 	Gpu []NodeTemplateGpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
@@ -882,6 +1008,10 @@ type NodeTemplateInitParameters struct {
 	// (String) Name of the node template.
 	// Name of the node template.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Max: 1) Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting. (see below for nested schema)
+	// Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.
+	PriceAdjustmentConfiguration []PriceAdjustmentConfigurationInitParameters `json:"priceAdjustmentConfiguration,omitempty" tf:"price_adjustment_configuration,omitempty"`
 
 	// (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
 	// Minimum nodes that will be kept when rebalancing nodes using this node template.
@@ -926,6 +1056,10 @@ type NodeTemplateObservation struct {
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	CustomTaints []CustomTaintsObservation `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
+	// (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	EdgeLocationIds []*string `json:"edgeLocationIds,omitempty" tf:"edge_location_ids,omitempty"`
+
 	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	// GPU configuration.
 	Gpu []NodeTemplateGpuObservation `json:"gpu,omitempty" tf:"gpu,omitempty"`
@@ -944,6 +1078,10 @@ type NodeTemplateObservation struct {
 	// (String) Name of the node template.
 	// Name of the node template.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Max: 1) Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting. (see below for nested schema)
+	// Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.
+	PriceAdjustmentConfiguration []PriceAdjustmentConfigurationObservation `json:"priceAdjustmentConfiguration,omitempty" tf:"price_adjustment_configuration,omitempty"`
 
 	// (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
 	// Minimum nodes that will be kept when rebalancing nodes using this node template.
@@ -1014,6 +1152,11 @@ type NodeTemplateParameters struct {
 	// +kubebuilder:validation:Optional
 	CustomTaints []CustomTaintsParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
+	// (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// +kubebuilder:validation:Optional
+	EdgeLocationIds []*string `json:"edgeLocationIds,omitempty" tf:"edge_location_ids,omitempty"`
+
 	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	// GPU configuration.
 	// +kubebuilder:validation:Optional
@@ -1034,6 +1177,11 @@ type NodeTemplateParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Max: 1) Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting. (see below for nested schema)
+	// Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.
+	// +kubebuilder:validation:Optional
+	PriceAdjustmentConfiguration []PriceAdjustmentConfigurationParameters `json:"priceAdjustmentConfiguration,omitempty" tf:"price_adjustment_configuration,omitempty"`
+
 	// (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
 	// Minimum nodes that will be kept when rebalancing nodes using this node template.
 	// +kubebuilder:validation:Optional
@@ -1043,6 +1191,31 @@ type NodeTemplateParameters struct {
 	// Marks whether the templated nodes will have a taint.
 	// +kubebuilder:validation:Optional
 	ShouldTaint *bool `json:"shouldTaint,omitempty" tf:"should_taint,omitempty"`
+}
+
+type PriceAdjustmentConfigurationInitParameters struct {
+
+	// (Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+	// Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+	// +mapType=granular
+	InstanceTypeAdjustments map[string]*string `json:"instanceTypeAdjustments,omitempty" tf:"instance_type_adjustments,omitempty"`
+}
+
+type PriceAdjustmentConfigurationObservation struct {
+
+	// (Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+	// Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+	// +mapType=granular
+	InstanceTypeAdjustments map[string]*string `json:"instanceTypeAdjustments,omitempty" tf:"instance_type_adjustments,omitempty"`
+}
+
+type PriceAdjustmentConfigurationParameters struct {
+
+	// (Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+	// Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	InstanceTypeAdjustments map[string]*string `json:"instanceTypeAdjustments,omitempty" tf:"instance_type_adjustments,omitempty"`
 }
 
 type ResourceLimitsInitParameters struct {

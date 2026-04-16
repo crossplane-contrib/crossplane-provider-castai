@@ -1,0 +1,28 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: PodMutation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/podmutation
+  labels:
+    testing.upbound.io/example-name: spot_scheduling
+  name: spot-scheduling
+spec:
+  forProvider:
+    clusterId: ${castai_eks_cluster.example.id}
+    enabled: true
+    filterV2:
+    - workload:
+      - kinds:
+        - type: EXACT
+          value: Deployment
+        namespaces:
+        - type: EXACT
+          value: default
+    name: spot-scheduling
+    spotConfig:
+    - distributionPercentage: 80
+      spotMode: PREFERRED_SPOT
+    tolerations:
+    - effect: NoSchedule
+      key: scheduling.cast.ai/spot
+      operator: Exists

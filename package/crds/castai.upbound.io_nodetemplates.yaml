@@ -258,6 +258,37 @@ spec:
                           items:
                             type: string
                           type: array
+                        aws:
+                          description: |-
+                            specific constraints for the node template. (see below for nested schema)
+                            AWS-specific constraints for the node template.
+                          items:
+                            properties:
+                              capacityReservations:
+                                description: |-
+                                  (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+                                  Capacity reservations that this template can use for provisioning.
+                                items:
+                                  properties:
+                                    capacityResourceGroupArn:
+                                      description: |-
+                                        (String) Capacity resource group ARN for UltraServer capacity blocks.
+                                        Capacity resource group ARN for UltraServer capacity blocks.
+                                      type: string
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        AWS capacity reservation ID.
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+                                        Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         azs:
                           description: |-
                             (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -400,6 +431,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              fractionalGpus:
+                                description: |-
+                                  (String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                                  Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+                                type: string
                               includeNames:
                                 description: |-
                                   (List of String) Instance families to include when filtering (excludes all other families).
@@ -589,6 +625,13 @@ spec:
                           type: string
                       type: object
                     type: array
+                  edgeLocationIds:
+                    description: |-
+                      (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                      List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                    items:
+                      type: string
+                    type: array
                   gpu:
                     description: |-
                       (Block List, Max: 1) GPU configuration. (see below for nested schema)
@@ -602,8 +645,8 @@ spec:
                           type: number
                         enableTimeSharing:
                           description: |-
-                            sharing.
-                            Enable/disable GPU time-sharing.
+                            sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
+                            Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
                           type: boolean
                         sharingConfiguration:
                           description: |-
@@ -623,6 +666,16 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        sharingStrategy:
+                          description: |-
+                            slicing, mps.
+                            GPU sharing strategy. Supported values: `time-slicing`, `mps`.
+                          type: string
+                        userManagedGpuDrivers:
+                          description: |-
+                            managed GPU drivers (for GKE clusters only).
+                            Enable/disable user-managed GPU drivers (for GKE clusters only).
+                          type: boolean
                       type: object
                     type: array
                   isDefault:
@@ -640,6 +693,22 @@ spec:
                       (String) Name of the node template.
                       Name of the node template.
                     type: string
+                  priceAdjustmentConfiguration:
+                    description: |-
+                      (Block List, Max: 1) Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting. (see below for nested schema)
+                      Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.
+                    items:
+                      properties:
+                        instanceTypeAdjustments:
+                          additionalProperties:
+                            type: string
+                          description: |-
+                            (Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+                            Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+                          type: object
+                          x-kubernetes-map-type: granular
+                      type: object
+                    type: array
                   rebalancingConfigMinNodes:
                     description: |-
                       (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
@@ -849,6 +918,37 @@ spec:
                           items:
                             type: string
                           type: array
+                        aws:
+                          description: |-
+                            specific constraints for the node template. (see below for nested schema)
+                            AWS-specific constraints for the node template.
+                          items:
+                            properties:
+                              capacityReservations:
+                                description: |-
+                                  (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+                                  Capacity reservations that this template can use for provisioning.
+                                items:
+                                  properties:
+                                    capacityResourceGroupArn:
+                                      description: |-
+                                        (String) Capacity resource group ARN for UltraServer capacity blocks.
+                                        Capacity resource group ARN for UltraServer capacity blocks.
+                                      type: string
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        AWS capacity reservation ID.
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+                                        Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         azs:
                           description: |-
                             (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -991,6 +1091,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              fractionalGpus:
+                                description: |-
+                                  (String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                                  Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+                                type: string
                               includeNames:
                                 description: |-
                                   (List of String) Instance families to include when filtering (excludes all other families).
@@ -1180,6 +1285,13 @@ spec:
                           type: string
                       type: object
                     type: array
+                  edgeLocationIds:
+                    description: |-
+                      (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                      List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                    items:
+                      type: string
+                    type: array
                   gpu:
                     description: |-
                       (Block List, Max: 1) GPU configuration. (see below for nested schema)
@@ -1193,8 +1305,8 @@ spec:
                           type: number
                         enableTimeSharing:
                           description: |-
-                            sharing.
-                            Enable/disable GPU time-sharing.
+                            sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
+                            Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
                           type: boolean
                         sharingConfiguration:
                           description: |-
@@ -1214,6 +1326,16 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        sharingStrategy:
+                          description: |-
+                            slicing, mps.
+                            GPU sharing strategy. Supported values: `time-slicing`, `mps`.
+                          type: string
+                        userManagedGpuDrivers:
+                          description: |-
+                            managed GPU drivers (for GKE clusters only).
+                            Enable/disable user-managed GPU drivers (for GKE clusters only).
+                          type: boolean
                       type: object
                     type: array
                   isDefault:
@@ -1231,6 +1353,22 @@ spec:
                       (String) Name of the node template.
                       Name of the node template.
                     type: string
+                  priceAdjustmentConfiguration:
+                    description: |-
+                      (Block List, Max: 1) Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting. (see below for nested schema)
+                      Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.
+                    items:
+                      properties:
+                        instanceTypeAdjustments:
+                          additionalProperties:
+                            type: string
+                          description: |-
+                            (Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+                            Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+                          type: object
+                          x-kubernetes-map-type: granular
+                      type: object
+                    type: array
                   rebalancingConfigMinNodes:
                     description: |-
                       (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.
@@ -1452,6 +1590,37 @@ spec:
                           items:
                             type: string
                           type: array
+                        aws:
+                          description: |-
+                            specific constraints for the node template. (see below for nested schema)
+                            AWS-specific constraints for the node template.
+                          items:
+                            properties:
+                              capacityReservations:
+                                description: |-
+                                  (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+                                  Capacity reservations that this template can use for provisioning.
+                                items:
+                                  properties:
+                                    capacityResourceGroupArn:
+                                      description: |-
+                                        (String) Capacity resource group ARN for UltraServer capacity blocks.
+                                        Capacity resource group ARN for UltraServer capacity blocks.
+                                      type: string
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        AWS capacity reservation ID.
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+                                        Type of capacity reservation. Allowed values: ON_DEMAND_CAPACITY_RESERVATION, CAPACITY_BLOCK.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         azs:
                           description: |-
                             (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -1594,6 +1763,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              fractionalGpus:
+                                description: |-
+                                  (String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or “.
+                                  Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: `enabled`, `disabled` or “.
+                                type: string
                               includeNames:
                                 description: |-
                                   (List of String) Instance families to include when filtering (excludes all other families).
@@ -1783,6 +1957,13 @@ spec:
                           type: string
                       type: object
                     type: array
+                  edgeLocationIds:
+                    description: |-
+                      (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                      List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                    items:
+                      type: string
+                    type: array
                   gpu:
                     description: |-
                       (Block List, Max: 1) GPU configuration. (see below for nested schema)
@@ -1796,8 +1977,8 @@ spec:
                           type: number
                         enableTimeSharing:
                           description: |-
-                            sharing.
-                            Enable/disable GPU time-sharing.
+                            sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
+                            Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.
                           type: boolean
                         sharingConfiguration:
                           description: |-
@@ -1817,6 +1998,16 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        sharingStrategy:
+                          description: |-
+                            slicing, mps.
+                            GPU sharing strategy. Supported values: `time-slicing`, `mps`.
+                          type: string
+                        userManagedGpuDrivers:
+                          description: |-
+                            managed GPU drivers (for GKE clusters only).
+                            Enable/disable user-managed GPU drivers (for GKE clusters only).
+                          type: boolean
                       type: object
                     type: array
                   id:
@@ -1837,6 +2028,22 @@ spec:
                       (String) Name of the node template.
                       Name of the node template.
                     type: string
+                  priceAdjustmentConfiguration:
+                    description: |-
+                      (Block List, Max: 1) Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting. (see below for nested schema)
+                      Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.
+                    items:
+                      properties:
+                        instanceTypeAdjustments:
+                          additionalProperties:
+                            type: string
+                          description: |-
+                            (Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+                            Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}
+                          type: object
+                          x-kubernetes-map-type: granular
+                      type: object
+                    type: array
                   rebalancingConfigMinNodes:
                     description: |-
                       (Number) Minimum nodes that will be kept when rebalancing nodes using this node template.

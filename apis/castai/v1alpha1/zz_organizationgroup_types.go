@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type MemberInitParameters struct {
+type MembersMemberInitParameters struct {
 
 	// (String)
 	Email *string `json:"email,omitempty" tf:"email,omitempty"`
@@ -26,7 +26,7 @@ type MemberInitParameters struct {
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 }
 
-type MemberObservation struct {
+type MembersMemberObservation struct {
 
 	// (String)
 	Email *string `json:"email,omitempty" tf:"email,omitempty"`
@@ -39,7 +39,7 @@ type MemberObservation struct {
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 }
 
-type MemberParameters struct {
+type MembersMemberParameters struct {
 
 	// (String)
 	// +kubebuilder:validation:Optional
@@ -55,25 +55,6 @@ type MemberParameters struct {
 	Kind *string `json:"kind" tf:"kind,omitempty"`
 }
 
-type MembersInitParameters struct {
-
-	// (Block List) (see below for nested schema)
-	Member []MemberInitParameters `json:"member,omitempty" tf:"member,omitempty"`
-}
-
-type MembersObservation struct {
-
-	// (Block List) (see below for nested schema)
-	Member []MemberObservation `json:"member,omitempty" tf:"member,omitempty"`
-}
-
-type MembersParameters struct {
-
-	// (Block List) (see below for nested schema)
-	// +kubebuilder:validation:Optional
-	Member []MemberParameters `json:"member,omitempty" tf:"member,omitempty"`
-}
-
 type OrganizationGroupInitParameters struct {
 
 	// (String) Description of the group.
@@ -81,7 +62,7 @@ type OrganizationGroupInitParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	Members []MembersInitParameters `json:"members,omitempty" tf:"members,omitempty"`
+	Members []OrganizationGroupMembersInitParameters `json:"members,omitempty" tf:"members,omitempty"`
 
 	// (String) Name of the group.
 	// Name of the group.
@@ -90,6 +71,25 @@ type OrganizationGroupInitParameters struct {
 	// (String) CAST AI organization ID.
 	// CAST AI organization ID.
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+}
+
+type OrganizationGroupMembersInitParameters struct {
+
+	// (Block List) (see below for nested schema)
+	Member []MembersMemberInitParameters `json:"member,omitempty" tf:"member,omitempty"`
+}
+
+type OrganizationGroupMembersObservation struct {
+
+	// (Block List) (see below for nested schema)
+	Member []MembersMemberObservation `json:"member,omitempty" tf:"member,omitempty"`
+}
+
+type OrganizationGroupMembersParameters struct {
+
+	// (Block List) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Member []MembersMemberParameters `json:"member,omitempty" tf:"member,omitempty"`
 }
 
 type OrganizationGroupObservation struct {
@@ -102,7 +102,7 @@ type OrganizationGroupObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	Members []MembersObservation `json:"members,omitempty" tf:"members,omitempty"`
+	Members []OrganizationGroupMembersObservation `json:"members,omitempty" tf:"members,omitempty"`
 
 	// (String) Name of the group.
 	// Name of the group.
@@ -122,7 +122,7 @@ type OrganizationGroupParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Members []MembersParameters `json:"members,omitempty" tf:"members,omitempty"`
+	Members []OrganizationGroupMembersParameters `json:"members,omitempty" tf:"members,omitempty"`
 
 	// (String) Name of the group.
 	// Name of the group.

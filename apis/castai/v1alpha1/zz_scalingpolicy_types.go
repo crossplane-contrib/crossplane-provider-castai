@@ -13,6 +13,28 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AnomalyDetectionInitParameters struct {
+
+	// (Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)
+	// Configures CPU pressure anomaly detection thresholds.
+	CPUPressure []CPUPressureInitParameters `json:"cpuPressure,omitempty" tf:"cpu_pressure,omitempty"`
+}
+
+type AnomalyDetectionObservation struct {
+
+	// (Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)
+	// Configures CPU pressure anomaly detection thresholds.
+	CPUPressure []CPUPressureObservation `json:"cpuPressure,omitempty" tf:"cpu_pressure,omitempty"`
+}
+
+type AnomalyDetectionParameters struct {
+
+	// (Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)
+	// Configures CPU pressure anomaly detection thresholds.
+	// +kubebuilder:validation:Optional
+	CPUPressure []CPUPressureParameters `json:"cpuPressure,omitempty" tf:"cpu_pressure,omitempty"`
+}
+
 type AntiAffinityInitParameters struct {
 
 	// affinity should be considered when scaling the workload.
@@ -152,6 +174,41 @@ type AssignmentRulesParameters struct {
 	Rules []RulesParameters `json:"rules" tf:"rules,omitempty"`
 }
 
+type CPUPressureInitParameters struct {
+
+	// 100) that a pod must experience CPU pressure to be considered under pressure.
+	// Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
+	CPUStallThresholdPercentage *float64 `json:"cpuStallThresholdPercentage,omitempty" tf:"cpu_stall_threshold_percentage,omitempty"`
+
+	// 100) of pods that must be experiencing pressure for the detector to trigger.
+	// Percentage (0-100) of pods that must be experiencing pressure for the detector to trigger.
+	MinPressuredPodPercentage *float64 `json:"minPressuredPodPercentage,omitempty" tf:"min_pressured_pod_percentage,omitempty"`
+}
+
+type CPUPressureObservation struct {
+
+	// 100) that a pod must experience CPU pressure to be considered under pressure.
+	// Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
+	CPUStallThresholdPercentage *float64 `json:"cpuStallThresholdPercentage,omitempty" tf:"cpu_stall_threshold_percentage,omitempty"`
+
+	// 100) of pods that must be experiencing pressure for the detector to trigger.
+	// Percentage (0-100) of pods that must be experiencing pressure for the detector to trigger.
+	MinPressuredPodPercentage *float64 `json:"minPressuredPodPercentage,omitempty" tf:"min_pressured_pod_percentage,omitempty"`
+}
+
+type CPUPressureParameters struct {
+
+	// 100) that a pod must experience CPU pressure to be considered under pressure.
+	// Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
+	// +kubebuilder:validation:Optional
+	CPUStallThresholdPercentage *float64 `json:"cpuStallThresholdPercentage" tf:"cpu_stall_threshold_percentage,omitempty"`
+
+	// 100) of pods that must be experiencing pressure for the detector to trigger.
+	// Percentage (0-100) of pods that must be experiencing pressure for the detector to trigger.
+	// +kubebuilder:validation:Optional
+	MinPressuredPodPercentage *float64 `json:"minPressuredPodPercentage" tf:"min_pressured_pod_percentage,omitempty"`
+}
+
 type ConfidenceInitParameters struct {
 
 	// changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
@@ -200,6 +257,28 @@ type DownscalingParameters struct {
 	// - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
 	// +kubebuilder:validation:Optional
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
+}
+
+type JvmInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// JVM memory optimization settings.
+	Memory []MemoryInitParameters `json:"memory,omitempty" tf:"memory,omitempty"`
+}
+
+type JvmObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// JVM memory optimization settings.
+	Memory []MemoryObservation `json:"memory,omitempty" tf:"memory,omitempty"`
+}
+
+type JvmParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// JVM memory optimization settings.
+	// +kubebuilder:validation:Optional
+	Memory []MemoryParameters `json:"memory,omitempty" tf:"memory,omitempty"`
 }
 
 type LabelsExpressionsInitParameters struct {
@@ -256,11 +335,20 @@ type LimitInitParameters struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
+	// (Boolean) Apply the strategy only when the original resource has limits defined.
+	// Apply the strategy only when the original resource has limits defined.
+	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
+
+	// (Boolean) Use the original resource limits if they are higher than recommended values.
+	// Use the original resource limits if they are higher than recommended values.
+	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
 	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+	// - MAINTAIN_RATIO - maintains the original ratio between requests and limits.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -270,11 +358,20 @@ type LimitObservation struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
+	// (Boolean) Apply the strategy only when the original resource has limits defined.
+	// Apply the strategy only when the original resource has limits defined.
+	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
+
+	// (Boolean) Use the original resource limits if they are higher than recommended values.
+	// Use the original resource limits if they are higher than recommended values.
+	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
 	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+	// - MAINTAIN_RATIO - maintains the original ratio between requests and limits.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -285,11 +382,22 @@ type LimitParameters struct {
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
+	// (Boolean) Apply the strategy only when the original resource has limits defined.
+	// Apply the strategy only when the original resource has limits defined.
+	// +kubebuilder:validation:Optional
+	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
+
+	// (Boolean) Use the original resource limits if they are higher than recommended values.
+	// Use the original resource limits if they are higher than recommended values.
+	// +kubebuilder:validation:Optional
+	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
 	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+	// - MAINTAIN_RATIO - maintains the original ratio between requests and limits.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
@@ -416,45 +524,9 @@ type MemoryEventParameters struct {
 
 type MemoryInitParameters struct {
 
-	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
-	// The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
-	ApplyThreshold *float64 `json:"applyThreshold,omitempty" tf:"apply_threshold,omitempty"`
-
-	// (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
-	// Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
-	ApplyThresholdStrategy []MemoryApplyThresholdStrategyInitParameters `json:"applyThresholdStrategy,omitempty" tf:"apply_threshold_strategy,omitempty"`
-
-	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
-	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
-	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
-
-	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
-	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
-	Function *string `json:"function,omitempty" tf:"function,omitempty"`
-
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
-	// Resource limit settings
-	Limit []MemoryLimitInitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
-
-	// (Number) The look back period in seconds for the recommendation.
-	// The look back period in seconds for the recommendation.
-	LookBackPeriodSeconds *float64 `json:"lookBackPeriodSeconds,omitempty" tf:"look_back_period_seconds,omitempty"`
-
-	// (String) Defines possible options for workload management.
-	// Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
-	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
-
-	// this is in MiB, for CPU - this is in cores.
-	// Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
-	Max *float64 `json:"max,omitempty" tf:"max,omitempty"`
-
-	// this is in MiB, for CPU - this is in cores.
-	// Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
-	Min *float64 `json:"min,omitempty" tf:"min,omitempty"`
-
-	// (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
-	// Overhead for the recommendation, e.g. `0.1` will result in 10% higher recommendation
-	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
+	// (Boolean) Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
+	// Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
+	Optimization *bool `json:"optimization,omitempty" tf:"optimization,omitempty"`
 }
 
 type MemoryLimitInitParameters struct {
@@ -463,11 +535,20 @@ type MemoryLimitInitParameters struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
+	// (Boolean) Apply the strategy only when the original resource has limits defined.
+	// Apply the strategy only when the original resource has limits defined.
+	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
+
+	// (Boolean) Use the original resource limits if they are higher than recommended values.
+	// Use the original resource limits if they are higher than recommended values.
+	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
 	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+	// - MAINTAIN_RATIO - maintains the original ratio between requests and limits.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -477,11 +558,20 @@ type MemoryLimitObservation struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
+	// (Boolean) Apply the strategy only when the original resource has limits defined.
+	// Apply the strategy only when the original resource has limits defined.
+	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
+
+	// (Boolean) Use the original resource limits if they are higher than recommended values.
+	// Use the original resource limits if they are higher than recommended values.
+	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
 	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+	// - MAINTAIN_RATIO - maintains the original ratio between requests and limits.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -492,109 +582,39 @@ type MemoryLimitParameters struct {
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
+	// (Boolean) Apply the strategy only when the original resource has limits defined.
+	// Apply the strategy only when the original resource has limits defined.
+	// +kubebuilder:validation:Optional
+	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
+
+	// (Boolean) Use the original resource limits if they are higher than recommended values.
+	// Use the original resource limits if they are higher than recommended values.
+	// +kubebuilder:validation:Optional
+	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
+
 	// (String) Defines apply theshold strategy type.
 	// Defines limit strategy type.
 	// - NO_LIMIT - removes the resource limit even if it was specified in the workload spec.
 	// - KEEP_LIMITS - keep existing resource limits. While limits provide stability predictability, they may restrict workloads that need to temporarily burst beyond their allocation.
 	// - MULTIPLIER - used to calculate the resource limit. The final value is determined by multiplying the resource request by the specified factor.
+	// - MAINTAIN_RATIO - maintains the original ratio between requests and limits.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type MemoryObservation struct {
 
-	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
-	// The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
-	ApplyThreshold *float64 `json:"applyThreshold,omitempty" tf:"apply_threshold,omitempty"`
-
-	// (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
-	// Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
-	ApplyThresholdStrategy []MemoryApplyThresholdStrategyObservation `json:"applyThresholdStrategy,omitempty" tf:"apply_threshold_strategy,omitempty"`
-
-	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
-	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
-	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
-
-	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
-	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
-	Function *string `json:"function,omitempty" tf:"function,omitempty"`
-
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
-	// Resource limit settings
-	Limit []MemoryLimitObservation `json:"limit,omitempty" tf:"limit,omitempty"`
-
-	// (Number) The look back period in seconds for the recommendation.
-	// The look back period in seconds for the recommendation.
-	LookBackPeriodSeconds *float64 `json:"lookBackPeriodSeconds,omitempty" tf:"look_back_period_seconds,omitempty"`
-
-	// (String) Defines possible options for workload management.
-	// Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
-	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
-
-	// this is in MiB, for CPU - this is in cores.
-	// Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
-	Max *float64 `json:"max,omitempty" tf:"max,omitempty"`
-
-	// this is in MiB, for CPU - this is in cores.
-	// Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
-	Min *float64 `json:"min,omitempty" tf:"min,omitempty"`
-
-	// (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
-	// Overhead for the recommendation, e.g. `0.1` will result in 10% higher recommendation
-	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
+	// (Boolean) Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
+	// Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
+	Optimization *bool `json:"optimization,omitempty" tf:"optimization,omitempty"`
 }
 
 type MemoryParameters struct {
 
-	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
-	// The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// (Boolean) Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
+	// Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
 	// +kubebuilder:validation:Optional
-	ApplyThreshold *float64 `json:"applyThreshold,omitempty" tf:"apply_threshold,omitempty"`
-
-	// (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
-	// Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
-	// +kubebuilder:validation:Optional
-	ApplyThresholdStrategy []MemoryApplyThresholdStrategyParameters `json:"applyThresholdStrategy,omitempty" tf:"apply_threshold_strategy,omitempty"`
-
-	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
-	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
-	// +kubebuilder:validation:Optional
-	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
-
-	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
-	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
-	// +kubebuilder:validation:Optional
-	Function *string `json:"function,omitempty" tf:"function,omitempty"`
-
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
-	// Resource limit settings
-	// +kubebuilder:validation:Optional
-	Limit []MemoryLimitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
-
-	// (Number) The look back period in seconds for the recommendation.
-	// The look back period in seconds for the recommendation.
-	// +kubebuilder:validation:Optional
-	LookBackPeriodSeconds *float64 `json:"lookBackPeriodSeconds,omitempty" tf:"look_back_period_seconds,omitempty"`
-
-	// (String) Defines possible options for workload management.
-	// Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
-	// +kubebuilder:validation:Optional
-	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
-
-	// this is in MiB, for CPU - this is in cores.
-	// Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
-	// +kubebuilder:validation:Optional
-	Max *float64 `json:"max,omitempty" tf:"max,omitempty"`
-
-	// this is in MiB, for CPU - this is in cores.
-	// Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
-	// +kubebuilder:validation:Optional
-	Min *float64 `json:"min,omitempty" tf:"min,omitempty"`
-
-	// (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
-	// Overhead for the recommendation, e.g. `0.1` will result in 10% higher recommendation
-	// +kubebuilder:validation:Optional
-	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
+	Optimization *bool `json:"optimization,omitempty" tf:"optimization,omitempty"`
 }
 
 type NamespaceInitParameters struct {
@@ -709,7 +729,7 @@ type RulesInitParameters struct {
 
 	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
 	// Allows assigning a scaling policy based on the workload's metadata.
-	Workload []WorkloadInitParameters `json:"workload,omitempty" tf:"workload,omitempty"`
+	Workload []RulesWorkloadInitParameters `json:"workload,omitempty" tf:"workload,omitempty"`
 }
 
 type RulesObservation struct {
@@ -720,7 +740,7 @@ type RulesObservation struct {
 
 	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
 	// Allows assigning a scaling policy based on the workload's metadata.
-	Workload []WorkloadObservation `json:"workload,omitempty" tf:"workload,omitempty"`
+	Workload []RulesWorkloadObservation `json:"workload,omitempty" tf:"workload,omitempty"`
 }
 
 type RulesParameters struct {
@@ -733,7 +753,57 @@ type RulesParameters struct {
 	// (Block List, Max: 1) Allows assigning a scaling policy based on the workload's metadata. (see below for nested schema)
 	// Allows assigning a scaling policy based on the workload's metadata.
 	// +kubebuilder:validation:Optional
-	Workload []WorkloadParameters `json:"workload,omitempty" tf:"workload,omitempty"`
+	Workload []RulesWorkloadParameters `json:"workload,omitempty" tf:"workload,omitempty"`
+}
+
+type RulesWorkloadInitParameters struct {
+
+	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// - only kind, e.g. "Deployment"
+	// - group and kind: e.g."Deployment.apps"
+	// - group, version and kind: e.g."Deployment.v1.apps"
+	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	LabelsExpressions []LabelsExpressionsInitParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+}
+
+type RulesWorkloadObservation struct {
+
+	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// - only kind, e.g. "Deployment"
+	// - group and kind: e.g."Deployment.apps"
+	// - group, version and kind: e.g."Deployment.v1.apps"
+	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	LabelsExpressions []LabelsExpressionsObservation `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+}
+
+type RulesWorkloadParameters struct {
+
+	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
+	// It can be either:
+	// - only kind, e.g. "Deployment"
+	// - group and kind: e.g."Deployment.apps"
+	// - group, version and kind: e.g."Deployment.v1.apps"
+	// +kubebuilder:validation:Optional
+	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	// +kubebuilder:validation:Optional
+	LabelsExpressions []LabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 }
 
 type ScalingPolicyCPUInitParameters struct {
@@ -877,6 +947,10 @@ type ScalingPolicyCPUParameters struct {
 
 type ScalingPolicyInitParameters struct {
 
+	// (Block List, Max: 1) Defines anomaly detection settings for the scaling policy. (see below for nested schema)
+	// Defines anomaly detection settings for the scaling policy.
+	AnomalyDetection []AnomalyDetectionInitParameters `json:"anomalyDetection,omitempty" tf:"anomaly_detection,omitempty"`
+
 	// (Block List, Max: 1) (see below for nested schema)
 	AntiAffinity []AntiAffinityInitParameters `json:"antiAffinity,omitempty" tf:"anti_affinity,omitempty"`
 
@@ -904,6 +978,14 @@ type ScalingPolicyInitParameters struct {
 	// (Block List, Max: 1) (see below for nested schema)
 	Downscaling []DownscalingInitParameters `json:"downscaling,omitempty" tf:"downscaling,omitempty"`
 
+	// (List of String) Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
+	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
+	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
+
+	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
+	// JVM optimization settings.
+	Jvm []JvmInitParameters `json:"jvm,omitempty" tf:"jvm,omitempty"`
+
 	// (String) Defines possible options for workload management.
 	// Defines possible options for workload management.
 	// - READ_ONLY - workload watched (metrics collected), but no actions performed by CAST AI.
@@ -911,7 +993,7 @@ type ScalingPolicyInitParameters struct {
 	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
-	Memory []MemoryInitParameters `json:"memory,omitempty" tf:"memory,omitempty"`
+	Memory []ScalingPolicyMemoryInitParameters `json:"memory,omitempty" tf:"memory,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	MemoryEvent []MemoryEventInitParameters `json:"memoryEvent,omitempty" tf:"memory_event,omitempty"`
@@ -936,7 +1018,150 @@ type ScalingPolicyInitParameters struct {
 	Startup []StartupInitParameters `json:"startup,omitempty" tf:"startup,omitempty"`
 }
 
+type ScalingPolicyMemoryInitParameters struct {
+
+	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	ApplyThreshold *float64 `json:"applyThreshold,omitempty" tf:"apply_threshold,omitempty"`
+
+	// (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+	// Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+	ApplyThresholdStrategy []MemoryApplyThresholdStrategyInitParameters `json:"applyThresholdStrategy,omitempty" tf:"apply_threshold_strategy,omitempty"`
+
+	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
+	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
+	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
+	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
+	Function *string `json:"function,omitempty" tf:"function,omitempty"`
+
+	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// Resource limit settings
+	Limit []MemoryLimitInitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
+
+	// (Number) The look back period in seconds for the recommendation.
+	// The look back period in seconds for the recommendation.
+	LookBackPeriodSeconds *float64 `json:"lookBackPeriodSeconds,omitempty" tf:"look_back_period_seconds,omitempty"`
+
+	// (String) Defines possible options for workload management.
+	// Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+	Max *float64 `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+	Min *float64 `json:"min,omitempty" tf:"min,omitempty"`
+
+	// (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
+	// Overhead for the recommendation, e.g. `0.1` will result in 10% higher recommendation
+	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
+}
+
+type ScalingPolicyMemoryObservation struct {
+
+	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	ApplyThreshold *float64 `json:"applyThreshold,omitempty" tf:"apply_threshold,omitempty"`
+
+	// (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+	// Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+	ApplyThresholdStrategy []MemoryApplyThresholdStrategyObservation `json:"applyThresholdStrategy,omitempty" tf:"apply_threshold_strategy,omitempty"`
+
+	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
+	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
+	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
+	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
+	Function *string `json:"function,omitempty" tf:"function,omitempty"`
+
+	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// Resource limit settings
+	Limit []MemoryLimitObservation `json:"limit,omitempty" tf:"limit,omitempty"`
+
+	// (Number) The look back period in seconds for the recommendation.
+	// The look back period in seconds for the recommendation.
+	LookBackPeriodSeconds *float64 `json:"lookBackPeriodSeconds,omitempty" tf:"look_back_period_seconds,omitempty"`
+
+	// (String) Defines possible options for workload management.
+	// Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+	Max *float64 `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+	Min *float64 `json:"min,omitempty" tf:"min,omitempty"`
+
+	// (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
+	// Overhead for the recommendation, e.g. `0.1` will result in 10% higher recommendation
+	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
+}
+
+type ScalingPolicyMemoryParameters struct {
+
+	// (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
+	// +kubebuilder:validation:Optional
+	ApplyThreshold *float64 `json:"applyThreshold,omitempty" tf:"apply_threshold,omitempty"`
+
+	// (Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)
+	// Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.
+	// +kubebuilder:validation:Optional
+	ApplyThresholdStrategy []MemoryApplyThresholdStrategyParameters `json:"applyThresholdStrategy,omitempty" tf:"apply_threshold_strategy,omitempty"`
+
+	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
+	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
+	// +kubebuilder:validation:Optional
+	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
+	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
+	// +kubebuilder:validation:Optional
+	Function *string `json:"function,omitempty" tf:"function,omitempty"`
+
+	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// Resource limit settings
+	// +kubebuilder:validation:Optional
+	Limit []MemoryLimitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
+
+	// (Number) The look back period in seconds for the recommendation.
+	// The look back period in seconds for the recommendation.
+	// +kubebuilder:validation:Optional
+	LookBackPeriodSeconds *float64 `json:"lookBackPeriodSeconds,omitempty" tf:"look_back_period_seconds,omitempty"`
+
+	// (String) Defines possible options for workload management.
+	// Disables management for a single resource when set to `READ_ONLY`. The resource will use its original workload template requests and limits. Supported value: `READ_ONLY`. Minimum required workload-autoscaler version: `v0.23.1`.
+	// +kubebuilder:validation:Optional
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+	// +kubebuilder:validation:Optional
+	Max *float64 `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+	// +kubebuilder:validation:Optional
+	Min *float64 `json:"min,omitempty" tf:"min,omitempty"`
+
+	// (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
+	// Overhead for the recommendation, e.g. `0.1` will result in 10% higher recommendation
+	// +kubebuilder:validation:Optional
+	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
+}
+
 type ScalingPolicyObservation struct {
+
+	// (Block List, Max: 1) Defines anomaly detection settings for the scaling policy. (see below for nested schema)
+	// Defines anomaly detection settings for the scaling policy.
+	AnomalyDetection []AnomalyDetectionObservation `json:"anomalyDetection,omitempty" tf:"anomaly_detection,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	AntiAffinity []AntiAffinityObservation `json:"antiAffinity,omitempty" tf:"anti_affinity,omitempty"`
@@ -965,8 +1190,16 @@ type ScalingPolicyObservation struct {
 	// (Block List, Max: 1) (see below for nested schema)
 	Downscaling []DownscalingObservation `json:"downscaling,omitempty" tf:"downscaling,omitempty"`
 
+	// (List of String) Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
+	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
+	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
+
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
+	// JVM optimization settings.
+	Jvm []JvmObservation `json:"jvm,omitempty" tf:"jvm,omitempty"`
 
 	// (String) Defines possible options for workload management.
 	// Defines possible options for workload management.
@@ -975,7 +1208,7 @@ type ScalingPolicyObservation struct {
 	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
-	Memory []MemoryObservation `json:"memory,omitempty" tf:"memory,omitempty"`
+	Memory []ScalingPolicyMemoryObservation `json:"memory,omitempty" tf:"memory,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	MemoryEvent []MemoryEventObservation `json:"memoryEvent,omitempty" tf:"memory_event,omitempty"`
@@ -1001,6 +1234,11 @@ type ScalingPolicyObservation struct {
 }
 
 type ScalingPolicyParameters struct {
+
+	// (Block List, Max: 1) Defines anomaly detection settings for the scaling policy. (see below for nested schema)
+	// Defines anomaly detection settings for the scaling policy.
+	// +kubebuilder:validation:Optional
+	AnomalyDetection []AnomalyDetectionParameters `json:"anomalyDetection,omitempty" tf:"anomaly_detection,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -1036,6 +1274,16 @@ type ScalingPolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	Downscaling []DownscalingParameters `json:"downscaling,omitempty" tf:"downscaling,omitempty"`
 
+	// (List of String) Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
+	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
+	// +kubebuilder:validation:Optional
+	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
+
+	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
+	// JVM optimization settings.
+	// +kubebuilder:validation:Optional
+	Jvm []JvmParameters `json:"jvm,omitempty" tf:"jvm,omitempty"`
+
 	// (String) Defines possible options for workload management.
 	// Defines possible options for workload management.
 	// - READ_ONLY - workload watched (metrics collected), but no actions performed by CAST AI.
@@ -1045,7 +1293,7 @@ type ScalingPolicyParameters struct {
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Memory []MemoryParameters `json:"memory,omitempty" tf:"memory,omitempty"`
+	Memory []ScalingPolicyMemoryParameters `json:"memory,omitempty" tf:"memory,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -1107,56 +1355,6 @@ type StartupParameters struct {
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	// +kubebuilder:validation:Optional
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
-}
-
-type WorkloadInitParameters struct {
-
-	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
-	// It can be either:
-	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
-	// It can be either:
-	// - only kind, e.g. "Deployment"
-	// - group and kind: e.g."Deployment.apps"
-	// - group, version and kind: e.g."Deployment.v1.apps"
-	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
-
-	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
-	// Defines matching by label selector requirements.
-	LabelsExpressions []LabelsExpressionsInitParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
-}
-
-type WorkloadObservation struct {
-
-	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
-	// It can be either:
-	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
-	// It can be either:
-	// - only kind, e.g. "Deployment"
-	// - group and kind: e.g."Deployment.apps"
-	// - group, version and kind: e.g."Deployment.v1.apps"
-	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
-
-	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
-	// Defines matching by label selector requirements.
-	LabelsExpressions []LabelsExpressionsObservation `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
-}
-
-type WorkloadParameters struct {
-
-	// (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
-	// It can be either:
-	// Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
-	// It can be either:
-	// - only kind, e.g. "Deployment"
-	// - group and kind: e.g."Deployment.apps"
-	// - group, version and kind: e.g."Deployment.v1.apps"
-	// +kubebuilder:validation:Optional
-	Gvk []*string `json:"gvk,omitempty" tf:"gvk,omitempty"`
-
-	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
-	// Defines matching by label selector requirements.
-	// +kubebuilder:validation:Optional
-	LabelsExpressions []LabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 }
 
 // ScalingPolicySpec defines the desired state of ScalingPolicy

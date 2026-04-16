@@ -31,7 +31,7 @@ type AuthorObservation struct {
 type AuthorParameters struct {
 }
 
-type ServiceAccountInitParameters struct {
+type ServiceAccountInitParameters_2 struct {
 
 	// (String) Description of the service account.
 	// Description of the service account.
@@ -46,7 +46,7 @@ type ServiceAccountInitParameters struct {
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 }
 
-type ServiceAccountObservation struct {
+type ServiceAccountObservation_2 struct {
 
 	// (List of Object) Author of the service account. (see below for nested schema)
 	// Author of the service account.
@@ -72,7 +72,7 @@ type ServiceAccountObservation struct {
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 }
 
-type ServiceAccountParameters struct {
+type ServiceAccountParameters_2 struct {
 
 	// (String) Description of the service account.
 	// Description of the service account.
@@ -93,7 +93,7 @@ type ServiceAccountParameters struct {
 // ServiceAccountSpec defines the desired state of ServiceAccount
 type ServiceAccountSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     ServiceAccountParameters `json:"forProvider"`
+	ForProvider     ServiceAccountParameters_2 `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -104,13 +104,13 @@ type ServiceAccountSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider ServiceAccountInitParameters `json:"initProvider,omitempty"`
+	InitProvider ServiceAccountInitParameters_2 `json:"initProvider,omitempty"`
 }
 
 // ServiceAccountStatus defines the observed state of ServiceAccount.
 type ServiceAccountStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServiceAccountObservation `json:"atProvider,omitempty"`
+	AtProvider        ServiceAccountObservation_2 `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

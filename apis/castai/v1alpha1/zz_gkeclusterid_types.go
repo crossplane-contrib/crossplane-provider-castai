@@ -47,6 +47,9 @@ type GkeClusterIdObservation struct {
 	// GKE cluster name
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// CAST AI organization ID
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
 	// GCP project id
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }

@@ -19,8 +19,8 @@ type EksClusterInitParameters struct {
 	// ID of AWS account
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
-	// (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
-	// AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user that can be retrieved using `castai_eks_user_arn` data source
+	// (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user.
+	// AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user.
 	AssumeRoleArn *string `json:"assumeRoleArn,omitempty" tf:"assume_role_arn,omitempty"`
 
 	// (Boolean) Should CAST AI remove nodes managed by CAST AI on disconnect
@@ -42,8 +42,8 @@ type EksClusterObservation struct {
 	// ID of AWS account
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
-	// (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
-	// AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user that can be retrieved using `castai_eks_user_arn` data source
+	// (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user.
+	// AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user.
 	AssumeRoleArn *string `json:"assumeRoleArn,omitempty" tf:"assume_role_arn,omitempty"`
 
 	// (String) CAST AI internal credentials ID
@@ -61,6 +61,10 @@ type EksClusterObservation struct {
 	// name of your EKS cluster
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) CAST AI organization ID
+	// CAST AI organization ID
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
 	// (String) AWS region where the cluster is placed
 	// AWS region where the cluster is placed
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
@@ -73,8 +77,8 @@ type EksClusterParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
-	// (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
-	// AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user that can be retrieved using `castai_eks_user_arn` data source
+	// (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user.
+	// AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user.
 	// +kubebuilder:validation:Optional
 	AssumeRoleArn *string `json:"assumeRoleArn,omitempty" tf:"assume_role_arn,omitempty"`
 

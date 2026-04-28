@@ -1,3 +1,4 @@
+// Package workloadscalingpolicyorder provides configuration and utilities.
 package workloadscalingpolicyorder
 
 import (

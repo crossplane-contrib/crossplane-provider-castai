@@ -1,3 +1,4 @@
+// Package nodetemplate provides configuration and utilities.
 package nodetemplate
 
 import (

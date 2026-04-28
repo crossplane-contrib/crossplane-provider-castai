@@ -103,6 +103,11 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        autoAssignment:
+                          description: |-
+                            (Boolean) If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+                            If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+                          type: boolean
                         matcher:
                           description: |-
                             (Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)
@@ -147,6 +152,16 @@ spec:
                     description: |-
                       (String) JSON file containing CUDs exported from GCP.
                       JSON file containing CUDs exported from GCP.
+                    type: string
+                  importMode:
+                    description: |-
+                      (String) Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+                      Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) Organization ID. If not provided, will be fetched from the API using the authentication token.
+                      Organization ID. If not provided, will be fetched from the API using the authentication token.
                     type: string
                 type: object
               initProvider:
@@ -191,6 +206,11 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        autoAssignment:
+                          description: |-
+                            (Boolean) If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+                            If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+                          type: boolean
                         matcher:
                           description: |-
                             (Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)
@@ -235,6 +255,16 @@ spec:
                     description: |-
                       (String) JSON file containing CUDs exported from GCP.
                       JSON file containing CUDs exported from GCP.
+                    type: string
+                  importMode:
+                    description: |-
+                      (String) Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+                      Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) Organization ID. If not provided, will be fetched from the API using the authentication token.
+                      Organization ID. If not provided, will be fetched from the API using the authentication token.
                     type: string
                 type: object
               managementPolicies:
@@ -523,6 +553,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        autoAssignment:
+                          description: |-
+                            (Boolean) If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+                            If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+                          type: boolean
                         matcher:
                           description: |-
                             (Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)
@@ -645,6 +680,16 @@ spec:
                     type: string
                   id:
                     description: (String) The ID of this resource.
+                    type: string
+                  importMode:
+                    description: |-
+                      (String) Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+                      Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) Organization ID. If not provided, will be fetched from the API using the authentication token.
+                      Organization ID. If not provided, will be fetched from the API using the authentication token.
                     type: string
                 type: object
               conditions:

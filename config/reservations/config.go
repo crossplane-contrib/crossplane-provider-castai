@@ -1,3 +1,4 @@
+// Package reservations provides configuration and utilities.
 package reservations
 
 import (

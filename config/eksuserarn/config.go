@@ -1,3 +1,4 @@
+// Package eksuserarn provides configuration and utilities.
 package eksuserarn
 
 import (

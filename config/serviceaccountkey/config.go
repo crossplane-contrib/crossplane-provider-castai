@@ -1,3 +1,4 @@
+// Package serviceaccountkey provides configuration and utilities.
 package serviceaccountkey
 
 import (

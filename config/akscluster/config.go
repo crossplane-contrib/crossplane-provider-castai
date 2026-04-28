@@ -1,3 +1,4 @@
+// Package akscluster provides configuration and utilities.
 package akscluster
 
 import (

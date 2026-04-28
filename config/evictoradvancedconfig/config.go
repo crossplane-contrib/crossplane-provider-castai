@@ -1,3 +1,4 @@
+// Package evictoradvancedconfig provides configuration and utilities.
 package evictoradvancedconfig
 
 import (

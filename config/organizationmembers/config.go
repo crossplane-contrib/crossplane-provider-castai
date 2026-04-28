@@ -1,3 +1,4 @@
+// Package organizationmembers provides configuration and utilities.
 package organizationmembers
 
 import (

@@ -2,6 +2,7 @@
 Copyright 2021 Upbound Inc.
 */
 
+// Package clients provides configuration and utilities.
 package clients
 
 import (

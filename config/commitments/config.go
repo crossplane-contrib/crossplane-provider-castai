@@ -1,3 +1,4 @@
+// Package commitments provides configuration and utilities.
 package commitments
 
 import (

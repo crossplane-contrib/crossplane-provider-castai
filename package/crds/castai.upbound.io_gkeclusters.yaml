@@ -374,6 +374,11 @@ spec:
                       (String) GKE cluster name
                       GKE cluster name
                     type: string
+                  organizationId:
+                    description: |-
+                      (String) CAST AI organization ID
+                      CAST AI organization ID
+                    type: string
                   projectId:
                     description: |-
                       (String) GCP project id

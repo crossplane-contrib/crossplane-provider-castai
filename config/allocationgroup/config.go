@@ -1,3 +1,4 @@
+// Package allocationgroup provides configuration and utilities.
 package allocationgroup
 
 import (

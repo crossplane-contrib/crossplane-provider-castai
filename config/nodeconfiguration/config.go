@@ -1,3 +1,4 @@
+// Package nodeconfiguration provides configuration and utilities.
 package nodeconfiguration
 
 import (

@@ -1,3 +1,4 @@
+// Package rebalancingschedule provides configuration and utilities.
 package rebalancingschedule
 
 import (

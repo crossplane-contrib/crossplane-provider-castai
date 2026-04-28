@@ -1,3 +1,4 @@
+// Package organizationgroup provides configuration and utilities.
 package organizationgroup
 
 import (

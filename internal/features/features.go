@@ -2,6 +2,7 @@
  Copyright 2022 Upbound Inc
 */
 
+// Package features provides configuration and utilities.
 package features
 
 import "github.com/crossplane/crossplane-runtime/pkg/feature"

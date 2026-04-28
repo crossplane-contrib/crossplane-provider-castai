@@ -1,3 +1,4 @@
+// Package ssoconnation provides configuration and utilities.
 package ssoconnation
 
 import (

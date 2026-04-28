@@ -300,6 +300,11 @@ spec:
                   id:
                     description: (String) The ID of this resource.
                     type: string
+                  organizationId:
+                    description: |-
+                      (String) CAST AI organization ID
+                      CAST AI organization ID
+                    type: string
                   region:
                     description: (String)
                     type: string

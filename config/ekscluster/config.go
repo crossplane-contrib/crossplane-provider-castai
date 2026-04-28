@@ -1,3 +1,4 @@
+// Package ekscluster provides configuration and utilities.
 package ekscluster
 
 import (

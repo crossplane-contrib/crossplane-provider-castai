@@ -2,6 +2,7 @@
 Copyright 2022 Upbound Inc.
 */
 
+// Package config provides configuration and utilities.
 package config
 
 import "github.com/crossplane/upjet/pkg/config"

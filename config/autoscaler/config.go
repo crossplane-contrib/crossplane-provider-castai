@@ -1,3 +1,4 @@
+// Package autoscaler provides configuration and utilities.
 package autoscaler
 
 import (

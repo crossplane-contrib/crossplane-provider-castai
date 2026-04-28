@@ -78,6 +78,11 @@ spec:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        acceleratedNetworking:
+                          description: |-
+                            IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                            Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                          type: string
                         aksImageFamily:
                           description: |-
                             linux,windows2019,windows2022)
@@ -90,6 +95,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        enableEncryptionAtHost:
+                          description: |-
+                            us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+                            Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+                          type: boolean
                         ephemeralOsDisk:
                           description: |-
                             (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
@@ -98,13 +108,13 @@ spec:
                             properties:
                               cache:
                                 description: |-
-                                  (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
-                                  Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                  (String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
+                                  Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
                                 type: string
                               placement:
                                 description: |-
-                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
-                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
+                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
                                 type: string
                             type: object
                           type: array
@@ -331,8 +341,8 @@ spec:
                           type: string
                         ipsPerPrefix:
                           description: |-
-                            (Number) Number of IPs per prefix to be used for calculating max pods.
-                            Number of IPs per prefix to be used for calculating max pods.
+                            prefix-eni.html#ec2-prefix-basics
+                            Number of IPs per prefix to be used for calculating max pods. For IPv4 it should be 16. More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-prefix-eni.html#ec2-prefix-basics
                           type: number
                         keyPairId:
                           description: |-
@@ -454,6 +464,20 @@ spec:
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                             Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
                           type: number
+                        maxPodsPerNodeFormula:
+                          description: |-
+                            (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+                            This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.
+                            This field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:
+
+
+                            * NUM_CPU - Number of CPUs available on the node
+                            * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.
+
+
+                            If you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \* NUM_CPU, 5 \* NUM_RAM_GB).
+                            For a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.
+                          type: string
                         networkTags:
                           description: |-
                             (List of String) Network tags to be added on a VM. (See network tags)
@@ -567,6 +591,11 @@ spec:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        acceleratedNetworking:
+                          description: |-
+                            IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                            Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                          type: string
                         aksImageFamily:
                           description: |-
                             linux,windows2019,windows2022)
@@ -579,6 +608,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        enableEncryptionAtHost:
+                          description: |-
+                            us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+                            Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+                          type: boolean
                         ephemeralOsDisk:
                           description: |-
                             (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
@@ -587,13 +621,13 @@ spec:
                             properties:
                               cache:
                                 description: |-
-                                  (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
-                                  Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                  (String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
+                                  Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
                                 type: string
                               placement:
                                 description: |-
-                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
-                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
+                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
                                 type: string
                             type: object
                           type: array
@@ -820,8 +854,8 @@ spec:
                           type: string
                         ipsPerPrefix:
                           description: |-
-                            (Number) Number of IPs per prefix to be used for calculating max pods.
-                            Number of IPs per prefix to be used for calculating max pods.
+                            prefix-eni.html#ec2-prefix-basics
+                            Number of IPs per prefix to be used for calculating max pods. For IPv4 it should be 16. More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-prefix-eni.html#ec2-prefix-basics
                           type: number
                         keyPairId:
                           description: |-
@@ -943,6 +977,20 @@ spec:
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                             Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
                           type: number
+                        maxPodsPerNodeFormula:
+                          description: |-
+                            (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+                            This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.
+                            This field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:
+
+
+                            * NUM_CPU - Number of CPUs available on the node
+                            * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.
+
+
+                            If you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \* NUM_CPU, 5 \* NUM_RAM_GB).
+                            For a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.
+                          type: string
                         networkTags:
                           description: |-
                             (List of String) Network tags to be added on a VM. (See network tags)
@@ -1224,6 +1272,11 @@ spec:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        acceleratedNetworking:
+                          description: |-
+                            IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                            Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                          type: string
                         aksImageFamily:
                           description: |-
                             linux,windows2019,windows2022)
@@ -1236,6 +1289,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        enableEncryptionAtHost:
+                          description: |-
+                            us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+                            Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+                          type: boolean
                         ephemeralOsDisk:
                           description: |-
                             (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
@@ -1244,13 +1302,13 @@ spec:
                             properties:
                               cache:
                                 description: |-
-                                  (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
-                                  Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+                                  (String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
+                                  Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
                                 type: string
                               placement:
                                 description: |-
-                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
-                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+                                  (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
+                                  Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
                                 type: string
                             type: object
                           type: array
@@ -1401,8 +1459,8 @@ spec:
                           type: string
                         ipsPerPrefix:
                           description: |-
-                            (Number) Number of IPs per prefix to be used for calculating max pods.
-                            Number of IPs per prefix to be used for calculating max pods.
+                            prefix-eni.html#ec2-prefix-basics
+                            Number of IPs per prefix to be used for calculating max pods. For IPv4 it should be 16. More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-prefix-eni.html#ec2-prefix-basics
                           type: number
                         keyPairId:
                           description: |-
@@ -1524,6 +1582,20 @@ spec:
                             (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
                             Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
                           type: number
+                        maxPodsPerNodeFormula:
+                          description: |-
+                            (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+                            This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.
+                            This field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:
+
+
+                            * NUM_CPU - Number of CPUs available on the node
+                            * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.
+
+
+                            If you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \* NUM_CPU, 5 \* NUM_RAM_GB).
+                            For a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.
+                          type: string
                         networkTags:
                           description: |-
                             (List of String) Network tags to be added on a VM. (See network tags)

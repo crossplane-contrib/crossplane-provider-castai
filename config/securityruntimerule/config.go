@@ -1,3 +1,4 @@
+// Package securityruntimerule provides configuration and utilities.
 package securityruntimerule
 
 import (

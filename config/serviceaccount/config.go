@@ -1,3 +1,4 @@
+// Package serviceaccount provides configuration and utilities.
 package serviceaccount
 
 import (

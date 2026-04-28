@@ -8,10 +8,10 @@ export TERRAFORM_VERSION ?= 1.5.7
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai
-export TERRAFORM_PROVIDER_VERSION ?= 7.68.2
+export TERRAFORM_PROVIDER_VERSION ?= 8.31.3
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-castai
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v7.68.2
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v8.31.3
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
@@ -42,7 +42,7 @@ GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
 # GOLANGCILINT_VERSION is inherited from build submodule by default.
 # Uncomment below if you need to override the version.
-GOLANGCILINT_VERSION ?= 1.64.8
+GOLANGCILINT_VERSION ?= 2.11.4
 
 GO_REQUIRED_VERSION ?= 1.20
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator

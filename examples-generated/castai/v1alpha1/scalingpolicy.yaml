@@ -8,6 +8,10 @@ metadata:
   name: services
 spec:
   forProvider:
+    anomalyDetection:
+    - cpuPressure:
+      - cpuStallThresholdPercentage: 50
+        minPressuredPodPercentage: 30
     antiAffinity:
     - considerAntiAffinity: false
     applyType: IMMEDIATE
@@ -45,6 +49,12 @@ spec:
       overhead: 0.15
     downscaling:
     - applyType: DEFERRED
+    excludedContainers:
+    - container-1
+    - container-2
+    jvm:
+    - memory:
+      - optimization: true
     managementOption: MANAGED
     memory:
     - applyThresholdStrategy:

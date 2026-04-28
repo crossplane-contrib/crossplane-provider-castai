@@ -1,3 +1,4 @@
+// Package gkeclusterid provides configuration and utilities.
 package gkeclusterid
 
 import (

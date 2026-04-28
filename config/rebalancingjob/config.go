@@ -1,3 +1,4 @@
+// Package rebalancingjob provides configuration and utilities.
 package rebalancingjob
 
 import (

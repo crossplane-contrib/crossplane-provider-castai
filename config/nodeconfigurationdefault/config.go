@@ -1,3 +1,4 @@
+// Package nodeconfigurationdefault provides configuration and utilities.
 package nodeconfigurationdefault
 
 import (

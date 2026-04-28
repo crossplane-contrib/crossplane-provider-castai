@@ -1,3 +1,4 @@
+// Package gkecluster provides configuration and utilities.
 package gkecluster
 
 import (

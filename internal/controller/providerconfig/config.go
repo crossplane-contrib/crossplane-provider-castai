@@ -2,6 +2,7 @@
 Copyright 2021 Upbound Inc.
 */
 
+// Package providerconfig provides configuration and utilities.
 package providerconfig
 
 import (

@@ -1,3 +1,4 @@
+// Package rolebindings provides configuration and utilities.
 package rolebindings
 
 import (

@@ -127,6 +127,10 @@ type CommitmentConfigsInitParameters struct {
 	// List of assigned clusters for the commitment. If prioritization is enabled, the order of the assignments indicates the priority. The first assignment has the highest priority.
 	Assignments []CommitmentConfigsAssignmentsInitParameters `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
+	// (Boolean) If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+	// If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+	AutoAssignment *bool `json:"autoAssignment,omitempty" tf:"auto_assignment,omitempty"`
+
 	// (Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)
 	// Matcher used to map config to a commitment.
 	Matcher []MatcherInitParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
@@ -153,6 +157,10 @@ type CommitmentConfigsObservation struct {
 	// (Block List) List of assigned clusters for the commitment. If prioritization is enabled, the order of the assignments indicates the priority. The first assignment has the highest priority. (see below for nested schema)
 	// List of assigned clusters for the commitment. If prioritization is enabled, the order of the assignments indicates the priority. The first assignment has the highest priority.
 	Assignments []CommitmentConfigsAssignmentsObservation `json:"assignments,omitempty" tf:"assignments,omitempty"`
+
+	// (Boolean) If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+	// If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+	AutoAssignment *bool `json:"autoAssignment,omitempty" tf:"auto_assignment,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)
 	// Matcher used to map config to a commitment.
@@ -182,6 +190,11 @@ type CommitmentConfigsParameters struct {
 	// List of assigned clusters for the commitment. If prioritization is enabled, the order of the assignments indicates the priority. The first assignment has the highest priority.
 	// +kubebuilder:validation:Optional
 	Assignments []CommitmentConfigsAssignmentsParameters `json:"assignments,omitempty" tf:"assignments,omitempty"`
+
+	// (Boolean) If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+	// If enabled, the commitment is automatically assigned to all clusters in the matching region. When disabled, only explicitly listed cluster assignments are used.
+	// +kubebuilder:validation:Optional
+	AutoAssignment *bool `json:"autoAssignment,omitempty" tf:"auto_assignment,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) Matcher used to map config to a commitment. (see below for nested schema)
 	// Matcher used to map config to a commitment.
@@ -217,6 +230,14 @@ type CommitmentsInitParameters struct {
 	// (String) JSON file containing CUDs exported from GCP.
 	// JSON file containing CUDs exported from GCP.
 	GCPCudsJSON *string `json:"gcpCudsJson,omitempty" tf:"gcp_cuds_json,omitempty"`
+
+	// (String) Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+	// Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+	ImportMode *string `json:"importMode,omitempty" tf:"import_mode,omitempty"`
+
+	// (String) Organization ID. If not provided, will be fetched from the API using the authentication token.
+	// Organization ID. If not provided, will be fetched from the API using the authentication token.
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 }
 
 type CommitmentsObservation struct {
@@ -243,6 +264,14 @@ type CommitmentsObservation struct {
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+	// Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+	ImportMode *string `json:"importMode,omitempty" tf:"import_mode,omitempty"`
+
+	// (String) Organization ID. If not provided, will be fetched from the API using the authentication token.
+	// Organization ID. If not provided, will be fetched from the API using the authentication token.
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 }
 
 type CommitmentsParameters struct {
@@ -261,6 +290,16 @@ type CommitmentsParameters struct {
 	// JSON file containing CUDs exported from GCP.
 	// +kubebuilder:validation:Optional
 	GCPCudsJSON *string `json:"gcpCudsJson,omitempty" tf:"gcp_cuds_json,omitempty"`
+
+	// (String) Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+	// Import mode. OVERWRITE replaces all commitments for the CSP. APPEND upserts without deleting existing ones.
+	// +kubebuilder:validation:Optional
+	ImportMode *string `json:"importMode,omitempty" tf:"import_mode,omitempty"`
+
+	// (String) Organization ID. If not provided, will be fetched from the API using the authentication token.
+	// Organization ID. If not provided, will be fetched from the API using the authentication token.
+	// +kubebuilder:validation:Optional
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 }
 
 type GCPCudsAssignmentsInitParameters struct {

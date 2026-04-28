@@ -2,6 +2,7 @@
 Copyright 2021 Upbound Inc.
 */
 
+// Package main provides configuration and utilities.
 package main
 
 import (

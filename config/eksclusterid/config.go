@@ -1,3 +1,4 @@
+// Package eksclusterid provides configuration and utilities.
 package eksclusterid
 
 import (

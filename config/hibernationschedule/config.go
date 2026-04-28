@@ -1,3 +1,4 @@
+// Package hibernationschedule provides configuration and utilities.
 package hibernationschedule
 
 import (

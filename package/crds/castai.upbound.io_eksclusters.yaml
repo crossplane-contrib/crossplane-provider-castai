@@ -80,8 +80,8 @@ spec:
                     type: string
                   assumeRoleArn:
                     description: |-
-                      (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
-                      AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user that can be retrieved using `castai_eks_user_arn` data source
+                      (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user.
+                      AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user.
                     type: string
                   deleteNodesOnDisconnect:
                     description: |-
@@ -119,8 +119,8 @@ spec:
                     type: string
                   assumeRoleArn:
                     description: |-
-                      (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
-                      AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user that can be retrieved using `castai_eks_user_arn` data source
+                      (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user.
+                      AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user.
                     type: string
                   deleteNodesOnDisconnect:
                     description: |-
@@ -330,8 +330,8 @@ spec:
                     type: string
                   assumeRoleArn:
                     description: |-
-                      (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user that can be retrieved using castai_eks_user_arn data source
-                      AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user that can be retrieved using `castai_eks_user_arn` data source
+                      (String) AWS IAM role ARN that will be assumed by CAST AI user. This role should allow sts:AssumeRole action for CAST AI user.
+                      AWS IAM role ARN that will be assumed by CAST AI user. This role should allow `sts:AssumeRole` action for CAST AI user.
                     type: string
                   credentialsId:
                     description: |-
@@ -350,6 +350,11 @@ spec:
                     description: |-
                       (String) name of your EKS cluster
                       name of your EKS cluster
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) CAST AI organization ID
+                      CAST AI organization ID
                     type: string
                   region:
                     description: |-

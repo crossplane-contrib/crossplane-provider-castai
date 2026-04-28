@@ -36,6 +36,10 @@ type EksClusterIdObservation struct {
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) CAST AI organization ID
+	// CAST AI organization ID
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
 	// (String)
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }

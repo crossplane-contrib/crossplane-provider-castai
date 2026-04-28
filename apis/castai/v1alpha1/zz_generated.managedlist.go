@@ -7,6 +7,33 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
+// GetItems of this AIOptimizerHostedModelList.
+func (l *AIOptimizerHostedModelList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this AIOptimizerModelRegistryList.
+func (l *AIOptimizerModelRegistryList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this AIOptimizerModelSpecsList.
+func (l *AIOptimizerModelSpecsList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this AksClusterList.
 func (l *AksClusterList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -27,6 +54,33 @@ func (l *AllocationGroupList) GetItems() []resource.Managed {
 
 // GetItems of this AutoScalerList.
 func (l *AutoScalerList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this CacheConfigurationList.
+func (l *CacheConfigurationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this CacheGroupList.
+func (l *CacheGroupList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this CacheRuleList.
+func (l *CacheRuleList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -63,6 +117,24 @@ func (l *EksClusterList) GetItems() []resource.Managed {
 
 // GetItems of this EksUserArnList.
 func (l *EksUserArnList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EnterpriseGroupList.
+func (l *EnterpriseGroupList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EnterpriseRoleBindingList.
+func (l *EnterpriseRoleBindingList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -144,6 +216,15 @@ func (l *OrganizationGroupList) GetItems() []resource.Managed {
 
 // GetItems of this OrganizationMembersList.
 func (l *OrganizationMembersList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this PodMutationList.
+func (l *PodMutationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -234,6 +315,15 @@ func (l *ServiceAccountKeyList) GetItems() []resource.Managed {
 
 // GetItems of this ServiceAccountList.
 func (l *ServiceAccountList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this WorkloadCustomMetricsDataSourceList.
+func (l *WorkloadCustomMetricsDataSourceList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

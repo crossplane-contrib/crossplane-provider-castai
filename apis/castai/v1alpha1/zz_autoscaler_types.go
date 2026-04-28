@@ -39,7 +39,7 @@ type AutoScalerInitParameters struct {
 
 type AutoScalerObservation struct {
 
-	// (String) computed value to store full policies configuration
+	// (String, Deprecated) computed value to store full policies configuration
 	// computed value to store full policies configuration
 	AutoscalerPolicies *string `json:"autoscalerPolicies,omitempty" tf:"autoscaler_policies,omitempty"`
 

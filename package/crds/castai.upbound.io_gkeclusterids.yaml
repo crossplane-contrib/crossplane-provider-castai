@@ -319,6 +319,9 @@ spec:
                   name:
                     description: GKE cluster name
                     type: string
+                  organizationId:
+                    description: CAST AI organization ID
+                    type: string
                   projectId:
                     description: GCP project id
                     type: string

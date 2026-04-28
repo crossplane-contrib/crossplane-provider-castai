@@ -9,13 +9,21 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
+	aioptimizerhostedmodel "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/aioptimizerhostedmodel"
+	aioptimizermodelregistry "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/aioptimizermodelregistry"
+	aioptimizermodelspecs "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/aioptimizermodelspecs"
 	akscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/akscluster"
 	allocationgroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/allocationgroup"
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/autoscaler"
+	cacheconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacheconfiguration"
+	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cachegroup"
+	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacherule"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitments"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksclusterid"
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksuserarn"
+	enterprisegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterprisegroup"
+	enterpriserolebinding "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterpriserolebinding"
 	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/evictoradvancedconfig"
 	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkecluster"
 	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkeclusterid"
@@ -25,6 +33,7 @@ import (
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodetemplate"
 	organizationgroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/organizationgroup"
 	organizationmembers "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/organizationmembers"
+	podmutation "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/podmutation"
 	rebalancingjob "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/rebalancingjob"
 	rebalancingschedule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/rebalancingschedule"
 	reservations "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/reservations"
@@ -35,6 +44,7 @@ import (
 	serviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/serviceaccount"
 	serviceaccountkey "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/serviceaccountkey"
 	ssoconnection "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ssoconnection"
+	workloadcustommetricsdatasource "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/workloadcustommetricsdatasource"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/providerconfig"
 )
 
@@ -42,13 +52,21 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		aioptimizerhostedmodel.Setup,
+		aioptimizermodelregistry.Setup,
+		aioptimizermodelspecs.Setup,
 		akscluster.Setup,
 		allocationgroup.Setup,
 		autoscaler.Setup,
+		cacheconfiguration.Setup,
+		cachegroup.Setup,
+		cacherule.Setup,
 		commitments.Setup,
 		ekscluster.Setup,
 		eksclusterid.Setup,
 		eksuserarn.Setup,
+		enterprisegroup.Setup,
+		enterpriserolebinding.Setup,
 		evictoradvancedconfig.Setup,
 		gkecluster.Setup,
 		gkeclusterid.Setup,
@@ -58,6 +76,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		nodetemplate.Setup,
 		organizationgroup.Setup,
 		organizationmembers.Setup,
+		podmutation.Setup,
 		rebalancingjob.Setup,
 		rebalancingschedule.Setup,
 		reservations.Setup,
@@ -68,6 +87,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		serviceaccount.Setup,
 		serviceaccountkey.Setup,
 		ssoconnection.Setup,
+		workloadcustommetricsdatasource.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

@@ -1048,7 +1048,7 @@ spec:
                 properties:
                   autoscalerPolicies:
                     description: |-
-                      (String) computed value to store full policies configuration
+                      (String, Deprecated) computed value to store full policies configuration
                       computed value to store full policies configuration
                     type: string
                   autoscalerPoliciesJson:

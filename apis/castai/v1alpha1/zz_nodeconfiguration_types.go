@@ -23,6 +23,10 @@ type AksInitParameters struct {
 	// Application security groups to be used for provisioned nodes
 	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty" tf:"application_security_groups,omitempty"`
 
+	// us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+	// Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+	EnableEncryptionAtHost *bool `json:"enableEncryptionAtHost,omitempty" tf:"enable_encryption_at_host,omitempty"`
+
 	// (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
 	// Ephemeral OS disk configuration for CAST provisioned nodes
 	EphemeralOsDisk []EphemeralOsDiskInitParameters `json:"ephemeralOsDisk,omitempty" tf:"ephemeral_os_disk,omitempty"`
@@ -61,6 +65,10 @@ type AksObservation struct {
 	// (List of String) Application security groups to be used for provisioned nodes
 	// Application security groups to be used for provisioned nodes
 	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty" tf:"application_security_groups,omitempty"`
+
+	// us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+	// Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+	EnableEncryptionAtHost *bool `json:"enableEncryptionAtHost,omitempty" tf:"enable_encryption_at_host,omitempty"`
 
 	// (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
 	// Ephemeral OS disk configuration for CAST provisioned nodes
@@ -102,6 +110,11 @@ type AksParameters struct {
 	// Application security groups to be used for provisioned nodes
 	// +kubebuilder:validation:Optional
 	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty" tf:"application_security_groups,omitempty"`
+
+	// us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+	// Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
+	// +kubebuilder:validation:Optional
+	EnableEncryptionAtHost *bool `json:"enableEncryptionAtHost,omitempty" tf:"enable_encryption_at_host,omitempty"`
 
 	// (Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)
 	// Ephemeral OS disk configuration for CAST provisioned nodes
@@ -161,8 +174,8 @@ type EksInitParameters struct {
 	// Cluster's instance profile ARN used for CAST provisioned nodes
 	InstanceProfileArn *string `json:"instanceProfileArn,omitempty" tf:"instance_profile_arn,omitempty"`
 
-	// (Number) Number of IPs per prefix to be used for calculating max pods.
-	// Number of IPs per prefix to be used for calculating max pods.
+	// prefix-eni.html#ec2-prefix-basics
+	// Number of IPs per prefix to be used for calculating max pods. For IPv4 it should be 16. More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-prefix-eni.html#ec2-prefix-basics
 	IpsPerPrefix *float64 `json:"ipsPerPrefix,omitempty" tf:"ips_per_prefix,omitempty"`
 
 	// (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
@@ -228,8 +241,8 @@ type EksObservation struct {
 	// Cluster's instance profile ARN used for CAST provisioned nodes
 	InstanceProfileArn *string `json:"instanceProfileArn,omitempty" tf:"instance_profile_arn,omitempty"`
 
-	// (Number) Number of IPs per prefix to be used for calculating max pods.
-	// Number of IPs per prefix to be used for calculating max pods.
+	// prefix-eni.html#ec2-prefix-basics
+	// Number of IPs per prefix to be used for calculating max pods. For IPv4 it should be 16. More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-prefix-eni.html#ec2-prefix-basics
 	IpsPerPrefix *float64 `json:"ipsPerPrefix,omitempty" tf:"ips_per_prefix,omitempty"`
 
 	// (String) AWS key pair ID to be used for CAST provisioned nodes. Has priority over ssh_public_key
@@ -300,8 +313,8 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	InstanceProfileArn *string `json:"instanceProfileArn" tf:"instance_profile_arn,omitempty"`
 
-	// (Number) Number of IPs per prefix to be used for calculating max pods.
-	// Number of IPs per prefix to be used for calculating max pods.
+	// prefix-eni.html#ec2-prefix-basics
+	// Number of IPs per prefix to be used for calculating max pods. For IPv4 it should be 16. More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-prefix-eni.html#ec2-prefix-basics
 	// +kubebuilder:validation:Optional
 	IpsPerPrefix *float64 `json:"ipsPerPrefix,omitempty" tf:"ips_per_prefix,omitempty"`
 
@@ -358,37 +371,37 @@ type EksParameters struct {
 
 type EphemeralOsDiskInitParameters struct {
 
-	// (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
-	// Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// (String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
+	// Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
 	Cache *string `json:"cache,omitempty" tf:"cache,omitempty"`
 
-	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
-	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
+	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
 	Placement *string `json:"placement,omitempty" tf:"placement,omitempty"`
 }
 
 type EphemeralOsDiskObservation struct {
 
-	// (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
-	// Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// (String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
+	// Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
 	Cache *string `json:"cache,omitempty" tf:"cache,omitempty"`
 
-	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
-	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
+	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
 	Placement *string `json:"placement,omitempty" tf:"placement,omitempty"`
 }
 
 type EphemeralOsDiskParameters struct {
 
-	// (String) Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
-	// Cache type for the ephemeral OS disk. One of: ReadOnly, ReadWrite
+	// (String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
+	// Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy
 	// +kubebuilder:validation:Optional
 	Cache *string `json:"cache,omitempty" tf:"cache,omitempty"`
 
-	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
-	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk
+	// (String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
+	// Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk
 	// +kubebuilder:validation:Optional
-	Placement *string `json:"placement" tf:"placement,omitempty"`
+	Placement *string `json:"placement,omitempty" tf:"placement,omitempty"`
 }
 
 type GkeInitParameters struct {
@@ -404,6 +417,17 @@ type GkeInitParameters struct {
 	// (Number) Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 30
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
+
+	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+	// This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.
+	// This field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:
+	//
+	// * NUM_CPU - Number of CPUs available on the node
+	// * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.
+	//
+	// If you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \* NUM_CPU, 5 \* NUM_RAM_GB).
+	// For a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.
+	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
@@ -475,6 +499,17 @@ type GkeObservation struct {
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
 
+	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+	// This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.
+	// This field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:
+	//
+	// * NUM_CPU - Number of CPUs available on the node
+	// * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.
+	//
+	// If you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \* NUM_CPU, 5 \* NUM_RAM_GB).
+	// For a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.
+	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
+
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))
 	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
@@ -512,6 +547,18 @@ type GkeParameters struct {
 	// Maximum number of pods that can be run on a node, which affects how many IP addresses you will need for each node. Defaults to 110
 	// +kubebuilder:validation:Optional
 	MaxPodsPerNode *float64 `json:"maxPodsPerNode,omitempty" tf:"max_pods_per_node,omitempty"`
+
+	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
+	// This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.
+	// This field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:
+	//
+	// * NUM_CPU - Number of CPUs available on the node
+	// * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.
+	//
+	// If you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \* NUM_CPU, 5 \* NUM_RAM_GB).
+	// For a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.
+	// +kubebuilder:validation:Optional
+	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
 	// (List of String) Network tags to be added on a VM. (See network tags)
 	// Network tags to be added on a VM. (See [network tags](https://cloud.google.com/vpc/docs/add-remove-network-tags))

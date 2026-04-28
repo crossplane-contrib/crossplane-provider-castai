@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type RoleBindingsInitParameters struct {
+type RoleBindingsInitParameters_2 struct {
 
 	// (String) Description of the role binding.
 	// Description of the role binding.
@@ -33,13 +33,13 @@ type RoleBindingsInitParameters struct {
 
 	// (Block List) Scopes of the role binding. (see below for nested schema)
 	// Scopes of the role binding.
-	Scopes []ScopesInitParameters `json:"scopes,omitempty" tf:"scopes,omitempty"`
+	Scopes []RoleBindingsScopesInitParameters `json:"scopes,omitempty" tf:"scopes,omitempty"`
 
 	// (Block List, Min: 1) (see below for nested schema)
-	Subjects []SubjectsInitParameters `json:"subjects,omitempty" tf:"subjects,omitempty"`
+	Subjects []RoleBindingsSubjectsInitParameters `json:"subjects,omitempty" tf:"subjects,omitempty"`
 }
 
-type RoleBindingsObservation struct {
+type RoleBindingsObservation_2 struct {
 
 	// (String) Description of the role binding.
 	// Description of the role binding.
@@ -62,13 +62,13 @@ type RoleBindingsObservation struct {
 
 	// (Block List) Scopes of the role binding. (see below for nested schema)
 	// Scopes of the role binding.
-	Scopes []ScopesObservation `json:"scopes,omitempty" tf:"scopes,omitempty"`
+	Scopes []RoleBindingsScopesObservation `json:"scopes,omitempty" tf:"scopes,omitempty"`
 
 	// (Block List, Min: 1) (see below for nested schema)
-	Subjects []SubjectsObservation `json:"subjects,omitempty" tf:"subjects,omitempty"`
+	Subjects []RoleBindingsSubjectsObservation `json:"subjects,omitempty" tf:"subjects,omitempty"`
 }
 
-type RoleBindingsParameters struct {
+type RoleBindingsParameters_2 struct {
 
 	// (String) Description of the role binding.
 	// Description of the role binding.
@@ -93,14 +93,14 @@ type RoleBindingsParameters struct {
 	// (Block List) Scopes of the role binding. (see below for nested schema)
 	// Scopes of the role binding.
 	// +kubebuilder:validation:Optional
-	Scopes []ScopesParameters `json:"scopes,omitempty" tf:"scopes,omitempty"`
+	Scopes []RoleBindingsScopesParameters `json:"scopes,omitempty" tf:"scopes,omitempty"`
 
 	// (Block List, Min: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Subjects []SubjectsParameters `json:"subjects,omitempty" tf:"subjects,omitempty"`
+	Subjects []RoleBindingsSubjectsParameters `json:"subjects,omitempty" tf:"subjects,omitempty"`
 }
 
-type ScopesInitParameters struct {
+type RoleBindingsScopesInitParameters struct {
 
 	// (String) Kind of the subject. Supported values include: user, service_account, group.
 	// Scope of the role binding Supported values include: organization, cluster.
@@ -111,7 +111,7 @@ type ScopesInitParameters struct {
 	ResourceID *string `json:"resourceId,omitempty" tf:"resource_id,omitempty"`
 }
 
-type ScopesObservation struct {
+type RoleBindingsScopesObservation struct {
 
 	// (String) Kind of the subject. Supported values include: user, service_account, group.
 	// Scope of the role binding Supported values include: organization, cluster.
@@ -122,7 +122,7 @@ type ScopesObservation struct {
 	ResourceID *string `json:"resourceId,omitempty" tf:"resource_id,omitempty"`
 }
 
-type ScopesParameters struct {
+type RoleBindingsScopesParameters struct {
 
 	// (String) Kind of the subject. Supported values include: user, service_account, group.
 	// Scope of the role binding Supported values include: organization, cluster.
@@ -133,6 +133,25 @@ type ScopesParameters struct {
 	// ID of the scope resource.
 	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceId" tf:"resource_id,omitempty"`
+}
+
+type RoleBindingsSubjectsInitParameters struct {
+
+	// (Block List) (see below for nested schema)
+	Subject []SubjectInitParameters `json:"subject,omitempty" tf:"subject,omitempty"`
+}
+
+type RoleBindingsSubjectsObservation struct {
+
+	// (Block List) (see below for nested schema)
+	Subject []SubjectObservation `json:"subject,omitempty" tf:"subject,omitempty"`
+}
+
+type RoleBindingsSubjectsParameters struct {
+
+	// (Block List) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Subject []SubjectParameters `json:"subject,omitempty" tf:"subject,omitempty"`
 }
 
 type SubjectInitParameters struct {
@@ -196,29 +215,10 @@ type SubjectParameters struct {
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 }
 
-type SubjectsInitParameters struct {
-
-	// (Block List) (see below for nested schema)
-	Subject []SubjectInitParameters `json:"subject,omitempty" tf:"subject,omitempty"`
-}
-
-type SubjectsObservation struct {
-
-	// (Block List) (see below for nested schema)
-	Subject []SubjectObservation `json:"subject,omitempty" tf:"subject,omitempty"`
-}
-
-type SubjectsParameters struct {
-
-	// (Block List) (see below for nested schema)
-	// +kubebuilder:validation:Optional
-	Subject []SubjectParameters `json:"subject,omitempty" tf:"subject,omitempty"`
-}
-
 // RoleBindingsSpec defines the desired state of RoleBindings
 type RoleBindingsSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     RoleBindingsParameters `json:"forProvider"`
+	ForProvider     RoleBindingsParameters_2 `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -229,13 +229,13 @@ type RoleBindingsSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider RoleBindingsInitParameters `json:"initProvider,omitempty"`
+	InitProvider RoleBindingsInitParameters_2 `json:"initProvider,omitempty"`
 }
 
 // RoleBindingsStatus defines the observed state of RoleBindings.
 type RoleBindingsStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        RoleBindingsObservation `json:"atProvider,omitempty"`
+	AtProvider        RoleBindingsObservation_2 `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

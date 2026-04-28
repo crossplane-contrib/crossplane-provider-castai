@@ -1,0 +1,17 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: WorkloadCustomMetricsDataSource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/workloadcustommetricsdatasource
+  labels:
+    testing.upbound.io/example-name: prometheus
+  name: prometheus
+spec:
+  forProvider:
+    clusterId: ${castai_eks_cluster.this.id}
+    name: my-prometheus
+    prometheus:
+    - presets:
+      - jvm
+      timeout: 30s
+      url: http://prometheus-server.monitoring.svc.cluster.local:9090

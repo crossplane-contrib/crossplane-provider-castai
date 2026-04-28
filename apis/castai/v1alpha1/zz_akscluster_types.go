@@ -21,11 +21,15 @@ type AksClusterInitParameters struct {
 
 	// (String, Sensitive) Azure AD application password that will be used by CAST AI.
 	// Azure AD application password that will be used by CAST AI.
-	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
 
 	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
+
+	// (String) Azure federation used by CAST AI for secretless auth via impersonation.
+	// Azure federation used by CAST AI for secretless auth via impersonation.
+	FederationID *string `json:"federationId,omitempty" tf:"federation_id,omitempty"`
 
 	// (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
 	// HTTP proxy configuration for CAST AI nodes and node components.
@@ -66,6 +70,10 @@ type AksClusterObservation struct {
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
 
+	// (String) Azure federation used by CAST AI for secretless auth via impersonation.
+	// Azure federation used by CAST AI for secretless auth via impersonation.
+	FederationID *string `json:"federationId,omitempty" tf:"federation_id,omitempty"`
+
 	// (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
 	// HTTP proxy configuration for CAST AI nodes and node components.
 	HTTPProxyConfig []HTTPProxyConfigObservation `json:"httpProxyConfig,omitempty" tf:"http_proxy_config,omitempty"`
@@ -80,6 +88,10 @@ type AksClusterObservation struct {
 	// (String) Azure resource group in which nodes are and will be created.
 	// Azure resource group in which nodes are and will be created.
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty" tf:"node_resource_group,omitempty"`
+
+	// (String) CAST AI organization ID
+	// CAST AI organization ID
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
 	// (String) AKS cluster region.
 	// AKS cluster region.
@@ -104,12 +116,17 @@ type AksClusterParameters struct {
 	// (String, Sensitive) Azure AD application password that will be used by CAST AI.
 	// Azure AD application password that will be used by CAST AI.
 	// +kubebuilder:validation:Optional
-	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
 
 	// (Boolean) Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// Should CAST AI remove nodes managed by CAST.AI on disconnect.
 	// +kubebuilder:validation:Optional
 	DeleteNodesOnDisconnect *bool `json:"deleteNodesOnDisconnect,omitempty" tf:"delete_nodes_on_disconnect,omitempty"`
+
+	// (String) Azure federation used by CAST AI for secretless auth via impersonation.
+	// Azure federation used by CAST AI for secretless auth via impersonation.
+	// +kubebuilder:validation:Optional
+	FederationID *string `json:"federationId,omitempty" tf:"federation_id,omitempty"`
 
 	// (Block List, Max: 1) HTTP proxy configuration for CAST AI nodes and node components. (see below for nested schema)
 	// HTTP proxy configuration for CAST AI nodes and node components.
@@ -227,7 +244,6 @@ type AksCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clientId) || (has(self.initProvider) && has(self.initProvider.clientId))",message="spec.forProvider.clientId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clientSecretSecretRef)",message="spec.forProvider.clientSecretSecretRef is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.nodeResourceGroup) || (has(self.initProvider) && has(self.initProvider.nodeResourceGroup))",message="spec.forProvider.nodeResourceGroup is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.region) || (has(self.initProvider) && has(self.initProvider.region))",message="spec.forProvider.region is a required parameter"

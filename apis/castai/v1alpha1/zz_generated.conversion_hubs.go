@@ -7,6 +7,15 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *AIOptimizerHostedModel) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AIOptimizerModelRegistry) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AIOptimizerModelSpecs) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *AksCluster) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -14,6 +23,15 @@ func (tr *AllocationGroup) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *AutoScaler) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *CacheConfiguration) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *CacheGroup) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *CacheRule) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Commitments) Hub() {}
@@ -26,6 +44,12 @@ func (tr *EksClusterId) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *EksUserArn) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *EnterpriseGroup) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *EnterpriseRoleBinding) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *EvictorAdvancedConfig) Hub() {}
@@ -53,6 +77,9 @@ func (tr *OrganizationGroup) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationMembers) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *PodMutation) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RebalancingJob) Hub() {}
@@ -83,3 +110,6 @@ func (tr *ServiceAccountKey) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *SSOConnection) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *WorkloadCustomMetricsDataSource) Hub() {}

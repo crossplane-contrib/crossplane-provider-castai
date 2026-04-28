@@ -1,3 +1,5 @@
+$ cat /home/user/crossplane-provider-castai/.golangci.yml
+
 # SPDX-FileCopyrightText: 2024 The Crossplane Authors <https://crossplane.io>
 #
 # SPDX-License-Identifier: CC0-1.0
@@ -76,38 +78,38 @@ issues:
   max-issues-per-linter: 0
   max-same-issues: 0
   new: false
-  exclusions:
-    rules:
-      - text: "should have a package comment"
-        linters:
-          - revive
 
-      - path: _test(ing)?\.go
-        linters:
-          - gocyclo
-          - errcheck
-          - dupl
-          - gosec
-          - unparam
+exclusions:
+  rules:
+    - text: "should have a package comment"
+      linters:
+        - revive
 
-      - path: _test\.go
-        text: "(unnamedResult|exitAfterDefer)"
-        linters:
-          - gocritic
+    - path: _test(ing)?\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - unparam
 
-      - text: "(hugeParam|rangeValCopy):"
-        linters:
-          - gocritic
+    - path: _test\.go
+      text: "(unnamedResult|exitAfterDefer)"
+      linters:
+        - gocritic
 
-      - text: "SA3000:"
-        linters:
-          - staticcheck
+    - text: "(hugeParam|rangeValCopy):"
+      linters:
+        - gocritic
 
-      - text: "G101:"
-        linters:
-          - gosec
+    - text: "SA3000:"
+      linters:
+        - staticcheck
 
-      - text: "G104:"
-        linters:
-          - gosec
+    - text: "G101:"
+      linters:
+        - gosec
 
+    - text: "G104:"
+      linters:
+        - gosec

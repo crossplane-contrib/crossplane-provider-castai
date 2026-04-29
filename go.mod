@@ -2,6 +2,18 @@ module github.com/crossplane-contrib/crossplane-provider-castai
 
 go 1.24
 
+// TODO(crossplane-v2): Update the following dependencies per the Upjet v2 upgrade guide:
+// https://github.com/crossplane/upjet/blob/main/docs/upjet-v2-upgrade.md
+//
+//   github.com/crossplane/upjet              → upjet v2 target version from guide
+//   github.com/crossplane/crossplane-runtime → crossplane-runtime version for Crossplane v2
+//   github.com/crossplane/crossplane-tools   → crossplane-tools version from guide
+//   k8s.io/apimachinery, k8s.io/client-go    → align with new controller-runtime version
+//   sigs.k8s.io/controller-runtime           → version from guide
+//   sigs.k8s.io/controller-tools             → version from guide
+//
+// After updating versions run: go mod tidy && make generate
+
 require (
 	dario.cat/mergo v1.0.0
 	github.com/crossplane/crossplane-runtime v1.16.0

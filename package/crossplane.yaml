@@ -10,3 +10,6 @@ metadata:
     meta.crossplane.io/readme: |
       This provider is generated from https://github.com/castai/terraform-provider-castai by https://github.com/crossplane/upjet.
       See the [examples directory in the source repository](https://github.com/crossplane-contrib/crossplane-provider-castai/tree/main/examples/) for examples on how to use this provider.
+spec:
+  crossplane:
+    version: ">=v2.0.0-0"

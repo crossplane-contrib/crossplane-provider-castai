@@ -2,29 +2,17 @@ module github.com/crossplane-contrib/crossplane-provider-castai
 
 go 1.24
 
-// TODO(crossplane-v2): Update the following dependencies per the Upjet v2 upgrade guide:
-// https://github.com/crossplane/upjet/blob/main/docs/upjet-v2-upgrade.md
-//
-//   github.com/crossplane/upjet              → upjet v2 target version from guide
-//   github.com/crossplane/crossplane-runtime → crossplane-runtime version for Crossplane v2
-//   github.com/crossplane/crossplane-tools   → crossplane-tools version from guide
-//   k8s.io/apimachinery, k8s.io/client-go    → align with new controller-runtime version
-//   sigs.k8s.io/controller-runtime           → version from guide
-//   sigs.k8s.io/controller-tools             → version from guide
-//
-// After updating versions run: go mod tidy && make generate
-
 require (
 	dario.cat/mergo v1.0.0
-	github.com/crossplane/crossplane-runtime v1.16.0
-	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
-	github.com/crossplane/upjet v1.4.2
+	github.com/crossplane/crossplane-runtime/v2 v2.2.0
+	github.com/crossplane/crossplane-tools v0.0.0-20250731192036-00d407d8b7ec
+	github.com/crossplane/upjet/v2 v2.2.0
 	github.com/pkg/errors v0.9.1
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
-	k8s.io/apimachinery v0.29.2
-	k8s.io/client-go v0.29.2
-	sigs.k8s.io/controller-runtime v0.17.2
-	sigs.k8s.io/controller-tools v0.14.0
+	k8s.io/apimachinery v0.33.0
+	k8s.io/client-go v0.33.0
+	sigs.k8s.io/controller-runtime v0.21.0
+	sigs.k8s.io/controller-tools v0.16.0
 )
 
 require (
@@ -127,13 +115,13 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.29.2 // indirect
-	k8s.io/apiextensions-apiserver v0.29.1 // indirect
-	k8s.io/component-base v0.29.1 // indirect
-	k8s.io/klog/v2 v2.110.1 // indirect
-	k8s.io/kube-openapi v0.0.0-20231010175941-2dd684a91f00 // indirect
-	k8s.io/utils v0.0.0-20230726121419-3b25d923346b // indirect
-	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
+	k8s.io/api v0.33.0 // indirect
+	k8s.io/apiextensions-apiserver v0.33.0 // indirect
+	k8s.io/component-base v0.33.0 // indirect
+	k8s.io/klog/v2 v2.130.1 // indirect
+	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff // indirect
+	k8s.io/utils v0.0.0-20241210054802-24370beab758 // indirect
+	sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )

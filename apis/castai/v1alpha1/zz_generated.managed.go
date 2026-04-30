@@ -24,7 +24,10 @@ func (mg *AIOptimizerHostedModel) GetManagementPolicies() xpv1.ManagementPolicie
 
 // GetProviderConfigReference of this AIOptimizerHostedModel.
 func (mg *AIOptimizerHostedModel) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -50,7 +53,11 @@ func (mg *AIOptimizerHostedModel) SetManagementPolicies(r xpv1.ManagementPolicie
 
 // SetProviderConfigReference of this AIOptimizerHostedModel.
 func (mg *AIOptimizerHostedModel) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -76,7 +83,10 @@ func (mg *AIOptimizerModelRegistry) GetManagementPolicies() xpv1.ManagementPolic
 
 // GetProviderConfigReference of this AIOptimizerModelRegistry.
 func (mg *AIOptimizerModelRegistry) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -102,7 +112,11 @@ func (mg *AIOptimizerModelRegistry) SetManagementPolicies(r xpv1.ManagementPolic
 
 // SetProviderConfigReference of this AIOptimizerModelRegistry.
 func (mg *AIOptimizerModelRegistry) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -128,7 +142,10 @@ func (mg *AIOptimizerModelSpecs) GetManagementPolicies() xpv1.ManagementPolicies
 
 // GetProviderConfigReference of this AIOptimizerModelSpecs.
 func (mg *AIOptimizerModelSpecs) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -154,7 +171,11 @@ func (mg *AIOptimizerModelSpecs) SetManagementPolicies(r xpv1.ManagementPolicies
 
 // SetProviderConfigReference of this AIOptimizerModelSpecs.
 func (mg *AIOptimizerModelSpecs) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -180,7 +201,10 @@ func (mg *AksCluster) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this AksCluster.
 func (mg *AksCluster) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -206,7 +230,11 @@ func (mg *AksCluster) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this AksCluster.
 func (mg *AksCluster) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -232,7 +260,10 @@ func (mg *AllocationGroup) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this AllocationGroup.
 func (mg *AllocationGroup) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -258,7 +289,11 @@ func (mg *AllocationGroup) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this AllocationGroup.
 func (mg *AllocationGroup) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -284,7 +319,10 @@ func (mg *AutoScaler) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this AutoScaler.
 func (mg *AutoScaler) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -310,7 +348,11 @@ func (mg *AutoScaler) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this AutoScaler.
 func (mg *AutoScaler) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -336,7 +378,10 @@ func (mg *CacheConfiguration) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this CacheConfiguration.
 func (mg *CacheConfiguration) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -362,7 +407,11 @@ func (mg *CacheConfiguration) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this CacheConfiguration.
 func (mg *CacheConfiguration) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -388,7 +437,10 @@ func (mg *CacheGroup) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this CacheGroup.
 func (mg *CacheGroup) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -414,7 +466,11 @@ func (mg *CacheGroup) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this CacheGroup.
 func (mg *CacheGroup) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -440,7 +496,10 @@ func (mg *CacheRule) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this CacheRule.
 func (mg *CacheRule) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -466,7 +525,11 @@ func (mg *CacheRule) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this CacheRule.
 func (mg *CacheRule) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -492,7 +555,10 @@ func (mg *Commitments) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this Commitments.
 func (mg *Commitments) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -518,7 +584,11 @@ func (mg *Commitments) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this Commitments.
 func (mg *Commitments) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -544,7 +614,10 @@ func (mg *EksCluster) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this EksCluster.
 func (mg *EksCluster) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -570,7 +643,11 @@ func (mg *EksCluster) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this EksCluster.
 func (mg *EksCluster) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -596,7 +673,10 @@ func (mg *EksClusterId) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this EksClusterId.
 func (mg *EksClusterId) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -622,7 +702,11 @@ func (mg *EksClusterId) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this EksClusterId.
 func (mg *EksClusterId) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -648,7 +732,10 @@ func (mg *EksUserArn) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this EksUserArn.
 func (mg *EksUserArn) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -674,7 +761,11 @@ func (mg *EksUserArn) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this EksUserArn.
 func (mg *EksUserArn) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -700,7 +791,10 @@ func (mg *EnterpriseGroup) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this EnterpriseGroup.
 func (mg *EnterpriseGroup) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -726,7 +820,11 @@ func (mg *EnterpriseGroup) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this EnterpriseGroup.
 func (mg *EnterpriseGroup) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -752,7 +850,10 @@ func (mg *EnterpriseRoleBinding) GetManagementPolicies() xpv1.ManagementPolicies
 
 // GetProviderConfigReference of this EnterpriseRoleBinding.
 func (mg *EnterpriseRoleBinding) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -778,7 +879,11 @@ func (mg *EnterpriseRoleBinding) SetManagementPolicies(r xpv1.ManagementPolicies
 
 // SetProviderConfigReference of this EnterpriseRoleBinding.
 func (mg *EnterpriseRoleBinding) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -804,7 +909,10 @@ func (mg *EvictorAdvancedConfig) GetManagementPolicies() xpv1.ManagementPolicies
 
 // GetProviderConfigReference of this EvictorAdvancedConfig.
 func (mg *EvictorAdvancedConfig) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -830,7 +938,11 @@ func (mg *EvictorAdvancedConfig) SetManagementPolicies(r xpv1.ManagementPolicies
 
 // SetProviderConfigReference of this EvictorAdvancedConfig.
 func (mg *EvictorAdvancedConfig) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -856,7 +968,10 @@ func (mg *GkeCluster) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this GkeCluster.
 func (mg *GkeCluster) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -882,7 +997,11 @@ func (mg *GkeCluster) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this GkeCluster.
 func (mg *GkeCluster) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -908,7 +1027,10 @@ func (mg *GkeClusterId) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this GkeClusterId.
 func (mg *GkeClusterId) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -934,7 +1056,11 @@ func (mg *GkeClusterId) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this GkeClusterId.
 func (mg *GkeClusterId) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -960,7 +1086,10 @@ func (mg *HibernationSchedule) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this HibernationSchedule.
 func (mg *HibernationSchedule) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -986,7 +1115,11 @@ func (mg *HibernationSchedule) SetManagementPolicies(r xpv1.ManagementPolicies) 
 
 // SetProviderConfigReference of this HibernationSchedule.
 func (mg *HibernationSchedule) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1012,7 +1145,10 @@ func (mg *NodeConfiguration) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this NodeConfiguration.
 func (mg *NodeConfiguration) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1038,7 +1174,11 @@ func (mg *NodeConfiguration) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this NodeConfiguration.
 func (mg *NodeConfiguration) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1064,7 +1204,10 @@ func (mg *NodeConfigurationDefault) GetManagementPolicies() xpv1.ManagementPolic
 
 // GetProviderConfigReference of this NodeConfigurationDefault.
 func (mg *NodeConfigurationDefault) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1090,7 +1233,11 @@ func (mg *NodeConfigurationDefault) SetManagementPolicies(r xpv1.ManagementPolic
 
 // SetProviderConfigReference of this NodeConfigurationDefault.
 func (mg *NodeConfigurationDefault) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1116,7 +1263,10 @@ func (mg *NodeTemplate) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this NodeTemplate.
 func (mg *NodeTemplate) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1142,7 +1292,11 @@ func (mg *NodeTemplate) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this NodeTemplate.
 func (mg *NodeTemplate) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1168,7 +1322,10 @@ func (mg *OrganizationGroup) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this OrganizationGroup.
 func (mg *OrganizationGroup) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1194,7 +1351,11 @@ func (mg *OrganizationGroup) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this OrganizationGroup.
 func (mg *OrganizationGroup) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1220,7 +1381,10 @@ func (mg *OrganizationMembers) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this OrganizationMembers.
 func (mg *OrganizationMembers) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1246,7 +1410,11 @@ func (mg *OrganizationMembers) SetManagementPolicies(r xpv1.ManagementPolicies) 
 
 // SetProviderConfigReference of this OrganizationMembers.
 func (mg *OrganizationMembers) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1272,7 +1440,10 @@ func (mg *PodMutation) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this PodMutation.
 func (mg *PodMutation) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1298,7 +1469,11 @@ func (mg *PodMutation) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this PodMutation.
 func (mg *PodMutation) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1324,7 +1499,10 @@ func (mg *RebalancingJob) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this RebalancingJob.
 func (mg *RebalancingJob) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1350,7 +1528,11 @@ func (mg *RebalancingJob) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this RebalancingJob.
 func (mg *RebalancingJob) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1376,7 +1558,10 @@ func (mg *RebalancingSchedule) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this RebalancingSchedule.
 func (mg *RebalancingSchedule) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1402,7 +1587,11 @@ func (mg *RebalancingSchedule) SetManagementPolicies(r xpv1.ManagementPolicies) 
 
 // SetProviderConfigReference of this RebalancingSchedule.
 func (mg *RebalancingSchedule) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1428,7 +1617,10 @@ func (mg *Reservations) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this Reservations.
 func (mg *Reservations) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1454,7 +1646,11 @@ func (mg *Reservations) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this Reservations.
 func (mg *Reservations) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1480,7 +1676,10 @@ func (mg *RoleBindings) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this RoleBindings.
 func (mg *RoleBindings) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1506,7 +1705,11 @@ func (mg *RoleBindings) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this RoleBindings.
 func (mg *RoleBindings) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1532,7 +1735,10 @@ func (mg *SSOConnection) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this SSOConnection.
 func (mg *SSOConnection) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1558,7 +1764,11 @@ func (mg *SSOConnection) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this SSOConnection.
 func (mg *SSOConnection) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1584,7 +1794,10 @@ func (mg *ScalingPolicy) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this ScalingPolicy.
 func (mg *ScalingPolicy) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1610,7 +1823,11 @@ func (mg *ScalingPolicy) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this ScalingPolicy.
 func (mg *ScalingPolicy) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1636,7 +1853,10 @@ func (mg *ScalingPolicyOrder) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this ScalingPolicyOrder.
 func (mg *ScalingPolicyOrder) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1662,7 +1882,11 @@ func (mg *ScalingPolicyOrder) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this ScalingPolicyOrder.
 func (mg *ScalingPolicyOrder) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1688,7 +1912,10 @@ func (mg *SecurityRuntimeRule) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this SecurityRuntimeRule.
 func (mg *SecurityRuntimeRule) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1714,7 +1941,11 @@ func (mg *SecurityRuntimeRule) SetManagementPolicies(r xpv1.ManagementPolicies) 
 
 // SetProviderConfigReference of this SecurityRuntimeRule.
 func (mg *SecurityRuntimeRule) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1740,7 +1971,10 @@ func (mg *ServiceAccount) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this ServiceAccount.
 func (mg *ServiceAccount) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1766,7 +2000,11 @@ func (mg *ServiceAccount) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this ServiceAccount.
 func (mg *ServiceAccount) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1792,7 +2030,10 @@ func (mg *ServiceAccountKey) GetManagementPolicies() xpv1.ManagementPolicies {
 
 // GetProviderConfigReference of this ServiceAccountKey.
 func (mg *ServiceAccountKey) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1818,7 +2059,11 @@ func (mg *ServiceAccountKey) SetManagementPolicies(r xpv1.ManagementPolicies) {
 
 // SetProviderConfigReference of this ServiceAccountKey.
 func (mg *ServiceAccountKey) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 
@@ -1844,7 +2089,10 @@ func (mg *WorkloadCustomMetricsDataSource) GetManagementPolicies() xpv1.Manageme
 
 // GetProviderConfigReference of this WorkloadCustomMetricsDataSource.
 func (mg *WorkloadCustomMetricsDataSource) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
+	if mg.Spec.ProviderConfigReference == nil {
+		return nil
+	}
+	return &xpv1.ProviderConfigReference{Name: mg.Spec.ProviderConfigReference.Name}
 }
 
 
@@ -1870,7 +2118,11 @@ func (mg *WorkloadCustomMetricsDataSource) SetManagementPolicies(r xpv1.Manageme
 
 // SetProviderConfigReference of this WorkloadCustomMetricsDataSource.
 func (mg *WorkloadCustomMetricsDataSource) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
+	if r == nil {
+		mg.Spec.ProviderConfigReference = nil
+		return
+	}
+	mg.Spec.ProviderConfigReference = &xpv1.Reference{Name: r.Name}
 }
 
 

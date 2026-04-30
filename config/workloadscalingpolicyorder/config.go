@@ -21,7 +21,7 @@ func Configure(p *config.Provider) {
 			"policy_ids": {
 				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.ScalingPolicy",
 				// Use status.atProvider.id instead of external-name for reference resolution
-				Extractor: `github.com/crossplane/upjet/pkg/resource.ExtractResourceID()`,
+				Extractor: `github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()`,
 			},
 		}
 		r.InitializerFns = append(r.InitializerFns, newPolicyRefsAlwaysResolver)

@@ -9,7 +9,6 @@ package scalingpolicyorder
 import (
 	"time"
 
-	"github.com/crossplane/crossplane-runtime/v2/pkg/connection"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/event"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
@@ -32,9 +31,6 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 		initializers = append(initializers, i(mgr.GetClient()))
 	}
 	cps := []managed.ConnectionPublisher{managed.NewAPISecretPublisher(mgr.GetClient(), mgr.GetScheme())}
-	if o.SecretStoreConfigGVK != nil {
-		cps = append(cps, connection.NewDetailsManager(mgr.GetClient(), *o.SecretStoreConfigGVK, connection.WithTLSConfig(o.ESSOptions.TLSConfig)))
-	}
 	eventHandler := handler.NewEventHandler(handler.WithLogger(o.Logger.WithValues("gvk", v1alpha1.ScalingPolicyOrder_GroupVersionKind)))
 	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.ScalingPolicyOrder_GroupVersionKind), tjcontroller.WithEventHandler(eventHandler))
 	opts := []managed.ReconcilerOption{

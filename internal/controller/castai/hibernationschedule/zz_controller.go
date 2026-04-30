@@ -9,7 +9,6 @@ package hibernationschedule
 import (
 	"time"
 
-	"github.com/crossplane/crossplane-runtime/v2/pkg/connection"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/event"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
@@ -29,9 +28,6 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	name := managed.ControllerName(v1alpha1.HibernationSchedule_GroupVersionKind.String())
 	var initializers managed.InitializerChain
 	cps := []managed.ConnectionPublisher{managed.NewAPISecretPublisher(mgr.GetClient(), mgr.GetScheme())}
-	if o.SecretStoreConfigGVK != nil {
-		cps = append(cps, connection.NewDetailsManager(mgr.GetClient(), *o.SecretStoreConfigGVK, connection.WithTLSConfig(o.ESSOptions.TLSConfig)))
-	}
 	eventHandler := handler.NewEventHandler(handler.WithLogger(o.Logger.WithValues("gvk", v1alpha1.HibernationSchedule_GroupVersionKind)))
 	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.HibernationSchedule_GroupVersionKind), tjcontroller.WithEventHandler(eventHandler))
 	opts := []managed.ReconcilerOption{

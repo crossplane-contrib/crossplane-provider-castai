@@ -7,7 +7,7 @@ package controller
 import (
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/crossplane/upjet/pkg/controller"
+	"github.com/crossplane/upjet/v2/pkg/controller"
 
 	aioptimizerhostedmodel "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/aioptimizerhostedmodel"
 	aioptimizermodelregistry "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/aioptimizermodelregistry"

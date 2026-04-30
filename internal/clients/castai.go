@@ -41,7 +41,11 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			},
 		}
 
-		configRef := mg.GetProviderConfigReference()
+		mmg, ok := mg.(resource.ModernManaged)
+		if !ok {
+			return ps, errors.New(errNoProviderConfig)
+		}
+		configRef := mmg.GetProviderConfigReference()
 		if configRef == nil {
 			return ps, errors.New(errNoProviderConfig)
 		}
@@ -51,7 +55,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		t := resource.NewProviderConfigUsageTracker(client, &v1beta1.ProviderConfigUsage{})
-		if err := t.Track(ctx, mg); err != nil {
+		if err := t.Track(ctx, mmg); err != nil {
 			return ps, errors.Wrap(err, errTrackUsage)
 		}
 

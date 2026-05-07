@@ -32,13 +32,13 @@ Copyright 2021 Upbound Inc.
 //go:generate go run -tags generate sigs.k8s.io/controller-tools/cmd/controller-gen object:headerFile=../hack/boilerplate.go.txt paths=./cluster/... crd:allowDangerousTypes=true,crdVersions=v1 output:artifacts:config=../package/crds
 
 // Generate deepcopy methodsets and CRD manifests for namespaced scoped types
-//go:generate go run -tags generate sigs.k8s.io/controller-tools/cmd/controller-gen object:headerFile=../hack/boilerplate.go.txt paths=./namespaced/... crd:allowDangerousTypes=true,crdVersions=v1 output:artifacts:config=../package/crds
+//go:generate go run -tags generate sigs.k8s.io/controller-tools/cmd/controller-gen object:headerFile=../hack/boilerplate.go.txt paths=./namespaced/v1beta1/... crd:allowDangerousTypes=true,crdVersions=v1 output:artifacts:config=../package/crds
 
 // Generate crossplane-runtime methodsets (resource.Claim, etc) for cluster scoped types
 //go:generate go run -tags generate github.com/crossplane/crossplane-tools/cmd/angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./cluster/...
 
 // Generate crossplane-runtime methodsets (resource.Claim, etc) for namespaced scoped types
-//go:generate go run -tags generate github.com/crossplane/crossplane-tools/cmd/angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./namespaced/...
+//go:generate go run -tags generate github.com/crossplane/crossplane-tools/cmd/angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./namespaced/v1beta1/...
 
 package apis
 

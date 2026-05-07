@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/crossplane/crossplane-runtime/v2/pkg/event"
+	xpfeature "github.com/crossplane/crossplane-runtime/v2/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
 	xpresource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
@@ -23,11 +24,20 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/crossplane-provider-castai/apis/cluster/castai/v1alpha1"
 )
 
+// SetupGated adds a controller that reconciles GkeClusterId managed resources.
+func SetupGated(mgr ctrl.Manager, o tjcontroller.Options) error {
+	o.Options.Gate.Register(func() {
+		if err := Setup(mgr, o); err != nil {
+			mgr.GetLogger().Error(err, "unable to setup reconciler", "gvk", v1alpha1.GkeClusterId_GroupVersionKind.String())
+		}
+	}, v1alpha1.GkeClusterId_GroupVersionKind)
+	return nil
+}
+
 // Setup adds a controller that reconciles GkeClusterId managed resources.
 func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	name := managed.ControllerName(v1alpha1.GkeClusterId_GroupVersionKind.String())
 	var initializers managed.InitializerChain
-	cps := []managed.ConnectionPublisher{managed.NewAPISecretPublisher(mgr.GetClient(), mgr.GetScheme())}
 	eventHandler := handler.NewEventHandler(handler.WithLogger(o.Logger.WithValues("gvk", v1alpha1.GkeClusterId_GroupVersionKind)))
 	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.GkeClusterId_GroupVersionKind), tjcontroller.WithEventHandler(eventHandler))
 	opts := []managed.ReconcilerOption{
@@ -39,13 +49,11 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 		managed.WithFinalizer(terraform.NewWorkspaceFinalizer(o.WorkspaceStore, xpresource.NewAPIFinalizer(mgr.GetClient(), managed.FinalizerName))),
 		managed.WithTimeout(3 * time.Minute),
 		managed.WithInitializers(initializers),
-		managed.WithConnectionPublishers(cps...),
 		managed.WithPollInterval(o.PollInterval),
 	}
 	if o.PollJitter != 0 {
 		opts = append(opts, managed.WithPollJitterHook(o.PollJitter))
 	}
-	opts = append(opts, managed.WithManagementPolicies())
 	if o.MetricOptions != nil {
 		opts = append(opts, managed.WithMetricRecorder(o.MetricOptions.MRMetrics))
 	}
@@ -67,6 +75,10 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 		if err := mgr.Add(stateMetricsRecorder); err != nil {
 			return errors.Wrap(err, "cannot register MR state metrics recorder for kind v1alpha1.GkeClusterIdList")
 		}
+	}
+
+	if o.Features.Enabled(xpfeature.EnableAlphaChangeLogs) {
+		opts = append(opts, managed.WithChangeLogger(o.ChangeLogOptions.ChangeLogger))
 	}
 
 	r := managed.NewReconciler(mgr, xpresource.ManagedKind(v1alpha1.GkeClusterId_GroupVersionKind), opts...)

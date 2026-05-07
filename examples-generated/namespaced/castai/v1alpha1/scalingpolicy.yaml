@@ -1,0 +1,78 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: ScalingPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/scalingpolicy
+  labels:
+    testing.upbound.io/example-name: services
+  name: services
+  namespace: upbound-system
+spec:
+  forProvider:
+    anomalyDetection:
+    - cpuPressure:
+      - cpuStallThresholdPercentage: 50
+        minPressuredPodPercentage: 30
+    antiAffinity:
+    - considerAntiAffinity: false
+    applyType: IMMEDIATE
+    assignmentRules:
+    - rules:
+      - namespace:
+        - names:
+          - default
+          - kube-system
+      - workload:
+        - gvk:
+          - Deployment
+          - StatefulSet
+          labelsExpressions:
+          - key: region
+            operator: NotIn
+            values:
+            - eu-west-1
+            - eu-west-2
+          - key: helm.sh/chart
+            operator: Exists
+    clusterId: ${castai_gke_cluster.dev.id}
+    confidence:
+    - threshold: 0.9
+    cpu:
+    - applyThresholdStrategy:
+      - percentage: 0.1
+        type: PERCENTAGE
+      args:
+      - "0.9"
+      function: QUANTILE
+      lookBackPeriodSeconds: 172800
+      max: 1
+      min: 0.1
+      overhead: 0.15
+    downscaling:
+    - applyType: DEFERRED
+    excludedContainers:
+    - container-1
+    - container-2
+    jvm:
+    - memory:
+      - optimization: true
+    managementOption: MANAGED
+    memory:
+    - applyThresholdStrategy:
+      - type: DEFAULT_ADAPTIVE
+      function: MAX
+      limit:
+      - multiplier: 1.5
+        type: MULTIPLIER
+      managementOption: READ_ONLY
+      overhead: 0.35
+    memoryEvent:
+    - applyType: IMMEDIATE
+    name: services
+    predictiveScaling:
+    - cpu:
+      - enabled: true
+    rolloutBehavior:
+    - type: NO_DISRUPTION
+    startup:
+    - periodSeconds: 240

@@ -574,8 +574,6 @@ resources:
             access_key_id_wo: (String, Sensitive) AWS access key ID
             account_id: (String) AWS account ID
             aws: (Attributes) AWS configuration for the edge location (see below for nested schema)
-            client_id: (String) ID of the OCI confidential application used for WIF token exchange
-            client_secret_wo: (String, Sensitive) Secret of the OCI confidential application used for WIF token exchange
             client_service_account_json_base64_wo: (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
             cluster_id: (String) CAST AI cluster ID
             compartment_id: (String) OCI compartment ID of edge location
@@ -587,7 +585,6 @@ resources:
             gcp: (Attributes) GCP configuration for the edge location (see below for nested schema)
             ha: (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
             id: (String) Edge location ID
-            identity_domain_uri: (String) OCI Identity Domain URI (e.g., idcs-xxxx.identity.oraclecloud.com)
             instance_profile: (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
             instance_service_account: (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
             name: (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -991,9 +988,11 @@ resources:
               references:
                 cluster_id: castai_eks_cluster.test.id
                 eks.instance_profile_arn: aws_iam_instance_profile.test.arn
+                eks.security_groups: aws_security_group.test.id
             - name: default
               manifest: '{}'
         argumentDocs:
+            accelerated_networking: '(String) Controls SR-IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.'
             aks: '(Block List, Max: 1) (see below for nested schema)'
             aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)'
             application_security_groups: (List of String) Application security groups to be used for provisioned nodes

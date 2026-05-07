@@ -1,0 +1,17 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: OrganizationMembers
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/organizationmembers
+  labels:
+    testing.upbound.io/example-name: dev
+  name: dev
+  namespace: upbound-system
+spec:
+  forProvider:
+    members:
+    - member@test.ai
+    organizationId: ${data.castai_organization.dev.id}
+    owners:
+    - owner@test.ai
+    viewers: []

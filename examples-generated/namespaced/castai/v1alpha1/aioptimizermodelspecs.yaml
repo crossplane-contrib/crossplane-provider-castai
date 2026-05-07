@@ -1,0 +1,17 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: AIOptimizerModelSpecs
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/aioptimizermodelspecs
+  labels:
+    testing.upbound.io/example-name: hf_example
+  name: hf-example
+  namespace: upbound-system
+spec:
+  forProvider:
+    huggingface:
+    - modelName: meta-llama/Llama-3.1-8B-Instruct
+    model: llama-3.1-8b-instruct
+    registryType: HUGGING_FACE
+    routable: true
+    type: chat

@@ -1,0 +1,23 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: AIOptimizerHostedModel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/aioptimizerhostedmodel
+  labels:
+    testing.upbound.io/example-name: hf_example
+  name: hf-example
+  namespace: upbound-system
+spec:
+  forProvider:
+    clusterId: ${castai_eks_cluster.example.id}
+    horizontalAutoscaling:
+    - enabled: true
+      maxReplicas: 4
+      minReplicas: 1
+      targetMetric: NUMBER_OF_REQUESTS_WAITING
+      targetValue: 10
+    modelSpecsId: ${castai_ai_optimizer_model_specs.hf_example.id}
+    port: 8080
+    service: llama31
+    vllmConfig:
+    - secretName: huggingface-token

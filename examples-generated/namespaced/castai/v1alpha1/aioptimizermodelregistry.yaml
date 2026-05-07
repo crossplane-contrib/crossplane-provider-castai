@@ -1,0 +1,19 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: AIOptimizerModelRegistry
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/aioptimizermodelregistry
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    credentialsSecretRef:
+      key: example-key
+      name: example-secret
+    providerType: S3
+    s3:
+    - bucket: my-company-model-registry
+      prefix: models/
+      region: us-east-1

@@ -1,0 +1,14 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: EksUserArn
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/eksuserarn
+  labels:
+    testing.upbound.io/example-name: castai_user_arn
+  name: castai-user-arn
+  namespace: upbound-system
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: cluster_id

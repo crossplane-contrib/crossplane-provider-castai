@@ -1,0 +1,17 @@
+apiVersion: castai.m.upbound.io/v1alpha1
+kind: NodeConfigurationDefault
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/nodeconfigurationdefault
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    configurationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test

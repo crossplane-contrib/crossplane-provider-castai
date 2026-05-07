@@ -5,6 +5,7 @@ Copyright 2021 Upbound Inc.
 package main
 
 import (
+	"context"
 	"io"
 	"log"
 	"os"
@@ -12,21 +13,27 @@ import (
 	"time"
 
 	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
+	authorizationv1 "k8s.io/api/authorization/v1"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	"github.com/crossplane-contrib/crossplane-provider-castai/apis"
-	"github.com/crossplane-contrib/crossplane-provider-castai/config"
+	configCluster "github.com/crossplane-contrib/crossplane-provider-castai/config/cluster"
+	configNamespaced "github.com/crossplane-contrib/crossplane-provider-castai/config/namespaced"
 	"github.com/crossplane-contrib/crossplane-provider-castai/internal/clients"
-	"github.com/crossplane-contrib/crossplane-provider-castai/internal/controller"
+	controllerCluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller"
+	"github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/cluster/providerconfig"
 )
 
 func main() {
@@ -48,18 +55,14 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
-	log := logging.NewLogrLogger(zl.WithName("crossplane-provider-castai"))
+	logger := logging.NewLogrLogger(zl.WithName("crossplane-provider-castai"))
 
 	if *debug {
-		// The controller-runtime runs with a no-op logger by default. It is
-		// *very* verbose even at info level, so we only provide it a real
-		// logger when we're running in debug mode.
 		ctrl.SetLogger(zl)
 	}
 
-	// currently, we configure the jitter to be the 5% of the poll interval
 	pollJitter := time.Duration(float64(*pollInterval) * 0.05)
-	log.Debug("Starting", "sync-interval", syncInterval.String(),
+	logger.Debug("Starting", "sync-interval", syncInterval.String(),
 		"poll-interval", pollInterval.String(), "poll-jitter", pollJitter, "max-reconcile-rate", *maxReconcileRate)
 
 	cfg, err := ctrl.GetConfig()
@@ -78,21 +81,86 @@ func main() {
 	kingpin.FatalIfError(err, "Cannot create controller manager")
 	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add CastAI APIs to scheme")
 
+	// SafeStart: Check if we can watch CRDs
+	ctx := context.Background()
 	featureFlags := &feature.Flags{}
-	o := tjcontroller.Options{
+	
+	canWatch, err := canWatchCRD(ctx, mgr)
+	if err != nil {
+		logger.Info("Unable to verify CRD watch permissions, assuming SafeStart is not needed", "error", err)
+		canWatch = true // Assume we can watch if RBAC check fails
+	}
+	
+	if !canWatch {
+		logger.Info("CRD watch permissions not available, using SafeStart gating")
+		featureFlags.Enable(feature.FlagSafeStart)
+	}
+
+	// Setup cluster-scoped resources
+	oCluster := tjcontroller.Options{
 		Options: xpcontroller.Options{
-			Logger:                  log,
+			Logger:                  logger,
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
-			PollInterval:            1 * time.Minute,
+			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: 1,
 			Features:                featureFlags,
 		},
-		Provider:       config.GetProvider(),
+		Provider:       configCluster.GetProvider(),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
-		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(featureFlags)),
+		WorkspaceStore: terraform.NewWorkspaceStore(logger, terraform.WithFeatures(featureFlags)),
 		PollJitter:     pollJitter,
 	}
 
-	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup CastAI controllers")
+	if featureFlags.Enabled(feature.FlagSafeStart) {
+		kingpin.FatalIfError(providerconfig.SetupGated(mgr, oCluster), "Cannot setup gated cluster CastAI controllers")
+	} else {
+		kingpin.FatalIfError(controllerCluster.Setup(mgr, oCluster), "Cannot setup CastAI controllers")
+	}
+
+	// Setup namespaced-scoped resources
+	oNamespaced := tjcontroller.Options{
+		Options: xpcontroller.Options{
+			Logger:                  logger,
+			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
+			PollInterval:            *pollInterval,
+			MaxConcurrentReconciles: 1,
+			Features:                featureFlags,
+		},
+		Provider:       configNamespaced.GetProvider(),
+		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
+		WorkspaceStore: terraform.NewWorkspaceStore(logger, terraform.WithFeatures(featureFlags)),
+		PollJitter:     pollJitter,
+	}
+	
+	if featureFlags.Enabled(feature.FlagSafeStart) {
+		kingpin.FatalIfError(providerconfig.SetupGated(mgr, oNamespaced), "Cannot setup gated namespaced CastAI controllers")
+	}
+
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
+}
+
+// canWatchCRD checks if the provider has permission to watch CustomResourceDefinitions.
+func canWatchCRD(ctx context.Context, mgr manager.Manager) (bool, error) {
+	if err := authorizationv1.AddToScheme(mgr.GetScheme()); err != nil {
+		return false, err
+	}
+	verbs := []string{"get", "list", "watch"}
+	for _, verb := range verbs {
+		sar := &authorizationv1.SelfSubjectAccessReview{
+			Spec: authorizationv1.SelfSubjectAccessReviewSpec{
+				ResourceAttributes: &authorizationv1.ResourceAttributes{
+					Group:    "apiextensions.k8s.io",
+					Resource: "customresourcedefinitions",
+					Verb:     verb,
+				},
+			},
+		}
+		if err := mgr.GetClient().Create(ctx, sar); err != nil {
+			return false, errors.Wrapf(err, "unable to perform RBAC check for verb %s on CustomResourceDefinitions", verb)
+		}
+		if !sar.Status.Allowed {
+			return false, nil
+		}
+	}
+	return true, nil
 }

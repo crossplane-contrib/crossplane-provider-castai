@@ -11,7 +11,8 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/pipeline"
 
-	"github.com/crossplane-contrib/crossplane-provider-castai/config"
+	cluster "github.com/crossplane-contrib/crossplane-provider-castai/config/cluster"
+	namespaced "github.com/crossplane-contrib/crossplane-provider-castai/config/namespaced"
 )
 
 func main() {
@@ -23,5 +24,5 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
-	pipeline.Run(config.GetProvider(), nil, absRootDir)
+	pipeline.Run(cluster.GetProvider(), namespaced.GetProvider(), absRootDir)
 }

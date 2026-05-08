@@ -55,7 +55,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		t := resource.NewProviderConfigUsageTracker(client, &v1beta1.ProviderConfigUsage{})
-		if err := t.Track(ctx, mg); err != nil {
+		if err := t.Track(ctx, mmg); err != nil {
 			return ps, errors.Wrap(err, errTrackUsage)
 		}
 

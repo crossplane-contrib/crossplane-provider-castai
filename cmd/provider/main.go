@@ -5,7 +5,6 @@ Copyright 2021 Upbound Inc.
 package main
 
 import (
-	"context"
 	"io"
 	"log"
 	"os"
@@ -13,27 +12,20 @@ import (
 	"time"
 
 	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
-	"github.com/crossplane/crossplane-runtime/v2/pkg/errors"
-	"github.com/crossplane/crossplane-runtime/v2/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
-	authorizationv1 "k8s.io/api/authorization/v1"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	"github.com/crossplane-contrib/crossplane-provider-castai/apis"
-	configCluster "github.com/crossplane-contrib/crossplane-provider-castai/config/cluster"
-	configNamespaced "github.com/crossplane-contrib/crossplane-provider-castai/config/namespaced"
+	"github.com/crossplane-contrib/crossplane-provider-castai/config"
 	"github.com/crossplane-contrib/crossplane-provider-castai/internal/clients"
-	controllerCluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller"
-	"github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/cluster/providerconfig"
+	"github.com/crossplane-contrib/crossplane-provider-castai/internal/controller"
 )
 
 func main() {
@@ -81,86 +73,20 @@ func main() {
 	kingpin.FatalIfError(err, "Cannot create controller manager")
 	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add CastAI APIs to scheme")
 
-	// SafeStart: Check if we can watch CRDs
-	ctx := context.Background()
-	featureFlags := &feature.Flags{}
-	
-	canWatch, err := canWatchCRD(ctx, mgr)
-	if err != nil {
-		logger.Info("Unable to verify CRD watch permissions, assuming SafeStart is not needed", "error", err)
-		canWatch = true // Assume we can watch if RBAC check fails
-	}
-	
-	if !canWatch {
-		logger.Info("CRD watch permissions not available, using SafeStart gating")
-		featureFlags.Enable(feature.FlagSafeStart)
-	}
-
-	// Setup cluster-scoped resources
-	oCluster := tjcontroller.Options{
+	o := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  logger,
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: 1,
-			Features:                featureFlags,
 		},
-		Provider:       configCluster.GetProvider(),
+		Provider:       config.GetProvider(),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
-		WorkspaceStore: terraform.NewWorkspaceStore(logger, terraform.WithFeatures(featureFlags)),
+		WorkspaceStore: terraform.NewWorkspaceStore(logger),
 		PollJitter:     pollJitter,
 	}
 
-	if featureFlags.Enabled(feature.FlagSafeStart) {
-		kingpin.FatalIfError(providerconfig.SetupGated(mgr, oCluster), "Cannot setup gated cluster CastAI controllers")
-	} else {
-		kingpin.FatalIfError(controllerCluster.Setup(mgr, oCluster), "Cannot setup CastAI controllers")
-	}
-
-	// Setup namespaced-scoped resources
-	oNamespaced := tjcontroller.Options{
-		Options: xpcontroller.Options{
-			Logger:                  logger,
-			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
-			PollInterval:            *pollInterval,
-			MaxConcurrentReconciles: 1,
-			Features:                featureFlags,
-		},
-		Provider:       configNamespaced.GetProvider(),
-		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
-		WorkspaceStore: terraform.NewWorkspaceStore(logger, terraform.WithFeatures(featureFlags)),
-		PollJitter:     pollJitter,
-	}
-	
-	if featureFlags.Enabled(feature.FlagSafeStart) {
-		kingpin.FatalIfError(providerconfig.SetupGated(mgr, oNamespaced), "Cannot setup gated namespaced CastAI controllers")
-	}
+	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup CastAI controllers")
 
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
-}
-
-// canWatchCRD checks if the provider has permission to watch CustomResourceDefinitions.
-func canWatchCRD(ctx context.Context, mgr manager.Manager) (bool, error) {
-	if err := authorizationv1.AddToScheme(mgr.GetScheme()); err != nil {
-		return false, err
-	}
-	verbs := []string{"get", "list", "watch"}
-	for _, verb := range verbs {
-		sar := &authorizationv1.SelfSubjectAccessReview{
-			Spec: authorizationv1.SelfSubjectAccessReviewSpec{
-				ResourceAttributes: &authorizationv1.ResourceAttributes{
-					Group:    "apiextensions.k8s.io",
-					Resource: "customresourcedefinitions",
-					Verb:     verb,
-				},
-			},
-		}
-		if err := mgr.GetClient().Create(ctx, sar); err != nil {
-			return false, errors.Wrapf(err, "unable to perform RBAC check for verb %s on CustomResourceDefinitions", verb)
-		}
-		if !sar.Status.Allowed {
-			return false, nil
-		}
-	}
-	return true, nil
 }

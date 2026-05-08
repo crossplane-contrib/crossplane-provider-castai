@@ -8,8 +8,10 @@ package v1beta1
 import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 
 // GetProviderConfigReference of this ProviderConfigUsage.
-func (p *ProviderConfigUsage) GetProviderConfigReference() xpv1.Reference {
-	return p.ProviderConfigReference
+func (p *ProviderConfigUsage) GetProviderConfigReference() xpv1.ProviderConfigReference {
+	return xpv1.ProviderConfigReference{
+		Name: p.ProviderConfigReference.Name,
+	}
 }
 
 // GetResourceReference of this ProviderConfigUsage.
@@ -18,8 +20,8 @@ func (p *ProviderConfigUsage) GetResourceReference() xpv1.TypedReference {
 }
 
 // SetProviderConfigReference of this ProviderConfigUsage.
-func (p *ProviderConfigUsage) SetProviderConfigReference(r xpv1.Reference) {
-	p.ProviderConfigReference = r
+func (p *ProviderConfigUsage) SetProviderConfigReference(r xpv1.ProviderConfigReference) {
+	p.ProviderConfigReference.Name = r.Name
 }
 
 // SetResourceReference of this ProviderConfigUsage.

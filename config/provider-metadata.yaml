@@ -574,8 +574,6 @@ resources:
             access_key_id_wo: (String, Sensitive) AWS access key ID
             account_id: (String) AWS account ID
             aws: (Attributes) AWS configuration for the edge location (see below for nested schema)
-            client_id: (String) ID of the OCI confidential application used for WIF token exchange
-            client_secret_wo: (String, Sensitive) Secret of the OCI confidential application used for WIF token exchange
             client_service_account_json_base64_wo: (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
             cluster_id: (String) CAST AI cluster ID
             compartment_id: (String) OCI compartment ID of edge location
@@ -587,13 +585,13 @@ resources:
             gcp: (Attributes) GCP configuration for the edge location (see below for nested schema)
             ha: (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
             id: (String) Edge location ID
-            identity_domain_uri: (String) OCI Identity Domain URI (e.g., idcs-xxxx.identity.oraclecloud.com)
             instance_profile: (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
             instance_service_account: (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
             name: (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
             name_tag: (String, Deprecated) The value of a 'Name' tag applied to VPC resources
             network_name: (String) The name of the network to be used in the selected region
             network_tags: (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
+            networking: (Attributes) Edge cluster networking configuration. (see below for nested schema)
             oci: (Attributes) OCI configuration for the edge location (see below for nested schema)
             organization_id: (String) CAST AI organization ID
             private_key_base64_wo: (String, Sensitive) Base64 encoded API private key
@@ -608,6 +606,7 @@ resources:
             subnet_name: (String) The name of the subnetwork to be used in the selected region
             target_service_account_email: (String) Target service account email to be used for impersonation
             tenancy_id: (String) OCI tenancy ID of the account
+            tunneled_cidrs: (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
             user_id_wo: (String) User ID used to authenticate OCI
             vcn_cidr: (String) OCI VCN IPv4 CIDR block
             vcn_id: (String) OCI virtual cloud network ID
@@ -994,6 +993,7 @@ resources:
             - name: default
               manifest: '{}'
         argumentDocs:
+            accelerated_networking: '(String) Controls SR-IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.'
             aks: '(Block List, Max: 1) (see below for nested schema)'
             aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)'
             application_security_groups: (List of String) Application security groups to be used for provisioned nodes
@@ -1016,7 +1016,7 @@ resources:
             id: (String) The ID of this resource.
             idle_timeout_in_minutes: (Number) Idle timeout in minutes for public IP
             image: (String) Image to be used while provisioning the node. If nothing is provided will be resolved to latest available image based on Image family, Kubernetes version and node architecture if possible. See Cast.ai documentation for details.
-            imds_hop_limit: (Number) Allow configure the IMDSv2 hop limit, the default is 2
+            imds_hop_limit: (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
             imds_v1: (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
             init_script: (String) Init script to be run on your instance at launch. Should not contain any sensitive data. Value should be base64 encoded
             instance_profile_arn: (String) Cluster's instance profile ARN used for CAST provisioned nodes
@@ -1171,7 +1171,7 @@ resources:
             burstable_instances: '(String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
             capacity_reservations: (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
             capacity_resource_group_arn: (String) Capacity resource group ARN for UltraServer capacity blocks.
-            clm_enabled: (Boolean) Marks whether CLM should be enabled for nodes created from this template.
+            clm_enabled: (Boolean) Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint (deprecated).
             compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'
@@ -1782,21 +1782,21 @@ resources:
             distribution_percentage: (Number) Percentage of pods (0-100) that receive spot scheduling constraints.
             effect: (String) Toleration effect.
             enabled: (Boolean) Whether the pod mutation is enabled.
-            exclude_kinds: (Block List) (see below for nested schema)
+            exclude_kinds: (Block Set) (see below for nested schema)
             exclude_labels_filter: '(Block List, Max: 1) (see below for nested schema)'
-            exclude_names: (Block List) (see below for nested schema)
-            exclude_namespaces: (Block List) (see below for nested schema)
+            exclude_names: (Block Set) (see below for nested schema)
+            exclude_namespaces: (Block Set) (see below for nested schema)
             filter_v2: '(Block List, Min: 1, Max: 1) Advanced object filter with support for exact and regex matching. (see below for nested schema)'
             id: (String) The ID of this resource.
             key: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
-            kinds: (Block List) (see below for nested schema)
+            kinds: (Block Set) (see below for nested schema)
             labels: (Map of String) Labels to add to the pods.
             labels_filter: '(Block List, Max: 1) (see below for nested schema)'
             match_expressions: (Block List) (see below for nested schema)
-            matchers: '(Block List, Min: 1) (see below for nested schema)'
+            matchers: '(Block Set, Min: 1) (see below for nested schema)'
             name: (String) Name of the pod mutation.
-            names: (Block List) (see below for nested schema)
-            namespaces: (Block List) (see below for nested schema)
+            names: (Block Set) (see below for nested schema)
+            namespaces: (Block Set) (see below for nested schema)
             node_affinity: '(Block List, Max: 1) (see below for nested schema)'
             node_selector: '(Block List, Max: 1) Node selector to apply to the pods (add/remove key-value pairs). (see below for nested schema)'
             node_templates_to_consolidate: (List of String) Node template names to consolidate.
@@ -1862,6 +1862,14 @@ resources:
                 {
                   "launch_configuration": [
                     {
+                      "aggressive_mode_config": [
+                        {
+                          "ignore_local_persistent_volumes": false,
+                          "ignore_problem_job_pods": false,
+                          "ignore_problem_pods_without_controller": true,
+                          "ignore_problem_removal_disabled_pods": false
+                        }
+                      ],
                       "execution_conditions": [
                         {
                           "achieved_savings_percentage": 10,
@@ -1890,8 +1898,8 @@ resources:
         argumentDocs:
             CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
             achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
-            aggressive_mode: (Boolean) When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
-            aggressive_mode_config: '(Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)'
+            aggressive_mode: (Boolean) When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+            aggressive_mode_config: '(Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)'
             create: (String)
             cron: (String) Cron expression defining when the schedule should trigger.
             delete: (String)
@@ -2406,6 +2414,7 @@ resources:
             apply_type: (String) Recommendation apply type.
             args: (List of String) The arguments for the function - i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
             assignment_rules: (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
+            auto_instrument: (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
             cluster_id: (String) CAST AI cluster id
             confidence: '(Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)'
             consider_anti_affinity: |-
@@ -2415,6 +2424,7 @@ resources:
             cpu_pressure: '(Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)'
             cpu_stall_threshold_percentage: (Number) Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
             create: (String)
+            delay_seconds: (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
             delete: (String)
             denominator: (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
             downscaling: '(Block List, Max: 1) (see below for nested schema)'

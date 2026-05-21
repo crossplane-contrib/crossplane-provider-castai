@@ -78,6 +78,11 @@ spec:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        acceleratedNetworking:
+                          description: |-
+                            IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                            Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                          type: string
                         aksImageFamily:
                           description: |-
                             linux,windows2019,windows2022)
@@ -321,8 +326,8 @@ spec:
                           type: string
                         imdsHopLimit:
                           description: |-
-                            (Number) Allow configure the IMDSv2 hop limit, the default is 2
-                            Allow configure the IMDSv2 hop limit, the default is 2
+                            (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
+                            Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
                           type: number
                         imdsV1:
                           description: |-
@@ -586,6 +591,11 @@ spec:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        acceleratedNetworking:
+                          description: |-
+                            IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                            Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                          type: string
                         aksImageFamily:
                           description: |-
                             linux,windows2019,windows2022)
@@ -829,8 +839,8 @@ spec:
                           type: string
                         imdsHopLimit:
                           description: |-
-                            (Number) Allow configure the IMDSv2 hop limit, the default is 2
-                            Allow configure the IMDSv2 hop limit, the default is 2
+                            (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
+                            Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
                           type: number
                         imdsV1:
                           description: |-
@@ -1262,6 +1272,11 @@ spec:
                     description: '(Block List, Max: 1) (see below for nested schema)'
                     items:
                       properties:
+                        acceleratedNetworking:
+                          description: |-
+                            IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                            Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+                          type: string
                         aksImageFamily:
                           description: |-
                             linux,windows2019,windows2022)
@@ -1429,8 +1444,8 @@ spec:
                           type: string
                         imdsHopLimit:
                           description: |-
-                            (Number) Allow configure the IMDSv2 hop limit, the default is 2
-                            Allow configure the IMDSv2 hop limit, the default is 2
+                            (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
+                            Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
                           type: number
                         imdsV1:
                           description: |-

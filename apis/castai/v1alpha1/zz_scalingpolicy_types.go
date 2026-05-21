@@ -261,6 +261,10 @@ type DownscalingParameters struct {
 
 type JvmInitParameters struct {
 
+	// (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+	// When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+	AutoInstrument *bool `json:"autoInstrument,omitempty" tf:"auto_instrument,omitempty"`
+
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// JVM memory optimization settings.
 	Memory []MemoryInitParameters `json:"memory,omitempty" tf:"memory,omitempty"`
@@ -268,12 +272,21 @@ type JvmInitParameters struct {
 
 type JvmObservation struct {
 
+	// (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+	// When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+	AutoInstrument *bool `json:"autoInstrument,omitempty" tf:"auto_instrument,omitempty"`
+
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// JVM memory optimization settings.
 	Memory []MemoryObservation `json:"memory,omitempty" tf:"memory,omitempty"`
 }
 
 type JvmParameters struct {
+
+	// (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+	// When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+	// +kubebuilder:validation:Optional
+	AutoInstrument *bool `json:"autoInstrument,omitempty" tf:"auto_instrument,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// JVM memory optimization settings.
@@ -619,6 +632,10 @@ type MemoryParameters struct {
 
 type NamespaceInitParameters struct {
 
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	LabelsExpressions []LabelsExpressionsInitParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+
 	// (List of String) Defines matching by namespace names.
 	// Defines matching by namespace names.
 	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
@@ -626,12 +643,21 @@ type NamespaceInitParameters struct {
 
 type NamespaceObservation struct {
 
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	LabelsExpressions []LabelsExpressionsObservation `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+
 	// (List of String) Defines matching by namespace names.
 	// Defines matching by namespace names.
 	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
 }
 
 type NamespaceParameters struct {
+
+	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
+	// Defines matching by label selector requirements.
+	// +kubebuilder:validation:Optional
+	LabelsExpressions []LabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 
 	// (List of String) Defines matching by namespace names.
 	// Defines matching by namespace names.
@@ -685,6 +711,10 @@ type PredictiveScalingParameters struct {
 
 type RolloutBehaviorInitParameters struct {
 
+	// (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+	// Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+	DelaySeconds *float64 `json:"delaySeconds,omitempty" tf:"delay_seconds,omitempty"`
+
 	// (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
 	// Defines if pods should be restarted one by one to avoid service disruption.
 	PreferOneByOne *bool `json:"preferOneByOne,omitempty" tf:"prefer_one_by_one,omitempty"`
@@ -692,11 +722,16 @@ type RolloutBehaviorInitParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines the rollout type to be used when applying recommendations.
 	// - NO_DISRUPTION - pods are restarted without causing service disruption.
+	// - UNSPECIFIED - rollout type is not specified.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type RolloutBehaviorObservation struct {
 
+	// (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+	// Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+	DelaySeconds *float64 `json:"delaySeconds,omitempty" tf:"delay_seconds,omitempty"`
+
 	// (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
 	// Defines if pods should be restarted one by one to avoid service disruption.
 	PreferOneByOne *bool `json:"preferOneByOne,omitempty" tf:"prefer_one_by_one,omitempty"`
@@ -704,10 +739,16 @@ type RolloutBehaviorObservation struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines the rollout type to be used when applying recommendations.
 	// - NO_DISRUPTION - pods are restarted without causing service disruption.
+	// - UNSPECIFIED - rollout type is not specified.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type RolloutBehaviorParameters struct {
+
+	// (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+	// Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+	// +kubebuilder:validation:Optional
+	DelaySeconds *float64 `json:"delaySeconds,omitempty" tf:"delay_seconds,omitempty"`
 
 	// (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
 	// Defines if pods should be restarted one by one to avoid service disruption.
@@ -717,6 +758,7 @@ type RolloutBehaviorParameters struct {
 	// (String) Defines apply theshold strategy type.
 	// Defines the rollout type to be used when applying recommendations.
 	// - NO_DISRUPTION - pods are restarted without causing service disruption.
+	// - UNSPECIFIED - rollout type is not specified.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -769,7 +811,7 @@ type RulesWorkloadInitParameters struct {
 
 	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
 	// Defines matching by label selector requirements.
-	LabelsExpressions []LabelsExpressionsInitParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+	LabelsExpressions []WorkloadLabelsExpressionsInitParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 }
 
 type RulesWorkloadObservation struct {
@@ -785,7 +827,7 @@ type RulesWorkloadObservation struct {
 
 	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
 	// Defines matching by label selector requirements.
-	LabelsExpressions []LabelsExpressionsObservation `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+	LabelsExpressions []WorkloadLabelsExpressionsObservation `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 }
 
 type RulesWorkloadParameters struct {
@@ -803,7 +845,7 @@ type RulesWorkloadParameters struct {
 	// (Block List) Defines matching by label selector requirements. (see below for nested schema)
 	// Defines matching by label selector requirements.
 	// +kubebuilder:validation:Optional
-	LabelsExpressions []LabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+	LabelsExpressions []WorkloadLabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
 }
 
 type ScalingPolicyCPUInitParameters struct {
@@ -1355,6 +1397,54 @@ type StartupParameters struct {
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	// +kubebuilder:validation:Optional
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+}
+
+type WorkloadLabelsExpressionsInitParameters struct {
+
+	// (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+	// The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) The operator to use for matching the label.
+	// The operator to use for matching the label.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+	// A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type WorkloadLabelsExpressionsObservation struct {
+
+	// (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+	// The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) The operator to use for matching the label.
+	// The operator to use for matching the label.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+	// A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type WorkloadLabelsExpressionsParameters struct {
+
+	// (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+	// The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) The operator to use for matching the label.
+	// The operator to use for matching the label.
+	// +kubebuilder:validation:Optional
+	Operator *string `json:"operator" tf:"operator,omitempty"`
+
+	// (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+	// A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 // ScalingPolicySpec defines the desired state of ScalingPolicy

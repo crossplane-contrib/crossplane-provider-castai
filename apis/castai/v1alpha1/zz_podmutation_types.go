@@ -306,7 +306,7 @@ type ExcludeKindsParameters struct {
 
 type ExcludeLabelsFilterInitParameters struct {
 
-	// (Block List, Min: 1) (see below for nested schema)
+	// (Block Set, Min: 1) (see below for nested schema)
 	Matchers []MatchersInitParameters `json:"matchers,omitempty" tf:"matchers,omitempty"`
 
 	// (String) Logical operator to combine label matchers: AND or OR.
@@ -316,7 +316,7 @@ type ExcludeLabelsFilterInitParameters struct {
 
 type ExcludeLabelsFilterObservation struct {
 
-	// (Block List, Min: 1) (see below for nested schema)
+	// (Block Set, Min: 1) (see below for nested schema)
 	Matchers []MatchersObservation `json:"matchers,omitempty" tf:"matchers,omitempty"`
 
 	// (String) Logical operator to combine label matchers: AND or OR.
@@ -326,7 +326,7 @@ type ExcludeLabelsFilterObservation struct {
 
 type ExcludeLabelsFilterParameters struct {
 
-	// (Block List, Min: 1) (see below for nested schema)
+	// (Block Set, Min: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Matchers []MatchersParameters `json:"matchers" tf:"matchers,omitempty"`
 
@@ -513,7 +513,7 @@ type KindsParameters struct {
 
 type LabelsFilterInitParameters struct {
 
-	// (Block List, Min: 1) (see below for nested schema)
+	// (Block Set, Min: 1) (see below for nested schema)
 	Matchers []LabelsFilterMatchersInitParameters `json:"matchers,omitempty" tf:"matchers,omitempty"`
 
 	// (String) Logical operator to combine label matchers: AND or OR.
@@ -552,7 +552,7 @@ type LabelsFilterMatchersParameters struct {
 
 type LabelsFilterObservation struct {
 
-	// (Block List, Min: 1) (see below for nested schema)
+	// (Block Set, Min: 1) (see below for nested schema)
 	Matchers []LabelsFilterMatchersObservation `json:"matchers,omitempty" tf:"matchers,omitempty"`
 
 	// (String) Logical operator to combine label matchers: AND or OR.
@@ -562,7 +562,7 @@ type LabelsFilterObservation struct {
 
 type LabelsFilterParameters struct {
 
-	// (Block List, Min: 1) (see below for nested schema)
+	// (Block Set, Min: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Matchers []LabelsFilterMatchersParameters `json:"matchers" tf:"matchers,omitempty"`
 
@@ -1428,69 +1428,69 @@ type ValueParameters struct {
 
 type WorkloadInitParameters struct {
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	ExcludeKinds []ExcludeKindsInitParameters `json:"excludeKinds,omitempty" tf:"exclude_kinds,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	ExcludeNames []ExcludeNamesInitParameters `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	ExcludeNamespaces []ExcludeNamespacesInitParameters `json:"excludeNamespaces,omitempty" tf:"exclude_namespaces,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	Kinds []KindsInitParameters `json:"kinds,omitempty" tf:"kinds,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	Names []NamesInitParameters `json:"names,omitempty" tf:"names,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	Namespaces []NamespacesInitParameters `json:"namespaces,omitempty" tf:"namespaces,omitempty"`
 }
 
 type WorkloadObservation struct {
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	ExcludeKinds []ExcludeKindsObservation `json:"excludeKinds,omitempty" tf:"exclude_kinds,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	ExcludeNames []ExcludeNamesObservation `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	ExcludeNamespaces []ExcludeNamespacesObservation `json:"excludeNamespaces,omitempty" tf:"exclude_namespaces,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	Kinds []KindsObservation `json:"kinds,omitempty" tf:"kinds,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	Names []NamesObservation `json:"names,omitempty" tf:"names,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	Namespaces []NamespacesObservation `json:"namespaces,omitempty" tf:"namespaces,omitempty"`
 }
 
 type WorkloadParameters struct {
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExcludeKinds []ExcludeKindsParameters `json:"excludeKinds,omitempty" tf:"exclude_kinds,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExcludeNames []ExcludeNamesParameters `json:"excludeNames,omitempty" tf:"exclude_names,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExcludeNamespaces []ExcludeNamespacesParameters `json:"excludeNamespaces,omitempty" tf:"exclude_namespaces,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Kinds []KindsParameters `json:"kinds,omitempty" tf:"kinds,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Names []NamesParameters `json:"names,omitempty" tf:"names,omitempty"`
 
-	// (Block List) (see below for nested schema)
+	// (Block Set) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Namespaces []NamespacesParameters `json:"namespaces,omitempty" tf:"namespaces,omitempty"`
 }

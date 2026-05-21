@@ -939,8 +939,8 @@ type NodeTemplateGpuParameters struct {
 
 type NodeTemplateInitParameters struct {
 
-	// (Boolean) Marks whether CLM should be enabled for nodes created from this template.
-	// Marks whether CLM should be enabled for nodes created from this template.
+	// enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+	// Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
 	ClmEnabled *bool `json:"clmEnabled,omitempty" tf:"clm_enabled,omitempty"`
 
 	// (String) CAST AI cluster id.
@@ -1024,8 +1024,8 @@ type NodeTemplateInitParameters struct {
 
 type NodeTemplateObservation struct {
 
-	// (Boolean) Marks whether CLM should be enabled for nodes created from this template.
-	// Marks whether CLM should be enabled for nodes created from this template.
+	// enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+	// Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
 	ClmEnabled *bool `json:"clmEnabled,omitempty" tf:"clm_enabled,omitempty"`
 
 	// (String) CAST AI cluster id.
@@ -1094,8 +1094,8 @@ type NodeTemplateObservation struct {
 
 type NodeTemplateParameters struct {
 
-	// (Boolean) Marks whether CLM should be enabled for nodes created from this template.
-	// Marks whether CLM should be enabled for nodes created from this template.
+	// enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+	// Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
 	// +kubebuilder:validation:Optional
 	ClmEnabled *bool `json:"clmEnabled,omitempty" tf:"clm_enabled,omitempty"`
 

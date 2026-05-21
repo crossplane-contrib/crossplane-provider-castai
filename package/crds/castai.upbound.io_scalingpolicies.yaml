@@ -136,6 +136,31 @@ spec:
                                   Allows assigning a scaling policy based on the workload's namespace.
                                 items:
                                   properties:
+                                    labelsExpressions:
+                                      description: |-
+                                        (Block List) Defines matching by label selector requirements. (see below for nested schema)
+                                        Defines matching by label selector requirements.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: |-
+                                              (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+                                              The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+                                            type: string
+                                          operator:
+                                            description: |-
+                                              (String) The operator to use for matching the label.
+                                              The operator to use for matching the label.
+                                            type: string
+                                          values:
+                                            description: |-
+                                              (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+                                              A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
                                     names:
                                       description: |-
                                         (List of String) Defines matching by namespace names.
@@ -358,6 +383,11 @@ spec:
                       JVM optimization settings.
                     items:
                       properties:
+                        autoInstrument:
+                          description: |-
+                            (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+                            When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+                          type: boolean
                         memory:
                           description: |-
                             (Block List, Min: 1, Max: 1) (see below for nested schema)
@@ -548,6 +578,11 @@ spec:
                       - Cluster has workload-autoscaler component version v0.35.3 or higher.
                     items:
                       properties:
+                        delaySeconds:
+                          description: |-
+                            (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+                            Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+                          type: number
                         preferOneByOne:
                           description: |-
                             (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
@@ -558,6 +593,7 @@ spec:
                             (String) Defines apply theshold strategy type.
                             Defines the rollout type to be used when applying recommendations.
                             - NO_DISRUPTION - pods are restarted without causing service disruption.
+                            - UNSPECIFIED - rollout type is not specified.
                           type: string
                       type: object
                     type: array
@@ -653,6 +689,31 @@ spec:
                                   Allows assigning a scaling policy based on the workload's namespace.
                                 items:
                                   properties:
+                                    labelsExpressions:
+                                      description: |-
+                                        (Block List) Defines matching by label selector requirements. (see below for nested schema)
+                                        Defines matching by label selector requirements.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: |-
+                                              (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+                                              The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+                                            type: string
+                                          operator:
+                                            description: |-
+                                              (String) The operator to use for matching the label.
+                                              The operator to use for matching the label.
+                                            type: string
+                                          values:
+                                            description: |-
+                                              (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+                                              A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
                                     names:
                                       description: |-
                                         (List of String) Defines matching by namespace names.
@@ -875,6 +936,11 @@ spec:
                       JVM optimization settings.
                     items:
                       properties:
+                        autoInstrument:
+                          description: |-
+                            (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+                            When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+                          type: boolean
                         memory:
                           description: |-
                             (Block List, Min: 1, Max: 1) (see below for nested schema)
@@ -1065,6 +1131,11 @@ spec:
                       - Cluster has workload-autoscaler component version v0.35.3 or higher.
                     items:
                       properties:
+                        delaySeconds:
+                          description: |-
+                            (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+                            Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+                          type: number
                         preferOneByOne:
                           description: |-
                             (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
@@ -1075,6 +1146,7 @@ spec:
                             (String) Defines apply theshold strategy type.
                             Defines the rollout type to be used when applying recommendations.
                             - NO_DISRUPTION - pods are restarted without causing service disruption.
+                            - UNSPECIFIED - rollout type is not specified.
                           type: string
                       type: object
                     type: array
@@ -1354,6 +1426,31 @@ spec:
                                   Allows assigning a scaling policy based on the workload's namespace.
                                 items:
                                   properties:
+                                    labelsExpressions:
+                                      description: |-
+                                        (Block List) Defines matching by label selector requirements. (see below for nested schema)
+                                        Defines matching by label selector requirements.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: |-
+                                              (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+                                              The label key to match. Required for all operators except `Regex` and `Contains`. If not specified, it will search through all labels.
+                                            type: string
+                                          operator:
+                                            description: |-
+                                              (String) The operator to use for matching the label.
+                                              The operator to use for matching the label.
+                                            type: string
+                                          values:
+                                            description: |-
+                                              (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
+                                              A list of values to match against the label key. It is required for `In`, `NotIn`, `Regex`, and `Contains` operators.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
                                     names:
                                       description: |-
                                         (List of String) Defines matching by namespace names.
@@ -1579,6 +1676,11 @@ spec:
                       JVM optimization settings.
                     items:
                       properties:
+                        autoInstrument:
+                          description: |-
+                            (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+                            When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+                          type: boolean
                         memory:
                           description: |-
                             (Block List, Min: 1, Max: 1) (see below for nested schema)
@@ -1769,6 +1871,11 @@ spec:
                       - Cluster has workload-autoscaler component version v0.35.3 or higher.
                     items:
                       properties:
+                        delaySeconds:
+                          description: |-
+                            (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+                            Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
+                          type: number
                         preferOneByOne:
                           description: |-
                             (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
@@ -1779,6 +1886,7 @@ spec:
                             (String) Defines apply theshold strategy type.
                             Defines the rollout type to be used when applying recommendations.
                             - NO_DISRUPTION - pods are restarted without causing service disruption.
+                            - UNSPECIFIED - rollout type is not specified.
                           type: string
                       type: object
                     type: array

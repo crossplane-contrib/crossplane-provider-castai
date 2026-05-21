@@ -9,7 +9,12 @@ metadata:
 spec:
   forProvider:
     launchConfiguration:
-    - executionConditions:
+    - aggressiveModeConfig:
+      - ignoreLocalPersistentVolumes: false
+        ignoreProblemJobPods: false
+        ignoreProblemPodsWithoutController: true
+        ignoreProblemRemovalDisabledPods: false
+      executionConditions:
       - achievedSavingsPercentage: 10
         enabled: true
       keepDrainTimeoutNodes: false

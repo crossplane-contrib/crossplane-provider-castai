@@ -75,8 +75,8 @@ spec:
                 properties:
                   clmEnabled:
                     description: |-
-                      (Boolean) Marks whether CLM should be enabled for nodes created from this template.
-                      Marks whether CLM should be enabled for nodes created from this template.
+                      enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+                      Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                     type: boolean
                   clusterId:
                     description: |-
@@ -735,8 +735,8 @@ spec:
                 properties:
                   clmEnabled:
                     description: |-
-                      (Boolean) Marks whether CLM should be enabled for nodes created from this template.
-                      Marks whether CLM should be enabled for nodes created from this template.
+                      enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+                      Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                     type: boolean
                   clusterId:
                     description: |-
@@ -1559,8 +1559,8 @@ spec:
                 properties:
                   clmEnabled:
                     description: |-
-                      (Boolean) Marks whether CLM should be enabled for nodes created from this template.
-                      Marks whether CLM should be enabled for nodes created from this template.
+                      enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+                      Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                     type: boolean
                   clusterId:
                     description: |-

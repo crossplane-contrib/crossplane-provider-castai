@@ -81,12 +81,12 @@ spec:
                         aggressiveMode:
                           description: |-
                             disabled annotation) as not-problematic.
-                            When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                            When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
                         aggressiveModeConfig:
                           description: |-
-                            (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
-                            Advanced configuration for aggressive rebalancing mode.
+                            (Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)
+                            Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
                           items:
                             properties:
                               ignoreLocalPersistentVolumes:
@@ -235,12 +235,12 @@ spec:
                         aggressiveMode:
                           description: |-
                             disabled annotation) as not-problematic.
-                            When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                            When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
                         aggressiveModeConfig:
                           description: |-
-                            (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
-                            Advanced configuration for aggressive rebalancing mode.
+                            (Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)
+                            Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
                           items:
                             properties:
                               ignoreLocalPersistentVolumes:
@@ -568,12 +568,12 @@ spec:
                         aggressiveMode:
                           description: |-
                             disabled annotation) as not-problematic.
-                            When enabled rebalancing will also consider problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                            When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
                         aggressiveModeConfig:
                           description: |-
-                            (Block List, Max: 1) Advanced configuration for aggressive rebalancing mode. (see below for nested schema)
-                            Advanced configuration for aggressive rebalancing mode.
+                            (Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)
+                            Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
                           items:
                             properties:
                               ignoreLocalPersistentVolumes:

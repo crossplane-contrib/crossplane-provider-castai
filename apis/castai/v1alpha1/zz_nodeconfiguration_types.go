@@ -15,6 +15,10 @@ import (
 
 type AksInitParameters struct {
 
+	// IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+	// Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+	AcceleratedNetworking *string `json:"acceleratedNetworking,omitempty" tf:"accelerated_networking,omitempty"`
+
 	// linux,windows2019,windows2022)
 	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
@@ -58,6 +62,10 @@ type AksInitParameters struct {
 
 type AksObservation struct {
 
+	// IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+	// Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+	AcceleratedNetworking *string `json:"acceleratedNetworking,omitempty" tf:"accelerated_networking,omitempty"`
+
 	// linux,windows2019,windows2022)
 	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
@@ -100,6 +108,11 @@ type AksObservation struct {
 }
 
 type AksParameters struct {
+
+	// IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+	// Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
+	// +kubebuilder:validation:Optional
+	AcceleratedNetworking *string `json:"acceleratedNetworking,omitempty" tf:"accelerated_networking,omitempty"`
 
 	// linux,windows2019,windows2022)
 	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)
@@ -162,8 +175,8 @@ type EksInitParameters struct {
 	// Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
 	EksImageFamily *string `json:"eksImageFamily,omitempty" tf:"eks_image_family,omitempty"`
 
-	// (Number) Allow configure the IMDSv2 hop limit, the default is 2
-	// Allow configure the IMDSv2 hop limit, the default is 2
+	// (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
+	// Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
 	ImdsHopLimit *float64 `json:"imdsHopLimit,omitempty" tf:"imds_hop_limit,omitempty"`
 
 	// (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
@@ -229,8 +242,8 @@ type EksObservation struct {
 	// Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)
 	EksImageFamily *string `json:"eksImageFamily,omitempty" tf:"eks_image_family,omitempty"`
 
-	// (Number) Allow configure the IMDSv2 hop limit, the default is 2
-	// Allow configure the IMDSv2 hop limit, the default is 2
+	// (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
+	// Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
 	ImdsHopLimit *float64 `json:"imdsHopLimit,omitempty" tf:"imds_hop_limit,omitempty"`
 
 	// (Boolean) When the value is true both IMDSv1 and IMDSv2 are enabled. Setting the value to false disables permanently IMDSv1 and might affect legacy workloads running on the node created with this configuration. The default is true if the flag isn't provided
@@ -298,8 +311,8 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	EksImageFamily *string `json:"eksImageFamily,omitempty" tf:"eks_image_family,omitempty"`
 
-	// (Number) Allow configure the IMDSv2 hop limit, the default is 2
-	// Allow configure the IMDSv2 hop limit, the default is 2
+	// (Number) Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
+	// Allow configure the IMDSv2 hop limit, the default is 2. Setting to 1 disables access to most pods except pods running on host network.
 	// +kubebuilder:validation:Optional
 	ImdsHopLimit *float64 `json:"imdsHopLimit,omitempty" tf:"imds_hop_limit,omitempty"`
 

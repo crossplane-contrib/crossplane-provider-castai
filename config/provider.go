@@ -20,6 +20,8 @@ import (
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/config/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/config/cacherule"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/config/commitments"
+	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfiguration"
+	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfigurationdefault"
 	edgelocation "github.com/crossplane-contrib/crossplane-provider-castai/config/edgelocation"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/eksclusterid"
@@ -82,6 +84,8 @@ func GetProvider() *ujconfig.Provider {
 		cachegroup.Configure,
 		cacherule.Configure,
 		commitments.Configure,
+		edgeconfiguration.Configure,
+		edgeconfigurationdefault.Configure,
 		edgelocation.Configure,
 		ekscluster.Configure,
 		eksclusterid.Configure,

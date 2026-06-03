@@ -19,6 +19,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"castai_cache_group":                         config.IdentifierFromProvider,
 	"castai_cache_rule":                          config.IdentifierFromProvider,
 	"castai_commitments":                         config.IdentifierFromProvider,
+	"castai_edge_configuration":                  config.IdentifierFromProvider,
+	"castai_edge_configuration_default":          config.IdentifierFromProvider,
 	"castai_edge_location":                       config.IdentifierFromProvider,
 	"castai_eks_cluster":                         config.IdentifierFromProvider,
 	"castai_eks_clusterid":                       config.IdentifierFromProvider,

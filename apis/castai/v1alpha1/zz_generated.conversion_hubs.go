@@ -37,6 +37,9 @@ func (tr *CacheRule) Hub() {}
 func (tr *Commitments) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *EdgeLocation) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *EksCluster) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -71,6 +74,9 @@ func (tr *NodeConfigurationDefault) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *NodeTemplate) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OmniCluster) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationGroup) Hub() {}

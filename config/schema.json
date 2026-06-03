@@ -1563,6 +1563,243 @@
             "description_kind": "plain"
           }
         },
+        "castai_edge_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description": "CAST AI cluster ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "default": {
+                "type": "bool",
+                "description": "Whether this edge configuration is the default one",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "edge_location_id": {
+                "type": "string",
+                "description": "Edge location ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Edge configuration ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the edge configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "CAST AI organization ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_data_base64": {
+                "type": "string",
+                "description": "Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either `#cloud-config` (cloud-init YAML) or `#!` (shell script with a shebang)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Manage CAST AI Edge Configuration for edge computing deployments",
+            "description_kind": "plain",
+            "block_types": {
+              "aws": {
+                "block": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "ImageID to be used for edge creation. It can be an AMI ID (for example 'ami-0abcdef1234567890') or a name filter (for example 'al2023-ami-ecs-hvm-*')",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tags": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM tags",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "AWS specific configuration"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "cri": {
+                "block": {
+                  "attributes": {
+                    "socket": {
+                      "type": "string",
+                      "description": "Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "CRI (Container Runtime Interface) configuration for the edge node. Set this when you want kubelet to connect to a container runtime you have set up explicitly on the node. Currently only containerd is officially supported."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "custom": {
+                "block": {
+                  "attributes": {
+                    "custom": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Custom cloud configuration as key-value pairs",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Custom cloud specific configuration"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "gcp": {
+                "block": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda') or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`) to be used for edge creation",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "labels": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM labels",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "GCP specific configuration"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "oci": {
+                "block": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "ImageID to be used for edge creation. It can be an AMI ID (for example 'ami-0abcdef1234567890') or a name filter (for example 'al2023-ami-ecs-hvm-*')",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tags": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM tags",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "OCI specific configuration"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              }
+            }
+          }
+        },
+        "castai_edge_configuration_default": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cloud_provider": {
+                "type": "string",
+                "description": "Cloud provider type (gcp, aws, oci, custom)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "CAST AI cluster ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "configuration_id": {
+                "type": "string",
+                "description": "ID of the edge configuration to set as default",
+                "description_kind": "plain",
+                "required": true
+              },
+              "edge_location_id": {
+                "type": "string",
+                "description": "Edge location ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Terraform resource ID (the configuration_id)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the edge configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "CAST AI organization ID",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Manages the default CAST AI Edge Configuration for an edge location. This resource sets an existing edge configuration as the default for the specified edge location.",
+            "description_kind": "plain"
+          }
+        },
         "castai_edge_location": {
           "version": 0,
           "block": {
@@ -1612,9 +1849,9 @@
               },
               "region": {
                 "type": "string",
-                "description": "The region where the edge location is deployed",
+                "description": "The region where the edge location is deployed. Required for AWS, GCP and OCI providers.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               }
             },
             "description": "Manage CAST AI Edge Location for edge computing deployments",
@@ -1716,6 +1953,16 @@
                   },
                   "description_kind": "plain",
                   "description": "Control plane configuration. Only valid when control_plane_mode is SHARED."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "custom": {
+                "block": {
+                  "attributes": {},
+                  "description_kind": "plain",
+                  "description": "Custom cloud provider configuration for the edge location"
                 },
                 "nesting_mode": "single",
                 "min_items": 0,
@@ -5231,6 +5478,22 @@
                 },
                 "max_items": 1
               },
+              "pod_eviction": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Whether non-conforming pods are eligible for eviction.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Eviction settings for enforcement of pod mutations.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "spot_config": {
                 "nesting_mode": "list",
                 "block": {
@@ -7076,6 +7339,175 @@
               }
             },
             "description": "Retrieve CAST AI DBO Cache Group by ID.",
+            "description_kind": "plain"
+          }
+        },
+        "castai_edge_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aws": {
+                "nested_type": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "AWS AMI ID or name filter for edge creation",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "tags": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM tags",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "AWS specific configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "CAST AI cluster ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cri": {
+                "nested_type": {
+                  "attributes": {
+                    "socket": {
+                      "type": "string",
+                      "description": "Path to an existing CRI socket",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "CRI (Container Runtime Interface) configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "custom": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Custom cloud specific configuration tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default": {
+                "type": "bool",
+                "description": "Whether this is the default configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "edge_location_id": {
+                "type": "string",
+                "description": "The ID of the edge location",
+                "description_kind": "plain",
+                "required": true
+              },
+              "gcp": {
+                "nested_type": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "GCP image ID or family for edge creation",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "labels": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM labels",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "GCP specific configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the edge configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the edge configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "oci": {
+                "nested_type": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "OCI image ID or name filter for edge creation",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "tags": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM tags",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "OCI specific configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "CAST AI organization ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_data_base64": {
+                "type": "string",
+                "description": "Base64 encoded user data for edge bootstrap",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Retrieve information about a CAST AI edge configuration",
             "description_kind": "plain"
           }
         },

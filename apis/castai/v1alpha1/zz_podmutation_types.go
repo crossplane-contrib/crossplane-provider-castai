@@ -773,6 +773,28 @@ type NodeAffinityPreferredDuringSchedulingIgnoredDuringExecutionParameters struc
 	Weight *float64 `json:"weight" tf:"weight,omitempty"`
 }
 
+type PodEvictionInitParameters struct {
+
+	// (Boolean) Whether the pod mutation is enabled.
+	// Whether non-conforming pods are eligible for eviction.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type PodEvictionObservation struct {
+
+	// (Boolean) Whether the pod mutation is enabled.
+	// Whether non-conforming pods are eligible for eviction.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type PodEvictionParameters struct {
+
+	// (Boolean) Whether the pod mutation is enabled.
+	// Whether non-conforming pods are eligible for eviction.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+}
+
 type PodInitParameters struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
@@ -852,6 +874,10 @@ type PodMutationInitParameters struct {
 	// (String) JSON patch to apply to pods. Must be a JSON array of patch operations.
 	// JSON patch to apply to pods. Must be a JSON array of patch operations.
 	Patch *string `json:"patch,omitempty" tf:"patch,omitempty"`
+
+	// (Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)
+	// Eviction settings for enforcement of pod mutations.
+	PodEviction []PodEvictionInitParameters `json:"podEviction,omitempty" tf:"pod_eviction,omitempty"`
 
 	// (Block List, Max: 1) Spot configuration for the mutation. (see below for nested schema)
 	// Spot configuration for the mutation.
@@ -952,6 +978,10 @@ type PodMutationObservation struct {
 	// JSON patch to apply to pods. Must be a JSON array of patch operations.
 	Patch *string `json:"patch,omitempty" tf:"patch,omitempty"`
 
+	// (Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)
+	// Eviction settings for enforcement of pod mutations.
+	PodEviction []PodEvictionObservation `json:"podEviction,omitempty" tf:"pod_eviction,omitempty"`
+
 	// (String) Source of the pod mutation (API or CUSTOM_RESOURCE).
 	// Source of the pod mutation (API or CUSTOM_RESOURCE).
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
@@ -1028,6 +1058,11 @@ type PodMutationParameters struct {
 	// JSON patch to apply to pods. Must be a JSON array of patch operations.
 	// +kubebuilder:validation:Optional
 	Patch *string `json:"patch,omitempty" tf:"patch,omitempty"`
+
+	// (Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)
+	// Eviction settings for enforcement of pod mutations.
+	// +kubebuilder:validation:Optional
+	PodEviction []PodEvictionParameters `json:"podEviction,omitempty" tf:"pod_eviction,omitempty"`
 
 	// (Block List, Max: 1) Spot configuration for the mutation. (see below for nested schema)
 	// Spot configuration for the mutation.

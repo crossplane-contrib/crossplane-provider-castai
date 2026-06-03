@@ -13,28 +13,6 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AwsInitParameters struct {
-
-	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
-	// Capacity reservations that this template can use for provisioning.
-	CapacityReservations []CapacityReservationsInitParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
-}
-
-type AwsObservation struct {
-
-	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
-	// Capacity reservations that this template can use for provisioning.
-	CapacityReservations []CapacityReservationsObservation `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
-}
-
-type AwsParameters struct {
-
-	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
-	// Capacity reservations that this template can use for provisioning.
-	// +kubebuilder:validation:Optional
-	CapacityReservations []CapacityReservationsParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
-}
-
 type CapacityReservationsInitParameters struct {
 
 	// (String) Capacity resource group ARN for UltraServer capacity blocks.
@@ -83,6 +61,28 @@ type CapacityReservationsParameters struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
+type ConstraintsAwsInitParameters struct {
+
+	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+	// Capacity reservations that this template can use for provisioning.
+	CapacityReservations []CapacityReservationsInitParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
+}
+
+type ConstraintsAwsObservation struct {
+
+	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+	// Capacity reservations that this template can use for provisioning.
+	CapacityReservations []CapacityReservationsObservation `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
+}
+
+type ConstraintsAwsParameters struct {
+
+	// (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
+	// Capacity reservations that this template can use for provisioning.
+	// +kubebuilder:validation:Optional
+	CapacityReservations []CapacityReservationsParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
+}
+
 type ConstraintsInitParameters struct {
 
 	// (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
@@ -95,7 +95,7 @@ type ConstraintsInitParameters struct {
 
 	// specific constraints for the node template. (see below for nested schema)
 	// AWS-specific constraints for the node template.
-	Aws []AwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws []ConstraintsAwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -236,7 +236,7 @@ type ConstraintsObservation struct {
 
 	// specific constraints for the node template. (see below for nested schema)
 	// AWS-specific constraints for the node template.
-	Aws []AwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws []ConstraintsAwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
@@ -380,7 +380,7 @@ type ConstraintsParameters struct {
 	// specific constraints for the node template. (see below for nested schema)
 	// AWS-specific constraints for the node template.
 	// +kubebuilder:validation:Optional
-	Aws []AwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws []ConstraintsAwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
 	// The list of AZ names to consider for the node template, if empty or not set all AZs are considered.

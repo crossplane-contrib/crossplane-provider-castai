@@ -593,6 +593,19 @@ spec:
                       (String) JSON patch to apply to pods. Must be a JSON array of patch operations.
                       JSON patch to apply to pods. Must be a JSON array of patch operations.
                     type: string
+                  podEviction:
+                    description: |-
+                      (Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)
+                      Eviction settings for enforcement of pod mutations.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) Whether the pod mutation is enabled.
+                            Whether non-conforming pods are eligible for eviction.
+                          type: boolean
+                      type: object
+                    type: array
                   spotConfig:
                     description: |-
                       (Block List, Max: 1) Spot configuration for the mutation. (see below for nested schema)
@@ -1178,6 +1191,19 @@ spec:
                       (String) JSON patch to apply to pods. Must be a JSON array of patch operations.
                       JSON patch to apply to pods. Must be a JSON array of patch operations.
                     type: string
+                  podEviction:
+                    description: |-
+                      (Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)
+                      Eviction settings for enforcement of pod mutations.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) Whether the pod mutation is enabled.
+                            Whether non-conforming pods are eligible for eviction.
+                          type: boolean
+                      type: object
+                    type: array
                   spotConfig:
                     description: |-
                       (Block List, Max: 1) Spot configuration for the mutation. (see below for nested schema)
@@ -1942,6 +1968,19 @@ spec:
                       (String) JSON patch to apply to pods. Must be a JSON array of patch operations.
                       JSON patch to apply to pods. Must be a JSON array of patch operations.
                     type: string
+                  podEviction:
+                    description: |-
+                      (Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)
+                      Eviction settings for enforcement of pod mutations.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) Whether the pod mutation is enabled.
+                            Whether non-conforming pods are eligible for eviction.
+                          type: boolean
+                      type: object
+                    type: array
                   source:
                     description: |-
                       (String) Source of the pod mutation (API or CUSTOM_RESOURCE).

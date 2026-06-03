@@ -1,0 +1,38 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: EdgeLocation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/edgelocation
+  labels:
+    testing.upbound.io/example-name: aws_example
+  name: aws-example
+spec:
+  forProvider:
+    aws:
+      accessKeyIdWoSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      accountId: "123456789012"
+      nameTag: castai-edge-location
+      secretAccessKeyWoSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      securityGroupId: sg-12345678
+      subnetIds:
+        us-east-1a: subnet-12345678
+        us-east-1b: subnet-87654321
+      vpcId: vpc-12345678
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: AWS edge location in us-east-1
+    name: aws-edge-us-east
+    organizationId: your-org-id
+    region: us-east-1
+    zones:
+    - id: us-east-1a
+      name: us-east-1a
+    - id: us-east-1b
+      name: us-east-1b

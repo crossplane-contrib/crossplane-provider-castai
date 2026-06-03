@@ -13,7 +13,29 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AwsInitParameters struct {
+type ControlPlaneInitParameters struct {
+
+	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
+	// Whether to use HA mode for control plane. If not set, default is HA.
+	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+}
+
+type ControlPlaneObservation struct {
+
+	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
+	// Whether to use HA mode for control plane. If not set, default is HA.
+	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+}
+
+type ControlPlaneParameters struct {
+
+	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
+	// Whether to use HA mode for control plane. If not set, default is HA.
+	// +kubebuilder:validation:Optional
+	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+}
+
+type EdgeLocationAwsInitParameters struct {
 
 	// (String, Sensitive) AWS access key ID
 	// AWS access key ID
@@ -61,7 +83,7 @@ type AwsInitParameters struct {
 	VPCPeered *bool `json:"vpcPeered,omitempty" tf:"vpc_peered,omitempty"`
 }
 
-type AwsObservation struct {
+type EdgeLocationAwsObservation struct {
 
 	// (String) AWS account ID
 	// AWS account ID
@@ -101,7 +123,7 @@ type AwsObservation struct {
 	VPCPeered *bool `json:"vpcPeered,omitempty" tf:"vpc_peered,omitempty"`
 }
 
-type AwsParameters struct {
+type EdgeLocationAwsParameters struct {
 
 	// (String, Sensitive) AWS access key ID
 	// AWS access key ID
@@ -160,241 +182,16 @@ type AwsParameters struct {
 	VPCPeered *bool `json:"vpcPeered,omitempty" tf:"vpc_peered,omitempty"`
 }
 
-type ControlPlaneInitParameters struct {
-
-	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
-	// Whether to use HA mode for control plane. If not set, default is HA.
-	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+type EdgeLocationCustomInitParameters struct {
 }
 
-type ControlPlaneObservation struct {
-
-	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
-	// Whether to use HA mode for control plane. If not set, default is HA.
-	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+type EdgeLocationCustomObservation struct {
 }
 
-type ControlPlaneParameters struct {
-
-	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
-	// Whether to use HA mode for control plane. If not set, default is HA.
-	// +kubebuilder:validation:Optional
-	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+type EdgeLocationCustomParameters struct {
 }
 
-type CustomInitParameters struct {
-}
-
-type CustomObservation struct {
-}
-
-type CustomParameters struct {
-}
-
-type EdgeLocationInitParameters struct {
-
-	// (Attributes) AWS configuration for the edge location (see below for nested schema)
-	// AWS configuration for the edge location
-	Aws []AwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
-
-	// (String) CAST AI cluster ID
-	// CAST AI cluster ID
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.OmniCluster
-	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
-
-	// Reference to a OmniCluster in castai to populate clusterId.
-	// +kubebuilder:validation:Optional
-	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
-
-	// Selector for a OmniCluster in castai to populate clusterId.
-	// +kubebuilder:validation:Optional
-	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
-
-	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
-	// Control plane configuration. Only valid when control_plane_mode is SHARED.
-	ControlPlane []ControlPlaneInitParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
-
-	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
-	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
-	ControlPlaneMode *string `json:"controlPlaneMode,omitempty" tf:"control_plane_mode,omitempty"`
-
-	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
-	// Custom cloud provider configuration for the edge location
-	Custom []CustomInitParameters `json:"custom,omitempty" tf:"custom,omitempty"`
-
-	// (String) Description of the edge location
-	// Description of the edge location
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
-
-	// (Attributes) GCP configuration for the edge location (see below for nested schema)
-	// GCP configuration for the edge location
-	GCP []GCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
-
-	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
-	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
-	// Edge cluster networking configuration.
-	Networking []NetworkingInitParameters `json:"networking,omitempty" tf:"networking,omitempty"`
-
-	// (Attributes) OCI configuration for the edge location (see below for nested schema)
-	// OCI configuration for the edge location
-	Oci []OciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
-
-	// (String) CAST AI organization ID
-	// CAST AI organization ID
-	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
-
-	// (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
-	// The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
-
-	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
-	// List of availability zones for the edge location
-	Zones []ZonesInitParameters `json:"zones,omitempty" tf:"zones,omitempty"`
-}
-
-type EdgeLocationObservation struct {
-
-	// (Attributes) AWS configuration for the edge location (see below for nested schema)
-	// AWS configuration for the edge location
-	Aws []AwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
-
-	// (String) CAST AI cluster ID
-	// CAST AI cluster ID
-	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
-
-	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
-	// Control plane configuration. Only valid when control_plane_mode is SHARED.
-	ControlPlane []ControlPlaneObservation `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
-
-	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
-	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
-	ControlPlaneMode *string `json:"controlPlaneMode,omitempty" tf:"control_plane_mode,omitempty"`
-
-	// (Number) Revision number incremented each time credentials change
-	// Revision number incremented each time credentials change
-	CredentialsRevision *float64 `json:"credentialsRevision,omitempty" tf:"credentials_revision,omitempty"`
-
-	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
-	// Custom cloud provider configuration for the edge location
-	Custom []CustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
-
-	// (String) Description of the edge location
-	// Description of the edge location
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
-
-	// (Attributes) GCP configuration for the edge location (see below for nested schema)
-	// GCP configuration for the edge location
-	GCP []GCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
-
-	// (String) Edge location ID
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
-	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
-	// Edge cluster networking configuration.
-	Networking []NetworkingObservation `json:"networking,omitempty" tf:"networking,omitempty"`
-
-	// (Attributes) OCI configuration for the edge location (see below for nested schema)
-	// OCI configuration for the edge location
-	Oci []OciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
-
-	// (String) CAST AI organization ID
-	// CAST AI organization ID
-	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
-
-	// (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
-	// The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
-
-	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
-	// List of availability zones for the edge location
-	Zones []ZonesObservation `json:"zones,omitempty" tf:"zones,omitempty"`
-}
-
-type EdgeLocationParameters struct {
-
-	// (Attributes) AWS configuration for the edge location (see below for nested schema)
-	// AWS configuration for the edge location
-	// +kubebuilder:validation:Optional
-	Aws []AwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
-
-	// (String) CAST AI cluster ID
-	// CAST AI cluster ID
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.OmniCluster
-	// +kubebuilder:validation:Optional
-	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
-
-	// Reference to a OmniCluster in castai to populate clusterId.
-	// +kubebuilder:validation:Optional
-	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
-
-	// Selector for a OmniCluster in castai to populate clusterId.
-	// +kubebuilder:validation:Optional
-	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
-
-	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
-	// Control plane configuration. Only valid when control_plane_mode is SHARED.
-	// +kubebuilder:validation:Optional
-	ControlPlane []ControlPlaneParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
-
-	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
-	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
-	// +kubebuilder:validation:Optional
-	ControlPlaneMode *string `json:"controlPlaneMode,omitempty" tf:"control_plane_mode,omitempty"`
-
-	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
-	// Custom cloud provider configuration for the edge location
-	// +kubebuilder:validation:Optional
-	Custom []CustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
-
-	// (String) Description of the edge location
-	// Description of the edge location
-	// +kubebuilder:validation:Optional
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
-
-	// (Attributes) GCP configuration for the edge location (see below for nested schema)
-	// GCP configuration for the edge location
-	// +kubebuilder:validation:Optional
-	GCP []GCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
-
-	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
-	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
-	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
-	// Edge cluster networking configuration.
-	// +kubebuilder:validation:Optional
-	Networking []NetworkingParameters `json:"networking,omitempty" tf:"networking,omitempty"`
-
-	// (Attributes) OCI configuration for the edge location (see below for nested schema)
-	// OCI configuration for the edge location
-	// +kubebuilder:validation:Optional
-	Oci []OciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
-
-	// (String) CAST AI organization ID
-	// CAST AI organization ID
-	// +kubebuilder:validation:Optional
-	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
-
-	// (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
-	// The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
-	// +kubebuilder:validation:Optional
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
-
-	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
-	// List of availability zones for the edge location
-	// +kubebuilder:validation:Optional
-	Zones []ZonesParameters `json:"zones,omitempty" tf:"zones,omitempty"`
-}
-
-type GCPInitParameters struct {
+type EdgeLocationGCPInitParameters struct {
 
 	// (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
 	// Base64 encoded service account JSON for provisioning edge resources
@@ -430,7 +227,7 @@ type GCPInitParameters struct {
 	TargetServiceAccountEmail *string `json:"targetServiceAccountEmail,omitempty" tf:"target_service_account_email,omitempty"`
 }
 
-type GCPObservation struct {
+type EdgeLocationGCPObservation struct {
 
 	// (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
 	// GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
@@ -462,7 +259,7 @@ type GCPObservation struct {
 	TargetServiceAccountEmail *string `json:"targetServiceAccountEmail,omitempty" tf:"target_service_account_email,omitempty"`
 }
 
-type GCPParameters struct {
+type EdgeLocationGCPParameters struct {
 
 	// (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
 	// Base64 encoded service account JSON for provisioning edge resources
@@ -506,29 +303,133 @@ type GCPParameters struct {
 	TargetServiceAccountEmail *string `json:"targetServiceAccountEmail,omitempty" tf:"target_service_account_email,omitempty"`
 }
 
-type NetworkingInitParameters struct {
+type EdgeLocationInitParameters struct {
 
-	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
-}
+	// (Attributes) AWS configuration for the edge location (see below for nested schema)
+	// AWS configuration for the edge location
+	Aws []EdgeLocationAwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
-type NetworkingObservation struct {
+	// (String) CAST AI cluster ID
+	// CAST AI cluster ID
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.OmniCluster
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
-	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
-}
-
-type NetworkingParameters struct {
-
-	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	// Reference to a OmniCluster in castai to populate clusterId.
 	// +kubebuilder:validation:Optional
-	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a OmniCluster in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
+	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
+	// Control plane configuration. Only valid when control_plane_mode is SHARED.
+	ControlPlane []ControlPlaneInitParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
+
+	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
+	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
+	ControlPlaneMode *string `json:"controlPlaneMode,omitempty" tf:"control_plane_mode,omitempty"`
+
+	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
+	// Custom cloud provider configuration for the edge location
+	Custom []EdgeLocationCustomInitParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+
+	// (String) Description of the edge location
+	// Description of the edge location
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Attributes) GCP configuration for the edge location (see below for nested schema)
+	// GCP configuration for the edge location
+	GCP []EdgeLocationGCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
+
+	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
+	// Edge cluster networking configuration.
+	Networking []NetworkingInitParameters `json:"networking,omitempty" tf:"networking,omitempty"`
+
+	// (Attributes) OCI configuration for the edge location (see below for nested schema)
+	// OCI configuration for the edge location
+	Oci []EdgeLocationOciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
+
+	// (String) CAST AI organization ID
+	// CAST AI organization ID
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
+	// The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
+	// List of availability zones for the edge location
+	Zones []ZonesInitParameters `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
-type OciInitParameters struct {
+type EdgeLocationObservation struct {
+
+	// (Attributes) AWS configuration for the edge location (see below for nested schema)
+	// AWS configuration for the edge location
+	Aws []EdgeLocationAwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
+
+	// (String) CAST AI cluster ID
+	// CAST AI cluster ID
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
+	// Control plane configuration. Only valid when control_plane_mode is SHARED.
+	ControlPlane []ControlPlaneObservation `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
+
+	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
+	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
+	ControlPlaneMode *string `json:"controlPlaneMode,omitempty" tf:"control_plane_mode,omitempty"`
+
+	// (Number) Revision number incremented each time credentials change
+	// Revision number incremented each time credentials change
+	CredentialsRevision *float64 `json:"credentialsRevision,omitempty" tf:"credentials_revision,omitempty"`
+
+	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
+	// Custom cloud provider configuration for the edge location
+	Custom []EdgeLocationCustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+
+	// (String) Description of the edge location
+	// Description of the edge location
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Attributes) GCP configuration for the edge location (see below for nested schema)
+	// GCP configuration for the edge location
+	GCP []EdgeLocationGCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
+
+	// (String) Edge location ID
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
+	// Edge cluster networking configuration.
+	Networking []NetworkingObservation `json:"networking,omitempty" tf:"networking,omitempty"`
+
+	// (Attributes) OCI configuration for the edge location (see below for nested schema)
+	// OCI configuration for the edge location
+	Oci []EdgeLocationOciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
+
+	// (String) CAST AI organization ID
+	// CAST AI organization ID
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
+	// The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
+	// List of availability zones for the edge location
+	Zones []ZonesObservation `json:"zones,omitempty" tf:"zones,omitempty"`
+}
+
+type EdgeLocationOciInitParameters struct {
 
 	// (String) OCI compartment ID of edge location
 	// OCI compartment ID of edge location
@@ -567,7 +468,7 @@ type OciInitParameters struct {
 	VcnID *string `json:"vcnId,omitempty" tf:"vcn_id,omitempty"`
 }
 
-type OciObservation struct {
+type EdgeLocationOciObservation struct {
 
 	// (String) OCI compartment ID of edge location
 	// OCI compartment ID of edge location
@@ -598,7 +499,7 @@ type OciObservation struct {
 	VcnID *string `json:"vcnId,omitempty" tf:"vcn_id,omitempty"`
 }
 
-type OciParameters struct {
+type EdgeLocationOciParameters struct {
 
 	// (String) OCI compartment ID of edge location
 	// OCI compartment ID of edge location
@@ -644,6 +545,105 @@ type OciParameters struct {
 	// OCI virtual cloud network ID
 	// +kubebuilder:validation:Optional
 	VcnID *string `json:"vcnId" tf:"vcn_id,omitempty"`
+}
+
+type EdgeLocationParameters struct {
+
+	// (Attributes) AWS configuration for the edge location (see below for nested schema)
+	// AWS configuration for the edge location
+	// +kubebuilder:validation:Optional
+	Aws []EdgeLocationAwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+
+	// (String) CAST AI cluster ID
+	// CAST AI cluster ID
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.OmniCluster
+	// +kubebuilder:validation:Optional
+	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a OmniCluster in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a OmniCluster in castai to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
+
+	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
+	// Control plane configuration. Only valid when control_plane_mode is SHARED.
+	// +kubebuilder:validation:Optional
+	ControlPlane []ControlPlaneParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
+
+	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
+	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
+	// +kubebuilder:validation:Optional
+	ControlPlaneMode *string `json:"controlPlaneMode,omitempty" tf:"control_plane_mode,omitempty"`
+
+	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
+	// Custom cloud provider configuration for the edge location
+	// +kubebuilder:validation:Optional
+	Custom []EdgeLocationCustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+
+	// (String) Description of the edge location
+	// Description of the edge location
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Attributes) GCP configuration for the edge location (see below for nested schema)
+	// GCP configuration for the edge location
+	// +kubebuilder:validation:Optional
+	GCP []EdgeLocationGCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
+
+	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
+	// Edge cluster networking configuration.
+	// +kubebuilder:validation:Optional
+	Networking []NetworkingParameters `json:"networking,omitempty" tf:"networking,omitempty"`
+
+	// (Attributes) OCI configuration for the edge location (see below for nested schema)
+	// OCI configuration for the edge location
+	// +kubebuilder:validation:Optional
+	Oci []EdgeLocationOciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
+
+	// (String) CAST AI organization ID
+	// CAST AI organization ID
+	// +kubebuilder:validation:Optional
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
+	// The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
+	// +kubebuilder:validation:Optional
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
+	// List of availability zones for the edge location
+	// +kubebuilder:validation:Optional
+	Zones []ZonesParameters `json:"zones,omitempty" tf:"zones,omitempty"`
+}
+
+type NetworkingInitParameters struct {
+
+	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
+}
+
+type NetworkingObservation struct {
+
+	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
+}
+
+type NetworkingParameters struct {
+
+	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+	// +kubebuilder:validation:Optional
+	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
 }
 
 type ZonesInitParameters struct {

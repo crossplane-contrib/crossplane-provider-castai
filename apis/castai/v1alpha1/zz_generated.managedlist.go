@@ -97,6 +97,24 @@ func (l *CommitmentsList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this EdgeConfigurationDefaultList.
+func (l *EdgeConfigurationDefaultList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EdgeConfigurationList.
+func (l *EdgeConfigurationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this EdgeLocationList.
 func (l *EdgeLocationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))

@@ -19,6 +19,8 @@ import (
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacherule"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitments"
+	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfiguration"
+	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfigurationdefault"
 	edgelocation "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgelocation"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksclusterid"
@@ -64,6 +66,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		cachegroup.Setup,
 		cacherule.Setup,
 		commitments.Setup,
+		edgeconfiguration.Setup,
+		edgeconfigurationdefault.Setup,
 		edgelocation.Setup,
 		ekscluster.Setup,
 		eksclusterid.Setup,

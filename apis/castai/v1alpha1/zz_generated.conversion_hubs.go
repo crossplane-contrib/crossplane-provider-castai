@@ -37,6 +37,12 @@ func (tr *CacheRule) Hub() {}
 func (tr *Commitments) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *EdgeConfiguration) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *EdgeConfigurationDefault) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *EdgeLocation) Hub() {}
 
 // Hub marks this type as a conversion hub.

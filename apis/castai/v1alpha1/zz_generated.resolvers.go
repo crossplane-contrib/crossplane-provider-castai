@@ -55,6 +55,228 @@ func (mg *AutoScaler) ResolveReferences(ctx context.Context, c client.Reader) er
 	return nil
 }
 
+// ResolveReferences of this EdgeConfiguration.
+func (mg *EdgeConfiguration) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ClusterID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ClusterIDRef,
+		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
+		To: reference.To{
+			List:    &OmniClusterList{},
+			Managed: &OmniCluster{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ClusterID")
+	}
+	mg.Spec.ForProvider.ClusterID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ClusterIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EdgeLocationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.EdgeLocationIDRef,
+		Selector:     mg.Spec.ForProvider.EdgeLocationIDSelector,
+		To: reference.To{
+			List:    &EdgeLocationList{},
+			Managed: &EdgeLocation{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.EdgeLocationID")
+	}
+	mg.Spec.ForProvider.EdgeLocationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.EdgeLocationIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ClusterID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ClusterIDRef,
+		Selector:     mg.Spec.InitProvider.ClusterIDSelector,
+		To: reference.To{
+			List:    &OmniClusterList{},
+			Managed: &OmniCluster{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ClusterID")
+	}
+	mg.Spec.InitProvider.ClusterID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ClusterIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EdgeLocationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EdgeLocationIDRef,
+		Selector:     mg.Spec.InitProvider.EdgeLocationIDSelector,
+		To: reference.To{
+			List:    &EdgeLocationList{},
+			Managed: &EdgeLocation{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EdgeLocationID")
+	}
+	mg.Spec.InitProvider.EdgeLocationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EdgeLocationIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this EdgeConfigurationDefault.
+func (mg *EdgeConfigurationDefault) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ClusterID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ClusterIDRef,
+		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
+		To: reference.To{
+			List:    &OmniClusterList{},
+			Managed: &OmniCluster{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ClusterID")
+	}
+	mg.Spec.ForProvider.ClusterID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ClusterIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ConfigurationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ConfigurationIDRef,
+		Selector:     mg.Spec.ForProvider.ConfigurationIDSelector,
+		To: reference.To{
+			List:    &EdgeConfigurationList{},
+			Managed: &EdgeConfiguration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ConfigurationID")
+	}
+	mg.Spec.ForProvider.ConfigurationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ConfigurationIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EdgeLocationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.EdgeLocationIDRef,
+		Selector:     mg.Spec.ForProvider.EdgeLocationIDSelector,
+		To: reference.To{
+			List:    &EdgeLocationList{},
+			Managed: &EdgeLocation{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.EdgeLocationID")
+	}
+	mg.Spec.ForProvider.EdgeLocationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.EdgeLocationIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ClusterID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ClusterIDRef,
+		Selector:     mg.Spec.InitProvider.ClusterIDSelector,
+		To: reference.To{
+			List:    &OmniClusterList{},
+			Managed: &OmniCluster{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ClusterID")
+	}
+	mg.Spec.InitProvider.ClusterID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ClusterIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ConfigurationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ConfigurationIDRef,
+		Selector:     mg.Spec.InitProvider.ConfigurationIDSelector,
+		To: reference.To{
+			List:    &EdgeConfigurationList{},
+			Managed: &EdgeConfiguration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ConfigurationID")
+	}
+	mg.Spec.InitProvider.ConfigurationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ConfigurationIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EdgeLocationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EdgeLocationIDRef,
+		Selector:     mg.Spec.InitProvider.EdgeLocationIDSelector,
+		To: reference.To{
+			List:    &EdgeLocationList{},
+			Managed: &EdgeLocation{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EdgeLocationID")
+	}
+	mg.Spec.InitProvider.EdgeLocationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EdgeLocationIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this EdgeLocation.
+func (mg *EdgeLocation) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ClusterID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ClusterIDRef,
+		Selector:     mg.Spec.ForProvider.ClusterIDSelector,
+		To: reference.To{
+			List:    &OmniClusterList{},
+			Managed: &OmniCluster{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ClusterID")
+	}
+	mg.Spec.ForProvider.ClusterID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ClusterIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ClusterID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ClusterIDRef,
+		Selector:     mg.Spec.InitProvider.ClusterIDSelector,
+		To: reference.To{
+			List:    &OmniClusterList{},
+			Managed: &OmniCluster{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ClusterID")
+	}
+	mg.Spec.InitProvider.ClusterID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ClusterIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this EksUserArn.
 func (mg *EksUserArn) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)

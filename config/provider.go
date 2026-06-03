@@ -20,6 +20,9 @@ import (
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/config/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/config/cacherule"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/config/commitments"
+	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfiguration"
+	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfigurationdefault"
+	edgelocation "github.com/crossplane-contrib/crossplane-provider-castai/config/edgelocation"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/eksclusterid"
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
@@ -32,6 +35,7 @@ import (
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/config/nodetemplate"
+	omnicluster "github.com/crossplane-contrib/crossplane-provider-castai/config/omnicluster"
 	organizationgroup "github.com/crossplane-contrib/crossplane-provider-castai/config/organizationgroup"
 	organizationmembers "github.com/crossplane-contrib/crossplane-provider-castai/config/organizationmembers"
 	podmutation "github.com/crossplane-contrib/crossplane-provider-castai/config/podmutation"
@@ -80,6 +84,9 @@ func GetProvider() *ujconfig.Provider {
 		cachegroup.Configure,
 		cacherule.Configure,
 		commitments.Configure,
+		edgeconfiguration.Configure,
+		edgeconfigurationdefault.Configure,
+		edgelocation.Configure,
 		ekscluster.Configure,
 		eksclusterid.Configure,
 		eksuserarn.Configure,
@@ -92,6 +99,7 @@ func GetProvider() *ujconfig.Provider {
 		nodeconfiguration.Configure,
 		nodeconfigurationdefault.Configure,
 		nodetemplate.Configure,
+		omnicluster.Configure,
 		organizationgroup.Configure,
 		organizationmembers.Configure,
 		podmutation.Configure,

@@ -97,6 +97,33 @@ func (l *CommitmentsList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this EdgeConfigurationDefaultList.
+func (l *EdgeConfigurationDefaultList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EdgeConfigurationList.
+func (l *EdgeConfigurationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EdgeLocationList.
+func (l *EdgeLocationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this EksClusterIdList.
 func (l *EksClusterIdList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -198,6 +225,15 @@ func (l *NodeConfigurationList) GetItems() []resource.Managed {
 
 // GetItems of this NodeTemplateList.
 func (l *NodeTemplateList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OmniClusterList.
+func (l *OmniClusterList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

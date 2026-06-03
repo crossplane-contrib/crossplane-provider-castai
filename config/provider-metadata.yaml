@@ -531,6 +531,44 @@ resources:
             type: (String) Type of the commitment to match. For compute resources, it's the type of the machine.
             update: (String)
         importStatements: []
+    castai_edge_configuration Resource - terraform-provider-castai:
+        subCategory: ""
+        description: Manage CAST AI Edge Configuration for edge computing deployments
+        name: castai_edge_configuration Resource - terraform-provider-castai
+        title: castai_edge_configuration Resource - terraform-provider-castai
+        argumentDocs:
+            aws: (Attributes) AWS specific configuration (see below for nested schema)
+            boot_disk_size_gib: (Number) Boot disk size in GiB
+            cluster_id: (String) CAST AI cluster ID
+            cri: (Attributes) CRI (Container Runtime Interface) configuration for the edge node. Set this when you want kubelet to connect to a container runtime you have set up explicitly on the node. Currently only containerd is officially supported. (see below for nested schema)
+            custom: (Attributes) Custom cloud specific configuration (see below for nested schema)
+            default: (Boolean) Whether this edge configuration is the default one
+            edge_location_id: (String) Edge location ID
+            gcp: (Attributes) GCP specific configuration (see below for nested schema)
+            id: (String) Edge configuration ID
+            image_id: (String) ImageID to be used for edge creation. It can be an AMI ID (for example 'ami-0abcdef1234567890') or a name filter (for example 'al2023-ami-ecs-hvm-*')
+            labels: (Map of String) Instance/VM labels
+            name: (String) Name of the edge configuration
+            oci: (Attributes) OCI specific configuration (see below for nested schema)
+            organization_id: (String) CAST AI organization ID
+            socket: '(String) Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
+            tags: (Map of String) Instance/VM tags
+            user_data_base64: '(String) Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either #cloud-config (cloud-init YAML) or #! (shell script with a shebang)'
+        importStatements: []
+    castai_edge_configuration_default Resource - terraform-provider-castai:
+        subCategory: ""
+        description: Manages the default CAST AI Edge Configuration for an edge location. This resource sets an existing edge configuration as the default for the specified edge location.
+        name: castai_edge_configuration_default Resource - terraform-provider-castai
+        title: castai_edge_configuration_default Resource - terraform-provider-castai
+        argumentDocs:
+            cloud_provider: (String) Cloud provider type (gcp, aws, oci, custom)
+            cluster_id: (String) CAST AI cluster ID
+            configuration_id: (String) ID of the edge configuration to set as default
+            edge_location_id: (String) Edge location ID
+            id: (String) Terraform resource ID (the configuration_id)
+            name: (String) Name of the edge configuration
+            organization_id: (String) CAST AI organization ID
+        importStatements: []
     castai_edge_location:
         subCategory: ""
         description: Manage CAST AI Edge Location for edge computing deployments
@@ -580,6 +618,7 @@ resources:
             control_plane: (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
             control_plane_mode: '(String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.'
             credentials_revision: (Number) Revision number incremented each time credentials change
+            custom: (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
             description: (String) Description of the edge location
             fingerprint_wo: (String, Sensitive) API key fingerprint
             gcp: (Attributes) GCP configuration for the edge location (see below for nested schema)
@@ -596,7 +635,7 @@ resources:
             organization_id: (String) CAST AI organization ID
             private_key_base64_wo: (String, Sensitive) Base64 encoded API private key
             project_id: (String) GCP project ID where edges run
-            region: (String) The region where the edge location is deployed
+            region: (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
             role_arn: (String) AWS IAM role ARN used for Google OIDC federation impersonation
             secret_access_key_wo: (String, Sensitive) AWS secret access key
             security_group_id: (String) Security group ID to be used in the selected region
@@ -1772,6 +1811,53 @@ resources:
                 }
               references:
                 cluster_id: castai_eks_cluster.example.id
+            - name: enforce_with_eviction
+              manifest: |-
+                {
+                  "cluster_id": "${castai_eks_cluster.example.id}",
+                  "enabled": true,
+                  "filter_v2": [
+                    {
+                      "workload": [
+                        {
+                          "kinds": [
+                            {
+                              "type": "EXACT",
+                              "value": "Deployment"
+                            }
+                          ],
+                          "namespaces": [
+                            {
+                              "type": "EXACT",
+                              "value": "production"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "name": "enforce-spot-with-eviction",
+                  "pod_eviction": [
+                    {
+                      "enabled": true
+                    }
+                  ],
+                  "spot_config": [
+                    {
+                      "distribution_percentage": 100,
+                      "spot_mode": "USE_ONLY_SPOT"
+                    }
+                  ],
+                  "tolerations": [
+                    {
+                      "effect": "NoSchedule",
+                      "key": "scheduling.cast.ai/spot",
+                      "operator": "Exists"
+                    }
+                  ]
+                }
+              references:
+                cluster_id: castai_eks_cluster.example.id
         argumentDocs:
             add: (Map of String)
             affinity: '(Block List, Max: 1) Affinity to apply to the pods. (see below for nested schema)'
@@ -1805,6 +1891,7 @@ resources:
             patch: (String) JSON patch to apply to pods. Must be a JSON array of patch operations.
             percentage: (Number) Percentage of pods (0-100) that should receive this configuration.
             pod: '(Block List, Max: 1) Pod filter for labels. (see below for nested schema)'
+            pod_eviction: '(Block List, Max: 1) Eviction settings for enforcement of pod mutations. (see below for nested schema)'
             preference: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             preferred_during_scheduling_ignored_during_execution: (Block List) (see below for nested schema)
             remove: (Map of String)

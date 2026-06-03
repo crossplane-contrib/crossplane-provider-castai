@@ -19,6 +19,9 @@ import (
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacherule"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitments"
+	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfiguration"
+	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfigurationdefault"
+	edgelocation "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgelocation"
 	ekscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/ekscluster"
 	eksclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksclusterid"
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksuserarn"
@@ -31,6 +34,7 @@ import (
 	nodeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfiguration"
 	nodeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodeconfigurationdefault"
 	nodetemplate "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/nodetemplate"
+	omnicluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/omnicluster"
 	organizationgroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/organizationgroup"
 	organizationmembers "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/organizationmembers"
 	podmutation "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/podmutation"
@@ -62,6 +66,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		cachegroup.Setup,
 		cacherule.Setup,
 		commitments.Setup,
+		edgeconfiguration.Setup,
+		edgeconfigurationdefault.Setup,
+		edgelocation.Setup,
 		ekscluster.Setup,
 		eksclusterid.Setup,
 		eksuserarn.Setup,
@@ -74,6 +81,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		nodeconfiguration.Setup,
 		nodeconfigurationdefault.Setup,
 		nodetemplate.Setup,
+		omnicluster.Setup,
 		organizationgroup.Setup,
 		organizationmembers.Setup,
 		podmutation.Setup,

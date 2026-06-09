@@ -614,6 +614,7 @@ resources:
             aws: (Attributes) AWS configuration for the edge location (see below for nested schema)
             client_service_account_json_base64_wo: (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
             cluster_id: (String) CAST AI cluster ID
+            cni: (Attributes) CNI (kube-router) configuration for the edge cluster. (see below for nested schema)
             compartment_id: (String) OCI compartment ID of edge location
             control_plane: (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
             control_plane_mode: '(String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.'
@@ -633,6 +634,8 @@ resources:
             networking: (Attributes) Edge cluster networking configuration. (see below for nested schema)
             oci: (Attributes) OCI configuration for the edge location (see below for nested schema)
             organization_id: (String) CAST AI organization ID
+            overlay: '(String) Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.'
+            overlay_encap: '(String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.'
             private_key_base64_wo: (String, Sensitive) Base64 encoded API private key
             project_id: (String) GCP project ID where edges run
             region: (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
@@ -1901,6 +1904,7 @@ resources:
             spot_type: '(String) Spot instance type: OPTIONAL_SPOT, USE_ONLY_SPOT, or PREFERRED_SPOT.'
             toleration_seconds: (Number) Toleration seconds.
             tolerations: (Block List) Tolerations to apply to the pods. (see below for nested schema)
+            tolerations_filter: '(Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)'
             type: '(String) Matcher type: EXACT or REGEX.'
             value: '(Block List, Max: 1) (see below for nested schema)'
             values: (List of String)

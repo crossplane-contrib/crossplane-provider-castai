@@ -1,0 +1,37 @@
+# Apply with real values:
+#   CLUSTER_ID=<omni-cluster-id> ORGANIZATION_ID=<org-id> envsubst < edgelocation.yaml | kubectl apply -f -
+apiVersion: castai.upbound.io/v1alpha1
+kind: EdgeLocation
+metadata:
+  name: customedgelocation01
+spec:
+  forProvider:
+    name: customedgelocation01-cp
+    clusterId: ${CLUSTER_ID}
+    organizationId: ${ORGANIZATION_ID}
+    description: "Custom edge location 01"
+    controlPlaneMode: SHARED
+    custom: {}
+    networking:
+      cni:
+        overlay: OVERLAY_FULL
+        overlayEncap: OVERLAY_ENCAP_FOU
+      tunneledCidrs:
+        - "10.0.0.0/8"
+  providerConfigRef:
+    name: default
+---
+apiVersion: castai.upbound.io/v1alpha1
+kind: EdgeLocation
+metadata:
+  name: customedgelocation02
+spec:
+  forProvider:
+    name: customedgelocation02-cp
+    clusterId: ${CLUSTER_ID}
+    organizationId: ${ORGANIZATION_ID}
+    description: "Custom edge location 02"
+    controlPlaneMode: SHARED
+    custom: {}
+  providerConfigRef:
+    name: default

@@ -80,16 +80,14 @@ spec:
                     type: string
                   status:
                     description: Current status of the cluster to report on registration.
-                    items:
-                      properties:
-                        omniAgentVersion:
-                          description: Version of the omni agent running on the cluster.
-                          type: string
-                        podCidr:
-                          description: Pod CIDR of the cluster.
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      omniAgentVersion:
+                        description: Version of the omni agent running on the cluster.
+                        type: string
+                      podCidr:
+                        description: Pod CIDR of the cluster.
+                        type: string
+                    type: object
                 type: object
               initProvider:
                 description: |-
@@ -112,16 +110,14 @@ spec:
                     type: string
                   status:
                     description: Current status of the cluster to report on registration.
-                    items:
-                      properties:
-                        omniAgentVersion:
-                          description: Version of the omni agent running on the cluster.
-                          type: string
-                        podCidr:
-                          description: Pod CIDR of the cluster.
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      omniAgentVersion:
+                        description: Version of the omni agent running on the cluster.
+                        type: string
+                      podCidr:
+                        description: Pod CIDR of the cluster.
+                        type: string
+                    type: object
                 type: object
               managementPolicies:
                 default:
@@ -318,16 +314,14 @@ spec:
                     type: string
                   status:
                     description: Current status of the cluster to report on registration.
-                    items:
-                      properties:
-                        omniAgentVersion:
-                          description: Version of the omni agent running on the cluster.
-                          type: string
-                        podCidr:
-                          description: Pod CIDR of the cluster.
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      omniAgentVersion:
+                        description: Version of the omni agent running on the cluster.
+                        type: string
+                      podCidr:
+                        description: Pod CIDR of the cluster.
+                        type: string
+                    type: object
                 type: object
               conditions:
                 description: Conditions of the resource.

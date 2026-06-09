@@ -1871,7 +1871,7 @@
                       "type": "string",
                       "description": "AWS account ID",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_profile": {
                       "type": "string",
@@ -1903,7 +1903,7 @@
                       "type": "string",
                       "description": "Security group ID to be used in the selected region",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "subnet_ids": {
                       "type": [
@@ -1912,7 +1912,7 @@
                       ],
                       "description": "Map of zone names to subnet IDs to be used in the selected region",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "vpc_cidr": {
                       "type": "string",
@@ -1924,7 +1924,7 @@
                       "type": "string",
                       "description": "VPC ID to be used in the selected region",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "vpc_peered": {
                       "type": "bool",
@@ -1988,7 +1988,7 @@
                       "type": "string",
                       "description": "The name of the network to be used in the selected region",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "network_tags": {
                       "type": [
@@ -1997,13 +1997,13 @@
                       ],
                       "description": "Tags applied on the provisioned cloud resources and the firewall rule",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "project_id": {
                       "type": "string",
                       "description": "GCP project ID where edges run",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "subnet_cidr": {
                       "type": "string",
@@ -2015,7 +2015,7 @@
                       "type": "string",
                       "description": "The name of the subnetwork to be used in the selected region",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "target_service_account_email": {
                       "type": "string",
@@ -2045,6 +2045,31 @@
                     }
                   },
                   "description_kind": "plain",
+                  "block_types": {
+                    "cni": {
+                      "block": {
+                        "attributes": {
+                          "overlay": {
+                            "type": "string",
+                            "description": "Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "overlay_encap": {
+                            "type": "string",
+                            "description": "Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "description": "CNI (kube-router) configuration for the edge cluster."
+                      },
+                      "nesting_mode": "single",
+                      "min_items": 0,
+                      "max_items": 1
+                    }
+                  },
                   "description": "Edge cluster networking configuration."
                 },
                 "nesting_mode": "single",
@@ -2058,21 +2083,21 @@
                       "type": "string",
                       "description": "OCI compartment ID of edge location",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "fingerprint_wo": {
                       "type": "string",
                       "description": "API key fingerprint",
                       "description_kind": "plain",
-                      "required": true,
-                      "sensitive": true
+                      "sensitive": true,
+                      "optional": true
                     },
                     "private_key_base64_wo": {
                       "type": "string",
                       "description": "Base64 encoded API private key",
                       "description_kind": "plain",
-                      "required": true,
-                      "sensitive": true
+                      "sensitive": true,
+                      "optional": true
                     },
                     "security_group_id": {
                       "type": "string",
@@ -2084,19 +2109,19 @@
                       "type": "string",
                       "description": "OCI subnet ID of edge location",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "tenancy_id": {
                       "type": "string",
                       "description": "OCI tenancy ID of the account",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "user_id_wo": {
                       "type": "string",
                       "description": "User ID used to authenticate OCI",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "vcn_cidr": {
                       "type": "string",
@@ -2108,7 +2133,7 @@
                       "type": "string",
                       "description": "OCI virtual cloud network ID",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     }
                   },
                   "description_kind": "plain",
@@ -5305,6 +5330,97 @@
                                   "min_items": 1
                                 }
                               },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "tolerations_filter": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "operator": {
+                                  "type": "string",
+                                  "description": "Logical operator to combine toleration matchers: AND or OR.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "matchers": {
+                                  "nesting_mode": "set",
+                                  "block": {
+                                    "block_types": {
+                                      "key": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description": "Matcher type: EXACT or REGEX.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description": "Value to match against.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      },
+                                      "operator": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description": "Matcher type: EXACT or REGEX.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description": "Value to match against.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "value": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description": "Matcher type: EXACT or REGEX.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description": "Value to match against.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "min_items": 1
+                                }
+                              },
+                              "description": "Tolerations filter for matching pods by their tolerations.",
                               "description_kind": "plain"
                             },
                             "max_items": 1

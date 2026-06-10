@@ -99,7 +99,7 @@ type CustomParameters struct {
 type EdgeConfigurationInitParameters struct {
 
 	// AWS specific configuration
-	Aws []AwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws *AwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// CAST AI cluster ID
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.OmniCluster
@@ -114,10 +114,10 @@ type EdgeConfigurationInitParameters struct {
 	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// CRI (Container Runtime Interface) configuration for the edge node. Set this when you want kubelet to connect to a container runtime you have set up explicitly on the node. Currently only containerd is officially supported.
-	Cri []CriInitParameters `json:"cri,omitempty" tf:"cri,omitempty"`
+	Cri *CriInitParameters `json:"cri,omitempty" tf:"cri,omitempty"`
 
 	// Custom cloud specific configuration
-	Custom []CustomInitParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+	Custom *CustomInitParameters `json:"custom,omitempty" tf:"custom,omitempty"`
 
 	// Edge location ID
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EdgeLocation
@@ -132,13 +132,13 @@ type EdgeConfigurationInitParameters struct {
 	EdgeLocationIDSelector *v1.Selector `json:"edgeLocationIdSelector,omitempty" tf:"-"`
 
 	// GCP specific configuration
-	GCP []GCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
+	GCP *GCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// Name of the edge configuration
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// OCI specific configuration
-	Oci []OciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
+	Oci *OciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
 
 	// CAST AI organization ID
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
@@ -150,16 +150,16 @@ type EdgeConfigurationInitParameters struct {
 type EdgeConfigurationObservation struct {
 
 	// AWS specific configuration
-	Aws []AwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws *AwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// CAST AI cluster ID
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
 	// CRI (Container Runtime Interface) configuration for the edge node. Set this when you want kubelet to connect to a container runtime you have set up explicitly on the node. Currently only containerd is officially supported.
-	Cri []CriObservation `json:"cri,omitempty" tf:"cri,omitempty"`
+	Cri *CriObservation `json:"cri,omitempty" tf:"cri,omitempty"`
 
 	// Custom cloud specific configuration
-	Custom []CustomObservation `json:"custom,omitempty" tf:"custom,omitempty"`
+	Custom *CustomObservation `json:"custom,omitempty" tf:"custom,omitempty"`
 
 	// Whether this edge configuration is the default one
 	Default *bool `json:"default,omitempty" tf:"default,omitempty"`
@@ -168,7 +168,7 @@ type EdgeConfigurationObservation struct {
 	EdgeLocationID *string `json:"edgeLocationId,omitempty" tf:"edge_location_id,omitempty"`
 
 	// GCP specific configuration
-	GCP []GCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
+	GCP *GCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -176,7 +176,7 @@ type EdgeConfigurationObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// OCI specific configuration
-	Oci []OciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
+	Oci *OciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
 
 	// CAST AI organization ID
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
@@ -189,7 +189,7 @@ type EdgeConfigurationParameters struct {
 
 	// AWS specific configuration
 	// +kubebuilder:validation:Optional
-	Aws []AwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws *AwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// CAST AI cluster ID
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.OmniCluster
@@ -206,11 +206,11 @@ type EdgeConfigurationParameters struct {
 
 	// CRI (Container Runtime Interface) configuration for the edge node. Set this when you want kubelet to connect to a container runtime you have set up explicitly on the node. Currently only containerd is officially supported.
 	// +kubebuilder:validation:Optional
-	Cri []CriParameters `json:"cri,omitempty" tf:"cri,omitempty"`
+	Cri *CriParameters `json:"cri,omitempty" tf:"cri,omitempty"`
 
 	// Custom cloud specific configuration
 	// +kubebuilder:validation:Optional
-	Custom []CustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+	Custom *CustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
 
 	// Edge location ID
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EdgeLocation
@@ -227,7 +227,7 @@ type EdgeConfigurationParameters struct {
 
 	// GCP specific configuration
 	// +kubebuilder:validation:Optional
-	GCP []GCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
+	GCP *GCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// Name of the edge configuration
 	// +kubebuilder:validation:Optional
@@ -235,7 +235,7 @@ type EdgeConfigurationParameters struct {
 
 	// OCI specific configuration
 	// +kubebuilder:validation:Optional
-	Oci []OciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
+	Oci *OciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
 
 	// CAST AI organization ID
 	// +kubebuilder:validation:Optional

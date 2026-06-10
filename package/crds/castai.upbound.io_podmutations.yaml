@@ -435,6 +435,77 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              tolerationsFilter:
+                                description: |-
+                                  (Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)
+                                  Tolerations filter for matching pods by their tolerations.
+                                items:
+                                  properties:
+                                    matchers:
+                                      description: '(Block Set, Min: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          key:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          operator:
+                                            description: '(String) Logical operator
+                                              to combine label matchers: AND or OR.'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          value:
+                                            description: '(Block List, Max: 1) (see
+                                              below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    operator:
+                                      description: |-
+                                        (String) Logical operator to combine label matchers: AND or OR.
+                                        Logical operator to combine toleration matchers: AND or OR.
+                                      type: string
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         workload:
@@ -1030,6 +1101,77 @@ spec:
                                       description: |-
                                         (String) Logical operator to combine label matchers: AND or OR.
                                         Logical operator to combine label matchers: AND or OR.
+                                      type: string
+                                  type: object
+                                type: array
+                              tolerationsFilter:
+                                description: |-
+                                  (Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)
+                                  Tolerations filter for matching pods by their tolerations.
+                                items:
+                                  properties:
+                                    matchers:
+                                      description: '(Block Set, Min: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          key:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          operator:
+                                            description: '(String) Logical operator
+                                              to combine label matchers: AND or OR.'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          value:
+                                            description: '(Block List, Max: 1) (see
+                                              below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    operator:
+                                      description: |-
+                                        (String) Logical operator to combine label matchers: AND or OR.
+                                        Logical operator to combine toleration matchers: AND or OR.
                                       type: string
                                   type: object
                                 type: array
@@ -1804,6 +1946,77 @@ spec:
                                       description: |-
                                         (String) Logical operator to combine label matchers: AND or OR.
                                         Logical operator to combine label matchers: AND or OR.
+                                      type: string
+                                  type: object
+                                type: array
+                              tolerationsFilter:
+                                description: |-
+                                  (Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)
+                                  Tolerations filter for matching pods by their tolerations.
+                                items:
+                                  properties:
+                                    matchers:
+                                      description: '(Block Set, Min: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          key:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          operator:
+                                            description: '(String) Logical operator
+                                              to combine label matchers: AND or OR.'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          value:
+                                            description: '(Block List, Max: 1) (see
+                                              below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: |-
+                                                    (String) Matcher type: EXACT or REGEX.
+                                                    Matcher type: EXACT or REGEX.
+                                                  type: string
+                                                value:
+                                                  description: |-
+                                                    (Block List, Max: 1) (see below for nested schema)
+                                                    Value to match against.
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    operator:
+                                      description: |-
+                                        (String) Logical operator to combine label matchers: AND or OR.
+                                        Logical operator to combine toleration matchers: AND or OR.
                                       type: string
                                   type: object
                                 type: array

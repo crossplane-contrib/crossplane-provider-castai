@@ -75,24 +75,22 @@ spec:
                 properties:
                   aws:
                     description: AWS specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: ImageID to be used for edge creation. It can
-                            be an AMI ID (for example 'ami-0abcdef1234567890') or
-                            a name filter (for example 'al2023-ami-ecs-hvm-*')
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an AMI ID (for example 'ami-0abcdef1234567890') or a
+                          name filter (for example 'al2023-ami-ecs-hvm-*')
+                        type: string
+                      tags:
+                        additionalProperties:
                           type: string
-                        tags:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM tags
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM tags
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   clusterId:
                     description: CAST AI cluster ID
                     type: string
@@ -177,25 +175,21 @@ spec:
                       the edge node. Set this when you want kubelet to connect to
                       a container runtime you have set up explicitly on the node.
                       Currently only containerd is officially supported.
-                    items:
-                      properties:
-                        socket:
-                          description: 'Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      socket:
+                        description: 'Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
+                        type: string
+                    type: object
                   custom:
                     description: Custom cloud specific configuration
-                    items:
-                      properties:
-                        custom:
-                          additionalProperties:
-                            type: string
-                          description: Custom cloud configuration as key-value pairs
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                    properties:
+                      custom:
+                        additionalProperties:
+                          type: string
+                        description: Custom cloud configuration as key-value pairs
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   edgeLocationId:
                     description: Edge location ID
                     type: string
@@ -277,47 +271,43 @@ spec:
                     type: object
                   gcp:
                     description: GCP specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda')
-                            or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`)
-                            to be used for edge creation
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda')
+                          or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`)
+                          to be used for edge creation
+                        type: string
+                      labels:
+                        additionalProperties:
                           type: string
-                        labels:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM labels
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM labels
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   name:
                     description: Name of the edge configuration
                     type: string
                   oci:
                     description: OCI specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: ImageID to be used for edge creation. It can
-                            be an AMI ID (for example 'ami-0abcdef1234567890') or
-                            a name filter (for example 'al2023-ami-ecs-hvm-*')
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an AMI ID (for example 'ami-0abcdef1234567890') or a
+                          name filter (for example 'al2023-ami-ecs-hvm-*')
+                        type: string
+                      tags:
+                        additionalProperties:
                           type: string
-                        tags:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM tags
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM tags
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   organizationId:
                     description: CAST AI organization ID
                     type: string
@@ -342,24 +332,22 @@ spec:
                 properties:
                   aws:
                     description: AWS specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: ImageID to be used for edge creation. It can
-                            be an AMI ID (for example 'ami-0abcdef1234567890') or
-                            a name filter (for example 'al2023-ami-ecs-hvm-*')
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an AMI ID (for example 'ami-0abcdef1234567890') or a
+                          name filter (for example 'al2023-ami-ecs-hvm-*')
+                        type: string
+                      tags:
+                        additionalProperties:
                           type: string
-                        tags:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM tags
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM tags
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   clusterId:
                     description: CAST AI cluster ID
                     type: string
@@ -444,25 +432,21 @@ spec:
                       the edge node. Set this when you want kubelet to connect to
                       a container runtime you have set up explicitly on the node.
                       Currently only containerd is officially supported.
-                    items:
-                      properties:
-                        socket:
-                          description: 'Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      socket:
+                        description: 'Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
+                        type: string
+                    type: object
                   custom:
                     description: Custom cloud specific configuration
-                    items:
-                      properties:
-                        custom:
-                          additionalProperties:
-                            type: string
-                          description: Custom cloud configuration as key-value pairs
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                    properties:
+                      custom:
+                        additionalProperties:
+                          type: string
+                        description: Custom cloud configuration as key-value pairs
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   edgeLocationId:
                     description: Edge location ID
                     type: string
@@ -544,47 +528,43 @@ spec:
                     type: object
                   gcp:
                     description: GCP specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda')
-                            or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`)
-                            to be used for edge creation
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda')
+                          or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`)
+                          to be used for edge creation
+                        type: string
+                      labels:
+                        additionalProperties:
                           type: string
-                        labels:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM labels
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM labels
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   name:
                     description: Name of the edge configuration
                     type: string
                   oci:
                     description: OCI specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: ImageID to be used for edge creation. It can
-                            be an AMI ID (for example 'ami-0abcdef1234567890') or
-                            a name filter (for example 'al2023-ami-ecs-hvm-*')
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an AMI ID (for example 'ami-0abcdef1234567890') or a
+                          name filter (for example 'al2023-ami-ecs-hvm-*')
+                        type: string
+                      tags:
+                        additionalProperties:
                           type: string
-                        tags:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM tags
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM tags
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   organizationId:
                     description: CAST AI organization ID
                     type: string
@@ -777,24 +757,22 @@ spec:
                 properties:
                   aws:
                     description: AWS specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: ImageID to be used for edge creation. It can
-                            be an AMI ID (for example 'ami-0abcdef1234567890') or
-                            a name filter (for example 'al2023-ami-ecs-hvm-*')
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an AMI ID (for example 'ami-0abcdef1234567890') or a
+                          name filter (for example 'al2023-ami-ecs-hvm-*')
+                        type: string
+                      tags:
+                        additionalProperties:
                           type: string
-                        tags:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM tags
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM tags
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   clusterId:
                     description: CAST AI cluster ID
                     type: string
@@ -803,25 +781,21 @@ spec:
                       the edge node. Set this when you want kubelet to connect to
                       a container runtime you have set up explicitly on the node.
                       Currently only containerd is officially supported.
-                    items:
-                      properties:
-                        socket:
-                          description: 'Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      socket:
+                        description: 'Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
+                        type: string
+                    type: object
                   custom:
                     description: Custom cloud specific configuration
-                    items:
-                      properties:
-                        custom:
-                          additionalProperties:
-                            type: string
-                          description: Custom cloud configuration as key-value pairs
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                    properties:
+                      custom:
+                        additionalProperties:
+                          type: string
+                        description: Custom cloud configuration as key-value pairs
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   default:
                     description: Whether this edge configuration is the default one
                     type: boolean
@@ -830,24 +804,22 @@ spec:
                     type: string
                   gcp:
                     description: GCP specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda')
-                            or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`)
-                            to be used for edge creation
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda')
+                          or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`)
+                          to be used for edge creation
+                        type: string
+                      labels:
+                        additionalProperties:
                           type: string
-                        labels:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM labels
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM labels
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   id:
                     type: string
                   name:
@@ -855,24 +827,22 @@ spec:
                     type: string
                   oci:
                     description: OCI specific configuration
-                    items:
-                      properties:
-                        bootDiskSizeGib:
-                          description: Boot disk size in GiB
-                          type: number
-                        imageId:
-                          description: ImageID to be used for edge creation. It can
-                            be an AMI ID (for example 'ami-0abcdef1234567890') or
-                            a name filter (for example 'al2023-ami-ecs-hvm-*')
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an AMI ID (for example 'ami-0abcdef1234567890') or a
+                          name filter (for example 'al2023-ami-ecs-hvm-*')
+                        type: string
+                      tags:
+                        additionalProperties:
                           type: string
-                        tags:
-                          additionalProperties:
-                            type: string
-                          description: Instance/VM tags
-                          type: object
-                          x-kubernetes-map-type: granular
-                      type: object
-                    type: array
+                        description: Instance/VM tags
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   organizationId:
                     description: CAST AI organization ID
                     type: string

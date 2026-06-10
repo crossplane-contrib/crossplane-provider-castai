@@ -54,6 +54,58 @@ Build binary:
 make build
 ```
 
+### Updating to a New Terraform Provider Version
+
+To regenerate the Crossplane provider against a new version of the
+[Terraform CAST AI provider](https://github.com/castai/terraform-provider-castai):
+
+1. **Update the version in the `Makefile`** — change the two version references:
+
+   ```makefile
+   export TERRAFORM_PROVIDER_VERSION ?= <NEW_VERSION>        # e.g. 8.39.2
+   export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v<NEW_VERSION>
+   ```
+
+2. **Initialize submodules** (first time only):
+
+   ```console
+   make submodules
+   ```
+
+3. **Generate the provider schema, pull docs, and transform the schema**:
+
+   ```console
+   make generate.init
+   ```
+
+   This downloads the Terraform provider binary, runs `terraform providers schema`
+   to produce `config/schema.json`, clones the upstream docs, and runs
+   `hack/transform-schema.py` to convert `nested_type` attributes for Upjet v1
+   compatibility.
+
+4. **Run the Upjet code-generation pipeline**:
+
+   ```console
+   go run cmd/generator/main.go "$PWD"
+   ```
+
+5. **Regenerate deepcopy helpers, CRDs, and other artifacts**:
+
+   ```console
+   make generate
+   ```
+
+6. **If the new version introduces new Terraform resources**, you also need to:
+   - Add an external name entry in `config/external_name.go`.
+   - Create a resource config package under `config/<resource>/config.go`.
+   - Register the `Configure` function in `config/provider.go`.
+
+7. **Build and verify**:
+
+   ```console
+   go build ./...
+   ```
+
 ## Report a Bug
 
 For filing bugs, suggesting improvements, or requesting new features, please

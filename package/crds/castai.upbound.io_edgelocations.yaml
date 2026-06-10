@@ -77,96 +77,94 @@ spec:
                     description: |-
                       (Attributes) AWS configuration for the edge location (see below for nested schema)
                       AWS configuration for the edge location
-                    items:
-                      properties:
-                        accessKeyIdWoSecretRef:
-                          description: |-
-                            (String, Sensitive) AWS access key ID
-                            AWS access key ID
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        accountId:
-                          description: |-
-                            (String) AWS account ID
-                            AWS account ID
-                          type: string
-                        instanceProfile:
-                          description: |-
-                            (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
-                            AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
-                          type: string
-                        nameTag:
-                          description: |-
-                            (String, Deprecated) The value of a 'Name' tag applied to VPC resources
-                            The value of a 'Name' tag applied to VPC resources
-                          type: string
-                        roleArn:
-                          description: |-
-                            (String) AWS IAM role ARN used for Google OIDC federation impersonation
-                            AWS IAM role ARN used for Google OIDC federation impersonation
-                          type: string
-                        secretAccessKeyWoSecretRef:
-                          description: |-
-                            (String, Sensitive) AWS secret access key
-                            AWS secret access key
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        securityGroupId:
-                          description: |-
-                            (String) Security group ID to be used in the selected region
-                            Security group ID to be used in the selected region
-                          type: string
-                        subnetIds:
-                          additionalProperties:
+                    properties:
+                      accessKeyIdWoSecretRef:
+                        description: |-
+                          (String, Sensitive) AWS access key ID
+                          AWS access key ID
+                        properties:
+                          key:
+                            description: The key to select.
                             type: string
-                          description: |-
-                            (Map of String) Map of zone names to subnet IDs to be used in the selected region
-                            Map of zone names to subnet IDs to be used in the selected region
-                          type: object
-                          x-kubernetes-map-type: granular
-                        vpcCidr:
-                          description: |-
-                            (String) VPC IPv4 CIDR block
-                            VPC IPv4 CIDR block
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      accountId:
+                        description: |-
+                          (String) AWS account ID
+                          AWS account ID
+                        type: string
+                      instanceProfile:
+                        description: |-
+                          (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
+                          AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
+                        type: string
+                      nameTag:
+                        description: |-
+                          (String, Deprecated) The value of a 'Name' tag applied to VPC resources
+                          The value of a 'Name' tag applied to VPC resources
+                        type: string
+                      roleArn:
+                        description: |-
+                          (String) AWS IAM role ARN used for Google OIDC federation impersonation
+                          AWS IAM role ARN used for Google OIDC federation impersonation
+                        type: string
+                      secretAccessKeyWoSecretRef:
+                        description: |-
+                          (String, Sensitive) AWS secret access key
+                          AWS secret access key
+                        properties:
+                          key:
+                            description: The key to select.
+                            type: string
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          Security group ID to be used in the selected region
+                        type: string
+                      subnetIds:
+                        additionalProperties:
                           type: string
-                        vpcId:
-                          description: |-
-                            (String) VPC ID to be used in the selected region
-                            VPC ID to be used in the selected region
-                          type: string
-                        vpcPeered:
-                          description: |-
-                            (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
-                            Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
-                          type: boolean
-                      type: object
-                    type: array
+                        description: |-
+                          (Map of String) Map of zone names to subnet IDs to be used in the selected region
+                          Map of zone names to subnet IDs to be used in the selected region
+                        type: object
+                        x-kubernetes-map-type: granular
+                      vpcCidr:
+                        description: |-
+                          (String) VPC IPv4 CIDR block
+                          VPC IPv4 CIDR block
+                        type: string
+                      vpcId:
+                        description: |-
+                          (String) VPC ID to be used in the selected region
+                          VPC ID to be used in the selected region
+                        type: string
+                      vpcPeered:
+                        description: |-
+                          (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
+                          Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
+                        type: boolean
+                    type: object
                   clusterId:
                     description: |-
                       (String) CAST AI cluster ID
@@ -252,15 +250,13 @@ spec:
                     description: |-
                       (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
                       Control plane configuration. Only valid when control_plane_mode is SHARED.
-                    items:
-                      properties:
-                        ha:
-                          description: |-
-                            (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
-                            Whether to use HA mode for control plane. If not set, default is HA.
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      ha:
+                        description: |-
+                          (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
+                          Whether to use HA mode for control plane. If not set, default is HA.
+                        type: boolean
+                    type: object
                   controlPlaneMode:
                     description: |-
                       (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
@@ -270,9 +266,7 @@ spec:
                     description: |-
                       (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
                       Custom cloud provider configuration for the edge location
-                    items:
-                      type: object
-                    type: array
+                    type: object
                   description:
                     description: |-
                       (String) Description of the edge location
@@ -282,67 +276,65 @@ spec:
                     description: |-
                       (Attributes) GCP configuration for the edge location (see below for nested schema)
                       GCP configuration for the edge location
-                    items:
-                      properties:
-                        clientServiceAccountJsonBase64WoSecretRef:
-                          description: |-
-                            (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
-                            Base64 encoded service account JSON for provisioning edge resources
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        instanceServiceAccount:
-                          description: |-
-                            (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
-                            GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
-                          type: string
-                        networkName:
-                          description: |-
-                            (String) The name of the network to be used in the selected region
-                            The name of the network to be used in the selected region
-                          type: string
-                        networkTags:
-                          description: |-
-                            (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
-                            Tags applied on the provisioned cloud resources and the firewall rule
-                          items:
+                    properties:
+                      clientServiceAccountJsonBase64WoSecretRef:
+                        description: |-
+                          (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
+                          Base64 encoded service account JSON for provisioning edge resources
+                        properties:
+                          key:
+                            description: The key to select.
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        projectId:
-                          description: |-
-                            (String) GCP project ID where edges run
-                            GCP project ID where edges run
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      instanceServiceAccount:
+                        description: |-
+                          (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                          GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                        type: string
+                      networkName:
+                        description: |-
+                          (String) The name of the network to be used in the selected region
+                          The name of the network to be used in the selected region
+                        type: string
+                      networkTags:
+                        description: |-
+                          (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
+                          Tags applied on the provisioned cloud resources and the firewall rule
+                        items:
                           type: string
-                        subnetCidr:
-                          description: |-
-                            (String) VPC Subnet IPv4 CIDR block
-                            VPC Subnet IPv4 CIDR block
-                          type: string
-                        subnetName:
-                          description: |-
-                            (String) The name of the subnetwork to be used in the selected region
-                            The name of the subnetwork to be used in the selected region
-                          type: string
-                        targetServiceAccountEmail:
-                          description: |-
-                            (String) Target service account email to be used for impersonation
-                            Target service account email to be used for impersonation
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      projectId:
+                        description: |-
+                          (String) GCP project ID where edges run
+                          GCP project ID where edges run
+                        type: string
+                      subnetCidr:
+                        description: |-
+                          (String) VPC Subnet IPv4 CIDR block
+                          VPC Subnet IPv4 CIDR block
+                        type: string
+                      subnetName:
+                        description: |-
+                          (String) The name of the subnetwork to be used in the selected region
+                          The name of the subnetwork to be used in the selected region
+                        type: string
+                      targetServiceAccountEmail:
+                        description: |-
+                          (String) Target service account email to be used for impersonation
+                          Target service account email to be used for impersonation
+                        type: string
+                    type: object
                   name:
                     description: |-
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -352,98 +344,110 @@ spec:
                     description: |-
                       (Attributes) Edge cluster networking configuration. (see below for nested schema)
                       Edge cluster networking configuration.
-                    items:
-                      properties:
-                        tunneledCidrs:
-                          description: |-
-                            (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-                            List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-                          items:
+                    properties:
+                      cni:
+                        description: |-
+                          router) configuration for the edge cluster. (see below for nested schema)
+                          CNI (kube-router) configuration for the edge cluster.
+                        properties:
+                          overlay:
+                            description: |-
+                              router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+                              Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
                             type: string
-                          type: array
-                      type: object
-                    type: array
+                          overlayEncap:
+                            description: |-
+                              (String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+                              Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+                            type: string
+                        type: object
+                      tunneledCidrs:
+                        description: |-
+                          (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+                          List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   oci:
                     description: |-
                       (Attributes) OCI configuration for the edge location (see below for nested schema)
                       OCI configuration for the edge location
-                    items:
-                      properties:
-                        compartmentId:
-                          description: |-
-                            (String) OCI compartment ID of edge location
-                            OCI compartment ID of edge location
-                          type: string
-                        fingerprintWoSecretRef:
-                          description: |-
-                            (String, Sensitive) API key fingerprint
-                            API key fingerprint
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        privateKeyBase64WoSecretRef:
-                          description: |-
-                            (String, Sensitive) Base64 encoded API private key
-                            Base64 encoded API private key
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        securityGroupId:
-                          description: |-
-                            (String) Security group ID to be used in the selected region
-                            OCI network security group ID
-                          type: string
-                        subnetId:
-                          description: |-
-                            (String) OCI subnet ID of edge location
-                            OCI subnet ID of edge location
-                          type: string
-                        tenancyId:
-                          description: |-
-                            (String) OCI tenancy ID of the account
-                            OCI tenancy ID of the account
-                          type: string
-                        userIdWo:
-                          description: |-
-                            (String) User ID used to authenticate OCI
-                            User ID used to authenticate OCI
-                          type: string
-                        vcnCidr:
-                          description: |-
-                            (String) OCI VCN IPv4 CIDR block
-                            OCI VCN IPv4 CIDR block
-                          type: string
-                        vcnId:
-                          description: |-
-                            (String) OCI virtual cloud network ID
-                            OCI virtual cloud network ID
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      compartmentId:
+                        description: |-
+                          (String) OCI compartment ID of edge location
+                          OCI compartment ID of edge location
+                        type: string
+                      fingerprintWoSecretRef:
+                        description: |-
+                          (String, Sensitive) API key fingerprint
+                          API key fingerprint
+                        properties:
+                          key:
+                            description: The key to select.
+                            type: string
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      privateKeyBase64WoSecretRef:
+                        description: |-
+                          (String, Sensitive) Base64 encoded API private key
+                          Base64 encoded API private key
+                        properties:
+                          key:
+                            description: The key to select.
+                            type: string
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          OCI network security group ID
+                        type: string
+                      subnetId:
+                        description: |-
+                          (String) OCI subnet ID of edge location
+                          OCI subnet ID of edge location
+                        type: string
+                      tenancyId:
+                        description: |-
+                          (String) OCI tenancy ID of the account
+                          OCI tenancy ID of the account
+                        type: string
+                      userIdWo:
+                        description: |-
+                          (String) User ID used to authenticate OCI
+                          User ID used to authenticate OCI
+                        type: string
+                      vcnCidr:
+                        description: |-
+                          (String) OCI VCN IPv4 CIDR block
+                          OCI VCN IPv4 CIDR block
+                        type: string
+                      vcnId:
+                        description: |-
+                          (String) OCI virtual cloud network ID
+                          OCI virtual cloud network ID
+                        type: string
+                    type: object
                   organizationId:
                     description: |-
                       (String) CAST AI organization ID
@@ -490,96 +494,94 @@ spec:
                     description: |-
                       (Attributes) AWS configuration for the edge location (see below for nested schema)
                       AWS configuration for the edge location
-                    items:
-                      properties:
-                        accessKeyIdWoSecretRef:
-                          description: |-
-                            (String, Sensitive) AWS access key ID
-                            AWS access key ID
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        accountId:
-                          description: |-
-                            (String) AWS account ID
-                            AWS account ID
-                          type: string
-                        instanceProfile:
-                          description: |-
-                            (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
-                            AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
-                          type: string
-                        nameTag:
-                          description: |-
-                            (String, Deprecated) The value of a 'Name' tag applied to VPC resources
-                            The value of a 'Name' tag applied to VPC resources
-                          type: string
-                        roleArn:
-                          description: |-
-                            (String) AWS IAM role ARN used for Google OIDC federation impersonation
-                            AWS IAM role ARN used for Google OIDC federation impersonation
-                          type: string
-                        secretAccessKeyWoSecretRef:
-                          description: |-
-                            (String, Sensitive) AWS secret access key
-                            AWS secret access key
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        securityGroupId:
-                          description: |-
-                            (String) Security group ID to be used in the selected region
-                            Security group ID to be used in the selected region
-                          type: string
-                        subnetIds:
-                          additionalProperties:
+                    properties:
+                      accessKeyIdWoSecretRef:
+                        description: |-
+                          (String, Sensitive) AWS access key ID
+                          AWS access key ID
+                        properties:
+                          key:
+                            description: The key to select.
                             type: string
-                          description: |-
-                            (Map of String) Map of zone names to subnet IDs to be used in the selected region
-                            Map of zone names to subnet IDs to be used in the selected region
-                          type: object
-                          x-kubernetes-map-type: granular
-                        vpcCidr:
-                          description: |-
-                            (String) VPC IPv4 CIDR block
-                            VPC IPv4 CIDR block
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      accountId:
+                        description: |-
+                          (String) AWS account ID
+                          AWS account ID
+                        type: string
+                      instanceProfile:
+                        description: |-
+                          (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
+                          AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
+                        type: string
+                      nameTag:
+                        description: |-
+                          (String, Deprecated) The value of a 'Name' tag applied to VPC resources
+                          The value of a 'Name' tag applied to VPC resources
+                        type: string
+                      roleArn:
+                        description: |-
+                          (String) AWS IAM role ARN used for Google OIDC federation impersonation
+                          AWS IAM role ARN used for Google OIDC federation impersonation
+                        type: string
+                      secretAccessKeyWoSecretRef:
+                        description: |-
+                          (String, Sensitive) AWS secret access key
+                          AWS secret access key
+                        properties:
+                          key:
+                            description: The key to select.
+                            type: string
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          Security group ID to be used in the selected region
+                        type: string
+                      subnetIds:
+                        additionalProperties:
                           type: string
-                        vpcId:
-                          description: |-
-                            (String) VPC ID to be used in the selected region
-                            VPC ID to be used in the selected region
-                          type: string
-                        vpcPeered:
-                          description: |-
-                            (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
-                            Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
-                          type: boolean
-                      type: object
-                    type: array
+                        description: |-
+                          (Map of String) Map of zone names to subnet IDs to be used in the selected region
+                          Map of zone names to subnet IDs to be used in the selected region
+                        type: object
+                        x-kubernetes-map-type: granular
+                      vpcCidr:
+                        description: |-
+                          (String) VPC IPv4 CIDR block
+                          VPC IPv4 CIDR block
+                        type: string
+                      vpcId:
+                        description: |-
+                          (String) VPC ID to be used in the selected region
+                          VPC ID to be used in the selected region
+                        type: string
+                      vpcPeered:
+                        description: |-
+                          (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
+                          Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
+                        type: boolean
+                    type: object
                   clusterId:
                     description: |-
                       (String) CAST AI cluster ID
@@ -665,15 +667,13 @@ spec:
                     description: |-
                       (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
                       Control plane configuration. Only valid when control_plane_mode is SHARED.
-                    items:
-                      properties:
-                        ha:
-                          description: |-
-                            (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
-                            Whether to use HA mode for control plane. If not set, default is HA.
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      ha:
+                        description: |-
+                          (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
+                          Whether to use HA mode for control plane. If not set, default is HA.
+                        type: boolean
+                    type: object
                   controlPlaneMode:
                     description: |-
                       (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
@@ -683,9 +683,7 @@ spec:
                     description: |-
                       (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
                       Custom cloud provider configuration for the edge location
-                    items:
-                      type: object
-                    type: array
+                    type: object
                   description:
                     description: |-
                       (String) Description of the edge location
@@ -695,67 +693,65 @@ spec:
                     description: |-
                       (Attributes) GCP configuration for the edge location (see below for nested schema)
                       GCP configuration for the edge location
-                    items:
-                      properties:
-                        clientServiceAccountJsonBase64WoSecretRef:
-                          description: |-
-                            (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
-                            Base64 encoded service account JSON for provisioning edge resources
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        instanceServiceAccount:
-                          description: |-
-                            (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
-                            GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
-                          type: string
-                        networkName:
-                          description: |-
-                            (String) The name of the network to be used in the selected region
-                            The name of the network to be used in the selected region
-                          type: string
-                        networkTags:
-                          description: |-
-                            (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
-                            Tags applied on the provisioned cloud resources and the firewall rule
-                          items:
+                    properties:
+                      clientServiceAccountJsonBase64WoSecretRef:
+                        description: |-
+                          (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
+                          Base64 encoded service account JSON for provisioning edge resources
+                        properties:
+                          key:
+                            description: The key to select.
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        projectId:
-                          description: |-
-                            (String) GCP project ID where edges run
-                            GCP project ID where edges run
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      instanceServiceAccount:
+                        description: |-
+                          (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                          GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                        type: string
+                      networkName:
+                        description: |-
+                          (String) The name of the network to be used in the selected region
+                          The name of the network to be used in the selected region
+                        type: string
+                      networkTags:
+                        description: |-
+                          (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
+                          Tags applied on the provisioned cloud resources and the firewall rule
+                        items:
                           type: string
-                        subnetCidr:
-                          description: |-
-                            (String) VPC Subnet IPv4 CIDR block
-                            VPC Subnet IPv4 CIDR block
-                          type: string
-                        subnetName:
-                          description: |-
-                            (String) The name of the subnetwork to be used in the selected region
-                            The name of the subnetwork to be used in the selected region
-                          type: string
-                        targetServiceAccountEmail:
-                          description: |-
-                            (String) Target service account email to be used for impersonation
-                            Target service account email to be used for impersonation
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      projectId:
+                        description: |-
+                          (String) GCP project ID where edges run
+                          GCP project ID where edges run
+                        type: string
+                      subnetCidr:
+                        description: |-
+                          (String) VPC Subnet IPv4 CIDR block
+                          VPC Subnet IPv4 CIDR block
+                        type: string
+                      subnetName:
+                        description: |-
+                          (String) The name of the subnetwork to be used in the selected region
+                          The name of the subnetwork to be used in the selected region
+                        type: string
+                      targetServiceAccountEmail:
+                        description: |-
+                          (String) Target service account email to be used for impersonation
+                          Target service account email to be used for impersonation
+                        type: string
+                    type: object
                   name:
                     description: |-
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -765,101 +761,110 @@ spec:
                     description: |-
                       (Attributes) Edge cluster networking configuration. (see below for nested schema)
                       Edge cluster networking configuration.
-                    items:
-                      properties:
-                        tunneledCidrs:
-                          description: |-
-                            (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-                            List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-                          items:
+                    properties:
+                      cni:
+                        description: |-
+                          router) configuration for the edge cluster. (see below for nested schema)
+                          CNI (kube-router) configuration for the edge cluster.
+                        properties:
+                          overlay:
+                            description: |-
+                              router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+                              Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
                             type: string
-                          type: array
-                      type: object
-                    type: array
+                          overlayEncap:
+                            description: |-
+                              (String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+                              Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+                            type: string
+                        type: object
+                      tunneledCidrs:
+                        description: |-
+                          (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+                          List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   oci:
                     description: |-
                       (Attributes) OCI configuration for the edge location (see below for nested schema)
                       OCI configuration for the edge location
-                    items:
-                      properties:
-                        compartmentId:
-                          description: |-
-                            (String) OCI compartment ID of edge location
-                            OCI compartment ID of edge location
-                          type: string
-                        fingerprintWoSecretRef:
-                          description: |-
-                            (String, Sensitive) API key fingerprint
-                            API key fingerprint
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        privateKeyBase64WoSecretRef:
-                          description: |-
-                            (String, Sensitive) Base64 encoded API private key
-                            Base64 encoded API private key
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        securityGroupId:
-                          description: |-
-                            (String) Security group ID to be used in the selected region
-                            OCI network security group ID
-                          type: string
-                        subnetId:
-                          description: |-
-                            (String) OCI subnet ID of edge location
-                            OCI subnet ID of edge location
-                          type: string
-                        tenancyId:
-                          description: |-
-                            (String) OCI tenancy ID of the account
-                            OCI tenancy ID of the account
-                          type: string
-                        userIdWo:
-                          description: |-
-                            (String) User ID used to authenticate OCI
-                            User ID used to authenticate OCI
-                          type: string
-                        vcnCidr:
-                          description: |-
-                            (String) OCI VCN IPv4 CIDR block
-                            OCI VCN IPv4 CIDR block
-                          type: string
-                        vcnId:
-                          description: |-
-                            (String) OCI virtual cloud network ID
-                            OCI virtual cloud network ID
-                          type: string
-                      required:
-                      - fingerprintWoSecretRef
-                      - privateKeyBase64WoSecretRef
-                      type: object
-                    type: array
+                    properties:
+                      compartmentId:
+                        description: |-
+                          (String) OCI compartment ID of edge location
+                          OCI compartment ID of edge location
+                        type: string
+                      fingerprintWoSecretRef:
+                        description: |-
+                          (String, Sensitive) API key fingerprint
+                          API key fingerprint
+                        properties:
+                          key:
+                            description: The key to select.
+                            type: string
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      privateKeyBase64WoSecretRef:
+                        description: |-
+                          (String, Sensitive) Base64 encoded API private key
+                          Base64 encoded API private key
+                        properties:
+                          key:
+                            description: The key to select.
+                            type: string
+                          name:
+                            description: Name of the secret.
+                            type: string
+                          namespace:
+                            description: Namespace of the secret.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        - namespace
+                        type: object
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          OCI network security group ID
+                        type: string
+                      subnetId:
+                        description: |-
+                          (String) OCI subnet ID of edge location
+                          OCI subnet ID of edge location
+                        type: string
+                      tenancyId:
+                        description: |-
+                          (String) OCI tenancy ID of the account
+                          OCI tenancy ID of the account
+                        type: string
+                      userIdWo:
+                        description: |-
+                          (String) User ID used to authenticate OCI
+                          User ID used to authenticate OCI
+                        type: string
+                      vcnCidr:
+                        description: |-
+                          (String) OCI VCN IPv4 CIDR block
+                          OCI VCN IPv4 CIDR block
+                        type: string
+                      vcnId:
+                        description: |-
+                          (String) OCI virtual cloud network ID
+                          OCI virtual cloud network ID
+                        type: string
+                    type: object
                   organizationId:
                     description: |-
                       (String) CAST AI organization ID
@@ -1057,22 +1062,10 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.aws is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.aws)
-                || (has(self.initProvider) && has(self.initProvider.aws))'
-            - message: spec.forProvider.gcp is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.gcp)
-                || (has(self.initProvider) && has(self.initProvider.gcp))'
             - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
                 || (has(self.initProvider) && has(self.initProvider.name))'
-            - message: spec.forProvider.oci is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.oci)
-                || (has(self.initProvider) && has(self.initProvider.oci))'
             - message: spec.forProvider.organizationId is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.organizationId)
@@ -1086,58 +1079,56 @@ spec:
                     description: |-
                       (Attributes) AWS configuration for the edge location (see below for nested schema)
                       AWS configuration for the edge location
-                    items:
-                      properties:
-                        accountId:
-                          description: |-
-                            (String) AWS account ID
-                            AWS account ID
+                    properties:
+                      accountId:
+                        description: |-
+                          (String) AWS account ID
+                          AWS account ID
+                        type: string
+                      instanceProfile:
+                        description: |-
+                          (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
+                          AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
+                        type: string
+                      nameTag:
+                        description: |-
+                          (String, Deprecated) The value of a 'Name' tag applied to VPC resources
+                          The value of a 'Name' tag applied to VPC resources
+                        type: string
+                      roleArn:
+                        description: |-
+                          (String) AWS IAM role ARN used for Google OIDC federation impersonation
+                          AWS IAM role ARN used for Google OIDC federation impersonation
+                        type: string
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          Security group ID to be used in the selected region
+                        type: string
+                      subnetIds:
+                        additionalProperties:
                           type: string
-                        instanceProfile:
-                          description: |-
-                            (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
-                            AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
-                          type: string
-                        nameTag:
-                          description: |-
-                            (String, Deprecated) The value of a 'Name' tag applied to VPC resources
-                            The value of a 'Name' tag applied to VPC resources
-                          type: string
-                        roleArn:
-                          description: |-
-                            (String) AWS IAM role ARN used for Google OIDC federation impersonation
-                            AWS IAM role ARN used for Google OIDC federation impersonation
-                          type: string
-                        securityGroupId:
-                          description: |-
-                            (String) Security group ID to be used in the selected region
-                            Security group ID to be used in the selected region
-                          type: string
-                        subnetIds:
-                          additionalProperties:
-                            type: string
-                          description: |-
-                            (Map of String) Map of zone names to subnet IDs to be used in the selected region
-                            Map of zone names to subnet IDs to be used in the selected region
-                          type: object
-                          x-kubernetes-map-type: granular
-                        vpcCidr:
-                          description: |-
-                            (String) VPC IPv4 CIDR block
-                            VPC IPv4 CIDR block
-                          type: string
-                        vpcId:
-                          description: |-
-                            (String) VPC ID to be used in the selected region
-                            VPC ID to be used in the selected region
-                          type: string
-                        vpcPeered:
-                          description: |-
-                            (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
-                            Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
-                          type: boolean
-                      type: object
-                    type: array
+                        description: |-
+                          (Map of String) Map of zone names to subnet IDs to be used in the selected region
+                          Map of zone names to subnet IDs to be used in the selected region
+                        type: object
+                        x-kubernetes-map-type: granular
+                      vpcCidr:
+                        description: |-
+                          (String) VPC IPv4 CIDR block
+                          VPC IPv4 CIDR block
+                        type: string
+                      vpcId:
+                        description: |-
+                          (String) VPC ID to be used in the selected region
+                          VPC ID to be used in the selected region
+                        type: string
+                      vpcPeered:
+                        description: |-
+                          (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
+                          Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
+                        type: boolean
+                    type: object
                   clusterId:
                     description: |-
                       (String) CAST AI cluster ID
@@ -1147,15 +1138,13 @@ spec:
                     description: |-
                       (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
                       Control plane configuration. Only valid when control_plane_mode is SHARED.
-                    items:
-                      properties:
-                        ha:
-                          description: |-
-                            (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
-                            Whether to use HA mode for control plane. If not set, default is HA.
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      ha:
+                        description: |-
+                          (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
+                          Whether to use HA mode for control plane. If not set, default is HA.
+                        type: boolean
+                    type: object
                   controlPlaneMode:
                     description: |-
                       (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
@@ -1170,9 +1159,7 @@ spec:
                     description: |-
                       (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
                       Custom cloud provider configuration for the edge location
-                    items:
-                      type: object
-                    type: array
+                    type: object
                   description:
                     description: |-
                       (String) Description of the edge location
@@ -1182,48 +1169,46 @@ spec:
                     description: |-
                       (Attributes) GCP configuration for the edge location (see below for nested schema)
                       GCP configuration for the edge location
-                    items:
-                      properties:
-                        instanceServiceAccount:
-                          description: |-
-                            (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
-                            GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                    properties:
+                      instanceServiceAccount:
+                        description: |-
+                          (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                          GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+                        type: string
+                      networkName:
+                        description: |-
+                          (String) The name of the network to be used in the selected region
+                          The name of the network to be used in the selected region
+                        type: string
+                      networkTags:
+                        description: |-
+                          (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
+                          Tags applied on the provisioned cloud resources and the firewall rule
+                        items:
                           type: string
-                        networkName:
-                          description: |-
-                            (String) The name of the network to be used in the selected region
-                            The name of the network to be used in the selected region
-                          type: string
-                        networkTags:
-                          description: |-
-                            (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
-                            Tags applied on the provisioned cloud resources and the firewall rule
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        projectId:
-                          description: |-
-                            (String) GCP project ID where edges run
-                            GCP project ID where edges run
-                          type: string
-                        subnetCidr:
-                          description: |-
-                            (String) VPC Subnet IPv4 CIDR block
-                            VPC Subnet IPv4 CIDR block
-                          type: string
-                        subnetName:
-                          description: |-
-                            (String) The name of the subnetwork to be used in the selected region
-                            The name of the subnetwork to be used in the selected region
-                          type: string
-                        targetServiceAccountEmail:
-                          description: |-
-                            (String) Target service account email to be used for impersonation
-                            Target service account email to be used for impersonation
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      projectId:
+                        description: |-
+                          (String) GCP project ID where edges run
+                          GCP project ID where edges run
+                        type: string
+                      subnetCidr:
+                        description: |-
+                          (String) VPC Subnet IPv4 CIDR block
+                          VPC Subnet IPv4 CIDR block
+                        type: string
+                      subnetName:
+                        description: |-
+                          (String) The name of the subnetwork to be used in the selected region
+                          The name of the subnetwork to be used in the selected region
+                        type: string
+                      targetServiceAccountEmail:
+                        description: |-
+                          (String) Target service account email to be used for impersonation
+                          Target service account email to be used for impersonation
+                        type: string
+                    type: object
                   id:
                     description: (String) Edge location ID
                     type: string
@@ -1236,60 +1221,72 @@ spec:
                     description: |-
                       (Attributes) Edge cluster networking configuration. (see below for nested schema)
                       Edge cluster networking configuration.
-                    items:
-                      properties:
-                        tunneledCidrs:
-                          description: |-
-                            (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-                            List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-                          items:
+                    properties:
+                      cni:
+                        description: |-
+                          router) configuration for the edge cluster. (see below for nested schema)
+                          CNI (kube-router) configuration for the edge cluster.
+                        properties:
+                          overlay:
+                            description: |-
+                              router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+                              Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
                             type: string
-                          type: array
-                      type: object
-                    type: array
+                          overlayEncap:
+                            description: |-
+                              (String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+                              Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+                            type: string
+                        type: object
+                      tunneledCidrs:
+                        description: |-
+                          (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+                          List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   oci:
                     description: |-
                       (Attributes) OCI configuration for the edge location (see below for nested schema)
                       OCI configuration for the edge location
-                    items:
-                      properties:
-                        compartmentId:
-                          description: |-
-                            (String) OCI compartment ID of edge location
-                            OCI compartment ID of edge location
-                          type: string
-                        securityGroupId:
-                          description: |-
-                            (String) Security group ID to be used in the selected region
-                            OCI network security group ID
-                          type: string
-                        subnetId:
-                          description: |-
-                            (String) OCI subnet ID of edge location
-                            OCI subnet ID of edge location
-                          type: string
-                        tenancyId:
-                          description: |-
-                            (String) OCI tenancy ID of the account
-                            OCI tenancy ID of the account
-                          type: string
-                        userIdWo:
-                          description: |-
-                            (String) User ID used to authenticate OCI
-                            User ID used to authenticate OCI
-                          type: string
-                        vcnCidr:
-                          description: |-
-                            (String) OCI VCN IPv4 CIDR block
-                            OCI VCN IPv4 CIDR block
-                          type: string
-                        vcnId:
-                          description: |-
-                            (String) OCI virtual cloud network ID
-                            OCI virtual cloud network ID
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      compartmentId:
+                        description: |-
+                          (String) OCI compartment ID of edge location
+                          OCI compartment ID of edge location
+                        type: string
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          OCI network security group ID
+                        type: string
+                      subnetId:
+                        description: |-
+                          (String) OCI subnet ID of edge location
+                          OCI subnet ID of edge location
+                        type: string
+                      tenancyId:
+                        description: |-
+                          (String) OCI tenancy ID of the account
+                          OCI tenancy ID of the account
+                        type: string
+                      userIdWo:
+                        description: |-
+                          (String) User ID used to authenticate OCI
+                          User ID used to authenticate OCI
+                        type: string
+                      vcnCidr:
+                        description: |-
+                          (String) OCI VCN IPv4 CIDR block
+                          OCI VCN IPv4 CIDR block
+                        type: string
+                      vcnId:
+                        description: |-
+                          (String) OCI virtual cloud network ID
+                          OCI virtual cloud network ID
+                        type: string
+                    type: object
                   organizationId:
                     description: |-
                       (String) CAST AI organization ID

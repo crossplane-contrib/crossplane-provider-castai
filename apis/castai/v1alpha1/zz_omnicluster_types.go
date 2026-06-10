@@ -22,7 +22,7 @@ type OmniClusterInitParameters struct {
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
 	// Current status of the cluster to report on registration.
-	Status []StatusInitParameters `json:"status,omitempty" tf:"status,omitempty"`
+	Status *StatusInitParameters `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type OmniClusterObservation struct {
@@ -36,7 +36,7 @@ type OmniClusterObservation struct {
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
 	// Current status of the cluster to report on registration.
-	Status []StatusObservation `json:"status,omitempty" tf:"status,omitempty"`
+	Status *StatusObservation `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type OmniClusterParameters struct {
@@ -51,7 +51,7 @@ type OmniClusterParameters struct {
 
 	// Current status of the cluster to report on registration.
 	// +kubebuilder:validation:Optional
-	Status []StatusParameters `json:"status,omitempty" tf:"status,omitempty"`
+	Status *StatusParameters `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type StatusInitParameters struct {

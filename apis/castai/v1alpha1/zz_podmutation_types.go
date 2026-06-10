@@ -773,6 +773,41 @@ type NodeAffinityPreferredDuringSchedulingIgnoredDuringExecutionParameters struc
 	Weight *float64 `json:"weight" tf:"weight,omitempty"`
 }
 
+type OperatorInitParameters struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type OperatorObservation struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type OperatorParameters struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
 type PodEvictionInitParameters struct {
 
 	// (Boolean) Whether the pod mutation is enabled.
@@ -802,6 +837,10 @@ type PodInitParameters struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
 	LabelsFilter []LabelsFilterInitParameters `json:"labelsFilter,omitempty" tf:"labels_filter,omitempty"`
+
+	// (Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)
+	// Tolerations filter for matching pods by their tolerations.
+	TolerationsFilter []TolerationsFilterInitParameters `json:"tolerationsFilter,omitempty" tf:"tolerations_filter,omitempty"`
 }
 
 type PodMutationAffinityInitParameters struct {
@@ -1191,6 +1230,10 @@ type PodObservation struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
 	LabelsFilter []LabelsFilterObservation `json:"labelsFilter,omitempty" tf:"labels_filter,omitempty"`
+
+	// (Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)
+	// Tolerations filter for matching pods by their tolerations.
+	TolerationsFilter []TolerationsFilterObservation `json:"tolerationsFilter,omitempty" tf:"tolerations_filter,omitempty"`
 }
 
 type PodParameters struct {
@@ -1202,6 +1245,11 @@ type PodParameters struct {
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	LabelsFilter []LabelsFilterParameters `json:"labelsFilter,omitempty" tf:"labels_filter,omitempty"`
+
+	// (Block List, Max: 1) Tolerations filter for matching pods by their tolerations. (see below for nested schema)
+	// Tolerations filter for matching pods by their tolerations.
+	// +kubebuilder:validation:Optional
+	TolerationsFilter []TolerationsFilterParameters `json:"tolerationsFilter,omitempty" tf:"tolerations_filter,omitempty"`
 }
 
 type PreferenceInitParameters struct {
@@ -1350,6 +1398,147 @@ type PreferredDuringSchedulingIgnoredDuringExecutionPreferenceParameters struct 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	MatchExpressions []PreferredDuringSchedulingIgnoredDuringExecutionPreferenceMatchExpressionsParameters `json:"matchExpressions,omitempty" tf:"match_expressions,omitempty"`
+}
+
+type TolerationsFilterInitParameters struct {
+
+	// (Block Set, Min: 1) (see below for nested schema)
+	Matchers []TolerationsFilterMatchersInitParameters `json:"matchers,omitempty" tf:"matchers,omitempty"`
+
+	// (String) Logical operator to combine label matchers: AND or OR.
+	// Logical operator to combine toleration matchers: AND or OR.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+}
+
+type TolerationsFilterMatchersInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Key []TolerationsFilterMatchersKeyInitParameters `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) Logical operator to combine label matchers: AND or OR.
+	Operator []OperatorInitParameters `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Value []TolerationsFilterMatchersValueInitParameters `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersKeyInitParameters struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersKeyObservation struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersKeyParameters struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Key []TolerationsFilterMatchersKeyObservation `json:"key,omitempty" tf:"key,omitempty"`
+
+	// (String) Logical operator to combine label matchers: AND or OR.
+	Operator []OperatorObservation `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Value []TolerationsFilterMatchersValueObservation `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Key []TolerationsFilterMatchersKeyParameters `json:"key" tf:"key,omitempty"`
+
+	// (String) Logical operator to combine label matchers: AND or OR.
+	// +kubebuilder:validation:Optional
+	Operator []OperatorParameters `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Value []TolerationsFilterMatchersValueParameters `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersValueInitParameters struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersValueObservation struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TolerationsFilterMatchersValueParameters struct {
+
+	// (String) Matcher type: EXACT or REGEX.
+	// Matcher type: EXACT or REGEX.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// Value to match against.
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type TolerationsFilterObservation struct {
+
+	// (Block Set, Min: 1) (see below for nested schema)
+	Matchers []TolerationsFilterMatchersObservation `json:"matchers,omitempty" tf:"matchers,omitempty"`
+
+	// (String) Logical operator to combine label matchers: AND or OR.
+	// Logical operator to combine toleration matchers: AND or OR.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+}
+
+type TolerationsFilterParameters struct {
+
+	// (Block Set, Min: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Matchers []TolerationsFilterMatchersParameters `json:"matchers" tf:"matchers,omitempty"`
+
+	// (String) Logical operator to combine label matchers: AND or OR.
+	// Logical operator to combine toleration matchers: AND or OR.
+	// +kubebuilder:validation:Optional
+	Operator *string `json:"operator" tf:"operator,omitempty"`
 }
 
 type TolerationsInitParameters struct {

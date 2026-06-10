@@ -13,6 +13,41 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CniInitParameters struct {
+
+	// router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+	// Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+	Overlay *string `json:"overlay,omitempty" tf:"overlay,omitempty"`
+
+	// (String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+	// Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+	OverlayEncap *string `json:"overlayEncap,omitempty" tf:"overlay_encap,omitempty"`
+}
+
+type CniObservation struct {
+
+	// router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+	// Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+	Overlay *string `json:"overlay,omitempty" tf:"overlay,omitempty"`
+
+	// (String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+	// Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+	OverlayEncap *string `json:"overlayEncap,omitempty" tf:"overlay_encap,omitempty"`
+}
+
+type CniParameters struct {
+
+	// router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+	// Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
+	// +kubebuilder:validation:Optional
+	Overlay *string `json:"overlay,omitempty" tf:"overlay,omitempty"`
+
+	// (String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+	// Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.
+	// +kubebuilder:validation:Optional
+	OverlayEncap *string `json:"overlayEncap,omitempty" tf:"overlay_encap,omitempty"`
+}
+
 type ControlPlaneInitParameters struct {
 
 	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
@@ -133,7 +168,7 @@ type EdgeLocationAwsParameters struct {
 	// (String) AWS account ID
 	// AWS account ID
 	// +kubebuilder:validation:Optional
-	AccountID *string `json:"accountId" tf:"account_id,omitempty"`
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
 	// (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
 	// AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
@@ -158,13 +193,13 @@ type EdgeLocationAwsParameters struct {
 	// (String) Security group ID to be used in the selected region
 	// Security group ID to be used in the selected region
 	// +kubebuilder:validation:Optional
-	SecurityGroupID *string `json:"securityGroupId" tf:"security_group_id,omitempty"`
+	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
 
 	// (Map of String) Map of zone names to subnet IDs to be used in the selected region
 	// Map of zone names to subnet IDs to be used in the selected region
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
-	SubnetIds map[string]*string `json:"subnetIds" tf:"subnet_ids,omitempty"`
+	SubnetIds map[string]*string `json:"subnetIds,omitempty" tf:"subnet_ids,omitempty"`
 
 	// (String) VPC IPv4 CIDR block
 	// VPC IPv4 CIDR block
@@ -174,7 +209,7 @@ type EdgeLocationAwsParameters struct {
 	// (String) VPC ID to be used in the selected region
 	// VPC ID to be used in the selected region
 	// +kubebuilder:validation:Optional
-	VPCID *string `json:"vpcId" tf:"vpc_id,omitempty"`
+	VPCID *string `json:"vpcId,omitempty" tf:"vpc_id,omitempty"`
 
 	// (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
 	// Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
@@ -274,18 +309,18 @@ type EdgeLocationGCPParameters struct {
 	// (String) The name of the network to be used in the selected region
 	// The name of the network to be used in the selected region
 	// +kubebuilder:validation:Optional
-	NetworkName *string `json:"networkName" tf:"network_name,omitempty"`
+	NetworkName *string `json:"networkName,omitempty" tf:"network_name,omitempty"`
 
 	// (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
 	// Tags applied on the provisioned cloud resources and the firewall rule
 	// +kubebuilder:validation:Optional
 	// +listType=set
-	NetworkTags []*string `json:"networkTags" tf:"network_tags,omitempty"`
+	NetworkTags []*string `json:"networkTags,omitempty" tf:"network_tags,omitempty"`
 
 	// (String) GCP project ID where edges run
 	// GCP project ID where edges run
 	// +kubebuilder:validation:Optional
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
 	// (String) VPC Subnet IPv4 CIDR block
 	// VPC Subnet IPv4 CIDR block
@@ -295,7 +330,7 @@ type EdgeLocationGCPParameters struct {
 	// (String) The name of the subnetwork to be used in the selected region
 	// The name of the subnetwork to be used in the selected region
 	// +kubebuilder:validation:Optional
-	SubnetName *string `json:"subnetName" tf:"subnet_name,omitempty"`
+	SubnetName *string `json:"subnetName,omitempty" tf:"subnet_name,omitempty"`
 
 	// (String) Target service account email to be used for impersonation
 	// Target service account email to be used for impersonation
@@ -307,7 +342,7 @@ type EdgeLocationInitParameters struct {
 
 	// (Attributes) AWS configuration for the edge location (see below for nested schema)
 	// AWS configuration for the edge location
-	Aws []EdgeLocationAwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws *EdgeLocationAwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (String) CAST AI cluster ID
 	// CAST AI cluster ID
@@ -324,7 +359,7 @@ type EdgeLocationInitParameters struct {
 
 	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
 	// Control plane configuration. Only valid when control_plane_mode is SHARED.
-	ControlPlane []ControlPlaneInitParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
+	ControlPlane *ControlPlaneInitParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
 
 	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
 	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
@@ -332,7 +367,7 @@ type EdgeLocationInitParameters struct {
 
 	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
 	// Custom cloud provider configuration for the edge location
-	Custom []EdgeLocationCustomInitParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+	Custom *EdgeLocationCustomInitParameters `json:"custom,omitempty" tf:"custom,omitempty"`
 
 	// (String) Description of the edge location
 	// Description of the edge location
@@ -340,7 +375,7 @@ type EdgeLocationInitParameters struct {
 
 	// (Attributes) GCP configuration for the edge location (see below for nested schema)
 	// GCP configuration for the edge location
-	GCP []EdgeLocationGCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
+	GCP *EdgeLocationGCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -348,11 +383,11 @@ type EdgeLocationInitParameters struct {
 
 	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
 	// Edge cluster networking configuration.
-	Networking []NetworkingInitParameters `json:"networking,omitempty" tf:"networking,omitempty"`
+	Networking *NetworkingInitParameters `json:"networking,omitempty" tf:"networking,omitempty"`
 
 	// (Attributes) OCI configuration for the edge location (see below for nested schema)
 	// OCI configuration for the edge location
-	Oci []EdgeLocationOciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
+	Oci *EdgeLocationOciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
 
 	// (String) CAST AI organization ID
 	// CAST AI organization ID
@@ -371,7 +406,7 @@ type EdgeLocationObservation struct {
 
 	// (Attributes) AWS configuration for the edge location (see below for nested schema)
 	// AWS configuration for the edge location
-	Aws []EdgeLocationAwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws *EdgeLocationAwsObservation `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (String) CAST AI cluster ID
 	// CAST AI cluster ID
@@ -379,7 +414,7 @@ type EdgeLocationObservation struct {
 
 	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
 	// Control plane configuration. Only valid when control_plane_mode is SHARED.
-	ControlPlane []ControlPlaneObservation `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
+	ControlPlane *ControlPlaneObservation `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
 
 	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
 	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
@@ -391,7 +426,7 @@ type EdgeLocationObservation struct {
 
 	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
 	// Custom cloud provider configuration for the edge location
-	Custom []EdgeLocationCustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+	Custom *EdgeLocationCustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
 
 	// (String) Description of the edge location
 	// Description of the edge location
@@ -399,7 +434,7 @@ type EdgeLocationObservation struct {
 
 	// (Attributes) GCP configuration for the edge location (see below for nested schema)
 	// GCP configuration for the edge location
-	GCP []EdgeLocationGCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
+	GCP *EdgeLocationGCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// (String) Edge location ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -410,11 +445,11 @@ type EdgeLocationObservation struct {
 
 	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
 	// Edge cluster networking configuration.
-	Networking []NetworkingObservation `json:"networking,omitempty" tf:"networking,omitempty"`
+	Networking *NetworkingObservation `json:"networking,omitempty" tf:"networking,omitempty"`
 
 	// (Attributes) OCI configuration for the edge location (see below for nested schema)
 	// OCI configuration for the edge location
-	Oci []EdgeLocationOciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
+	Oci *EdgeLocationOciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
 
 	// (String) CAST AI organization ID
 	// CAST AI organization ID
@@ -437,11 +472,11 @@ type EdgeLocationOciInitParameters struct {
 
 	// (String, Sensitive) API key fingerprint
 	// API key fingerprint
-	FingerprintWoSecretRef v1.SecretKeySelector `json:"fingerprintWoSecretRef" tf:"-"`
+	FingerprintWoSecretRef *v1.SecretKeySelector `json:"fingerprintWoSecretRef,omitempty" tf:"-"`
 
 	// (String, Sensitive) Base64 encoded API private key
 	// Base64 encoded API private key
-	PrivateKeyBase64WoSecretRef v1.SecretKeySelector `json:"privateKeyBase64WoSecretRef" tf:"-"`
+	PrivateKeyBase64WoSecretRef *v1.SecretKeySelector `json:"privateKeyBase64WoSecretRef,omitempty" tf:"-"`
 
 	// (String) Security group ID to be used in the selected region
 	// OCI network security group ID
@@ -504,17 +539,17 @@ type EdgeLocationOciParameters struct {
 	// (String) OCI compartment ID of edge location
 	// OCI compartment ID of edge location
 	// +kubebuilder:validation:Optional
-	CompartmentID *string `json:"compartmentId" tf:"compartment_id,omitempty"`
+	CompartmentID *string `json:"compartmentId,omitempty" tf:"compartment_id,omitempty"`
 
 	// (String, Sensitive) API key fingerprint
 	// API key fingerprint
 	// +kubebuilder:validation:Optional
-	FingerprintWoSecretRef v1.SecretKeySelector `json:"fingerprintWoSecretRef" tf:"-"`
+	FingerprintWoSecretRef *v1.SecretKeySelector `json:"fingerprintWoSecretRef,omitempty" tf:"-"`
 
 	// (String, Sensitive) Base64 encoded API private key
 	// Base64 encoded API private key
 	// +kubebuilder:validation:Optional
-	PrivateKeyBase64WoSecretRef v1.SecretKeySelector `json:"privateKeyBase64WoSecretRef" tf:"-"`
+	PrivateKeyBase64WoSecretRef *v1.SecretKeySelector `json:"privateKeyBase64WoSecretRef,omitempty" tf:"-"`
 
 	// (String) Security group ID to be used in the selected region
 	// OCI network security group ID
@@ -524,17 +559,17 @@ type EdgeLocationOciParameters struct {
 	// (String) OCI subnet ID of edge location
 	// OCI subnet ID of edge location
 	// +kubebuilder:validation:Optional
-	SubnetID *string `json:"subnetId" tf:"subnet_id,omitempty"`
+	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
 
 	// (String) OCI tenancy ID of the account
 	// OCI tenancy ID of the account
 	// +kubebuilder:validation:Optional
-	TenancyID *string `json:"tenancyId" tf:"tenancy_id,omitempty"`
+	TenancyID *string `json:"tenancyId,omitempty" tf:"tenancy_id,omitempty"`
 
 	// (String) User ID used to authenticate OCI
 	// User ID used to authenticate OCI
 	// +kubebuilder:validation:Optional
-	UserIDWo *string `json:"userIdWo" tf:"user_id_wo,omitempty"`
+	UserIDWo *string `json:"userIdWo,omitempty" tf:"user_id_wo,omitempty"`
 
 	// (String) OCI VCN IPv4 CIDR block
 	// OCI VCN IPv4 CIDR block
@@ -544,7 +579,7 @@ type EdgeLocationOciParameters struct {
 	// (String) OCI virtual cloud network ID
 	// OCI virtual cloud network ID
 	// +kubebuilder:validation:Optional
-	VcnID *string `json:"vcnId" tf:"vcn_id,omitempty"`
+	VcnID *string `json:"vcnId,omitempty" tf:"vcn_id,omitempty"`
 }
 
 type EdgeLocationParameters struct {
@@ -552,7 +587,7 @@ type EdgeLocationParameters struct {
 	// (Attributes) AWS configuration for the edge location (see below for nested schema)
 	// AWS configuration for the edge location
 	// +kubebuilder:validation:Optional
-	Aws []EdgeLocationAwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
+	Aws *EdgeLocationAwsParameters `json:"aws,omitempty" tf:"aws,omitempty"`
 
 	// (String) CAST AI cluster ID
 	// CAST AI cluster ID
@@ -571,7 +606,7 @@ type EdgeLocationParameters struct {
 	// (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
 	// Control plane configuration. Only valid when control_plane_mode is SHARED.
 	// +kubebuilder:validation:Optional
-	ControlPlane []ControlPlaneParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
+	ControlPlane *ControlPlaneParameters `json:"controlPlane,omitempty" tf:"control_plane,omitempty"`
 
 	// (String) The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
 	// The mode of control plane inside edge location. Valid values: DEDICATED, SHARED.
@@ -581,7 +616,7 @@ type EdgeLocationParameters struct {
 	// (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
 	// Custom cloud provider configuration for the edge location
 	// +kubebuilder:validation:Optional
-	Custom []EdgeLocationCustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
+	Custom *EdgeLocationCustomParameters `json:"custom,omitempty" tf:"custom,omitempty"`
 
 	// (String) Description of the edge location
 	// Description of the edge location
@@ -591,7 +626,7 @@ type EdgeLocationParameters struct {
 	// (Attributes) GCP configuration for the edge location (see below for nested schema)
 	// GCP configuration for the edge location
 	// +kubebuilder:validation:Optional
-	GCP []EdgeLocationGCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
+	GCP *EdgeLocationGCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -601,12 +636,12 @@ type EdgeLocationParameters struct {
 	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
 	// Edge cluster networking configuration.
 	// +kubebuilder:validation:Optional
-	Networking []NetworkingParameters `json:"networking,omitempty" tf:"networking,omitempty"`
+	Networking *NetworkingParameters `json:"networking,omitempty" tf:"networking,omitempty"`
 
 	// (Attributes) OCI configuration for the edge location (see below for nested schema)
 	// OCI configuration for the edge location
 	// +kubebuilder:validation:Optional
-	Oci []EdgeLocationOciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
+	Oci *EdgeLocationOciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
 
 	// (String) CAST AI organization ID
 	// CAST AI organization ID
@@ -626,6 +661,10 @@ type EdgeLocationParameters struct {
 
 type NetworkingInitParameters struct {
 
+	// router) configuration for the edge cluster. (see below for nested schema)
+	// CNI (kube-router) configuration for the edge cluster.
+	Cni *CniInitParameters `json:"cni,omitempty" tf:"cni,omitempty"`
+
 	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
 	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
 	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
@@ -633,12 +672,21 @@ type NetworkingInitParameters struct {
 
 type NetworkingObservation struct {
 
+	// router) configuration for the edge cluster. (see below for nested schema)
+	// CNI (kube-router) configuration for the edge cluster.
+	Cni *CniObservation `json:"cni,omitempty" tf:"cni,omitempty"`
+
 	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
 	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
 	TunneledCidrs []*string `json:"tunneledCidrs,omitempty" tf:"tunneled_cidrs,omitempty"`
 }
 
 type NetworkingParameters struct {
+
+	// router) configuration for the edge cluster. (see below for nested schema)
+	// CNI (kube-router) configuration for the edge cluster.
+	// +kubebuilder:validation:Optional
+	Cni *CniParameters `json:"cni,omitempty" tf:"cni,omitempty"`
 
 	// (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
 	// List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
@@ -717,10 +765,7 @@ type EdgeLocationStatus struct {
 type EdgeLocation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.aws) || (has(self.initProvider) && has(self.initProvider.aws))",message="spec.forProvider.aws is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.gcp) || (has(self.initProvider) && has(self.initProvider.gcp))",message="spec.forProvider.gcp is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.oci) || (has(self.initProvider) && has(self.initProvider.oci))",message="spec.forProvider.oci is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organizationId) || (has(self.initProvider) && has(self.initProvider.organizationId))",message="spec.forProvider.organizationId is a required parameter"
 	Spec   EdgeLocationSpec   `json:"spec"`
 	Status EdgeLocationStatus `json:"status,omitempty"`

@@ -17,5 +17,10 @@ func Configure(p *config.Provider) {
 				Type: "github.com/crossplane-contrib/crossplane-provider-castai/apis/castai/v1alpha1.EdgeLocation",
 			},
 		}
+		// castai_edge_configuration uses the Terraform Plugin Framework with
+		// nesting_mode=single blocks that must be serialized as objects.
+		for _, field := range []string{"aws", "cri", "custom", "gcp", "oci"} {
+			r.AddSingletonListConversion(field, field)
+		}
 	})
 }

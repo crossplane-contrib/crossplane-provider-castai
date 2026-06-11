@@ -6953,12 +6953,14 @@
                       "type": "number",
                       "description": "Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "min": {
                       "type": "number",
                       "description": "Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "overhead": {
@@ -7005,6 +7007,58 @@
                           }
                         },
                         "description": "Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "constraints": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "max": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "min": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Defines min/max bounds for the recommendation using constraint strategies.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -7140,12 +7194,14 @@
                       "type": "number",
                       "description": "Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "min": {
                       "type": "number",
                       "description": "Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "overhead": {
@@ -7192,6 +7248,58 @@
                           }
                         },
                         "description": "Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "constraints": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "max": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "min": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Defines min/max bounds for the recommendation using constraint strategies.",
                         "description_kind": "plain"
                       },
                       "max_items": 1

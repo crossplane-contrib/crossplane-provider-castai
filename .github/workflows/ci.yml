@@ -10,7 +10,7 @@ on:
 
 env:
   # Common versions
-  GO_VERSION: '1.26'
+  GO_VERSION: '1.24'
   GOLANGCI_VERSION: 'v1.64.8'
   DOCKER_BUILDX_VERSION: 'v0.22.0'
   UP_VERSION: 'v0.38.4'
@@ -83,7 +83,7 @@ jobs:
       # We could run 'make lint' but we prefer this action because it leaves
       # 'annotations' (i.e. it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v6
         with:
           version: ${{ env.GOLANGCI_VERSION }}
 
@@ -104,7 +104,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Install goimports
-        run: go install golang.org/x/tools/cmd/goimports@latest
+        run: go install golang.org/x/tools/cmd/goimports
 
       - name: Find the Go Build Cache
         id: go
@@ -129,10 +129,6 @@ jobs:
 
       - name: Check Diff
         run: make check-diff
-
-      - name: Show diff on failure
-        if: failure()
-        run: git diff
 
   unit-tests:
     runs-on: ubuntu-24.04
@@ -229,7 +225,7 @@ jobs:
   publish-artifacts:
     runs-on: ubuntu-24.04
     needs: detect-noop
-    if: needs.detect-noop.outputs.noop != 'true' && github.event_name != 'pull_request'
+    if: needs.detect-noop.outputs.noop != 'true'
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
     permissions:
@@ -314,7 +310,6 @@ jobs:
 
   mirror-to-xpkg-upbound-io:
     needs: publish-artifacts
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     steps:
       - name: Setup QEMU

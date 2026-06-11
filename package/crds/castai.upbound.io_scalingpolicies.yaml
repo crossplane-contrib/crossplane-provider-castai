@@ -293,43 +293,6 @@ spec:
                           items:
                             type: string
                           type: array
-                        constraints:
-                          description: Defines min/max bounds for the recommendation
-                            using constraint strategies.
-                          items:
-                            properties:
-                              max:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                              min:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                            type: object
-                          type: array
                         function:
                           description: |-
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
@@ -502,43 +465,6 @@ spec:
                             The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
                           items:
                             type: string
-                          type: array
-                        constraints:
-                          description: Defines min/max bounds for the recommendation
-                            using constraint strategies.
-                          items:
-                            properties:
-                              max:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                              min:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                            type: object
                           type: array
                         function:
                           description: |-
@@ -920,43 +846,6 @@ spec:
                           items:
                             type: string
                           type: array
-                        constraints:
-                          description: Defines min/max bounds for the recommendation
-                            using constraint strategies.
-                          items:
-                            properties:
-                              max:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                              min:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                            type: object
-                          type: array
                         function:
                           description: |-
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
@@ -1129,43 +1018,6 @@ spec:
                             The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
                           items:
                             type: string
-                          type: array
-                        constraints:
-                          description: Defines min/max bounds for the recommendation
-                            using constraint strategies.
-                          items:
-                            properties:
-                              max:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                              min:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                            type: object
                           type: array
                         function:
                           description: |-
@@ -1731,43 +1583,6 @@ spec:
                           items:
                             type: string
                           type: array
-                        constraints:
-                          description: Defines min/max bounds for the recommendation
-                            using constraint strategies.
-                          items:
-                            properties:
-                              max:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                              min:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                            type: object
-                          type: array
                         function:
                           description: |-
                             (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
@@ -1943,43 +1758,6 @@ spec:
                             The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
                           items:
                             type: string
-                          type: array
-                        constraints:
-                          description: Defines min/max bounds for the recommendation
-                            using constraint strategies.
-                          items:
-                            properties:
-                              max:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                              min:
-                                description: this is in MiB, for CPU - this is in
-                                  cores.
-                                items:
-                                  properties:
-                                    constant:
-                                      description: Fixed bound value. For memory -
-                                        MiB, for CPU - cores.
-                                      type: number
-                                    percentageOfOriginal:
-                                      description: Bound as a percentage of the original
-                                        pod-spec request.
-                                      type: number
-                                  type: object
-                                type: array
-                            type: object
                           type: array
                         function:
                           description: |-

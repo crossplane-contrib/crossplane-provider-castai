@@ -692,9 +692,17 @@ type DedicatedNodeAffinityInitParameters struct {
 	// Availability zone name.
 	AzName *string `json:"azName,omitempty" tf:"az_name,omitempty"`
 
+	// (Number) Number of CPUs per GPU on the node.
+	// Number of CPUs per GPU on the node.
+	CpusPerGpu *float64 `json:"cpusPerGpu,omitempty" tf:"cpus_per_gpu,omitempty"`
+
 	// (List of String) Instance/node types in this node group.
 	// Instance/node types in this node group.
 	InstanceTypes []*string `json:"instanceTypes,omitempty" tf:"instance_types,omitempty"`
+
+	// (Number) Minimal number of GPUs per node.
+	// Minimal number of GPUs per node.
+	MinGpusPerNode *float64 `json:"minGpusPerNode,omitempty" tf:"min_gpus_per_node,omitempty"`
 
 	// (String) Name of the node template.
 	// Name of node group.
@@ -710,9 +718,17 @@ type DedicatedNodeAffinityObservation struct {
 	// Availability zone name.
 	AzName *string `json:"azName,omitempty" tf:"az_name,omitempty"`
 
+	// (Number) Number of CPUs per GPU on the node.
+	// Number of CPUs per GPU on the node.
+	CpusPerGpu *float64 `json:"cpusPerGpu,omitempty" tf:"cpus_per_gpu,omitempty"`
+
 	// (List of String) Instance/node types in this node group.
 	// Instance/node types in this node group.
 	InstanceTypes []*string `json:"instanceTypes,omitempty" tf:"instance_types,omitempty"`
+
+	// (Number) Minimal number of GPUs per node.
+	// Minimal number of GPUs per node.
+	MinGpusPerNode *float64 `json:"minGpusPerNode,omitempty" tf:"min_gpus_per_node,omitempty"`
 
 	// (String) Name of the node template.
 	// Name of node group.
@@ -730,10 +746,20 @@ type DedicatedNodeAffinityParameters struct {
 	// +kubebuilder:validation:Optional
 	AzName *string `json:"azName" tf:"az_name,omitempty"`
 
+	// (Number) Number of CPUs per GPU on the node.
+	// Number of CPUs per GPU on the node.
+	// +kubebuilder:validation:Optional
+	CpusPerGpu *float64 `json:"cpusPerGpu,omitempty" tf:"cpus_per_gpu,omitempty"`
+
 	// (List of String) Instance/node types in this node group.
 	// Instance/node types in this node group.
 	// +kubebuilder:validation:Optional
 	InstanceTypes []*string `json:"instanceTypes" tf:"instance_types,omitempty"`
+
+	// (Number) Minimal number of GPUs per node.
+	// Minimal number of GPUs per node.
+	// +kubebuilder:validation:Optional
+	MinGpusPerNode *float64 `json:"minGpusPerNode,omitempty" tf:"min_gpus_per_node,omitempty"`
 
 	// (String) Name of the node template.
 	// Name of node group.

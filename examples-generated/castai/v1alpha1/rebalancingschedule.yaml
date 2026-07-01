@@ -10,14 +10,17 @@ spec:
   forProvider:
     launchConfiguration:
     - aggressiveModeConfig:
-      - ignoreLocalPersistentVolumes: false
-        ignoreProblemJobPods: false
+      - ignoreLocalPersistentVolumes: true
+        ignoreProblemJobPods: true
         ignoreProblemPodsWithoutController: true
-        ignoreProblemRemovalDisabledPods: false
+        ignoreProblemRemovalDisabledPods: true
+      drainFailureConfig:
+      - disableUncordon: false
+        uncordonAfterSeconds: 7200
       executionConditions:
       - achievedSavingsPercentage: 10
         enabled: true
-      keepDrainTimeoutNodes: false
+      keepDrainTimeoutNodes: true
       nodeTtlSeconds: 300
       numTargetedNodes: 3
       rebalancingMinNodes: 2

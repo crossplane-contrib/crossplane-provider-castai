@@ -1222,6 +1222,7 @@ resources:
             cpu_limit_enabled: (Boolean) Controls CPU limit enforcement for the node template.
             cpu_limit_max_cores: (Number) Specifies the maximum number of CPU cores that the nodes provisioned from this template can collectively have.
             cpu_manufacturers: '(List of String) List of acceptable CPU manufacturers. Allowed values: AMD, AMPERE, APPLE, AWS, INTEL.'
+            cpus_per_gpu: (Number) Number of CPUs per GPU on the node.
             create: (String)
             custom_instances_enabled: (Boolean) Marks whether custom instances should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
             custom_instances_with_extended_memory_enabled: (Boolean) Marks whether custom instances with extended memory should be used when deciding which parts of inventory are available. Custom instances are only supported in GCP.
@@ -1264,6 +1265,7 @@ resources:
             max_memory: (Number) Max Memory (Mib) per node.
             min_count: (Number) Min GPU count for the instance type to have.
             min_cpu: (Number) Min CPU cores per node.
+            min_gpus_per_node: (Number) Minimal number of GPUs per node.
             min_memory: (Number) Min Memory (Mib) per node.
             name: (String) Name of the node template.
             on_demand: (Boolean) Should include on-demand instances in the considered pool.
@@ -1955,10 +1957,16 @@ resources:
                     {
                       "aggressive_mode_config": [
                         {
-                          "ignore_local_persistent_volumes": false,
-                          "ignore_problem_job_pods": false,
+                          "ignore_local_persistent_volumes": true,
+                          "ignore_problem_job_pods": true,
                           "ignore_problem_pods_without_controller": true,
-                          "ignore_problem_removal_disabled_pods": false
+                          "ignore_problem_removal_disabled_pods": true
+                        }
+                      ],
+                      "drain_failure_config": [
+                        {
+                          "disable_uncordon": false,
+                          "uncordon_after_seconds": 7200
                         }
                       ],
                       "execution_conditions": [
@@ -1967,7 +1975,7 @@ resources:
                           "enabled": true
                         }
                       ],
-                      "keep_drain_timeout_nodes": false,
+                      "keep_drain_timeout_nodes": true,
                       "node_ttl_seconds": 300,
                       "num_targeted_nodes": 3,
                       "rebalancing_min_nodes": 2,
@@ -1989,11 +1997,13 @@ resources:
         argumentDocs:
             CRON_TZ: variable is set to "America/New_York" indicating that the cron expression should be interpreted in the Eastern Time (ET) timezone.
             achieved_savings_percentage: (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
-            aggressive_mode: (Boolean) When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+            aggressive_mode: '(Boolean, Deprecated) Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.'
             aggressive_mode_config: '(Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)'
             create: (String)
             cron: (String) Cron expression defining when the schedule should trigger.
             delete: (String)
+            disable_uncordon: (Boolean) When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+            drain_failure_config: '(Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)'
             enabled: (Boolean) Enables or disables the execution conditions.
             execution_conditions: '(Block List, Max: 1) (see below for nested schema)'
             id: (String) The ID of this resource.
@@ -2015,6 +2025,7 @@ resources:
             target_node_selection_algorithm: (String) Defines the algorithm used to select the target nodes for rebalancing.
             timeouts: (Block, Optional) (see below for nested schema)
             trigger_conditions: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            uncordon_after_seconds: (Number) Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
             update: (String)
         importStatements:
             - |-
@@ -2273,6 +2284,8 @@ resources:
             name: (String) Connection name
             okta: '(Block List, Max: 1) Okta connector (see below for nested schema)'
             okta_domain: (String) Okta domain
+            sync_auth_token: (String, Sensitive) Auth token generated when synchronize_user_groups is enabled. Only populated on the transition from false to true.
+            synchronize_user_groups: (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
@@ -2511,6 +2524,8 @@ resources:
             consider_anti_affinity: |-
                 (Boolean) Defines if anti-affinity should be considered when scaling the workload.
                 If enabled, requiring host ports, or having anti-affinity on hostname will force all recommendations to be deferred.
+            constant: (Number) Fixed bound value. For memory - MiB, for CPU - cores.
+            constraints: '(Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)'
             cpu: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             cpu_pressure: '(Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)'
             cpu_stall_threshold_percentage: (Number) Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
@@ -2533,10 +2548,10 @@ resources:
             limit: '(Block List, Max: 1) Resource limit settings (see below for nested schema)'
             look_back_period_seconds: (Number) The look back period in seconds for the recommendation.
             management_option: (String) Defines possible options for workload management.
-            max: (Number) Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+            max: (Number, Deprecated) Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             memory: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             memory_event: '(Block List, Max: 1) (see below for nested schema)'
-            min: (Number) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+            min: (Number, Deprecated) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             min_pressured_pod_percentage: (Number) Percentage (0-100) of pods that must be experiencing pressure for the detector to trigger.
             multiplier: (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
             name: (String) Scaling policy name
@@ -2549,6 +2564,7 @@ resources:
             optimization: (Boolean) Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
             overhead: (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
             percentage: (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
+            percentage_of_original: (Number) Bound as a percentage of the original pod-spec request.
             period_seconds: |-
                 (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
                 When set, recommendations will be adjusted to disregard resource spikes within this period.

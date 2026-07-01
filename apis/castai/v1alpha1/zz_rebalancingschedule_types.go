@@ -74,6 +74,41 @@ type AggressiveModeConfigParameters struct {
 	IgnoreProblemRemovalDisabledPods *bool `json:"ignoreProblemRemovalDisabledPods" tf:"ignore_problem_removal_disabled_pods,omitempty"`
 }
 
+type DrainFailureConfigInitParameters struct {
+
+	// failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+	// When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+	DisableUncordon *bool `json:"disableUncordon,omitempty" tf:"disable_uncordon,omitempty"`
+
+	// failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
+	// Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.
+	UncordonAfterSeconds *float64 `json:"uncordonAfterSeconds,omitempty" tf:"uncordon_after_seconds,omitempty"`
+}
+
+type DrainFailureConfigObservation struct {
+
+	// failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+	// When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+	DisableUncordon *bool `json:"disableUncordon,omitempty" tf:"disable_uncordon,omitempty"`
+
+	// failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
+	// Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.
+	UncordonAfterSeconds *float64 `json:"uncordonAfterSeconds,omitempty" tf:"uncordon_after_seconds,omitempty"`
+}
+
+type DrainFailureConfigParameters struct {
+
+	// failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+	// When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+	// +kubebuilder:validation:Optional
+	DisableUncordon *bool `json:"disableUncordon,omitempty" tf:"disable_uncordon,omitempty"`
+
+	// failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
+	// Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.
+	// +kubebuilder:validation:Optional
+	UncordonAfterSeconds *float64 `json:"uncordonAfterSeconds,omitempty" tf:"uncordon_after_seconds,omitempty"`
+}
+
 type ExecutionConditionsInitParameters struct {
 
 	// (Number) The percentage of the predicted savings that must be achieved in order to fully execute the plan.If the savings are not achieved after creating the new nodes, the plan will fail and delete the created nodes.
@@ -112,12 +147,16 @@ type ExecutionConditionsParameters struct {
 type LaunchConfigurationInitParameters struct {
 
 	// disabled annotation) as not-problematic.
-	// When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+	// Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
 	// (Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)
 	// Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
 	AggressiveModeConfig []AggressiveModeConfigInitParameters `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
+
+	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
+	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+	DrainFailureConfig []DrainFailureConfigInitParameters `json:"drainFailureConfig,omitempty" tf:"drain_failure_config,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsInitParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
@@ -150,12 +189,16 @@ type LaunchConfigurationInitParameters struct {
 type LaunchConfigurationObservation struct {
 
 	// disabled annotation) as not-problematic.
-	// When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+	// Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
 	// (Block List, Max: 1) Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the aggressive_mode parameter unset or set it aggressive_mode=false before using this config option. When the legacy aggressive_mode is set to true, it takes precedence over this option. (see below for nested schema)
 	// Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
 	AggressiveModeConfig []AggressiveModeConfigObservation `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
+
+	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
+	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+	DrainFailureConfig []DrainFailureConfigObservation `json:"drainFailureConfig,omitempty" tf:"drain_failure_config,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
@@ -188,7 +231,7 @@ type LaunchConfigurationObservation struct {
 type LaunchConfigurationParameters struct {
 
 	// disabled annotation) as not-problematic.
-	// When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+	// Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
 	// +kubebuilder:validation:Optional
 	AggressiveMode *bool `json:"aggressiveMode,omitempty" tf:"aggressive_mode,omitempty"`
 
@@ -196,6 +239,11 @@ type LaunchConfigurationParameters struct {
 	// Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
 	// +kubebuilder:validation:Optional
 	AggressiveModeConfig []AggressiveModeConfigParameters `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
+
+	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
+	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+	// +kubebuilder:validation:Optional
+	DrainFailureConfig []DrainFailureConfigParameters `json:"drainFailureConfig,omitempty" tf:"drain_failure_config,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional

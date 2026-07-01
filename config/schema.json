@@ -4318,6 +4318,12 @@
                             "description_kind": "plain",
                             "required": true
                           },
+                          "cpus_per_gpu": {
+                            "type": "number",
+                            "description": "Number of CPUs per GPU on the node.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "instance_types": {
                             "type": [
                               "list",
@@ -4326,6 +4332,12 @@
                             "description": "Instance/node types in this node group.",
                             "description_kind": "plain",
                             "required": true
+                          },
+                          "min_gpus_per_node": {
+                            "type": "number",
+                            "description": "Minimal number of GPUs per node.",
+                            "description_kind": "plain",
+                            "optional": true
                           },
                           "name": {
                             "type": "string",
@@ -5763,8 +5775,9 @@
                   "attributes": {
                     "aggressive_mode": {
                       "type": "bool",
-                      "description": "When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.",
+                      "description": "Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "keep_drain_timeout_nodes": {
@@ -5835,6 +5848,28 @@
                           }
                         },
                         "description": "Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "drain_failure_config": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "disable_uncordon": {
+                            "type": "bool",
+                            "description": "When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "uncordon_after_seconds": {
+                            "type": "number",
+                            "description": "Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -6463,6 +6498,19 @@
                 "description": "Connection name",
                 "description_kind": "plain",
                 "required": true
+              },
+              "sync_auth_token": {
+                "type": "string",
+                "description": "Auth token generated when synchronize_user_groups is enabled. Only populated on the transition from false to true.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "synchronize_user_groups": {
+                "type": "bool",
+                "description": "When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "block_types": {
@@ -6953,12 +7001,14 @@
                       "type": "number",
                       "description": "Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "min": {
                       "type": "number",
                       "description": "Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "overhead": {
@@ -7005,6 +7055,58 @@
                           }
                         },
                         "description": "Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "constraints": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "max": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "min": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Defines min/max bounds for the recommendation using constraint strategies.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -7140,12 +7242,14 @@
                       "type": "number",
                       "description": "Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "min": {
                       "type": "number",
                       "description": "Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "overhead": {
@@ -7192,6 +7296,58 @@
                           }
                         },
                         "description": "Resource apply threshold strategy settings. The default strategy is `PERCENTAGE` with percentage value set to 0.1.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "constraints": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "max": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "min": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "constant": {
+                                  "type": "number",
+                                  "description": "Fixed bound value. For memory - MiB, for CPU - cores.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "percentage_of_original": {
+                                  "type": "number",
+                                  "description": "Bound as a percentage of the original pod-spec request.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Defines min/max bounds for the recommendation using constraint strategies.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -8050,6 +8206,16 @@
                             "ignore_problem_job_pods": "bool",
                             "ignore_problem_pods_without_controller": "bool",
                             "ignore_problem_removal_disabled_pods": "bool"
+                          }
+                        ]
+                      ],
+                      "drain_failure_config": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "disable_uncordon": "bool",
+                            "uncordon_after_seconds": "number"
                           }
                         ]
                       ],

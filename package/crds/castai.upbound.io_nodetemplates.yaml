@@ -395,6 +395,11 @@ spec:
                                   (String) Availability zone name.
                                   Availability zone name.
                                 type: string
+                              cpusPerGpu:
+                                description: |-
+                                  (Number) Number of CPUs per GPU on the node.
+                                  Number of CPUs per GPU on the node.
+                                type: number
                               instanceTypes:
                                 description: |-
                                   (List of String) Instance/node types in this node group.
@@ -402,6 +407,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              minGpusPerNode:
+                                description: |-
+                                  (Number) Minimal number of GPUs per node.
+                                  Minimal number of GPUs per node.
+                                type: number
                               name:
                                 description: |-
                                   (String) Name of the node template.
@@ -1055,6 +1065,11 @@ spec:
                                   (String) Availability zone name.
                                   Availability zone name.
                                 type: string
+                              cpusPerGpu:
+                                description: |-
+                                  (Number) Number of CPUs per GPU on the node.
+                                  Number of CPUs per GPU on the node.
+                                type: number
                               instanceTypes:
                                 description: |-
                                   (List of String) Instance/node types in this node group.
@@ -1062,6 +1077,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              minGpusPerNode:
+                                description: |-
+                                  (Number) Minimal number of GPUs per node.
+                                  Minimal number of GPUs per node.
+                                type: number
                               name:
                                 description: |-
                                   (String) Name of the node template.
@@ -1727,6 +1747,11 @@ spec:
                                   (String) Availability zone name.
                                   Availability zone name.
                                 type: string
+                              cpusPerGpu:
+                                description: |-
+                                  (Number) Number of CPUs per GPU on the node.
+                                  Number of CPUs per GPU on the node.
+                                type: number
                               instanceTypes:
                                 description: |-
                                   (List of String) Instance/node types in this node group.
@@ -1734,6 +1759,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              minGpusPerNode:
+                                description: |-
+                                  (Number) Minimal number of GPUs per node.
+                                  Minimal number of GPUs per node.
+                                type: number
                               name:
                                 description: |-
                                   (String) Name of the node template.

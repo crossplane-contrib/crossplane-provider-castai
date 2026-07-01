@@ -174,6 +174,35 @@ type AssignmentRulesParameters struct {
 	Rules []RulesParameters `json:"rules" tf:"rules,omitempty"`
 }
 
+type CPUConstraintsInitParameters struct {
+
+	// this is in MiB, for CPU - this is in cores.
+	Max []MaxInitParameters `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	Min []MinInitParameters `json:"min,omitempty" tf:"min,omitempty"`
+}
+
+type CPUConstraintsObservation struct {
+
+	// this is in MiB, for CPU - this is in cores.
+	Max []MaxObservation `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	Min []MinObservation `json:"min,omitempty" tf:"min,omitempty"`
+}
+
+type CPUConstraintsParameters struct {
+
+	// this is in MiB, for CPU - this is in cores.
+	// +kubebuilder:validation:Optional
+	Max []MaxParameters `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// +kubebuilder:validation:Optional
+	Min []MinParameters `json:"min,omitempty" tf:"min,omitempty"`
+}
+
 type CPUPressureInitParameters struct {
 
 	// 100) that a pod must experience CPU pressure to be considered under pressure.
@@ -229,6 +258,76 @@ type ConfidenceParameters struct {
 	// Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
 	// +kubebuilder:validation:Optional
 	Threshold *float64 `json:"threshold,omitempty" tf:"threshold,omitempty"`
+}
+
+type ConstraintsMaxInitParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type ConstraintsMaxObservation struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type ConstraintsMaxParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	// +kubebuilder:validation:Optional
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	// +kubebuilder:validation:Optional
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type ConstraintsMinInitParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type ConstraintsMinObservation struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type ConstraintsMinParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	// +kubebuilder:validation:Optional
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	// +kubebuilder:validation:Optional
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
 }
 
 type DownscalingInitParameters struct {
@@ -415,6 +514,41 @@ type LimitParameters struct {
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
+type MaxInitParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type MaxObservation struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type MaxParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	// +kubebuilder:validation:Optional
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	// +kubebuilder:validation:Optional
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
 type MemoryApplyThresholdStrategyInitParameters struct {
 
 	// (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
@@ -505,6 +639,35 @@ type MemoryApplyThresholdStrategyParameters struct {
 	// - CUSTOM_ADAPTIVE - works in same way as DEFAULT_ADAPTIVE, but it allows to tweak parameters of adaptive threshold formula: percentage = numerator/(currentRequest + denominator)^exponent. This strategy is for advance use cases, we recommend to use DEFAULT_ADAPTIVE strategy.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type MemoryConstraintsInitParameters struct {
+
+	// this is in MiB, for CPU - this is in cores.
+	Max []ConstraintsMaxInitParameters `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	Min []ConstraintsMinInitParameters `json:"min,omitempty" tf:"min,omitempty"`
+}
+
+type MemoryConstraintsObservation struct {
+
+	// this is in MiB, for CPU - this is in cores.
+	Max []ConstraintsMaxObservation `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	Min []ConstraintsMinObservation `json:"min,omitempty" tf:"min,omitempty"`
+}
+
+type MemoryConstraintsParameters struct {
+
+	// this is in MiB, for CPU - this is in cores.
+	// +kubebuilder:validation:Optional
+	Max []ConstraintsMaxParameters `json:"max,omitempty" tf:"max,omitempty"`
+
+	// this is in MiB, for CPU - this is in cores.
+	// +kubebuilder:validation:Optional
+	Min []ConstraintsMinParameters `json:"min,omitempty" tf:"min,omitempty"`
 }
 
 type MemoryEventInitParameters struct {
@@ -628,6 +791,41 @@ type MemoryParameters struct {
 	// Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
 	// +kubebuilder:validation:Optional
 	Optimization *bool `json:"optimization,omitempty" tf:"optimization,omitempty"`
+}
+
+type MinInitParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type MinObservation struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
+}
+
+type MinParameters struct {
+
+	// MiB, for CPU - cores.
+	// Fixed bound value. For memory - MiB, for CPU - cores.
+	// +kubebuilder:validation:Optional
+	Constant *float64 `json:"constant,omitempty" tf:"constant,omitempty"`
+
+	// spec request.
+	// Bound as a percentage of the original pod-spec request.
+	// +kubebuilder:validation:Optional
+	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
 }
 
 type NamespaceInitParameters struct {
@@ -862,6 +1060,10 @@ type ScalingPolicyCPUInitParameters struct {
 	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
 	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
 
+	// (Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)
+	// Defines min/max bounds for the recommendation using constraint strategies.
+	Constraints []CPUConstraintsInitParameters `json:"constraints,omitempty" tf:"constraints,omitempty"`
+
 	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
@@ -904,6 +1106,10 @@ type ScalingPolicyCPUObservation struct {
 	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
 	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
 	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)
+	// Defines min/max bounds for the recommendation using constraint strategies.
+	Constraints []CPUConstraintsObservation `json:"constraints,omitempty" tf:"constraints,omitempty"`
 
 	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
@@ -950,6 +1156,11 @@ type ScalingPolicyCPUParameters struct {
 	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
 	// +kubebuilder:validation:Optional
 	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)
+	// Defines min/max bounds for the recommendation using constraint strategies.
+	// +kubebuilder:validation:Optional
+	Constraints []CPUConstraintsParameters `json:"constraints,omitempty" tf:"constraints,omitempty"`
 
 	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
@@ -1074,6 +1285,10 @@ type ScalingPolicyMemoryInitParameters struct {
 	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
 	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
 
+	// (Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)
+	// Defines min/max bounds for the recommendation using constraint strategies.
+	Constraints []MemoryConstraintsInitParameters `json:"constraints,omitempty" tf:"constraints,omitempty"`
+
 	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
@@ -1116,6 +1331,10 @@ type ScalingPolicyMemoryObservation struct {
 	// i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
 	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
 	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)
+	// Defines min/max bounds for the recommendation using constraint strategies.
+	Constraints []MemoryConstraintsObservation `json:"constraints,omitempty" tf:"constraints,omitempty"`
 
 	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
@@ -1162,6 +1381,11 @@ type ScalingPolicyMemoryParameters struct {
 	// The arguments for the function - i.e. for `QUANTILE` this should be a [0, 1] float. `MAX` doesn't accept any args
 	// +kubebuilder:validation:Optional
 	Args []*string `json:"args,omitempty" tf:"args,omitempty"`
+
+	// (Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)
+	// Defines min/max bounds for the recommendation using constraint strategies.
+	// +kubebuilder:validation:Optional
+	Constraints []MemoryConstraintsParameters `json:"constraints,omitempty" tf:"constraints,omitempty"`
 
 	// (String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`

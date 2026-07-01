@@ -122,6 +122,10 @@ type SSOConnectionInitParameters struct {
 	// (Block List, Max: 1) Okta connector (see below for nested schema)
 	// Okta connector
 	Okta []OktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+	// When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+	SynchronizeUserGroups *bool `json:"synchronizeUserGroups,omitempty" tf:"synchronize_user_groups,omitempty"`
 }
 
 type SSOConnectionObservation struct {
@@ -148,6 +152,10 @@ type SSOConnectionObservation struct {
 	// (Block List, Max: 1) Okta connector (see below for nested schema)
 	// Okta connector
 	Okta []OktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+	// When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+	SynchronizeUserGroups *bool `json:"synchronizeUserGroups,omitempty" tf:"synchronize_user_groups,omitempty"`
 }
 
 type SSOConnectionParameters struct {
@@ -176,6 +184,11 @@ type SSOConnectionParameters struct {
 	// Okta connector
 	// +kubebuilder:validation:Optional
 	Okta []OktaParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+	// When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+	// +kubebuilder:validation:Optional
+	SynchronizeUserGroups *bool `json:"synchronizeUserGroups,omitempty" tf:"synchronize_user_groups,omitempty"`
 }
 
 // SSOConnectionSpec defines the desired state of SSOConnection

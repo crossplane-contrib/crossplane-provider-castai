@@ -81,7 +81,7 @@ spec:
                         aggressiveMode:
                           description: |-
                             disabled annotation) as not-problematic.
-                            When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                            Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
                         aggressiveModeConfig:
                           description: |-
@@ -109,6 +109,24 @@ spec:
                                   (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
                                   Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
                                 type: boolean
+                            type: object
+                          type: array
+                        drainFailureConfig:
+                          description: |-
+                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
+                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+                          items:
+                            properties:
+                              disableUncordon:
+                                description: |-
+                                  failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+                                  When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+                                type: boolean
+                              uncordonAfterSeconds:
+                                description: |-
+                                  failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
+                                  Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.
+                                type: number
                             type: object
                           type: array
                         executionConditions:
@@ -235,7 +253,7 @@ spec:
                         aggressiveMode:
                           description: |-
                             disabled annotation) as not-problematic.
-                            When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                            Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
                         aggressiveModeConfig:
                           description: |-
@@ -263,6 +281,24 @@ spec:
                                   (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
                                   Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
                                 type: boolean
+                            type: object
+                          type: array
+                        drainFailureConfig:
+                          description: |-
+                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
+                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+                          items:
+                            properties:
+                              disableUncordon:
+                                description: |-
+                                  failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+                                  When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+                                type: boolean
+                              uncordonAfterSeconds:
+                                description: |-
+                                  failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
+                                  Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.
+                                type: number
                             type: object
                           type: array
                         executionConditions:
@@ -568,7 +604,7 @@ spec:
                         aggressiveMode:
                           description: |-
                             disabled annotation) as not-problematic.
-                            When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
+                            Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.
                           type: boolean
                         aggressiveModeConfig:
                           description: |-
@@ -596,6 +632,24 @@ spec:
                                   (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
                                   Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
                                 type: boolean
+                            type: object
+                          type: array
+                        drainFailureConfig:
+                          description: |-
+                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
+                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+                          items:
+                            properties:
+                              disableUncordon:
+                                description: |-
+                                  failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+                                  When true, drain-failed nodes will NOT be automatically uncordoned. Defaults to false (nodes are uncordoned after the timeout).
+                                type: boolean
+                              uncordonAfterSeconds:
+                                description: |-
+                                  failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
+                                  Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when `disable_uncordon` is true.
+                                type: number
                             type: object
                           type: array
                         executionConditions:

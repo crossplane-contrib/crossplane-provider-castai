@@ -164,6 +164,11 @@ spec:
                           type: string
                       type: object
                     type: array
+                  synchronizeUserGroups:
+                    description: |-
+                      (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+                      When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+                    type: boolean
                 type: object
               initProvider:
                 description: |-
@@ -273,6 +278,11 @@ spec:
                       - clientSecretSecretRef
                       type: object
                     type: array
+                  synchronizeUserGroups:
+                    description: |-
+                      (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+                      When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -511,6 +521,11 @@ spec:
                           type: string
                       type: object
                     type: array
+                  synchronizeUserGroups:
+                    description: |-
+                      (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+                      When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

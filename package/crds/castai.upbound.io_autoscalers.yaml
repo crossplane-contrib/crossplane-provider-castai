@@ -103,8 +103,8 @@ spec:
                                       type: number
                                     minCores:
                                       description: |-
-                                        (Number) defines the minimum allowed amount of CPUs in the whole cluster.
-                                        defines the minimum allowed amount of CPUs in the whole cluster.
+                                        (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
+                                        defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
                                       type: number
                                   type: object
                                 type: array
@@ -266,8 +266,8 @@ spec:
                                       type: boolean
                                     spotInterruptionPredictionsType:
                                       description: |-
-                                        (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
-                                        define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+                                        (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
+                                        define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
                                       type: string
                                   type: object
                                 type: array
@@ -510,8 +510,8 @@ spec:
                                       type: number
                                     minCores:
                                       description: |-
-                                        (Number) defines the minimum allowed amount of CPUs in the whole cluster.
-                                        defines the minimum allowed amount of CPUs in the whole cluster.
+                                        (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
+                                        defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
                                       type: number
                                   type: object
                                 type: array
@@ -673,8 +673,8 @@ spec:
                                       type: boolean
                                     spotInterruptionPredictionsType:
                                       description: |-
-                                        (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
-                                        define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+                                        (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
+                                        define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
                                       type: string
                                   type: object
                                 type: array
@@ -1081,8 +1081,8 @@ spec:
                                       type: number
                                     minCores:
                                       description: |-
-                                        (Number) defines the minimum allowed amount of CPUs in the whole cluster.
-                                        defines the minimum allowed amount of CPUs in the whole cluster.
+                                        (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
+                                        defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
                                       type: number
                                   type: object
                                 type: array
@@ -1244,8 +1244,8 @@ spec:
                                       type: boolean
                                     spotInterruptionPredictionsType:
                                       description: |-
-                                        (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
-                                        define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+                                        (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
+                                        define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
                                       type: string
                                   type: object
                                 type: array

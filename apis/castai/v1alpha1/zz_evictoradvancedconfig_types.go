@@ -228,6 +228,10 @@ type PodSelectorInitParameters struct {
 
 	// (String)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// (Number) Minimum number of pod replicas to keep running when evicting matched pods
+	// Minimum number of pod replicas to keep running when evicting matched pods
+	ReplicasMin *float64 `json:"replicasMin,omitempty" tf:"replicas_min,omitempty"`
 }
 
 type PodSelectorMatchExpressionsInitParameters struct {
@@ -283,6 +287,10 @@ type PodSelectorObservation struct {
 
 	// (String)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// (Number) Minimum number of pod replicas to keep running when evicting matched pods
+	// Minimum number of pod replicas to keep running when evicting matched pods
+	ReplicasMin *float64 `json:"replicasMin,omitempty" tf:"replicas_min,omitempty"`
 }
 
 type PodSelectorParameters struct {
@@ -303,6 +311,11 @@ type PodSelectorParameters struct {
 	// (String)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// (Number) Minimum number of pod replicas to keep running when evicting matched pods
+	// Minimum number of pod replicas to keep running when evicting matched pods
+	// +kubebuilder:validation:Optional
+	ReplicasMin *float64 `json:"replicasMin,omitempty" tf:"replicas_min,omitempty"`
 }
 
 // EvictorAdvancedConfigSpec defines the desired state of EvictorAdvancedConfig

@@ -508,6 +508,11 @@ spec:
                             (Number) Max Memory (Mib) per node.
                             Max Memory (Mib) per node.
                           type: number
+                        maxPricePerCpu:
+                          description: |-
+                            (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+                            Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+                          type: number
                         minCpu:
                           description: |-
                             (Number) Min CPU cores per node.
@@ -564,8 +569,8 @@ spec:
                           type: boolean
                         spotInterruptionPredictionsType:
                           description: |-
-                            rebalance-recommendations" or "interruption-predictions".
-                            Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+                            predictions" is supported.
+                            Spot interruption predictions type. Only "interruption-predictions" is supported.
                           type: string
                         spotReliabilityEnabled:
                           description: |-
@@ -690,8 +695,8 @@ spec:
                     type: array
                   isDefault:
                     description: |-
-                      (Boolean) Flag whether the node template is default.
-                      Flag whether the node template is default.
+                      by-castai' node template and 'false' otherwise.
+                      Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
                     type: boolean
                   isEnabled:
                     description: |-
@@ -1178,6 +1183,11 @@ spec:
                             (Number) Max Memory (Mib) per node.
                             Max Memory (Mib) per node.
                           type: number
+                        maxPricePerCpu:
+                          description: |-
+                            (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+                            Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+                          type: number
                         minCpu:
                           description: |-
                             (Number) Min CPU cores per node.
@@ -1234,8 +1244,8 @@ spec:
                           type: boolean
                         spotInterruptionPredictionsType:
                           description: |-
-                            rebalance-recommendations" or "interruption-predictions".
-                            Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+                            predictions" is supported.
+                            Spot interruption predictions type. Only "interruption-predictions" is supported.
                           type: string
                         spotReliabilityEnabled:
                           description: |-
@@ -1360,8 +1370,8 @@ spec:
                     type: array
                   isDefault:
                     description: |-
-                      (Boolean) Flag whether the node template is default.
-                      Flag whether the node template is default.
+                      by-castai' node template and 'false' otherwise.
+                      Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
                     type: boolean
                   isEnabled:
                     description: |-
@@ -1860,6 +1870,11 @@ spec:
                             (Number) Max Memory (Mib) per node.
                             Max Memory (Mib) per node.
                           type: number
+                        maxPricePerCpu:
+                          description: |-
+                            (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+                            Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+                          type: number
                         minCpu:
                           description: |-
                             (Number) Min CPU cores per node.
@@ -1916,8 +1931,8 @@ spec:
                           type: boolean
                         spotInterruptionPredictionsType:
                           description: |-
-                            rebalance-recommendations" or "interruption-predictions".
-                            Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+                            predictions" is supported.
+                            Spot interruption predictions type. Only "interruption-predictions" is supported.
                           type: string
                         spotReliabilityEnabled:
                           description: |-
@@ -2045,8 +2060,8 @@ spec:
                     type: string
                   isDefault:
                     description: |-
-                      (Boolean) Flag whether the node template is default.
-                      Flag whether the node template is default.
+                      by-castai' node template and 'false' otherwise.
+                      Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
                     type: boolean
                   isEnabled:
                     description: |-

@@ -192,8 +192,8 @@ type CPUInitParameters struct {
 	// defines the maximum allowed amount of vCPUs in the whole cluster.
 	MaxCores *float64 `json:"maxCores,omitempty" tf:"max_cores,omitempty"`
 
-	// (Number) defines the minimum allowed amount of CPUs in the whole cluster.
-	// defines the minimum allowed amount of CPUs in the whole cluster.
+	// (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
+	// defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
 	MinCores *float64 `json:"minCores,omitempty" tf:"min_cores,omitempty"`
 }
 
@@ -203,8 +203,8 @@ type CPUObservation struct {
 	// defines the maximum allowed amount of vCPUs in the whole cluster.
 	MaxCores *float64 `json:"maxCores,omitempty" tf:"max_cores,omitempty"`
 
-	// (Number) defines the minimum allowed amount of CPUs in the whole cluster.
-	// defines the minimum allowed amount of CPUs in the whole cluster.
+	// (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
+	// defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
 	MinCores *float64 `json:"minCores,omitempty" tf:"min_cores,omitempty"`
 }
 
@@ -215,8 +215,8 @@ type CPUParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxCores *float64 `json:"maxCores,omitempty" tf:"max_cores,omitempty"`
 
-	// (Number) defines the minimum allowed amount of CPUs in the whole cluster.
-	// defines the minimum allowed amount of CPUs in the whole cluster.
+	// (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
+	// defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
 	// +kubebuilder:validation:Optional
 	MinCores *float64 `json:"minCores,omitempty" tf:"min_cores,omitempty"`
 }
@@ -772,8 +772,8 @@ type SpotInterruptionPredictionsInitParameters struct {
 	// enable/disable spot interruption predictions.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
-	// (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
-	// define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+	// (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
+	// define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 }
 
@@ -783,8 +783,8 @@ type SpotInterruptionPredictionsObservation struct {
 	// enable/disable spot interruption predictions.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
-	// (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
-	// define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+	// (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
+	// define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 }
 
@@ -795,8 +795,8 @@ type SpotInterruptionPredictionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
-	// (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
-	// define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+	// (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
+	// define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 }

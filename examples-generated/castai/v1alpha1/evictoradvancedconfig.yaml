@@ -14,7 +14,8 @@ spec:
     evictorAdvancedConfig:
     - aggressive: true
       podSelector:
-      - kind: Job
+      - kind: Deployment
         matchLabels:
-          job: test
+          app: test
         namespace: test
+        replicasMin: 2

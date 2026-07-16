@@ -731,8 +731,9 @@
                                 },
                                 "min_cores": {
                                   "type": "number",
-                                  "description": "defines the minimum allowed amount of CPUs in the whole cluster.",
+                                  "description": "defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.",
                                   "description_kind": "plain",
+                                  "deprecated": true,
                                   "optional": true
                                 }
                               },
@@ -914,8 +915,9 @@
                                 },
                                 "spot_interruption_predictions_type": {
                                   "type": "string",
-                                  "description": "define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.",
+                                  "description": "define the type of the spot interruption prediction to handle. The value \"AWSRebalanceRecommendations\" is deprecated; use \"CASTAIInterruptionPredictions\".",
                                   "description_kind": "plain",
+                                  "deprecated": true,
                                   "optional": true
                                 }
                               },
@@ -1857,6 +1859,29 @@
             "description": "Manage CAST AI Edge Location for edge computing deployments",
             "description_kind": "plain",
             "block_types": {
+              "addons": {
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": "string",
+                      "description": "Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons."
+                },
+                "nesting_mode": "list",
+                "min_items": 0,
+                "max_items": 0
+              },
               "aws": {
                 "block": {
                   "attributes": {
@@ -2649,6 +2674,77 @@
             "description_kind": "plain"
           }
         },
+        "castai_enterprise_service_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Service account description.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "email": {
+                "type": "string",
+                "description": "Auto-generated service account email (read-only).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enterprise_id": {
+                "type": "string",
+                "description": "Enterprise organization ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Service account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "Target organization ID where the service account is created. Defaults to enterprise_id (enterprise scope) when omitted.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "CAST AI Enterprise Service Account resource.",
+            "description_kind": "plain"
+          }
+        },
         "castai_evictor_advanced_config": {
           "version": 0,
           "block": {
@@ -2755,6 +2851,12 @@
                           },
                           "namespace": {
                             "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "replicas_min": {
+                            "type": "number",
+                            "description": "Minimum number of pod replicas to keep running when evicting matched pods",
                             "description_kind": "plain",
                             "optional": true
                           }
@@ -3462,7 +3564,7 @@
                     },
                     "aks_image_family": {
                       "type": "string",
-                      "description": "Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)",
+                      "description": "Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3632,6 +3734,12 @@
                     "eks_image_family": {
                       "type": "string",
                       "description": "Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ena_queue_count_per_interface": {
+                      "type": "number",
+                      "description": "Number of ENA queues per network interface.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -4024,9 +4132,10 @@
               },
               "is_default": {
                 "type": "bool",
-                "description": "Flag whether the node template is default.",
+                "description": "Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "is_enabled": {
                 "type": "bool",
@@ -4157,6 +4266,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "max_price_per_cpu": {
+                      "type": "number",
+                      "description": "Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "min_cpu": {
                       "type": "number",
                       "description": "Min CPU cores per node.",
@@ -4206,8 +4321,9 @@
                     },
                     "spot_interruption_predictions_type": {
                       "type": "string",
-                      "description": "Spot interruption predictions type. Can be either \"aws-rebalance-recommendations\" or \"interruption-predictions\".",
+                      "description": "Spot interruption predictions type. Only \"interruption-predictions\" is supported.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "spot_reliability_enabled": {

@@ -236,6 +236,11 @@ spec:
                               namespace:
                                 description: (String)
                                 type: string
+                              replicasMin:
+                                description: |-
+                                  (Number) Minimum number of pod replicas to keep running when evicting matched pods
+                                  Minimum number of pod replicas to keep running when evicting matched pods
+                                type: number
                             type: object
                           type: array
                         removalDisabled:
@@ -422,6 +427,11 @@ spec:
                               namespace:
                                 description: (String)
                                 type: string
+                              replicasMin:
+                                description: |-
+                                  (Number) Minimum number of pod replicas to keep running when evicting matched pods
+                                  Minimum number of pod replicas to keep running when evicting matched pods
+                                type: number
                             type: object
                           type: array
                         removalDisabled:
@@ -697,6 +707,11 @@ spec:
                               namespace:
                                 description: (String)
                                 type: string
+                              replicasMin:
+                                description: |-
+                                  (Number) Minimum number of pod replicas to keep running when evicting matched pods
+                                  Minimum number of pod replicas to keep running when evicting matched pods
+                                type: number
                             type: object
                           type: array
                         removalDisabled:

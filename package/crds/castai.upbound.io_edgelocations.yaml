@@ -73,6 +73,24 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  addons:
+                    description: |-
+                      gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+                      Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons.
+                    items:
+                      properties:
+                        name:
+                          description: |-
+                            (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+                            Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.
+                          type: string
+                        values:
+                          description: |-
+                            merged over the chart's default values.
+                            Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
+                          type: string
+                      type: object
+                    type: array
                   aws:
                     description: |-
                       (Attributes) AWS configuration for the edge location (see below for nested schema)
@@ -490,6 +508,24 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  addons:
+                    description: |-
+                      gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+                      Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons.
+                    items:
+                      properties:
+                        name:
+                          description: |-
+                            (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+                            Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.
+                          type: string
+                        values:
+                          description: |-
+                            merged over the chart's default values.
+                            Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
+                          type: string
+                      type: object
+                    type: array
                   aws:
                     description: |-
                       (Attributes) AWS configuration for the edge location (see below for nested schema)
@@ -1075,6 +1111,24 @@ spec:
             properties:
               atProvider:
                 properties:
+                  addons:
+                    description: |-
+                      gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+                      Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons.
+                    items:
+                      properties:
+                        name:
+                          description: |-
+                            (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+                            Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.
+                          type: string
+                        values:
+                          description: |-
+                            merged over the chart's default values.
+                            Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
+                          type: string
+                      type: object
+                    type: array
                   aws:
                     description: |-
                       (Attributes) AWS configuration for the edge location (see below for nested schema)

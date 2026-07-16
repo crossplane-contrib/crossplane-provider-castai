@@ -168,6 +168,10 @@ type ConstraintsInitParameters struct {
 	// Max Memory (Mib) per node.
 	MaxMemory *float64 `json:"maxMemory,omitempty" tf:"max_memory,omitempty"`
 
+	// (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+	// Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+	MaxPricePerCPU *float64 `json:"maxPricePerCpu,omitempty" tf:"max_price_per_cpu,omitempty"`
+
 	// (Number) Min CPU cores per node.
 	// Min CPU cores per node.
 	MinCPU *float64 `json:"minCpu,omitempty" tf:"min_cpu,omitempty"`
@@ -199,8 +203,8 @@ type ConstraintsInitParameters struct {
 	// Enable/disable spot interruption predictions.
 	SpotInterruptionPredictionsEnabled *bool `json:"spotInterruptionPredictionsEnabled,omitempty" tf:"spot_interruption_predictions_enabled,omitempty"`
 
-	// rebalance-recommendations" or "interruption-predictions".
-	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+	// predictions" is supported.
+	// Spot interruption predictions type. Only "interruption-predictions" is supported.
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
 	// (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
@@ -309,6 +313,10 @@ type ConstraintsObservation struct {
 	// Max Memory (Mib) per node.
 	MaxMemory *float64 `json:"maxMemory,omitempty" tf:"max_memory,omitempty"`
 
+	// (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+	// Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+	MaxPricePerCPU *float64 `json:"maxPricePerCpu,omitempty" tf:"max_price_per_cpu,omitempty"`
+
 	// (Number) Min CPU cores per node.
 	// Min CPU cores per node.
 	MinCPU *float64 `json:"minCpu,omitempty" tf:"min_cpu,omitempty"`
@@ -340,8 +348,8 @@ type ConstraintsObservation struct {
 	// Enable/disable spot interruption predictions.
 	SpotInterruptionPredictionsEnabled *bool `json:"spotInterruptionPredictionsEnabled,omitempty" tf:"spot_interruption_predictions_enabled,omitempty"`
 
-	// rebalance-recommendations" or "interruption-predictions".
-	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+	// predictions" is supported.
+	// Spot interruption predictions type. Only "interruption-predictions" is supported.
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
 	// (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
@@ -469,6 +477,11 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxMemory *float64 `json:"maxMemory,omitempty" tf:"max_memory,omitempty"`
 
+	// (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+	// Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
+	// +kubebuilder:validation:Optional
+	MaxPricePerCPU *float64 `json:"maxPricePerCpu,omitempty" tf:"max_price_per_cpu,omitempty"`
+
 	// (Number) Min CPU cores per node.
 	// Min CPU cores per node.
 	// +kubebuilder:validation:Optional
@@ -508,8 +521,8 @@ type ConstraintsParameters struct {
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictionsEnabled *bool `json:"spotInterruptionPredictionsEnabled,omitempty" tf:"spot_interruption_predictions_enabled,omitempty"`
 
-	// rebalance-recommendations" or "interruption-predictions".
-	// Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+	// predictions" is supported.
+	// Spot interruption predictions type. Only "interruption-predictions" is supported.
 	// +kubebuilder:validation:Optional
 	SpotInterruptionPredictionsType *string `json:"spotInterruptionPredictionsType,omitempty" tf:"spot_interruption_predictions_type,omitempty"`
 
@@ -1023,8 +1036,8 @@ type NodeTemplateInitParameters struct {
 	// GPU configuration.
 	Gpu []NodeTemplateGpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
-	// (Boolean) Flag whether the node template is default.
-	// Flag whether the node template is default.
+	// by-castai' node template and 'false' otherwise.
+	// Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
 	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default,omitempty"`
 
 	// (Boolean) Flag whether the node template is enabled and considered for autoscaling.
@@ -1093,8 +1106,8 @@ type NodeTemplateObservation struct {
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (Boolean) Flag whether the node template is default.
-	// Flag whether the node template is default.
+	// by-castai' node template and 'false' otherwise.
+	// Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
 	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default,omitempty"`
 
 	// (Boolean) Flag whether the node template is enabled and considered for autoscaling.
@@ -1188,8 +1201,8 @@ type NodeTemplateParameters struct {
 	// +kubebuilder:validation:Optional
 	Gpu []NodeTemplateGpuParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
 
-	// (Boolean) Flag whether the node template is default.
-	// Flag whether the node template is default.
+	// by-castai' node template and 'false' otherwise.
+	// Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
 	// +kubebuilder:validation:Optional
 	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default,omitempty"`
 

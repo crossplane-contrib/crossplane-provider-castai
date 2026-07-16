@@ -328,7 +328,7 @@ resources:
             max_ram_mib: (Number) defines max RAM in MiB for the node to pick.
             max_reclaim_rate: (Number, Deprecated) max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.
             memory_percentage: (Number) defines percentage of additional memory capacity to be added.
-            min_cores: (Number) defines the minimum allowed amount of CPUs in the whole cluster.
+            min_cores: (Number, Deprecated) defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.
             min_cpu_cores: (Number) defines min CPU cores for the node to pick.
             min_ram_mib: (Number) defines min RAM in MiB for the node to pick.
             node_constraints: '(Block List, Max: 1, Deprecated) defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy. (see below for nested schema)'
@@ -344,7 +344,7 @@ resources:
             spot_diversity_price_increase_limit: (Number, Deprecated) allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
             spot_instances: '(Block List, Max: 1, Deprecated) policy defining whether autoscaler can use spot instances for provisioning additional workloads. (see below for nested schema)'
             spot_interruption_predictions: '(Block List, Max: 1, Deprecated) configure the handling of SPOT interruption predictions. (see below for nested schema)'
-            spot_interruption_predictions_type: (String) define the type of the spot interruption prediction to handle. Allowed values are AWSRebalanceRecommendations, CASTAIInterruptionPredictions.
+            spot_interruption_predictions_type: (String, Deprecated) define the type of the spot interruption prediction to handle. The value "AWSRebalanceRecommendations" is deprecated; use "CASTAIInterruptionPredictions".
             timeouts: (Block, Optional) (see below for nested schema)
             unschedulable_pods: '(Block List, Max: 1) policy defining autoscaler''s behavior when unschedulable pods were detected. (see below for nested schema)'
             update: (String)
@@ -608,9 +608,56 @@ resources:
                 }
               references:
                 cluster_id: castai_omni_cluster.example.id
+            - name: aws_example_custom_addons
+              manifest: |-
+                {
+                  "addons": [
+                    {
+                      "name": "nvidia-gpu-operator",
+                      "values": "${jsonencode({\n        driver = {\n          enabled = true\n        }\n      })}"
+                    },
+                    {
+                      "name": "nvidia-network-operator"
+                    }
+                  ],
+                  "aws": {
+                    "account_id": "123456789012",
+                    "security_group_id": "sg-12345678",
+                    "subnet_ids": {
+                      "us-east-1a": "subnet-12345678"
+                    },
+                    "vpc_id": "vpc-12345678"
+                  },
+                  "cluster_id": "${castai_omni_cluster.example.id}",
+                  "name": "aws-edge-us-east-gpu",
+                  "organization_id": "your-org-id",
+                  "region": "us-east-1"
+                }
+              references:
+                cluster_id: castai_omni_cluster.example.id
+            - name: aws_example_no_addons
+              manifest: |-
+                {
+                  "addons": [],
+                  "aws": {
+                    "account_id": "123456789012",
+                    "security_group_id": "sg-12345678",
+                    "subnet_ids": {
+                      "us-east-1a": "subnet-12345678"
+                    },
+                    "vpc_id": "vpc-12345678"
+                  },
+                  "cluster_id": "${castai_omni_cluster.example.id}",
+                  "name": "aws-edge-us-east-minimal",
+                  "organization_id": "your-org-id",
+                  "region": "us-east-1"
+                }
+              references:
+                cluster_id: castai_omni_cluster.example.id
         argumentDocs:
             access_key_id_wo: (String, Sensitive) AWS access key ID
             account_id: (String) AWS account ID
+            addons: (Attributes List) Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
             aws: (Attributes) AWS configuration for the edge location (see below for nested schema)
             client_service_account_json_base64_wo: (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
             cluster_id: (String) CAST AI cluster ID
@@ -650,6 +697,7 @@ resources:
             tenancy_id: (String) OCI tenancy ID of the account
             tunneled_cidrs: (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
             user_id_wo: (String) User ID used to authenticate OCI
+            values: (String) Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
             vcn_cidr: (String) OCI VCN IPv4 CIDR block
             vcn_id: (String) OCI virtual cloud network ID
             vpc_cidr: (String) VPC IPv4 CIDR block
@@ -788,6 +836,39 @@ resources:
             update: (String)
             user: (Block List) User subjects. (see below for nested schema)
         importStatements: []
+    castai_enterprise_service_account:
+        subCategory: ""
+        description: CAST AI Enterprise Service Account resource.
+        name: castai_enterprise_service_account
+        title: castai_enterprise_service_account Resource - terraform-provider-castai
+        examples:
+            - name: child_org
+              manifest: |-
+                {
+                  "description": "Service account managed by Terraform in a child organization",
+                  "enterprise_id": "3e81b0c1-ea70-4513-8c11-60260fa04fba",
+                  "name": "example-child-org-service-account",
+                  "organization_id": "50e2f997-c717-4669-9c23-504d10f5e515"
+                }
+            - name: enterprise_org
+              manifest: |-
+                {
+                  "description": "Service account managed by Terraform in the enterprise organization",
+                  "enterprise_id": "3e81b0c1-ea70-4513-8c11-60260fa04fba",
+                  "name": "example-enterprise-service-account"
+                }
+        argumentDocs:
+            create: (String)
+            delete: (String)
+            description: (String) Service account description.
+            email: (String) Auto-generated service account email (read-only).
+            enterprise_id: (String) Enterprise organization ID.
+            id: (String) The ID of this resource.
+            name: (String) Service account name.
+            organization_id: (String) Target organization ID where the service account is created. Defaults to enterprise_id (enterprise scope) when omitted.
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements: []
     castai_evictor_advanced_config:
         subCategory: ""
         description: CAST AI eviction config resource to manage evictor properties
@@ -803,11 +884,12 @@ resources:
                       "aggressive": true,
                       "pod_selector": [
                         {
-                          "kind": "Job",
+                          "kind": "Deployment",
                           "match_labels": {
-                            "job": "test"
+                            "app": "test"
                           },
-                          "namespace": "test"
+                          "namespace": "test",
+                          "replicas_min": 2
                         }
                       ]
                     }
@@ -831,6 +913,7 @@ resources:
             operator: (String)
             pod_selector: (Block List) pod selector (see below for nested schema)
             removal_disabled: (Boolean) Mark pods as removal disabled
+            replicas_min: (Number) Minimum number of pod replicas to keep running when evicting matched pods
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
             values: (List of String)
@@ -1037,7 +1120,7 @@ resources:
         argumentDocs:
             accelerated_networking: '(String) Controls SR-IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.'
             aks: '(Block List, Max: 1) (see below for nested schema)'
-            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,azure-linux,windows2019,windows2022)'
+            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)'
             application_security_groups: (List of String) Application security groups to be used for provisioned nodes
             arn: (String) AWS target group ARN for CAST provisioned nodes
             cache: '(String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy'
@@ -1052,6 +1135,7 @@ resources:
             drain_timeout_sec: (Number) Timeout in seconds for draining the node. Defaults to 0
             eks: '(Block List, Max: 1) (see below for nested schema)'
             eks_image_family: '(String) Image OS Family to use when provisioning node in EKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (al2,al2023,bottlerocket)'
+            ena_queue_count_per_interface: (Number) Number of ENA queues per network interface.
             enable_encryption_at_host: (Boolean) Whether to enable encryption at host for provisioned nodes. See https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data
             ephemeral_os_disk: '(Block List, Max: 1) Ephemeral OS disk configuration for CAST provisioned nodes (see below for nested schema)'
             gke: '(Block List, Max: 1) (see below for nested schema)'
@@ -1255,7 +1339,7 @@ resources:
             instance_families: '(Block List, Max: 1) (see below for nested schema)'
             instance_type_adjustments: '(Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}'
             instance_types: (List of String) Instance/node types in this node group.
-            is_default: (Boolean) Flag whether the node template is default.
+            is_default: (Boolean) Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
             is_enabled: (Boolean) Flag whether the node template is enabled and considered for autoscaling.
             is_gpu_only: (Boolean) GPU instance constraint - will only pick nodes with GPU if true
             key: (String) Key of the node affinity selector.
@@ -1263,6 +1347,7 @@ resources:
             max_count: (Number) Max GPU count for the instance type to have.
             max_cpu: (Number) Max CPU cores per node.
             max_memory: (Number) Max Memory (Mib) per node.
+            max_price_per_cpu: (Number) Maximum price per vCPU threshold. When price adjustments are configured, the filter applies to the adjusted price.
             min_count: (Number) Min GPU count for the instance type to have.
             min_cpu: (Number) Min CPU cores per node.
             min_gpus_per_node: (Number) Minimal number of GPUs per node.
@@ -1282,7 +1367,7 @@ resources:
             spot: (Boolean) Should include spot instances in the considered pool.
             spot_diversity_price_increase_limit_percent: (Number) Allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.
             spot_interruption_predictions_enabled: (Boolean) Enable/disable spot interruption predictions.
-            spot_interruption_predictions_type: (String) Spot interruption predictions type. Can be either "aws-rebalance-recommendations" or "interruption-predictions".
+            spot_interruption_predictions_type: (String, Deprecated) Spot interruption predictions type. Only "interruption-predictions" is supported.
             spot_reliability_enabled: (Boolean) Enable/disable spot reliability. When enabled, autoscaler will create instances with highest reliability score within price increase threshold.
             spot_reliability_price_increase_limit_percent: (Number) Allowed node price increase when using spot reliability on ordering the instance types . E.g. if the value is 10%, then the overall price of instance types can be 10% higher than the price of the optimal configuration.
             storage_optimized: (Boolean) Storage optimized instance constraint (deprecated).

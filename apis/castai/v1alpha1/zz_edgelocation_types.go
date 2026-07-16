@@ -13,6 +13,41 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AddonsInitParameters struct {
+
+	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// merged over the chart's default values.
+	// Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
+	Values *string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type AddonsObservation struct {
+
+	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// merged over the chart's default values.
+	// Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
+	Values *string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type AddonsParameters struct {
+
+	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
+	// Addon identifier. One of: nvidia-gpu-operator, nvidia-dra, nvidia-network-operator, oci-csi.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// merged over the chart's default values.
+	// Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
+	// +kubebuilder:validation:Optional
+	Values *string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
 type CniInitParameters struct {
 
 	// router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.
@@ -340,6 +375,10 @@ type EdgeLocationGCPParameters struct {
 
 type EdgeLocationInitParameters struct {
 
+	// gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+	// Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons.
+	Addons []AddonsInitParameters `json:"addons,omitempty" tf:"addons,omitempty"`
+
 	// (Attributes) AWS configuration for the edge location (see below for nested schema)
 	// AWS configuration for the edge location
 	Aws *EdgeLocationAwsInitParameters `json:"aws,omitempty" tf:"aws,omitempty"`
@@ -403,6 +442,10 @@ type EdgeLocationInitParameters struct {
 }
 
 type EdgeLocationObservation struct {
+
+	// gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+	// Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons.
+	Addons []AddonsObservation `json:"addons,omitempty" tf:"addons,omitempty"`
 
 	// (Attributes) AWS configuration for the edge location (see below for nested schema)
 	// AWS configuration for the edge location
@@ -583,6 +626,11 @@ type EdgeLocationOciParameters struct {
 }
 
 type EdgeLocationParameters struct {
+
+	// gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+	// Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons.
+	// +kubebuilder:validation:Optional
+	Addons []AddonsParameters `json:"addons,omitempty" tf:"addons,omitempty"`
 
 	// (Attributes) AWS configuration for the edge location (see below for nested schema)
 	// AWS configuration for the edge location

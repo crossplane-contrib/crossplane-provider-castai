@@ -2455,6 +2455,11 @@ resources:
                           "cpu_stall_threshold_percentage": 50,
                           "min_pressured_pod_percentage": 30
                         }
+                      ],
+                      "infinite_memory_scaling": [
+                        {
+                          "enabled": true
+                        }
                       ]
                     }
                   ],
@@ -2537,6 +2542,74 @@ resources:
                     "container-1",
                     "container-2"
                   ],
+                  "gpu": [
+                    {
+                      "management_option": "READ_ONLY"
+                    }
+                  ],
+                  "hpa_converters": [
+                    {
+                      "type": "AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS"
+                    }
+                  ],
+                  "hpa_settings": [
+                    {
+                      "management_option": "READ_ONLY",
+                      "native_hpa_spec": [
+                        {
+                          "behavior": [
+                            {
+                              "scale_down": [
+                                {
+                                  "policies": [
+                                    {
+                                      "period_seconds": 15,
+                                      "type": "PERCENT_SCALING_POLICY",
+                                      "value": 100
+                                    }
+                                  ],
+                                  "select_policy": "MAX_CHANGE_POLICY_SELECT",
+                                  "stabilization_window_seconds": 300
+                                }
+                              ],
+                              "scale_up": [
+                                {
+                                  "policies": [
+                                    {
+                                      "period_seconds": 15,
+                                      "type": "PERCENT_SCALING_POLICY",
+                                      "value": 100
+                                    }
+                                  ],
+                                  "select_policy": "MAX_CHANGE_POLICY_SELECT",
+                                  "stabilization_window_seconds": 0
+                                }
+                              ]
+                            }
+                          ],
+                          "max_replicas": 20,
+                          "metrics": [
+                            {
+                              "resource": [
+                                {
+                                  "name": "cpu",
+                                  "target": [
+                                    {
+                                      "type": "UTILIZATION",
+                                      "value": "80"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "RESOURCE"
+                            }
+                          ],
+                          "min_replicas": 2
+                        }
+                      ],
+                      "take_ownership": false
+                    }
+                  ],
                   "jvm": [
                     {
                       "memory": [
@@ -2587,7 +2660,12 @@ resources:
                   ],
                   "startup": [
                     {
-                      "period_seconds": 240
+                      "period_seconds": 240,
+                      "two_phase_recommendations": [
+                        {
+                          "enabled": true
+                        }
+                      ]
                     }
                   ]
                 }
@@ -2598,12 +2676,14 @@ resources:
         argumentDocs:
             anomaly_detection: '(Block List, Max: 1) Defines anomaly detection settings for the scaling policy. (see below for nested schema)'
             anti_affinity: '(Block List, Max: 1) (see below for nested schema)'
+            api_version: (String)
             apply_threshold: (Number, Deprecated) The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value
             apply_threshold_strategy: '(Block List, Max: 1) Resource apply threshold strategy settings. The default strategy is PERCENTAGE with percentage value set to 0.1. (see below for nested schema)'
             apply_type: (String) Recommendation apply type.
             args: (List of String) The arguments for the function - i.e. for QUANTILE this should be a [0, 1] float. MAX doesn't accept any args
             assignment_rules: (Block List) Allows defining conditions for automatically assigning workloads to this scaling policy. (see below for nested schema)
             auto_instrument: (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
+            behavior: '(Block List, Max: 1) (see below for nested schema)'
             cluster_id: (String) CAST AI cluster id
             confidence: '(Block List, Max: 1) Defines the confidence settings for applying recommendations. (see below for nested schema)'
             consider_anti_affinity: |-
@@ -2611,38 +2691,56 @@ resources:
                 If enabled, requiring host ports, or having anti-affinity on hostname will force all recommendations to be deferred.
             constant: (Number) Fixed bound value. For memory - MiB, for CPU - cores.
             constraints: '(Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)'
+            container: (String)
+            container_resource: '(Block List, Max: 1) (see below for nested schema)'
             cpu: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            cpu_cores: (Number) CPU request in cores used during startup.
             cpu_pressure: '(Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)'
             cpu_stall_threshold_percentage: (Number) Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
             create: (String)
             delay_seconds: (Number) Number of seconds to delay before applying the recommendation rollout. Must be between 0 and 3600.
             delete: (String)
             denominator: (String) If denominator is close or equal to 0, the threshold will be much bigger for small values.For example when numerator, exponent is 1 and denominator is 0 the threshold for 0.5 req. CPU will be 200%.It must be defined for the CUSTOM_ADAPTIVE strategy.
+            described_object: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             downscaling: '(Block List, Max: 1) (see below for nested schema)'
-            enabled: (Boolean) Defines if predictive scaling is enabled for resource.
+            enabled: (Boolean) Enables infinite memory scaling detection for workloads using this policy.
             excluded_containers: (List of String) Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
             exponent: '(Number) The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:'
+            external: '(Block List, Max: 1) (see below for nested schema)'
             function: '(String) The function used to calculate the resource recommendation. Supported values: QUANTILE, MAX'
+            gpu: '(Block List, Max: 1) Configures GPU optimization. (see below for nested schema)'
             gvk: |-
                 (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
                 It can be either:
+            hpa_converters: (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+            hpa_settings: '(Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)'
             id: (String) The ID of this resource.
+            infinite_memory_scaling: '(Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)'
+            is_ops_pilot: (Boolean) Marks a policy as managed by OpsPilot.
             jvm: '(Block List, Max: 1) JVM optimization settings. (see below for nested schema)'
             key: (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
+            kind: (String)
             labels_expressions: (Block List) Defines matching by label selector requirements. (see below for nested schema)
             limit: '(Block List, Max: 1) Resource limit settings (see below for nested schema)'
             look_back_period_seconds: (Number) The look back period in seconds for the recommendation.
             management_option: (String) Defines possible options for workload management.
             max: (Number, Deprecated) Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
+            max_replicas: (Number) Maximum number of replicas.
             memory: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             memory_event: '(Block List, Max: 1) (see below for nested schema)'
+            memory_gib: (Number) Memory request in GiB used during startup.
+            metric: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            metrics: '(Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)'
             min: (Number, Deprecated) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             min_pressured_pod_percentage: (Number) Percentage (0-100) of pods that must be experiencing pressure for the detector to trigger.
+            min_replicas: (Number) Minimum number of replicas.
             multiplier: (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
             name: (String) Scaling policy name
             names: (List of String) Defines matching by namespace names.
             namespace: '(Block List, Max: 1) Allows assigning a scaling policy based on the workload''s namespace. (see below for nested schema)'
+            native_hpa_spec: '(Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)'
             numerator: (Number) The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
+            object: '(Block List, Max: 1) (see below for nested schema)'
             only_if_original_exist: (Boolean) Apply the strategy only when the original resource has limits defined.
             only_if_original_lower: (Boolean) Use the original resource limits if they are higher than recommended values.
             operator: (String) The operator to use for matching the label.
@@ -2650,20 +2748,31 @@ resources:
             overhead: (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
             percentage: (Number) Percentage of a how much difference should there be between the current pod requests and the new recommendation. It must be defined for the PERCENTAGE strategy.
             percentage_of_original: (Number) Bound as a percentage of the original pod-spec request.
-            period_seconds: |-
-                (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-                When set, recommendations will be adjusted to disregard resource spikes within this period.
-                If not specified, the workload will receive standard recommendations without startup considerations.
+            period_seconds: (Number)
+            pods: '(Block List, Max: 1) (see below for nested schema)'
+            policies: (Block List) (see below for nested schema)
             predictive_scaling: '(Block List, Max: 1) (see below for nested schema)'
             prefer_one_by_one: (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
             read: (String)
+            requests_on_startup: '(Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)'
+            resource: '(Block List, Max: 1) (see below for nested schema)'
             rollout_behavior: '(Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:'
             rules: '(Block List, Min: 1) (see below for nested schema)'
+            scale_down: '(Block List, Max: 1) (see below for nested schema)'
+            scale_up: '(Block List, Max: 1) (see below for nested schema)'
+            select_policy: (String)
+            selector: (Map of String) Metric label selector.
+            stabilization_window_seconds: (Number)
             startup: '(Block List, Max: 1) (see below for nested schema)'
+            take_ownership: (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+            target: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             threshold: (Number) Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
             timeouts: (Block, Optional) (see below for nested schema)
+            tolerance: (String)
+            two_phase_recommendations: '(Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)'
             type: (String) Defines apply theshold strategy type.
             update: (String)
+            value: (String)
             values: (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.
             workload: '(Block List, Max: 1) Allows assigning a scaling policy based on the workload''s metadata. (see below for nested schema)'
         importStatements:

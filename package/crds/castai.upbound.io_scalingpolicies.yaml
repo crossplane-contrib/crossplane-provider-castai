@@ -97,6 +97,19 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        infiniteMemoryScaling:
+                          description: |-
+                            (Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)
+                            Configures infinite memory scaling anomaly detection.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+                                  Enables infinite memory scaling detection for workloads using this policy.
+                                type: boolean
+                            type: object
+                          type: array
                       type: object
                     type: array
                   antiAffinity:
@@ -419,6 +432,346 @@ spec:
                     items:
                       type: string
                     type: array
+                  gpu:
+                    description: |-
+                      (Block List, Max: 1) Configures GPU optimization. (see below for nested schema)
+                      Configures GPU optimization.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages the feature.
+                          type: string
+                      type: object
+                    type: array
+                  hpaConverters:
+                    description: |-
+                      (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+                      Configures conversion of existing HPAs when vertical optimization is used without HPA management.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            HPA converter strategy.
+                          type: string
+                      type: object
+                    type: array
+                  hpaSettings:
+                    description: |-
+                      (Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)
+                      Configures horizontal pod autoscaling for workloads using this policy.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages the feature.
+                          type: string
+                        nativeHpaSpec:
+                          description: |-
+                            (Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)
+                            Native Kubernetes HPA specification.
+                          items:
+                            properties:
+                              behavior:
+                                description: '(Block List, Max: 1) (see below for
+                                  nested schema)'
+                                items:
+                                  properties:
+                                    scaleDown:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          policies:
+                                            description: (Block List) (see below for
+                                              nested schema)
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: (Number)
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            description: (String)
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            description: (Number)
+                                            type: number
+                                          tolerance:
+                                            description: (String)
+                                            type: string
+                                        type: object
+                                      type: array
+                                    scaleUp:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          policies:
+                                            description: (Block List) (see below for
+                                              nested schema)
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: (Number)
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            description: (String)
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            description: (Number)
+                                            type: number
+                                          tolerance:
+                                            description: (String)
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              maxReplicas:
+                                description: |-
+                                  (Number) Maximum number of replicas.
+                                  Maximum number of replicas.
+                                type: number
+                              metrics:
+                                description: |-
+                                  (Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)
+                                  Metrics used by the HPA.
+                                items:
+                                  properties:
+                                    containerResource:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          container:
+                                            description: (String)
+                                            type: string
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    external:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    object:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          describedObject:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                apiVersion:
+                                                  description: (String)
+                                                  type: string
+                                                kind:
+                                                  description: (String)
+                                                  type: string
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    pods:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    resource:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: (String) Defines apply theshold
+                                        strategy type.
+                                      type: string
+                                  type: object
+                                type: array
+                              minReplicas:
+                                description: |-
+                                  (Number) Minimum number of replicas.
+                                  Minimum number of replicas.
+                                type: number
+                            type: object
+                          type: array
+                        takeOwnership:
+                          description: |-
+                            (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+                            Allows CAST AI to take ownership of eligible existing HPAs.
+                          type: boolean
+                      type: object
+                    type: array
+                  isOpsPilot:
+                    description: |-
+                      (Boolean) Marks a policy as managed by OpsPilot.
+                      Marks a policy as managed by OpsPilot.
+                    type: boolean
                   jvm:
                     description: |-
                       (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
@@ -644,7 +997,7 @@ spec:
                             properties:
                               enabled:
                                 description: |-
-                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
                                   Defines if predictive scaling is enabled for resource.
                                 type: boolean
                             type: object
@@ -687,13 +1040,42 @@ spec:
                       properties:
                         periodSeconds:
                           description: |-
-                            (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-                            When set, recommendations will be adjusted to disregard resource spikes within this period.
-                            If not specified, the workload will receive standard recommendations without startup considerations.
+                            (Number)
                             Defines the duration (in seconds) during which elevated resource usage is expected at startup.
                             When set, recommendations will be adjusted to disregard resource spikes within this period.
                             If not specified, the workload will receive standard recommendations without startup considerations.
                           type: number
+                        twoPhaseRecommendations:
+                          description: |-
+                            (Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)
+                            Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+                                  Enables two-phase startup recommendations.
+                                type: boolean
+                              requestsOnStartup:
+                                description: |-
+                                  (Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)
+                                  Overrides the requests used during the startup phase.
+                                items:
+                                  properties:
+                                    cpuCores:
+                                      description: |-
+                                        (Number) CPU request in cores used during startup.
+                                        CPU request in cores used during startup.
+                                      type: number
+                                    memoryGib:
+                                      description: |-
+                                        (Number) Memory request in GiB used during startup.
+                                        Memory request in GiB used during startup.
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                 type: object
@@ -734,6 +1116,19 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        infiniteMemoryScaling:
+                          description: |-
+                            (Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)
+                            Configures infinite memory scaling anomaly detection.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+                                  Enables infinite memory scaling detection for workloads using this policy.
+                                type: boolean
+                            type: object
+                          type: array
                       type: object
                     type: array
                   antiAffinity:
@@ -1056,6 +1451,346 @@ spec:
                     items:
                       type: string
                     type: array
+                  gpu:
+                    description: |-
+                      (Block List, Max: 1) Configures GPU optimization. (see below for nested schema)
+                      Configures GPU optimization.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages the feature.
+                          type: string
+                      type: object
+                    type: array
+                  hpaConverters:
+                    description: |-
+                      (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+                      Configures conversion of existing HPAs when vertical optimization is used without HPA management.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            HPA converter strategy.
+                          type: string
+                      type: object
+                    type: array
+                  hpaSettings:
+                    description: |-
+                      (Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)
+                      Configures horizontal pod autoscaling for workloads using this policy.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages the feature.
+                          type: string
+                        nativeHpaSpec:
+                          description: |-
+                            (Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)
+                            Native Kubernetes HPA specification.
+                          items:
+                            properties:
+                              behavior:
+                                description: '(Block List, Max: 1) (see below for
+                                  nested schema)'
+                                items:
+                                  properties:
+                                    scaleDown:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          policies:
+                                            description: (Block List) (see below for
+                                              nested schema)
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: (Number)
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            description: (String)
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            description: (Number)
+                                            type: number
+                                          tolerance:
+                                            description: (String)
+                                            type: string
+                                        type: object
+                                      type: array
+                                    scaleUp:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          policies:
+                                            description: (Block List) (see below for
+                                              nested schema)
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: (Number)
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            description: (String)
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            description: (Number)
+                                            type: number
+                                          tolerance:
+                                            description: (String)
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              maxReplicas:
+                                description: |-
+                                  (Number) Maximum number of replicas.
+                                  Maximum number of replicas.
+                                type: number
+                              metrics:
+                                description: |-
+                                  (Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)
+                                  Metrics used by the HPA.
+                                items:
+                                  properties:
+                                    containerResource:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          container:
+                                            description: (String)
+                                            type: string
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    external:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    object:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          describedObject:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                apiVersion:
+                                                  description: (String)
+                                                  type: string
+                                                kind:
+                                                  description: (String)
+                                                  type: string
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    pods:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    resource:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: (String) Defines apply theshold
+                                        strategy type.
+                                      type: string
+                                  type: object
+                                type: array
+                              minReplicas:
+                                description: |-
+                                  (Number) Minimum number of replicas.
+                                  Minimum number of replicas.
+                                type: number
+                            type: object
+                          type: array
+                        takeOwnership:
+                          description: |-
+                            (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+                            Allows CAST AI to take ownership of eligible existing HPAs.
+                          type: boolean
+                      type: object
+                    type: array
+                  isOpsPilot:
+                    description: |-
+                      (Boolean) Marks a policy as managed by OpsPilot.
+                      Marks a policy as managed by OpsPilot.
+                    type: boolean
                   jvm:
                     description: |-
                       (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
@@ -1281,7 +2016,7 @@ spec:
                             properties:
                               enabled:
                                 description: |-
-                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
                                   Defines if predictive scaling is enabled for resource.
                                 type: boolean
                             type: object
@@ -1324,13 +2059,42 @@ spec:
                       properties:
                         periodSeconds:
                           description: |-
-                            (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-                            When set, recommendations will be adjusted to disregard resource spikes within this period.
-                            If not specified, the workload will receive standard recommendations without startup considerations.
+                            (Number)
                             Defines the duration (in seconds) during which elevated resource usage is expected at startup.
                             When set, recommendations will be adjusted to disregard resource spikes within this period.
                             If not specified, the workload will receive standard recommendations without startup considerations.
                           type: number
+                        twoPhaseRecommendations:
+                          description: |-
+                            (Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)
+                            Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+                                  Enables two-phase startup recommendations.
+                                type: boolean
+                              requestsOnStartup:
+                                description: |-
+                                  (Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)
+                                  Overrides the requests used during the startup phase.
+                                items:
+                                  properties:
+                                    cpuCores:
+                                      description: |-
+                                        (Number) CPU request in cores used during startup.
+                                        CPU request in cores used during startup.
+                                      type: number
+                                    memoryGib:
+                                      description: |-
+                                        (Number) Memory request in GiB used during startup.
+                                        Memory request in GiB used during startup.
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                 type: object
@@ -1555,6 +2319,19 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        infiniteMemoryScaling:
+                          description: |-
+                            (Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)
+                            Configures infinite memory scaling anomaly detection.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+                                  Enables infinite memory scaling detection for workloads using this policy.
+                                type: boolean
+                            type: object
+                          type: array
                       type: object
                     type: array
                   antiAffinity:
@@ -1877,9 +2654,349 @@ spec:
                     items:
                       type: string
                     type: array
+                  gpu:
+                    description: |-
+                      (Block List, Max: 1) Configures GPU optimization. (see below for nested schema)
+                      Configures GPU optimization.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages the feature.
+                          type: string
+                      type: object
+                    type: array
+                  hpaConverters:
+                    description: |-
+                      (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+                      Configures conversion of existing HPAs when vertical optimization is used without HPA management.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            HPA converter strategy.
+                          type: string
+                      type: object
+                    type: array
+                  hpaSettings:
+                    description: |-
+                      (Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)
+                      Configures horizontal pod autoscaling for workloads using this policy.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages the feature.
+                          type: string
+                        nativeHpaSpec:
+                          description: |-
+                            (Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)
+                            Native Kubernetes HPA specification.
+                          items:
+                            properties:
+                              behavior:
+                                description: '(Block List, Max: 1) (see below for
+                                  nested schema)'
+                                items:
+                                  properties:
+                                    scaleDown:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          policies:
+                                            description: (Block List) (see below for
+                                              nested schema)
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: (Number)
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            description: (String)
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            description: (Number)
+                                            type: number
+                                          tolerance:
+                                            description: (String)
+                                            type: string
+                                        type: object
+                                      type: array
+                                    scaleUp:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          policies:
+                                            description: (Block List) (see below for
+                                              nested schema)
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: (Number)
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            description: (String)
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            description: (Number)
+                                            type: number
+                                          tolerance:
+                                            description: (String)
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              maxReplicas:
+                                description: |-
+                                  (Number) Maximum number of replicas.
+                                  Maximum number of replicas.
+                                type: number
+                              metrics:
+                                description: |-
+                                  (Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)
+                                  Metrics used by the HPA.
+                                items:
+                                  properties:
+                                    containerResource:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          container:
+                                            description: (String)
+                                            type: string
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    external:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    object:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          describedObject:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                apiVersion:
+                                                  description: (String)
+                                                  type: string
+                                                kind:
+                                                  description: (String)
+                                                  type: string
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    pods:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          metric:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                name:
+                                                  description: (String) Scaling policy
+                                                    name
+                                                  type: string
+                                                selector:
+                                                  additionalProperties:
+                                                    type: string
+                                                  description: |-
+                                                    (Map of String) Metric label selector.
+                                                    Metric label selector.
+                                                  type: object
+                                                  x-kubernetes-map-type: granular
+                                              type: object
+                                            type: array
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    resource:
+                                      description: '(Block List, Max: 1) (see below
+                                        for nested schema)'
+                                      items:
+                                        properties:
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            description: '(Block List, Min: 1, Max:
+                                              1) (see below for nested schema)'
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  description: (String)
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: (String) Defines apply theshold
+                                        strategy type.
+                                      type: string
+                                  type: object
+                                type: array
+                              minReplicas:
+                                description: |-
+                                  (Number) Minimum number of replicas.
+                                  Minimum number of replicas.
+                                type: number
+                            type: object
+                          type: array
+                        takeOwnership:
+                          description: |-
+                            (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+                            Allows CAST AI to take ownership of eligible existing HPAs.
+                          type: boolean
+                      type: object
+                    type: array
                   id:
                     description: (String) The ID of this resource.
                     type: string
+                  isOpsPilot:
+                    description: |-
+                      (Boolean) Marks a policy as managed by OpsPilot.
+                      Marks a policy as managed by OpsPilot.
+                    type: boolean
                   jvm:
                     description: |-
                       (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
@@ -2105,7 +3222,7 @@ spec:
                             properties:
                               enabled:
                                 description: |-
-                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
                                   Defines if predictive scaling is enabled for resource.
                                 type: boolean
                             type: object
@@ -2148,13 +3265,42 @@ spec:
                       properties:
                         periodSeconds:
                           description: |-
-                            (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-                            When set, recommendations will be adjusted to disregard resource spikes within this period.
-                            If not specified, the workload will receive standard recommendations without startup considerations.
+                            (Number)
                             Defines the duration (in seconds) during which elevated resource usage is expected at startup.
                             When set, recommendations will be adjusted to disregard resource spikes within this period.
                             If not specified, the workload will receive standard recommendations without startup considerations.
                           type: number
+                        twoPhaseRecommendations:
+                          description: |-
+                            (Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)
+                            Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+                                  Enables two-phase startup recommendations.
+                                type: boolean
+                              requestsOnStartup:
+                                description: |-
+                                  (Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)
+                                  Overrides the requests used during the startup phase.
+                                items:
+                                  properties:
+                                    cpuCores:
+                                      description: |-
+                                        (Number) CPU request in cores used during startup.
+                                        CPU request in cores used during startup.
+                                      type: number
+                                    memoryGib:
+                                      description: |-
+                                        (Number) Memory request in GiB used during startup.
+                                        Memory request in GiB used during startup.
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                 type: object

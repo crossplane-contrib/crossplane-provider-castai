@@ -6878,6 +6878,12 @@
                 "optional": true,
                 "computed": true
               },
+              "is_ops_pilot": {
+                "type": "bool",
+                "description": "Marks a policy as managed by OpsPilot.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "management_option": {
                 "type": "string",
                 "description": "Defines possible options for workload management.\n\t- READ_ONLY - workload watched (metrics collected), but no actions performed by CAST AI.\n\t- MANAGED - workload watched (metrics collected), CAST AI may perform actions on the workload.",
@@ -6914,6 +6920,22 @@
                           }
                         },
                         "description": "Configures CPU pressure anomaly detection thresholds.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "infinite_memory_scaling": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enables infinite memory scaling detection for workloads using this policy.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Configures infinite memory scaling anomaly detection.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -7282,6 +7304,471 @@
                 },
                 "max_items": 1
               },
+              "gpu": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "management_option": {
+                      "type": "string",
+                      "description": "Defines whether CAST AI observes or manages the feature.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Configures GPU optimization.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "hpa_converters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "type": {
+                      "type": "string",
+                      "description": "HPA converter strategy.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Configures conversion of existing HPAs when vertical optimization is used without HPA management.",
+                  "description_kind": "plain"
+                }
+              },
+              "hpa_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "management_option": {
+                      "type": "string",
+                      "description": "Defines whether CAST AI observes or manages the feature.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "take_ownership": {
+                      "type": "bool",
+                      "description": "Allows CAST AI to take ownership of eligible existing HPAs.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "native_hpa_spec": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "max_replicas": {
+                            "type": "number",
+                            "description": "Maximum number of replicas.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "min_replicas": {
+                            "type": "number",
+                            "description": "Minimum number of replicas.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "behavior": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "scale_down": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "select_policy": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "stabilization_window_seconds": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "tolerance": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "policies": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "period_seconds": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "scale_up": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "select_policy": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "stabilization_window_seconds": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "tolerance": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "policies": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "period_seconds": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "metrics": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "type": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "container_resource": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "container": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "target": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "external": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "metric": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "name": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "selector": {
+                                              "type": [
+                                                "map",
+                                                "string"
+                                              ],
+                                              "description": "Metric label selector.",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      },
+                                      "target": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "object": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "described_object": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "api_version": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "kind": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "name": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      },
+                                      "metric": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "name": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "selector": {
+                                              "type": [
+                                                "map",
+                                                "string"
+                                              ],
+                                              "description": "Metric label selector.",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      },
+                                      "target": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "pods": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "metric": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "name": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "selector": {
+                                              "type": [
+                                                "map",
+                                                "string"
+                                              ],
+                                              "description": "Metric label selector.",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      },
+                                      "target": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "resource": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "target": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description": "Metrics used by the HPA.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Native Kubernetes HPA specification.",
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Configures horizontal pod autoscaling for workloads using this policy.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "jvm": {
                 "nesting_mode": "list",
                 "block": {
@@ -7585,6 +8072,48 @@
                       "description": "Defines the duration (in seconds) during which elevated resource usage is expected at startup.\nWhen set, recommendations will be adjusted to disregard resource spikes within this period.\nIf not specified, the workload will receive standard recommendations without startup considerations.",
                       "description_kind": "plain",
                       "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "two_phase_recommendations": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enables two-phase startup recommendations.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "requests_on_startup": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "cpu_cores": {
+                                  "type": "number",
+                                  "description": "CPU request in cores used during startup.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "memory_gib": {
+                                  "type": "number",
+                                  "description": "Memory request in GiB used during startup.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Overrides the requests used during the startup phase.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description_kind": "plain"

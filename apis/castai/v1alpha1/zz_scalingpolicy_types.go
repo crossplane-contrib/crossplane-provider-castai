@@ -18,6 +18,10 @@ type AnomalyDetectionInitParameters struct {
 	// (Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)
 	// Configures CPU pressure anomaly detection thresholds.
 	CPUPressure []CPUPressureInitParameters `json:"cpuPressure,omitempty" tf:"cpu_pressure,omitempty"`
+
+	// (Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)
+	// Configures infinite memory scaling anomaly detection.
+	InfiniteMemoryScaling []InfiniteMemoryScalingInitParameters `json:"infiniteMemoryScaling,omitempty" tf:"infinite_memory_scaling,omitempty"`
 }
 
 type AnomalyDetectionObservation struct {
@@ -25,6 +29,10 @@ type AnomalyDetectionObservation struct {
 	// (Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)
 	// Configures CPU pressure anomaly detection thresholds.
 	CPUPressure []CPUPressureObservation `json:"cpuPressure,omitempty" tf:"cpu_pressure,omitempty"`
+
+	// (Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)
+	// Configures infinite memory scaling anomaly detection.
+	InfiniteMemoryScaling []InfiniteMemoryScalingObservation `json:"infiniteMemoryScaling,omitempty" tf:"infinite_memory_scaling,omitempty"`
 }
 
 type AnomalyDetectionParameters struct {
@@ -33,6 +41,11 @@ type AnomalyDetectionParameters struct {
 	// Configures CPU pressure anomaly detection thresholds.
 	// +kubebuilder:validation:Optional
 	CPUPressure []CPUPressureParameters `json:"cpuPressure,omitempty" tf:"cpu_pressure,omitempty"`
+
+	// (Block List, Max: 1) Configures infinite memory scaling anomaly detection. (see below for nested schema)
+	// Configures infinite memory scaling anomaly detection.
+	// +kubebuilder:validation:Optional
+	InfiniteMemoryScaling []InfiniteMemoryScalingParameters `json:"infiniteMemoryScaling,omitempty" tf:"infinite_memory_scaling,omitempty"`
 }
 
 type AntiAffinityInitParameters struct {
@@ -172,6 +185,35 @@ type AssignmentRulesParameters struct {
 	// (Block List, Min: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Rules []RulesParameters `json:"rules" tf:"rules,omitempty"`
+}
+
+type BehaviorInitParameters struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ScaleDown []ScaleDownInitParameters `json:"scaleDown,omitempty" tf:"scale_down,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ScaleUp []ScaleUpInitParameters `json:"scaleUp,omitempty" tf:"scale_up,omitempty"`
+}
+
+type BehaviorObservation struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ScaleDown []ScaleDownObservation `json:"scaleDown,omitempty" tf:"scale_down,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ScaleUp []ScaleUpObservation `json:"scaleUp,omitempty" tf:"scale_up,omitempty"`
+}
+
+type BehaviorParameters struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	ScaleDown []ScaleDownParameters `json:"scaleDown,omitempty" tf:"scale_down,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	ScaleUp []ScaleUpParameters `json:"scaleUp,omitempty" tf:"scale_up,omitempty"`
 }
 
 type CPUConstraintsInitParameters struct {
@@ -330,6 +372,84 @@ type ConstraintsMinParameters struct {
 	PercentageOfOriginal *float64 `json:"percentageOfOriginal,omitempty" tf:"percentage_of_original,omitempty"`
 }
 
+type ContainerResourceInitParameters struct {
+
+	// (String)
+	Container *string `json:"container,omitempty" tf:"container,omitempty"`
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ContainerResourceObservation struct {
+
+	// (String)
+	Container *string `json:"container,omitempty" tf:"container,omitempty"`
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []TargetObservation `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ContainerResourceParameters struct {
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Container *string `json:"container" tf:"container,omitempty"`
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Target []TargetParameters `json:"target" tf:"target,omitempty"`
+}
+
+type DescribedObjectInitParameters struct {
+
+	// (String)
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// (String)
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type DescribedObjectObservation struct {
+
+	// (String)
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// (String)
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type DescribedObjectParameters struct {
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type DownscalingInitParameters struct {
 
 	// (String) Recommendation apply type.
@@ -356,6 +476,191 @@ type DownscalingParameters struct {
 	// - DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)
 	// +kubebuilder:validation:Optional
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
+}
+
+type ExternalInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Metric []ExternalMetricInitParameters `json:"metric,omitempty" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []ExternalTargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ExternalMetricInitParameters struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type ExternalMetricObservation struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type ExternalMetricParameters struct {
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type ExternalObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Metric []ExternalMetricObservation `json:"metric,omitempty" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []ExternalTargetObservation `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ExternalParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Metric []ExternalMetricParameters `json:"metric" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Target []ExternalTargetParameters `json:"target" tf:"target,omitempty"`
+}
+
+type ExternalTargetInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ExternalTargetObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ExternalTargetParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type HpaConvertersInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// HPA converter strategy.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type HpaConvertersObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	// HPA converter strategy.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type HpaConvertersParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// HPA converter strategy.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type HpaSettingsInitParameters struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages the feature.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)
+	// Native Kubernetes HPA specification.
+	NativeHpaSpec []NativeHpaSpecInitParameters `json:"nativeHpaSpec,omitempty" tf:"native_hpa_spec,omitempty"`
+
+	// (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+	// Allows CAST AI to take ownership of eligible existing HPAs.
+	TakeOwnership *bool `json:"takeOwnership,omitempty" tf:"take_ownership,omitempty"`
+}
+
+type HpaSettingsObservation struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages the feature.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)
+	// Native Kubernetes HPA specification.
+	NativeHpaSpec []NativeHpaSpecObservation `json:"nativeHpaSpec,omitempty" tf:"native_hpa_spec,omitempty"`
+
+	// (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+	// Allows CAST AI to take ownership of eligible existing HPAs.
+	TakeOwnership *bool `json:"takeOwnership,omitempty" tf:"take_ownership,omitempty"`
+}
+
+type HpaSettingsParameters struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages the feature.
+	// +kubebuilder:validation:Optional
+	ManagementOption *string `json:"managementOption" tf:"management_option,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) Native Kubernetes HPA specification. (see below for nested schema)
+	// Native Kubernetes HPA specification.
+	// +kubebuilder:validation:Optional
+	NativeHpaSpec []NativeHpaSpecParameters `json:"nativeHpaSpec" tf:"native_hpa_spec,omitempty"`
+
+	// (Boolean) Allows CAST AI to take ownership of eligible existing HPAs.
+	// Allows CAST AI to take ownership of eligible existing HPAs.
+	// +kubebuilder:validation:Optional
+	TakeOwnership *bool `json:"takeOwnership" tf:"take_ownership,omitempty"`
+}
+
+type InfiniteMemoryScalingInitParameters struct {
+
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+	// Enables infinite memory scaling detection for workloads using this policy.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type InfiniteMemoryScalingObservation struct {
+
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+	// Enables infinite memory scaling detection for workloads using this policy.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type InfiniteMemoryScalingParameters struct {
+
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+	// Enables infinite memory scaling detection for workloads using this policy.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
 }
 
 type JvmInitParameters struct {
@@ -793,6 +1098,75 @@ type MemoryParameters struct {
 	Optimization *bool `json:"optimization,omitempty" tf:"optimization,omitempty"`
 }
 
+type MetricsInitParameters struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ContainerResource []ContainerResourceInitParameters `json:"containerResource,omitempty" tf:"container_resource,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	External []ExternalInitParameters `json:"external,omitempty" tf:"external,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Object []ObjectInitParameters `json:"object,omitempty" tf:"object,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Pods []PodsInitParameters `json:"pods,omitempty" tf:"pods,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Resource []ResourceInitParameters `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type MetricsObservation struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ContainerResource []ContainerResourceObservation `json:"containerResource,omitempty" tf:"container_resource,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	External []ExternalObservation `json:"external,omitempty" tf:"external,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Object []ObjectObservation `json:"object,omitempty" tf:"object,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Pods []PodsObservation `json:"pods,omitempty" tf:"pods,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Resource []ResourceObservation `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type MetricsParameters struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	ContainerResource []ContainerResourceParameters `json:"containerResource,omitempty" tf:"container_resource,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	External []ExternalParameters `json:"external,omitempty" tf:"external,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Object []ObjectParameters `json:"object,omitempty" tf:"object,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Pods []PodsParameters `json:"pods,omitempty" tf:"pods,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Resource []ResourceParameters `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type MinInitParameters struct {
 
 	// MiB, for CPU - cores.
@@ -863,23 +1237,316 @@ type NamespaceParameters struct {
 	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
 }
 
+type NativeHpaSpecInitParameters struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Behavior []BehaviorInitParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
+	// (Number) Maximum number of replicas.
+	// Maximum number of replicas.
+	MaxReplicas *float64 `json:"maxReplicas,omitempty" tf:"max_replicas,omitempty"`
+
+	// (Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)
+	// Metrics used by the HPA.
+	Metrics []MetricsInitParameters `json:"metrics,omitempty" tf:"metrics,omitempty"`
+
+	// (Number) Minimum number of replicas.
+	// Minimum number of replicas.
+	MinReplicas *float64 `json:"minReplicas,omitempty" tf:"min_replicas,omitempty"`
+}
+
+type NativeHpaSpecObservation struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	Behavior []BehaviorObservation `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
+	// (Number) Maximum number of replicas.
+	// Maximum number of replicas.
+	MaxReplicas *float64 `json:"maxReplicas,omitempty" tf:"max_replicas,omitempty"`
+
+	// (Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)
+	// Metrics used by the HPA.
+	Metrics []MetricsObservation `json:"metrics,omitempty" tf:"metrics,omitempty"`
+
+	// (Number) Minimum number of replicas.
+	// Minimum number of replicas.
+	MinReplicas *float64 `json:"minReplicas,omitempty" tf:"min_replicas,omitempty"`
+}
+
+type NativeHpaSpecParameters struct {
+
+	// (Block List, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Behavior []BehaviorParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
+	// (Number) Maximum number of replicas.
+	// Maximum number of replicas.
+	// +kubebuilder:validation:Optional
+	MaxReplicas *float64 `json:"maxReplicas" tf:"max_replicas,omitempty"`
+
+	// (Block List, Min: 1) Metrics used by the HPA. (see below for nested schema)
+	// Metrics used by the HPA.
+	// +kubebuilder:validation:Optional
+	Metrics []MetricsParameters `json:"metrics" tf:"metrics,omitempty"`
+
+	// (Number) Minimum number of replicas.
+	// Minimum number of replicas.
+	// +kubebuilder:validation:Optional
+	MinReplicas *float64 `json:"minReplicas" tf:"min_replicas,omitempty"`
+}
+
+type ObjectInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	DescribedObject []DescribedObjectInitParameters `json:"describedObject,omitempty" tf:"described_object,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Metric []ObjectMetricInitParameters `json:"metric,omitempty" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []ObjectTargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ObjectMetricInitParameters struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type ObjectMetricObservation struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type ObjectMetricParameters struct {
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type ObjectObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	DescribedObject []DescribedObjectObservation `json:"describedObject,omitempty" tf:"described_object,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Metric []ObjectMetricObservation `json:"metric,omitempty" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []ObjectTargetObservation `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ObjectParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	DescribedObject []DescribedObjectParameters `json:"describedObject" tf:"described_object,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Metric []ObjectMetricParameters `json:"metric" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Target []ObjectTargetParameters `json:"target" tf:"target,omitempty"`
+}
+
+type ObjectTargetInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ObjectTargetObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ObjectTargetParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type PodsInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Metric []PodsMetricInitParameters `json:"metric,omitempty" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []PodsTargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type PodsMetricInitParameters struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type PodsMetricObservation struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type PodsMetricParameters struct {
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// (Map of String) Metric label selector.
+	// Metric label selector.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Selector map[string]*string `json:"selector,omitempty" tf:"selector,omitempty"`
+}
+
+type PodsObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Metric []PodsMetricObservation `json:"metric,omitempty" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []PodsTargetObservation `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type PodsParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Metric []PodsMetricParameters `json:"metric" tf:"metric,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Target []PodsTargetParameters `json:"target" tf:"target,omitempty"`
+}
+
+type PodsTargetInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type PodsTargetObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type PodsTargetParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type PoliciesInitParameters struct {
+
+	// (Number)
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type PoliciesObservation struct {
+
+	// (Number)
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type PoliciesParameters struct {
+
+	// (Number)
+	// +kubebuilder:validation:Optional
+	PeriodSeconds *float64 `json:"periodSeconds" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *float64 `json:"value" tf:"value,omitempty"`
+}
+
 type PredictiveScalingCPUInitParameters struct {
 
-	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
 	// Defines if predictive scaling is enabled for resource.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type PredictiveScalingCPUObservation struct {
 
-	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
 	// Defines if predictive scaling is enabled for resource.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type PredictiveScalingCPUParameters struct {
 
-	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
 	// Defines if predictive scaling is enabled for resource.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
@@ -905,6 +1572,99 @@ type PredictiveScalingParameters struct {
 	// Defines predictive scaling resource configuration.
 	// +kubebuilder:validation:Optional
 	CPU []PredictiveScalingCPUParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
+}
+
+type RequestsOnStartupInitParameters struct {
+
+	// (Number) CPU request in cores used during startup.
+	// CPU request in cores used during startup.
+	CPUCores *float64 `json:"cpuCores,omitempty" tf:"cpu_cores,omitempty"`
+
+	// (Number) Memory request in GiB used during startup.
+	// Memory request in GiB used during startup.
+	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
+}
+
+type RequestsOnStartupObservation struct {
+
+	// (Number) CPU request in cores used during startup.
+	// CPU request in cores used during startup.
+	CPUCores *float64 `json:"cpuCores,omitempty" tf:"cpu_cores,omitempty"`
+
+	// (Number) Memory request in GiB used during startup.
+	// Memory request in GiB used during startup.
+	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
+}
+
+type RequestsOnStartupParameters struct {
+
+	// (Number) CPU request in cores used during startup.
+	// CPU request in cores used during startup.
+	// +kubebuilder:validation:Optional
+	CPUCores *float64 `json:"cpuCores,omitempty" tf:"cpu_cores,omitempty"`
+
+	// (Number) Memory request in GiB used during startup.
+	// Memory request in GiB used during startup.
+	// +kubebuilder:validation:Optional
+	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
+}
+
+type ResourceInitParameters struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []ResourceTargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ResourceObservation struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	Target []ResourceTargetObservation `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ResourceParameters struct {
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Target []ResourceTargetParameters `json:"target" tf:"target,omitempty"`
+}
+
+type ResourceTargetInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ResourceTargetObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ResourceTargetParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
 }
 
 type RolloutBehaviorInitParameters struct {
@@ -1044,6 +1804,143 @@ type RulesWorkloadParameters struct {
 	// Defines matching by label selector requirements.
 	// +kubebuilder:validation:Optional
 	LabelsExpressions []WorkloadLabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+}
+
+type ScaleDownInitParameters struct {
+
+	// (Block List) (see below for nested schema)
+	Policies []PoliciesInitParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// (String)
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// (Number)
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+
+	// (String)
+	Tolerance *string `json:"tolerance,omitempty" tf:"tolerance,omitempty"`
+}
+
+type ScaleDownObservation struct {
+
+	// (Block List) (see below for nested schema)
+	Policies []PoliciesObservation `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// (String)
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// (Number)
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+
+	// (String)
+	Tolerance *string `json:"tolerance,omitempty" tf:"tolerance,omitempty"`
+}
+
+type ScaleDownParameters struct {
+
+	// (Block List) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Policies []PoliciesParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// (Number)
+	// +kubebuilder:validation:Optional
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Tolerance *string `json:"tolerance,omitempty" tf:"tolerance,omitempty"`
+}
+
+type ScaleUpInitParameters struct {
+
+	// (Block List) (see below for nested schema)
+	Policies []ScaleUpPoliciesInitParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// (String)
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// (Number)
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+
+	// (String)
+	Tolerance *string `json:"tolerance,omitempty" tf:"tolerance,omitempty"`
+}
+
+type ScaleUpObservation struct {
+
+	// (Block List) (see below for nested schema)
+	Policies []ScaleUpPoliciesObservation `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// (String)
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// (Number)
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+
+	// (String)
+	Tolerance *string `json:"tolerance,omitempty" tf:"tolerance,omitempty"`
+}
+
+type ScaleUpParameters struct {
+
+	// (Block List) (see below for nested schema)
+	// +kubebuilder:validation:Optional
+	Policies []ScaleUpPoliciesParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// (Number)
+	// +kubebuilder:validation:Optional
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Tolerance *string `json:"tolerance,omitempty" tf:"tolerance,omitempty"`
+}
+
+type ScaleUpPoliciesInitParameters struct {
+
+	// (Number)
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ScaleUpPoliciesObservation struct {
+
+	// (Number)
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ScaleUpPoliciesParameters struct {
+
+	// (Number)
+	// +kubebuilder:validation:Optional
+	PeriodSeconds *float64 `json:"periodSeconds" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *float64 `json:"value" tf:"value,omitempty"`
 }
 
 type ScalingPolicyCPUInitParameters struct {
@@ -1198,6 +2095,28 @@ type ScalingPolicyCPUParameters struct {
 	Overhead *float64 `json:"overhead,omitempty" tf:"overhead,omitempty"`
 }
 
+type ScalingPolicyGpuInitParameters struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages the feature.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+}
+
+type ScalingPolicyGpuObservation struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages the feature.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+}
+
+type ScalingPolicyGpuParameters struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages the feature.
+	// +kubebuilder:validation:Optional
+	ManagementOption *string `json:"managementOption" tf:"management_option,omitempty"`
+}
+
 type ScalingPolicyInitParameters struct {
 
 	// (Block List, Max: 1) Defines anomaly detection settings for the scaling policy. (see below for nested schema)
@@ -1234,6 +2153,22 @@ type ScalingPolicyInitParameters struct {
 	// (List of String) Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
 	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
 	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
+
+	// (Block List, Max: 1) Configures GPU optimization. (see below for nested schema)
+	// Configures GPU optimization.
+	Gpu []ScalingPolicyGpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
+
+	// (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+	// Configures conversion of existing HPAs when vertical optimization is used without HPA management.
+	HpaConverters []HpaConvertersInitParameters `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
+
+	// (Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)
+	// Configures horizontal pod autoscaling for workloads using this policy.
+	HpaSettings []HpaSettingsInitParameters `json:"hpaSettings,omitempty" tf:"hpa_settings,omitempty"`
+
+	// (Boolean) Marks a policy as managed by OpsPilot.
+	// Marks a policy as managed by OpsPilot.
+	IsOpsPilot *bool `json:"isOpsPilot,omitempty" tf:"is_ops_pilot,omitempty"`
 
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
@@ -1460,8 +2395,24 @@ type ScalingPolicyObservation struct {
 	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
 	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
 
+	// (Block List, Max: 1) Configures GPU optimization. (see below for nested schema)
+	// Configures GPU optimization.
+	Gpu []ScalingPolicyGpuObservation `json:"gpu,omitempty" tf:"gpu,omitempty"`
+
+	// (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+	// Configures conversion of existing HPAs when vertical optimization is used without HPA management.
+	HpaConverters []HpaConvertersObservation `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
+
+	// (Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)
+	// Configures horizontal pod autoscaling for workloads using this policy.
+	HpaSettings []HpaSettingsObservation `json:"hpaSettings,omitempty" tf:"hpa_settings,omitempty"`
+
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Boolean) Marks a policy as managed by OpsPilot.
+	// Marks a policy as managed by OpsPilot.
+	IsOpsPilot *bool `json:"isOpsPilot,omitempty" tf:"is_ops_pilot,omitempty"`
 
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
@@ -1545,6 +2496,26 @@ type ScalingPolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
 
+	// (Block List, Max: 1) Configures GPU optimization. (see below for nested schema)
+	// Configures GPU optimization.
+	// +kubebuilder:validation:Optional
+	Gpu []ScalingPolicyGpuParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
+
+	// (Block List) Configures conversion of existing HPAs when vertical optimization is used without HPA management. (see below for nested schema)
+	// Configures conversion of existing HPAs when vertical optimization is used without HPA management.
+	// +kubebuilder:validation:Optional
+	HpaConverters []HpaConvertersParameters `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
+
+	// (Block List, Max: 1) Configures horizontal pod autoscaling for workloads using this policy. (see below for nested schema)
+	// Configures horizontal pod autoscaling for workloads using this policy.
+	// +kubebuilder:validation:Optional
+	HpaSettings []HpaSettingsParameters `json:"hpaSettings,omitempty" tf:"hpa_settings,omitempty"`
+
+	// (Boolean) Marks a policy as managed by OpsPilot.
+	// Marks a policy as managed by OpsPilot.
+	// +kubebuilder:validation:Optional
+	IsOpsPilot *bool `json:"isOpsPilot,omitempty" tf:"is_ops_pilot,omitempty"`
+
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
 	// +kubebuilder:validation:Optional
@@ -1591,36 +2562,107 @@ type ScalingPolicyParameters struct {
 
 type StartupInitParameters struct {
 
-	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-	// When set, recommendations will be adjusted to disregard resource spikes within this period.
-	// If not specified, the workload will receive standard recommendations without startup considerations.
+	// (Number)
 	// Defines the duration (in seconds) during which elevated resource usage is expected at startup.
 	// When set, recommendations will be adjusted to disregard resource spikes within this period.
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)
+	// Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.
+	TwoPhaseRecommendations []TwoPhaseRecommendationsInitParameters `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
 }
 
 type StartupObservation struct {
 
-	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-	// When set, recommendations will be adjusted to disregard resource spikes within this period.
-	// If not specified, the workload will receive standard recommendations without startup considerations.
+	// (Number)
 	// Defines the duration (in seconds) during which elevated resource usage is expected at startup.
 	// When set, recommendations will be adjusted to disregard resource spikes within this period.
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)
+	// Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.
+	TwoPhaseRecommendations []TwoPhaseRecommendationsObservation `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
 }
 
 type StartupParameters struct {
 
-	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
-	// When set, recommendations will be adjusted to disregard resource spikes within this period.
-	// If not specified, the workload will receive standard recommendations without startup considerations.
+	// (Number)
 	// Defines the duration (in seconds) during which elevated resource usage is expected at startup.
 	// When set, recommendations will be adjusted to disregard resource spikes within this period.
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	// +kubebuilder:validation:Optional
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (Block List, Max: 1) Configures startup recommendations that use original requests during startup and optimized recommendations afterwards. (see below for nested schema)
+	// Configures startup recommendations that use original requests during startup and optimized recommendations afterwards.
+	// +kubebuilder:validation:Optional
+	TwoPhaseRecommendations []TwoPhaseRecommendationsParameters `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
+}
+
+type TargetInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TargetObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String)
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TargetParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// (String)
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type TwoPhaseRecommendationsInitParameters struct {
+
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+	// Enables two-phase startup recommendations.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)
+	// Overrides the requests used during the startup phase.
+	RequestsOnStartup []RequestsOnStartupInitParameters `json:"requestsOnStartup,omitempty" tf:"requests_on_startup,omitempty"`
+}
+
+type TwoPhaseRecommendationsObservation struct {
+
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+	// Enables two-phase startup recommendations.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)
+	// Overrides the requests used during the startup phase.
+	RequestsOnStartup []RequestsOnStartupObservation `json:"requestsOnStartup,omitempty" tf:"requests_on_startup,omitempty"`
+}
+
+type TwoPhaseRecommendationsParameters struct {
+
+	// (Boolean) Enables infinite memory scaling detection for workloads using this policy.
+	// Enables two-phase startup recommendations.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+
+	// (Block List, Max: 1) Overrides the requests used during the startup phase. (see below for nested schema)
+	// Overrides the requests used during the startup phase.
+	// +kubebuilder:validation:Optional
+	RequestsOnStartup []RequestsOnStartupParameters `json:"requestsOnStartup,omitempty" tf:"requests_on_startup,omitempty"`
 }
 
 type WorkloadLabelsExpressionsInitParameters struct {

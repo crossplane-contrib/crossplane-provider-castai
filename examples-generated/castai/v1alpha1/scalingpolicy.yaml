@@ -12,6 +12,8 @@ spec:
     - cpuPressure:
       - cpuStallThresholdPercentage: 50
         minPressuredPodPercentage: 30
+      infiniteMemoryScaling:
+      - enabled: true
     antiAffinity:
     - considerAntiAffinity: false
     applyType: IMMEDIATE
@@ -52,6 +54,38 @@ spec:
     excludedContainers:
     - container-1
     - container-2
+    gpu:
+    - managementOption: READ_ONLY
+    hpaConverters:
+    - type: AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS
+    hpaSettings:
+    - managementOption: READ_ONLY
+      nativeHpaSpec:
+      - behavior:
+        - scaleDown:
+          - policies:
+            - periodSeconds: 15
+              type: PERCENT_SCALING_POLICY
+              value: 100
+            selectPolicy: MAX_CHANGE_POLICY_SELECT
+            stabilizationWindowSeconds: 300
+          scaleUp:
+          - policies:
+            - periodSeconds: 15
+              type: PERCENT_SCALING_POLICY
+              value: 100
+            selectPolicy: MAX_CHANGE_POLICY_SELECT
+            stabilizationWindowSeconds: 0
+        maxReplicas: 20
+        metrics:
+        - resource:
+          - name: cpu
+            target:
+            - type: UTILIZATION
+              value: "80"
+          type: RESOURCE
+        minReplicas: 2
+      takeOwnership: false
     jvm:
     - memory:
       - optimization: true
@@ -75,3 +109,5 @@ spec:
     - type: NO_DISRUPTION
     startup:
     - periodSeconds: 240
+      twoPhaseRecommendations:
+      - enabled: true

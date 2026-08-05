@@ -4,7 +4,16 @@
 PROJECT_NAME ?= crossplane-provider-castai
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
+# HashiCorp Terraform CLI used by Upjet at runtime (and for schema generation).
+# Kept at 1.5.7 by default (last MPL release). TF >= 1.6 is BSL and must not be
+# used for crossplane-contrib distribution without Legal approval.
 export TERRAFORM_VERSION ?= 1.5.7
+
+# Test/CVE option: set CLI_FLAVOR=opentofu to ship OpenTofu instead of Terraform
+# CLI in the provider image (installed as `terraform` for Upjet compatibility).
+# Example: make img.build CLI_FLAVOR=opentofu
+export CLI_FLAVOR ?= terraform
+export OPENTOFU_VERSION ?= 1.9.4
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai

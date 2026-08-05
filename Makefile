@@ -12,7 +12,7 @@ export TERRAFORM_VERSION ?= 1.5.7
 # Default: OpenTofu installed as `terraform` to clear TF 1.5.7 CVE scan debt.
 # Rollback: make img.build CLI_FLAVOR=terraform
 export CLI_FLAVOR ?= opentofu
-export OPENTOFU_VERSION ?= 1.9.4
+export OPENTOFU_VERSION ?= 1.12.5
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai

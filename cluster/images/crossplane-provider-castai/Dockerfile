@@ -4,7 +4,7 @@
 # Rollback: build with CLI_FLAVOR=terraform to ship HashiCorp Terraform 1.5.7.
 
 ARG CLI_FLAVOR=opentofu
-ARG OPENTOFU_VERSION=1.9.4
+ARG OPENTOFU_VERSION=1.12.5
 
 FROM ghcr.io/opentofu/opentofu:${OPENTOFU_VERSION}-minimal AS opentofu
 
@@ -17,7 +17,7 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG CROSSPLANE_PROVIDER_VERSION
 ARG CLI_FLAVOR=opentofu
-ARG OPENTOFU_VERSION=1.9.4
+ARG OPENTOFU_VERSION=1.12.5
 
 ADD "bin/${TARGETOS}_${TARGETARCH}/provider" /usr/local/bin/provider
 

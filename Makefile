@@ -4,7 +4,15 @@
 PROJECT_NAME ?= crossplane-provider-castai
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
+# Schema generation still uses HashiCorp Terraform 1.5.7 on the build host
+# (last MPL release). Do not bump this to TF >= 1.6 without Legal approval (BSL).
 export TERRAFORM_VERSION ?= 1.5.7
+
+# Runtime provider image CLI (Upjet invokes `terraform` in the container).
+# Default: OpenTofu installed as `terraform` to clear TF 1.5.7 CVE scan debt.
+# Rollback: make img.build CLI_FLAVOR=terraform
+export CLI_FLAVOR ?= opentofu
+export OPENTOFU_VERSION ?= 1.12.5
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai

@@ -19,8 +19,8 @@ type AksInitParameters struct {
 	// Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
 	AcceleratedNetworking *string `json:"acceleratedNetworking,omitempty" tf:"accelerated_networking,omitempty"`
 
-	// linux,windows2019,windows2022)
-	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)
+	// linux,windows2019,windows2022,windows2025)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
 
 	// (List of String) Application security groups to be used for provisioned nodes
@@ -66,8 +66,8 @@ type AksObservation struct {
 	// Controls SR-IOV accelerated networking on the node NIC. Allowed values: `disabled` (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.
 	AcceleratedNetworking *string `json:"acceleratedNetworking,omitempty" tf:"accelerated_networking,omitempty"`
 
-	// linux,windows2019,windows2022)
-	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)
+	// linux,windows2019,windows2022,windows2025)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
 
 	// (List of String) Application security groups to be used for provisioned nodes
@@ -114,8 +114,8 @@ type AksParameters struct {
 	// +kubebuilder:validation:Optional
 	AcceleratedNetworking *string `json:"acceleratedNetworking,omitempty" tf:"accelerated_networking,omitempty"`
 
-	// linux,windows2019,windows2022)
-	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)
+	// linux,windows2019,windows2022,windows2025)
+	// Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)
 	// +kubebuilder:validation:Optional
 	AksImageFamily *string `json:"aksImageFamily,omitempty" tf:"aks_image_family,omitempty"`
 

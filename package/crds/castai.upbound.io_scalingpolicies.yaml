@@ -342,7 +342,7 @@ spec:
                           type: string
                         limit:
                           description: |-
-                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            block:
                             Resource limit settings
                           items:
                             properties:
@@ -353,13 +353,29 @@ spec:
                                 type: number
                               onlyIfOriginalExist:
                                 description: |-
-                                  (Boolean) Apply the strategy only when the original resource has limits defined.
-                                  Apply the strategy only when the original resource has limits defined.
+                                  (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+                                  When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+
+
+                                  This flag allows conditional limit management based on the original workload configuration.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               onlyIfOriginalLower:
                                 description: |-
-                                  (Boolean) Use the original resource limits if they are higher than recommended values.
-                                  Use the original resource limits if they are higher than recommended values.
+                                  (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+                                  When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+
+
+                                  This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               type:
                                 description: |-
@@ -418,6 +434,19 @@ spec:
                       Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
                     items:
                       type: string
+                    type: array
+                  hpaConverters:
+                    description: |-
+                      (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
+                      Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
+                          type: string
+                      type: object
                     type: array
                   jvm:
                     description: |-
@@ -557,7 +586,7 @@ spec:
                           type: string
                         limit:
                           description: |-
-                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            block:
                             Resource limit settings
                           items:
                             properties:
@@ -568,13 +597,29 @@ spec:
                                 type: number
                               onlyIfOriginalExist:
                                 description: |-
-                                  (Boolean) Apply the strategy only when the original resource has limits defined.
-                                  Apply the strategy only when the original resource has limits defined.
+                                  (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+                                  When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+
+
+                                  This flag allows conditional limit management based on the original workload configuration.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               onlyIfOriginalLower:
                                 description: |-
-                                  (Boolean) Use the original resource limits if they are higher than recommended values.
-                                  Use the original resource limits if they are higher than recommended values.
+                                  (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+                                  When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+
+
+                                  This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               type:
                                 description: |-
@@ -694,6 +739,37 @@ spec:
                             When set, recommendations will be adjusted to disregard resource spikes within this period.
                             If not specified, the workload will receive standard recommendations without startup considerations.
                           type: number
+                        twoPhaseRecommendations:
+                          description: |-
+                            phase recommendations settings for the startup period. (see below for nested schema)
+                            Defines two-phase recommendations settings for the startup period.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  Defines whether two-phase recommendations are enabled during startup.
+                                type: boolean
+                              requestsOnStartup:
+                                description: |-
+                                  (Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)
+                                  Defines the resource requests to use during startup.
+                                items:
+                                  properties:
+                                    cpuCores:
+                                      description: |-
+                                        (Number) CPU cores to request during startup.
+                                        CPU cores to request during startup.
+                                      type: number
+                                    memoryGib:
+                                      description: |-
+                                        (Number) Memory in GiB to request during startup.
+                                        Memory in GiB to request during startup.
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                 type: object
@@ -979,7 +1055,7 @@ spec:
                           type: string
                         limit:
                           description: |-
-                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            block:
                             Resource limit settings
                           items:
                             properties:
@@ -990,13 +1066,29 @@ spec:
                                 type: number
                               onlyIfOriginalExist:
                                 description: |-
-                                  (Boolean) Apply the strategy only when the original resource has limits defined.
-                                  Apply the strategy only when the original resource has limits defined.
+                                  (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+                                  When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+
+
+                                  This flag allows conditional limit management based on the original workload configuration.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               onlyIfOriginalLower:
                                 description: |-
-                                  (Boolean) Use the original resource limits if they are higher than recommended values.
-                                  Use the original resource limits if they are higher than recommended values.
+                                  (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+                                  When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+
+
+                                  This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               type:
                                 description: |-
@@ -1055,6 +1147,19 @@ spec:
                       Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
                     items:
                       type: string
+                    type: array
+                  hpaConverters:
+                    description: |-
+                      (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
+                      Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
+                          type: string
+                      type: object
                     type: array
                   jvm:
                     description: |-
@@ -1194,7 +1299,7 @@ spec:
                           type: string
                         limit:
                           description: |-
-                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            block:
                             Resource limit settings
                           items:
                             properties:
@@ -1205,13 +1310,29 @@ spec:
                                 type: number
                               onlyIfOriginalExist:
                                 description: |-
-                                  (Boolean) Apply the strategy only when the original resource has limits defined.
-                                  Apply the strategy only when the original resource has limits defined.
+                                  (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+                                  When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+
+
+                                  This flag allows conditional limit management based on the original workload configuration.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               onlyIfOriginalLower:
                                 description: |-
-                                  (Boolean) Use the original resource limits if they are higher than recommended values.
-                                  Use the original resource limits if they are higher than recommended values.
+                                  (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+                                  When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+
+
+                                  This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               type:
                                 description: |-
@@ -1331,6 +1452,37 @@ spec:
                             When set, recommendations will be adjusted to disregard resource spikes within this period.
                             If not specified, the workload will receive standard recommendations without startup considerations.
                           type: number
+                        twoPhaseRecommendations:
+                          description: |-
+                            phase recommendations settings for the startup period. (see below for nested schema)
+                            Defines two-phase recommendations settings for the startup period.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  Defines whether two-phase recommendations are enabled during startup.
+                                type: boolean
+                              requestsOnStartup:
+                                description: |-
+                                  (Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)
+                                  Defines the resource requests to use during startup.
+                                items:
+                                  properties:
+                                    cpuCores:
+                                      description: |-
+                                        (Number) CPU cores to request during startup.
+                                        CPU cores to request during startup.
+                                      type: number
+                                    memoryGib:
+                                      description: |-
+                                        (Number) Memory in GiB to request during startup.
+                                        Memory in GiB to request during startup.
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                 type: object
@@ -1800,7 +1952,7 @@ spec:
                           type: string
                         limit:
                           description: |-
-                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            block:
                             Resource limit settings
                           items:
                             properties:
@@ -1811,13 +1963,29 @@ spec:
                                 type: number
                               onlyIfOriginalExist:
                                 description: |-
-                                  (Boolean) Apply the strategy only when the original resource has limits defined.
-                                  Apply the strategy only when the original resource has limits defined.
+                                  (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+                                  When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+
+
+                                  This flag allows conditional limit management based on the original workload configuration.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               onlyIfOriginalLower:
                                 description: |-
-                                  (Boolean) Use the original resource limits if they are higher than recommended values.
-                                  Use the original resource limits if they are higher than recommended values.
+                                  (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+                                  When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+
+
+                                  This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               type:
                                 description: |-
@@ -1876,6 +2044,19 @@ spec:
                       Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
                     items:
                       type: string
+                    type: array
+                  hpaConverters:
+                    description: |-
+                      (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
+                      Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
+                    items:
+                      properties:
+                        type:
+                          description: |-
+                            (String) Defines apply theshold strategy type.
+                            HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
+                          type: string
+                      type: object
                     type: array
                   id:
                     description: (String) The ID of this resource.
@@ -2018,7 +2199,7 @@ spec:
                           type: string
                         limit:
                           description: |-
-                            (Block List, Max: 1) Resource limit settings (see below for nested schema)
+                            block:
                             Resource limit settings
                           items:
                             properties:
@@ -2029,13 +2210,29 @@ spec:
                                 type: number
                               onlyIfOriginalExist:
                                 description: |-
-                                  (Boolean) Apply the strategy only when the original resource has limits defined.
-                                  Apply the strategy only when the original resource has limits defined.
+                                  (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+                                  When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                                  If the original workload has no limits specified, no limits will be added.
+
+
+                                  This flag allows conditional limit management based on the original workload configuration.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               onlyIfOriginalLower:
                                 description: |-
-                                  (Boolean) Use the original resource limits if they are higher than recommended values.
-                                  Use the original resource limits if they are higher than recommended values.
+                                  (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+                                  When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                                  If the original limits are already higher than the calculated value, they remain unchanged.
+
+
+                                  This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+
+
+                                  Only applicable when the type is set to multiplier.
                                 type: boolean
                               type:
                                 description: |-
@@ -2155,6 +2352,37 @@ spec:
                             When set, recommendations will be adjusted to disregard resource spikes within this period.
                             If not specified, the workload will receive standard recommendations without startup considerations.
                           type: number
+                        twoPhaseRecommendations:
+                          description: |-
+                            phase recommendations settings for the startup period. (see below for nested schema)
+                            Defines two-phase recommendations settings for the startup period.
+                          items:
+                            properties:
+                              enabled:
+                                description: |-
+                                  (Boolean) Defines if predictive scaling is enabled for resource.
+                                  Defines whether two-phase recommendations are enabled during startup.
+                                type: boolean
+                              requestsOnStartup:
+                                description: |-
+                                  (Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)
+                                  Defines the resource requests to use during startup.
+                                items:
+                                  properties:
+                                    cpuCores:
+                                      description: |-
+                                        (Number) CPU cores to request during startup.
+                                        CPU cores to request during startup.
+                                      type: number
+                                    memoryGib:
+                                      description: |-
+                                        (Number) Memory in GiB to request during startup.
+                                        Memory in GiB to request during startup.
+                                      type: number
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                 type: object

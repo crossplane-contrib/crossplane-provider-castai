@@ -180,6 +180,8 @@ resources:
                 subscription_id: data.azurerm_subscription.current.subscription_id
                 tenant_id: data.azurerm_subscription.current.tenant_id
         argumentDocs:
+            ca_cert_config: '(Block List, Max: 1) CA certificates to add to the node''s trust store. (see below for nested schema)'
+            ca_certs: (List of String) List of base64-encoded CA certificates.
             client_id: (String) Azure AD application ID that is created and used by CAST AI.
             client_secret: (String, Sensitive) Azure AD application password that will be used by CAST AI.
             cluster_token: (String, Sensitive) CAST AI cluster token.
@@ -403,6 +405,233 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
+    castai_commitment:
+        subCategory: ""
+        description: Manages a single CAST AI commitment (reserved instance, savings plan, CUD, capacity block or capacity reservation) via the pricing v1beta Commitments API. For bulk management, use for_each — see the examples/ directory.
+        name: castai_commitment
+        title: castai_commitment Resource - terraform-provider-castai
+        examples:
+            - name: gcp_cud
+              manifest: |-
+                {
+                  "allowed_usage": 1,
+                  "autoscaling_status": "ACTIVE",
+                  "cloud": "GCP",
+                  "end_time": "2027-01-01T00:00:00Z",
+                  "gcp_resource_cud_details": {
+                    "cpu": 32,
+                    "cud_id": "123456789",
+                    "memory_mb": 131072,
+                    "plan": "TWELVE_MONTH",
+                    "status": "ACTIVE",
+                    "type": "GENERAL_PURPOSE_E2"
+                  },
+                  "name": "prod-cud-us-central1",
+                  "region": "us-central1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "RESOURCE_CUD"
+                }
+            - name: aws_ri
+              manifest: |-
+                {
+                  "aws_reserved_instances_details": {
+                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+                    "instance_count": 10,
+                    "instance_type": "m5.xlarge",
+                    "scope": "Region",
+                    "state": "active"
+                  },
+                  "cloud": "AWS",
+                  "end_time": "2027-01-01T00:00:00Z",
+                  "name": "prod-ri-us-east-1",
+                  "region": "us-east-1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "RESERVED_INSTANCE"
+                }
+            - name: azure_reservation
+              manifest: |-
+                {
+                  "azure_reservation_details": {
+                    "count": 5,
+                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+                    "instance_flexibility": "ON",
+                    "instance_type": "Standard_D4s_v3",
+                    "plan": "THREE_YEAR",
+                    "scope": "Shared",
+                    "status": "Succeeded"
+                  },
+                  "cloud": "AZURE",
+                  "end_time": "2029-01-01T00:00:00Z",
+                  "name": "prod-reservation-eastus",
+                  "region": "eastus",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "RESERVED_INSTANCE"
+                }
+            - name: gcp_capacity_reservation
+              manifest: |-
+                {
+                  "cloud": "GCP",
+                  "gcp_capacity_reservation_details": {
+                    "accelerators": [
+                      {
+                        "accelerator_count": 1,
+                        "accelerator_type": "https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/acceleratorTypes/nvidia-tesla-a100"
+                      }
+                    ],
+                    "id": "my-reservation",
+                    "instance_type": "a2-highgpu-1g",
+                    "project_id": "my-project",
+                    "self_link": "https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation",
+                    "state": "READY",
+                    "total_instance_count": 4,
+                    "zone": "us-central1-a"
+                  },
+                  "name": "gpu-reservation-us-central1",
+                  "region": "us-central1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "ON_DEMAND_CAPACITY_RESERVATION"
+                }
+            - name: aws_odcr
+              manifest: |-
+                {
+                  "allowed_usage": 1,
+                  "autoscaling_status": "ACTIVE",
+                  "aws_odcr_details": {
+                    "availability_zone": "us-east-1a",
+                    "available_instance_count": 10,
+                    "end_date_type": "unlimited",
+                    "id": "cr-abcdef01234567890",
+                    "instance_match_criteria": "open",
+                    "instance_platform": "Linux/UNIX",
+                    "instance_type": "m5.xlarge",
+                    "interruptible": false,
+                    "state": "active",
+                    "tenancy": "default",
+                    "total_instance_count": 10
+                  },
+                  "cloud": "AWS",
+                  "name": "prod-odcr-us-east-1",
+                  "region": "us-east-1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "ON_DEMAND_CAPACITY_RESERVATION"
+                }
+            - name: bulk_gcp_cuds
+              manifest: |-
+                {
+                  "cloud": "GCP",
+                  "end_time": "${each.value.end_time}",
+                  "for_each": "${{ for cud in local.cuds : cud.cud_id =\u003e cud }}",
+                  "gcp_resource_cud_details": {
+                    "cpu": "${each.value.cpu}",
+                    "cud_id": "${each.value.cud_id}",
+                    "memory_mb": "${each.value.memory_mb}",
+                    "plan": "${each.value.plan}",
+                    "status": "${each.value.status}",
+                    "type": "${each.value.type}"
+                  },
+                  "name": "${each.value.name}",
+                  "region": "${each.value.region}",
+                  "start_time": "${each.value.start_time}",
+                  "type": "RESOURCE_CUD"
+                }
+              references:
+                end_time: each.value.end_time
+                name: each.value.name
+                region: each.value.region
+                start_time: each.value.start_time
+        argumentDocs:
+            accelerator_count: (Number) Number of accelerators of this type per VM.
+            accelerator_type: (String) Accelerator (GPU) type as the full GCP acceleratorType URL.
+            accelerators: (Attributes List) Accelerators (GPUs) reserved VMs must match exactly. (see below for nested schema)
+            allowed_usage: (Number) Allowed usage of the commitment (0.0-1.0). 1.0 means 100%. Defaults to 1.0.
+            assured_instance_count: (Number) Assured count for the reservation.
+            auto_assignment: (Boolean) Auto-assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+            autoscaling_status: '(String) Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.'
+            availability_zone: (String) Availability zone name.
+            availability_zone_id: (String) Availability zone ID.
+            availability_zone_name: (String) AWS availability zone name (zonal RIs only).
+            available_instance_count: (Number) Available (unused) instance count.
+            aws_capacity_block_details: (Attributes) AWS Capacity Block details. Required when type is CAPACITY_BLOCK. (see below for nested schema)
+            aws_capacity_block_details.availability_zone: (String) Availability zone name.
+            aws_capacity_block_details.availability_zone_id: (String) Availability zone ID.
+            aws_capacity_block_details.available_instance_count: (Number) Available (unused) instance count.
+            aws_capacity_block_details.id: (String) Capacity block reservation ID.
+            aws_capacity_block_details.instance_platform: (String) Instance platform (e.g. Linux/UNIX).
+            aws_capacity_block_details.instance_type: (String) EC2 instance type.
+            aws_capacity_block_details.state: (String) Capacity block state.
+            aws_capacity_block_details.total_instance_count: (Number) Total reserved instance count.
+            aws_odcr_details: (Attributes) AWS On-Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS. (see below for nested schema)
+            aws_reserved_instances_details: (Attributes) AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS. (see below for nested schema)
+            aws_savings_plan_details: (Attributes) AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS. (see below for nested schema)
+            azure_reservation_details: (Attributes) Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure. (see below for nested schema)
+            azure_savings_plan_details: (Attributes) Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure. (see below for nested schema)
+            cloud: '(String) Cloud provider. One of: AWS, GCP, AZURE.'
+            commitment_amount: (Number) Commitment amount in USD per hour.
+            commitment_term: '(String) Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.'
+            count: (Number) Count of reserved instances.
+            cpu: (Number) Committed CPU count.
+            create_time: (String) Creation time.
+            cud_id: (String) CUD ID from GCP.
+            disk_size_gb: (Number) Disk size in GB.
+            display_name: (String) User-specified display name.
+            end_date_type: (String) End date type (unlimited, limited).
+            end_time: (String) End time of the commitment (RFC3339).
+            gcp_capacity_reservation_details: (Attributes) GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP. (see below for nested schema)
+            gcp_flex_cud_details: (Attributes) GCP Flex CUD details. Required when type is FLEX_CUD. (see below for nested schema)
+            gcp_resource_cud_details: (Attributes) GCP Resource CUD details. Required when type is RESOURCE_CUD. (see below for nested schema)
+            id: (String) Commitment ID.
+            in_use_instance_count: (Number) Number of instances currently in use.
+            instance_count: (Number) Instance count.
+            instance_flexibility: '(String) Instance flexibility. One of: ON, OFF.'
+            instance_match_criteria: (String) Instance match criteria (open, targeted).
+            instance_platform: (String) Instance platform (e.g. Linux/UNIX).
+            instance_type: (String) EC2 instance type.
+            instance_type_family: (String) Instance type family (EC2 instance savings plans).
+            interface: '(String) Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.'
+            interruptible: (Boolean) Whether this reservation is interruptible.
+            line_item_id: (String) Line item ID within the order.
+            local_ssds: (Attributes List) Local SSD disks reserved VMs must match exactly. (see below for nested schema)
+            memory_mb: (Number) Committed memory in MB.
+            min_cpu_platform: (String) Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+            name: (String) Commitment name.
+            offer: (String) Offer identifier.
+            offering_id: (String) AWS savings plan offering ID.
+            order_name: (String) Resource name of the order.
+            organization_id: (String) CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+            payment_option: '(String) Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.'
+            plan: '(String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.'
+            prioritization: (Boolean) If enabled, resources used by lower-priority clusters are ignored.
+            project_id: (String) GCP project ID that owns the reservation.
+            project_ids: (List of String) Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+            provisioning_state: (String) Provisioning state (e.g. Succeeded, Expired, Cancelled).
+            purchase_time: (String) Purchase time (RFC3339).
+            region: (String) Region where the commitment is applicable.
+            scaling_strategy: '(String) Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.'
+            scope: '(String) Scope: whether the commitment applies to a region or an availability zone.'
+            scope_management_group: (String) Scope management group.
+            scope_resource_group: (String) Scope resource group.
+            scope_subscription: (String) Scope subscription.
+            scope_tenant: (String) Scope tenant ID.
+            self_link: (String) Server-defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+            share_settings: (Attributes) Reservation sharing settings. (see below for nested schema)
+            share_type: '(String) Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.'
+            specific_reservation_required: (Boolean) Whether the reservation requires specific reservation affinity.
+            start_time: (String) Start time of the commitment (RFC3339, e.g. 2026-01-01T00:00:00Z).
+            state: (String) Computed lifecycle state of the commitment.
+            status: (String) Provisioning state (e.g. Succeeded).
+            tenancy: (String) Tenancy (default, dedicated).
+            term: '(String) Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.'
+            total_instance_count: (Number) Total reserved instance count.
+            type: '(String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.'
+            update_time: (String) Last update time.
+            zone: (String) GCP zone of the reservation.
+        importStatements:
+            - |-
+              # Import by commitment ID (organization taken from provider configuration):
+              terraform import castai_commitment.gcp_cud 11111111-2222-3333-4444-555555555555
+
+              # Or with an explicit organization ID:
+              terraform import castai_commitment.gcp_cud <organization_id>/11111111-2222-3333-4444-555555555555
     castai_commitments:
         subCategory: ""
         description: Commitments represent cloud service provider reserved instances (Azure) and commited use discounts (GCP) that can be used by CAST AI autoscaler.
@@ -1120,7 +1349,7 @@ resources:
         argumentDocs:
             accelerated_networking: '(String) Controls SR-IOV accelerated networking on the node NIC. Allowed values: disabled (force off regardless of SKU capability). When omitted, the field is not sent to the API and the API default applies.'
             aks: '(Block List, Max: 1) (see below for nested schema)'
-            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)'
+            aks_image_family: '(String) Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)'
             application_security_groups: (List of String) Application security groups to be used for provisioned nodes
             arn: (String) AWS target group ARN for CAST provisioned nodes
             cache: '(String, Deprecated) Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy'
@@ -1295,6 +1524,7 @@ resources:
             azs: (List of String) The list of AZ names to consider for the node template, if empty or not set all AZs are considered.
             bare_metal: '(String) Bare metal constraint, will only pick bare metal nodes if set to true. Will only pick non-bare metal nodes if false. Defaults to unspecified. Allowed values: true, false, unspecified.'
             burstable_instances: '(String) Will include burstable instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
+            capacity_reservation_ids: (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
             capacity_reservations: (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
             capacity_resource_group_arn: (String) Capacity resource group ARN for UltraServer capacity blocks.
             clm_enabled: (Boolean) Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
@@ -1331,6 +1561,7 @@ resources:
             exclude_names: (List of String) Names of the GPUs to exclude.
             fallback_restore_rate_seconds: '(Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.'
             fractional_gpus: '(String) Will include fractional GPU instances when enabled otherwise they will be excluded. Supported values: enabled, disabled or ``.'
+            gcp: '(Block List, Max: 1) GCP-specific constraints for the node template. (see below for nested schema)'
             gpu: '(Block List, Max: 1) GPU configuration. (see below for nested schema)'
             gpu_name: (String) GPU name.
             id: (String) The ID of this resource.
@@ -1339,7 +1570,7 @@ resources:
             instance_families: '(Block List, Max: 1) (see below for nested schema)'
             instance_type_adjustments: '(Map of String) Map of instance type names to price adjustment multipliers (as strings). Example: {"r7a.xlarge": "1.0", "r7i.xlarge": "1.20"}'
             instance_types: (List of String) Instance/node types in this node group.
-            is_default: (Boolean) Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
+            is_default: (Boolean, Deprecated) Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.
             is_enabled: (Boolean) Flag whether the node template is enabled and considered for autoscaling.
             is_gpu_only: (Boolean) GPU instance constraint - will only pick nodes with GPU if true
             key: (String) Key of the node affinity selector.
@@ -2101,7 +2332,7 @@ resources:
             launch_configuration: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             name: (String) Name of the schedule.
             node_ttl_seconds: (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
-            num_targeted_nodes: (Number) Maximum number of nodes that will be selected for rebalancing.
+            num_targeted_nodes: (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
             read: (String)
             rebalancing_min_nodes: (Number) Minimum number of nodes that should be kept in the cluster after rebalancing.
             savings_percentage: (Number) Defines the minimum percentage of savings expected.
@@ -2339,7 +2570,7 @@ resources:
         name: castai_sso_connection
         title: castai_sso_connection Resource - terraform-provider-castai
         examples:
-            - name: sso
+            - name: aad
               manifest: |-
                 {
                   "aad": [
@@ -2356,6 +2587,21 @@ resources:
                 aad.ad_domain: azuread_application.castai_sso.publisher_domain
                 aad.client_id: azuread_application.castai_sso.client_id
                 aad.client_secret: azuread_application_password.castai_sso.value
+            - name: keycloak
+              manifest: |-
+                {
+                  "email_domain": "example.com",
+                  "name": "keycloak_connection",
+                  "oidc": [
+                    {
+                      "client_id": "castai",
+                      "client_secret": "${var.keycloak_client_secret}",
+                      "issuer_url": "https://keycloak.example.com/realms/my-realm"
+                    }
+                  ]
+                }
+              references:
+                oidc.client_secret: var.keycloak_client_secret
         argumentDocs:
             aad: '(Block List, Max: 1) Azure AD connector (see below for nested schema)'
             ad_domain: (String) Azure AD domain
@@ -2366,12 +2612,15 @@ resources:
             delete: (String)
             email_domain: (String) Email domain of the connection
             id: (String) The ID of this resource.
+            issuer_url: (String) Issuer URL of the OpenID Connect provider
             name: (String) Connection name
+            oidc: '(Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)'
             okta: '(Block List, Max: 1) Okta connector (see below for nested schema)'
             okta_domain: (String) Okta domain
             sync_auth_token: (String, Sensitive) Auth token generated when synchronize_user_groups is enabled. Only populated on the transition from false to true.
             synchronize_user_groups: (Boolean) When enabled, user groups from the identity provider will be synchronized with CAST AI. A sync auth token is generated on activation and stored in sync_auth_token.
             timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
             update: (String)
         importStatements: []
     castai_workload_custom_metrics_data_source:
@@ -2537,6 +2786,11 @@ resources:
                     "container-1",
                     "container-2"
                   ],
+                  "hpa_converters": [
+                    {
+                      "type": "AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS"
+                    }
+                  ],
                   "jvm": [
                     {
                       "memory": [
@@ -2587,7 +2841,18 @@ resources:
                   ],
                   "startup": [
                     {
-                      "period_seconds": 240
+                      "period_seconds": 240,
+                      "two_phase_recommendations": [
+                        {
+                          "enabled": true,
+                          "requests_on_startup": [
+                            {
+                              "cpu_cores": 0.5,
+                              "memory_gib": 1.5
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
@@ -2612,6 +2877,7 @@ resources:
             constant: (Number) Fixed bound value. For memory - MiB, for CPU - cores.
             constraints: '(Block List, Max: 1) Defines min/max bounds for the recommendation using constraint strategies. (see below for nested schema)'
             cpu: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            cpu_cores: (Number) CPU cores to request during startup.
             cpu_pressure: '(Block List, Max: 1) Configures CPU pressure anomaly detection thresholds. (see below for nested schema)'
             cpu_stall_threshold_percentage: (Number) Percentage of time (0-100) that a pod must experience CPU pressure to be considered under pressure.
             create: (String)
@@ -2626,6 +2892,7 @@ resources:
             gvk: |-
                 (List of String) Group, version, and kind for Kubernetes resources. Format: kind[.version][.group].
                 It can be either:
+            hpa_converters: (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
             id: (String) The ID of this resource.
             jvm: '(Block List, Max: 1) JVM optimization settings. (see below for nested schema)'
             key: (String) The label key to match. Required for all operators except Regex and Contains. If not specified, it will search through all labels.
@@ -2635,7 +2902,9 @@ resources:
             management_option: (String) Defines possible options for workload management.
             max: (Number, Deprecated) Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             memory: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            memory.limit: 'block:'
             memory_event: '(Block List, Max: 1) (see below for nested schema)'
+            memory_gib: (Number) Memory in GiB to request during startup.
             min: (Number, Deprecated) Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.
             min_pressured_pod_percentage: (Number) Percentage (0-100) of pods that must be experiencing pressure for the detector to trigger.
             multiplier: (Number) Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
@@ -2643,8 +2912,12 @@ resources:
             names: (List of String) Defines matching by namespace names.
             namespace: '(Block List, Max: 1) Allows assigning a scaling policy based on the workload''s namespace. (see below for nested schema)'
             numerator: (Number) The numerator affects vertical stretch of function used in adaptive threshold - smaller number will create smaller threshold.It must be defined for the CUSTOM_ADAPTIVE strategy.
-            only_if_original_exist: (Boolean) Apply the strategy only when the original resource has limits defined.
-            only_if_original_lower: (Boolean) Use the original resource limits if they are higher than recommended values.
+            only_if_original_exist: |-
+                (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+                If the original workload has no limits specified, no limits will be added.
+            only_if_original_lower: |-
+                (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+                If the original limits are already higher than the calculated value, they remain unchanged.
             operator: (String) The operator to use for matching the label.
             optimization: (Boolean) Defines whether JVM memory optimization is enabled. When enabled, JVM heap size will be adjusted based on JVM metrics, if available.
             overhead: (Number) Overhead for the recommendation, e.g. 0.1 will result in 10% higher recommendation
@@ -2657,11 +2930,13 @@ resources:
             predictive_scaling: '(Block List, Max: 1) (see below for nested schema)'
             prefer_one_by_one: (Boolean) Defines if pods should be restarted one by one to avoid service disruption.
             read: (String)
+            requests_on_startup: '(Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)'
             rollout_behavior: '(Block List, Max: 1) Defines the rollout behavior used when applying recommendations. Prerequisites:'
             rules: '(Block List, Min: 1) (see below for nested schema)'
             startup: '(Block List, Max: 1) (see below for nested schema)'
             threshold: (Number) Defines the confidence threshold for applying recommendations. The smaller number indicates that we require fewer metrics data points to apply recommendations - changing this value can cause applying less precise recommendations. Do not change the default unless you want to optimize with fewer data points (e.g., short-lived workloads).
             timeouts: (Block, Optional) (see below for nested schema)
+            two_phase_recommendations: '(Block List, Max: 1) Defines two-phase recommendations settings for the startup period. (see below for nested schema)'
             type: (String) Defines apply theshold strategy type.
             update: (String)
             values: (List of String) A list of values to match against the label key. It is required for In, NotIn, Regex, and Contains operators.

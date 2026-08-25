@@ -407,6 +407,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              maxCpu:
+                                description: |-
+                                  (Number) Max CPU cores per node.
+                                  Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.
+                                type: number
                               minGpusPerNode:
                                 description: |-
                                   (Number) Minimal number of GPUs per node.
@@ -429,6 +434,21 @@ spec:
                             (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                             Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
+                        gcp:
+                          description: |-
+                            specific constraints for the node template. (see below for nested schema)
+                            GCP-specific constraints for the node template.
+                          items:
+                            properties:
+                              capacityReservationIds:
+                                description: |-
+                                  (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
+                                  GCP capacity reservation IDs (numeric) that this template is allowed to use.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
                         gpu:
                           description: '(Block List, Max: 1) GPU configuration. (see
                             below for nested schema)'
@@ -1082,6 +1102,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              maxCpu:
+                                description: |-
+                                  (Number) Max CPU cores per node.
+                                  Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.
+                                type: number
                               minGpusPerNode:
                                 description: |-
                                   (Number) Minimal number of GPUs per node.
@@ -1104,6 +1129,21 @@ spec:
                             (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                             Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
+                        gcp:
+                          description: |-
+                            specific constraints for the node template. (see below for nested schema)
+                            GCP-specific constraints for the node template.
+                          items:
+                            properties:
+                              capacityReservationIds:
+                                description: |-
+                                  (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
+                                  GCP capacity reservation IDs (numeric) that this template is allowed to use.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
                         gpu:
                           description: '(Block List, Max: 1) GPU configuration. (see
                             below for nested schema)'
@@ -1769,6 +1809,11 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              maxCpu:
+                                description: |-
+                                  (Number) Max CPU cores per node.
+                                  Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.
+                                type: number
                               minGpusPerNode:
                                 description: |-
                                   (Number) Minimal number of GPUs per node.
@@ -1791,6 +1836,21 @@ spec:
                             (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                             Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
                           type: number
+                        gcp:
+                          description: |-
+                            specific constraints for the node template. (see below for nested schema)
+                            GCP-specific constraints for the node template.
+                          items:
+                            properties:
+                              capacityReservationIds:
+                                description: |-
+                                  (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
+                                  GCP capacity reservation IDs (numeric) that this template is allowed to use.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
                         gpu:
                           description: '(Block List, Max: 1) GPU configuration. (see
                             below for nested schema)'

@@ -15,6 +15,10 @@ import (
 
 type AksClusterInitParameters struct {
 
+	// (Block List, Max: 1) CA certificates to add to the node's trust store. (see below for nested schema)
+	// CA certificates to add to the node's trust store.
+	CACertConfig []CACertConfigInitParameters `json:"caCertConfig,omitempty" tf:"ca_cert_config,omitempty"`
+
 	// (String) Azure AD application ID that is created and used by CAST AI.
 	// Azure AD application ID that is created and used by CAST AI.
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
@@ -57,6 +61,10 @@ type AksClusterInitParameters struct {
 }
 
 type AksClusterObservation struct {
+
+	// (Block List, Max: 1) CA certificates to add to the node's trust store. (see below for nested schema)
+	// CA certificates to add to the node's trust store.
+	CACertConfig []CACertConfigObservation `json:"caCertConfig,omitempty" tf:"ca_cert_config,omitempty"`
 
 	// (String) Azure AD application ID that is created and used by CAST AI.
 	// Azure AD application ID that is created and used by CAST AI.
@@ -108,6 +116,11 @@ type AksClusterObservation struct {
 
 type AksClusterParameters struct {
 
+	// (Block List, Max: 1) CA certificates to add to the node's trust store. (see below for nested schema)
+	// CA certificates to add to the node's trust store.
+	// +kubebuilder:validation:Optional
+	CACertConfig []CACertConfigParameters `json:"caCertConfig,omitempty" tf:"ca_cert_config,omitempty"`
+
 	// (String) Azure AD application ID that is created and used by CAST AI.
 	// Azure AD application ID that is created and used by CAST AI.
 	// +kubebuilder:validation:Optional
@@ -157,6 +170,28 @@ type AksClusterParameters struct {
 	// Azure AD tenant ID from the used subscription.
 	// +kubebuilder:validation:Optional
 	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
+}
+
+type CACertConfigInitParameters struct {
+
+	// encoded CA certificates.
+	// List of base64-encoded CA certificates.
+	CACerts []*string `json:"caCerts,omitempty" tf:"ca_certs,omitempty"`
+}
+
+type CACertConfigObservation struct {
+
+	// encoded CA certificates.
+	// List of base64-encoded CA certificates.
+	CACerts []*string `json:"caCerts,omitempty" tf:"ca_certs,omitempty"`
+}
+
+type CACertConfigParameters struct {
+
+	// encoded CA certificates.
+	// List of base64-encoded CA certificates.
+	// +kubebuilder:validation:Optional
+	CACerts []*string `json:"caCerts,omitempty" tf:"ca_certs,omitempty"`
 }
 
 type HTTPProxyConfigInitParameters struct {

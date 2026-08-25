@@ -358,6 +358,28 @@ type DownscalingParameters struct {
 	ApplyType *string `json:"applyType,omitempty" tf:"apply_type,omitempty"`
 }
 
+type HpaConvertersInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type HpaConvertersObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	// HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type HpaConvertersParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type JvmInitParameters struct {
 
 	// (Boolean) When true, JMX exporter will be automatically injected into pods where JVM runtime is detected.
@@ -447,12 +469,24 @@ type LimitInitParameters struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// (Boolean) Apply the strategy only when the original resource has limits defined.
-	// Apply the strategy only when the original resource has limits defined.
+	// (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	// When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	//
+	// This flag allows conditional limit management based on the original workload configuration.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
 
-	// (Boolean) Use the original resource limits if they are higher than recommended values.
-	// Use the original resource limits if they are higher than recommended values.
+	// (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	// When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	//
+	// This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
 
 	// (String) Defines apply theshold strategy type.
@@ -470,12 +504,24 @@ type LimitObservation struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// (Boolean) Apply the strategy only when the original resource has limits defined.
-	// Apply the strategy only when the original resource has limits defined.
+	// (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	// When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	//
+	// This flag allows conditional limit management based on the original workload configuration.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
 
-	// (Boolean) Use the original resource limits if they are higher than recommended values.
-	// Use the original resource limits if they are higher than recommended values.
+	// (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	// When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	//
+	// This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
 
 	// (String) Defines apply theshold strategy type.
@@ -494,13 +540,25 @@ type LimitParameters struct {
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// (Boolean) Apply the strategy only when the original resource has limits defined.
-	// Apply the strategy only when the original resource has limits defined.
+	// (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	// When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	//
+	// This flag allows conditional limit management based on the original workload configuration.
+	//
+	// Only applicable when the type is set to multiplier.
 	// +kubebuilder:validation:Optional
 	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
 
-	// (Boolean) Use the original resource limits if they are higher than recommended values.
-	// Use the original resource limits if they are higher than recommended values.
+	// (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	// When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	//
+	// This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+	//
+	// Only applicable when the type is set to multiplier.
 	// +kubebuilder:validation:Optional
 	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
 
@@ -711,12 +769,24 @@ type MemoryLimitInitParameters struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// (Boolean) Apply the strategy only when the original resource has limits defined.
-	// Apply the strategy only when the original resource has limits defined.
+	// (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	// When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	//
+	// This flag allows conditional limit management based on the original workload configuration.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
 
-	// (Boolean) Use the original resource limits if they are higher than recommended values.
-	// Use the original resource limits if they are higher than recommended values.
+	// (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	// When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	//
+	// This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
 
 	// (String) Defines apply theshold strategy type.
@@ -734,12 +804,24 @@ type MemoryLimitObservation struct {
 	// Multiplier used to calculate the resource limit. It must be defined for the MULTIPLIER strategy.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// (Boolean) Apply the strategy only when the original resource has limits defined.
-	// Apply the strategy only when the original resource has limits defined.
+	// (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	// When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	//
+	// This flag allows conditional limit management based on the original workload configuration.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
 
-	// (Boolean) Use the original resource limits if they are higher than recommended values.
-	// Use the original resource limits if they are higher than recommended values.
+	// (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	// When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	//
+	// This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+	//
+	// Only applicable when the type is set to multiplier.
 	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
 
 	// (String) Defines apply theshold strategy type.
@@ -758,13 +840,25 @@ type MemoryLimitParameters struct {
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// (Boolean) Apply the strategy only when the original resource has limits defined.
-	// Apply the strategy only when the original resource has limits defined.
+	// (Boolean) When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	// When set to true, limits will only be set if the workload originally had limits defined in its manifest.
+	// If the original workload has no limits specified, no limits will be added.
+	//
+	// This flag allows conditional limit management based on the original workload configuration.
+	//
+	// Only applicable when the type is set to multiplier.
 	// +kubebuilder:validation:Optional
 	OnlyIfOriginalExist *bool `json:"onlyIfOriginalExist,omitempty" tf:"only_if_original_exist,omitempty"`
 
-	// (Boolean) Use the original resource limits if they are higher than recommended values.
-	// Use the original resource limits if they are higher than recommended values.
+	// (Boolean) When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	// When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier).
+	// If the original limits are already higher than the calculated value, they remain unchanged.
+	//
+	// This flag prevents reducing existing limits and ensures limits only increase when beneficial.
+	//
+	// Only applicable when the type is set to multiplier.
 	// +kubebuilder:validation:Optional
 	OnlyIfOriginalLower *bool `json:"onlyIfOriginalLower,omitempty" tf:"only_if_original_lower,omitempty"`
 
@@ -905,6 +999,41 @@ type PredictiveScalingParameters struct {
 	// Defines predictive scaling resource configuration.
 	// +kubebuilder:validation:Optional
 	CPU []PredictiveScalingCPUParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
+}
+
+type RequestsOnStartupInitParameters struct {
+
+	// (Number) CPU cores to request during startup.
+	// CPU cores to request during startup.
+	CPUCores *float64 `json:"cpuCores,omitempty" tf:"cpu_cores,omitempty"`
+
+	// (Number) Memory in GiB to request during startup.
+	// Memory in GiB to request during startup.
+	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
+}
+
+type RequestsOnStartupObservation struct {
+
+	// (Number) CPU cores to request during startup.
+	// CPU cores to request during startup.
+	CPUCores *float64 `json:"cpuCores,omitempty" tf:"cpu_cores,omitempty"`
+
+	// (Number) Memory in GiB to request during startup.
+	// Memory in GiB to request during startup.
+	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
+}
+
+type RequestsOnStartupParameters struct {
+
+	// (Number) CPU cores to request during startup.
+	// CPU cores to request during startup.
+	// +kubebuilder:validation:Optional
+	CPUCores *float64 `json:"cpuCores,omitempty" tf:"cpu_cores,omitempty"`
+
+	// (Number) Memory in GiB to request during startup.
+	// Memory in GiB to request during startup.
+	// +kubebuilder:validation:Optional
+	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
 }
 
 type RolloutBehaviorInitParameters struct {
@@ -1068,7 +1197,7 @@ type ScalingPolicyCPUInitParameters struct {
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
 
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// block:
 	// Resource limit settings
 	Limit []LimitInitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
 
@@ -1115,7 +1244,7 @@ type ScalingPolicyCPUObservation struct {
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
 
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// block:
 	// Resource limit settings
 	Limit []LimitObservation `json:"limit,omitempty" tf:"limit,omitempty"`
 
@@ -1167,7 +1296,7 @@ type ScalingPolicyCPUParameters struct {
 	// +kubebuilder:validation:Optional
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
 
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// block:
 	// Resource limit settings
 	// +kubebuilder:validation:Optional
 	Limit []LimitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
@@ -1235,6 +1364,10 @@ type ScalingPolicyInitParameters struct {
 	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
 	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
 
+	// (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
+	// Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
+	HpaConverters []HpaConvertersInitParameters `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
+
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
 	Jvm []JvmInitParameters `json:"jvm,omitempty" tf:"jvm,omitempty"`
@@ -1293,7 +1426,7 @@ type ScalingPolicyMemoryInitParameters struct {
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
 
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// block:
 	// Resource limit settings
 	Limit []MemoryLimitInitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
 
@@ -1340,7 +1473,7 @@ type ScalingPolicyMemoryObservation struct {
 	// The function used to calculate the resource recommendation. Supported values: `QUANTILE`, `MAX`
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
 
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// block:
 	// Resource limit settings
 	Limit []MemoryLimitObservation `json:"limit,omitempty" tf:"limit,omitempty"`
 
@@ -1392,7 +1525,7 @@ type ScalingPolicyMemoryParameters struct {
 	// +kubebuilder:validation:Optional
 	Function *string `json:"function,omitempty" tf:"function,omitempty"`
 
-	// (Block List, Max: 1) Resource limit settings (see below for nested schema)
+	// block:
 	// Resource limit settings
 	// +kubebuilder:validation:Optional
 	Limit []MemoryLimitParameters `json:"limit,omitempty" tf:"limit,omitempty"`
@@ -1459,6 +1592,10 @@ type ScalingPolicyObservation struct {
 	// (List of String) Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
 	// Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.
 	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
+
+	// (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
+	// Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
+	HpaConverters []HpaConvertersObservation `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -1545,6 +1682,11 @@ type ScalingPolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	ExcludedContainers []*string `json:"excludedContainers,omitempty" tf:"excluded_containers,omitempty"`
 
+	// (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
+	// Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
+	// +kubebuilder:validation:Optional
+	HpaConverters []HpaConvertersParameters `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
+
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
 	// +kubebuilder:validation:Optional
@@ -1598,6 +1740,10 @@ type StartupInitParameters struct {
 	// When set, recommendations will be adjusted to disregard resource spikes within this period.
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// phase recommendations settings for the startup period. (see below for nested schema)
+	// Defines two-phase recommendations settings for the startup period.
+	TwoPhaseRecommendations []TwoPhaseRecommendationsInitParameters `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
 }
 
 type StartupObservation struct {
@@ -1609,6 +1755,10 @@ type StartupObservation struct {
 	// When set, recommendations will be adjusted to disregard resource spikes within this period.
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// phase recommendations settings for the startup period. (see below for nested schema)
+	// Defines two-phase recommendations settings for the startup period.
+	TwoPhaseRecommendations []TwoPhaseRecommendationsObservation `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
 }
 
 type StartupParameters struct {
@@ -1621,6 +1771,46 @@ type StartupParameters struct {
 	// If not specified, the workload will receive standard recommendations without startup considerations.
 	// +kubebuilder:validation:Optional
 	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// phase recommendations settings for the startup period. (see below for nested schema)
+	// Defines two-phase recommendations settings for the startup period.
+	// +kubebuilder:validation:Optional
+	TwoPhaseRecommendations []TwoPhaseRecommendationsParameters `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
+}
+
+type TwoPhaseRecommendationsInitParameters struct {
+
+	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// Defines whether two-phase recommendations are enabled during startup.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)
+	// Defines the resource requests to use during startup.
+	RequestsOnStartup []RequestsOnStartupInitParameters `json:"requestsOnStartup,omitempty" tf:"requests_on_startup,omitempty"`
+}
+
+type TwoPhaseRecommendationsObservation struct {
+
+	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// Defines whether two-phase recommendations are enabled during startup.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)
+	// Defines the resource requests to use during startup.
+	RequestsOnStartup []RequestsOnStartupObservation `json:"requestsOnStartup,omitempty" tf:"requests_on_startup,omitempty"`
+}
+
+type TwoPhaseRecommendationsParameters struct {
+
+	// (Boolean) Defines if predictive scaling is enabled for resource.
+	// Defines whether two-phase recommendations are enabled during startup.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+
+	// (Block List, Max: 1) Defines the resource requests to use during startup. (see below for nested schema)
+	// Defines the resource requests to use during startup.
+	// +kubebuilder:validation:Optional
+	RequestsOnStartup []RequestsOnStartupParameters `json:"requestsOnStartup,omitempty" tf:"requests_on_startup,omitempty"`
 }
 
 type WorkloadLabelsExpressionsInitParameters struct {

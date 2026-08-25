@@ -4,8 +4,8 @@ metadata:
   annotations:
     meta.upbound.io/example-id: castai/v1alpha1/ssoconnection
   labels:
-    testing.upbound.io/example-name: sso
-  name: sso
+    testing.upbound.io/example-name: aad
+  name: aad
 spec:
   forProvider:
     aad:

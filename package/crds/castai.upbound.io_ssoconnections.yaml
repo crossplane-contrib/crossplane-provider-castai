@@ -127,6 +127,48 @@ spec:
                       (String) Connection name
                       Connection name
                     type: string
+                  oidc:
+                    description: |-
+                      (Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)
+                      OIDC connector (e.g. Keycloak)
+                    items:
+                      properties:
+                        clientId:
+                          description: |-
+                            (String) Azure AD client ID
+                            OIDC client ID
+                          type: string
+                        clientSecretSecretRef:
+                          description: |-
+                            (String, Sensitive) Azure AD client secret
+                            OIDC client secret
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        issuerUrl:
+                          description: |-
+                            (String) Issuer URL of the OpenID Connect provider
+                            Issuer URL of the OpenID Connect provider
+                          type: string
+                        type:
+                          description: |-
+                            (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+                            OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+                          type: string
+                      type: object
+                    type: array
                   okta:
                     description: |-
                       (Block List, Max: 1) Okta connector (see below for nested schema)
@@ -239,6 +281,50 @@ spec:
                       (String) Connection name
                       Connection name
                     type: string
+                  oidc:
+                    description: |-
+                      (Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)
+                      OIDC connector (e.g. Keycloak)
+                    items:
+                      properties:
+                        clientId:
+                          description: |-
+                            (String) Azure AD client ID
+                            OIDC client ID
+                          type: string
+                        clientSecretSecretRef:
+                          description: |-
+                            (String, Sensitive) Azure AD client secret
+                            OIDC client secret
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        issuerUrl:
+                          description: |-
+                            (String) Issuer URL of the OpenID Connect provider
+                            Issuer URL of the OpenID Connect provider
+                          type: string
+                        type:
+                          description: |-
+                            (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+                            OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+                          type: string
+                      required:
+                      - clientSecretSecretRef
+                      type: object
+                    type: array
                   okta:
                     description: |-
                       (Block List, Max: 1) Okta connector (see below for nested schema)
@@ -503,6 +589,29 @@ spec:
                       (String) Connection name
                       Connection name
                     type: string
+                  oidc:
+                    description: |-
+                      (Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)
+                      OIDC connector (e.g. Keycloak)
+                    items:
+                      properties:
+                        clientId:
+                          description: |-
+                            (String) Azure AD client ID
+                            OIDC client ID
+                          type: string
+                        issuerUrl:
+                          description: |-
+                            (String) Issuer URL of the OpenID Connect provider
+                            Issuer URL of the OpenID Connect provider
+                          type: string
+                        type:
+                          description: |-
+                            (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+                            OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+                          type: string
+                      type: object
+                    type: array
                   okta:
                     description: |-
                       (Block List, Max: 1) Okta connector (see below for nested schema)

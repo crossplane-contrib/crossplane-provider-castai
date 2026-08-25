@@ -538,6 +538,25 @@
               }
             },
             "block_types": {
+              "ca_cert_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "ca_certs": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of base64-encoded CA certificates.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "CA certificates to add to the node's trust store.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "http_proxy_config": {
                 "nesting_mode": "list",
                 "block": {
@@ -1335,6 +1354,784 @@
             },
             "description": "Manage CAST AI DBO Cache Rule (TTL Configuration). Cache rules define caching behavior and TTL settings for specific queries or tables within a cache configuration.",
             "description_kind": "plain"
+          }
+        },
+        "castai_commitment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allowed_usage": {
+                "type": "number",
+                "description": "Allowed usage of the commitment (0.0-1.0). 1.0 means 100%. Defaults to 1.0.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "auto_assignment": {
+                "type": "bool",
+                "description": "Auto-assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "autoscaling_status": {
+                "type": "string",
+                "description": "Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cloud": {
+                "type": "string",
+                "description": "Cloud provider. One of: AWS, GCP, AZURE.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "create_time": {
+                "type": "string",
+                "description": "Creation time.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time of the commitment (RFC3339).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Commitment ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Commitment name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "CAST AI organization ID. If not provided, the organization from the provider configuration is used.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "prioritization": {
+                "type": "bool",
+                "description": "If enabled, resources used by lower-priority clusters are ignored.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region where the commitment is applicable.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "scaling_strategy": {
+                "type": "string",
+                "description": "Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time of the commitment (RFC3339, e.g. 2026-01-01T00:00:00Z).",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Computed lifecycle state of the commitment.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Last update time.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Manages a single CAST AI commitment (reserved instance, savings plan, CUD, capacity block or capacity reservation) via the pricing v1beta Commitments API. For bulk management, use for_each \u2014 see the examples/ directory.",
+            "description_kind": "plain",
+            "block_types": {
+              "aws_capacity_block_details": {
+                "block": {
+                  "attributes": {
+                    "availability_zone": {
+                      "type": "string",
+                      "description": "Availability zone name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "availability_zone_id": {
+                      "type": "string",
+                      "description": "Availability zone ID.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "available_instance_count": {
+                      "type": "number",
+                      "description": "Available (unused) instance count.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Capacity block reservation ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "instance_platform": {
+                      "type": "string",
+                      "description": "Instance platform (e.g. Linux/UNIX).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "instance_type": {
+                      "type": "string",
+                      "description": "EC2 instance type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Capacity block state.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "total_instance_count": {
+                      "type": "number",
+                      "description": "Total reserved instance count.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "AWS Capacity Block details. Required when type is CAPACITY_BLOCK."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "aws_odcr_details": {
+                "block": {
+                  "attributes": {
+                    "availability_zone": {
+                      "type": "string",
+                      "description": "Availability zone name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "availability_zone_id": {
+                      "type": "string",
+                      "description": "Availability zone ID.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "available_instance_count": {
+                      "type": "number",
+                      "description": "Available (unused) instance count.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "end_date_type": {
+                      "type": "string",
+                      "description": "End date type (unlimited, limited).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Capacity reservation ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "instance_match_criteria": {
+                      "type": "string",
+                      "description": "Instance match criteria (open, targeted).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "instance_platform": {
+                      "type": "string",
+                      "description": "Instance platform (e.g. Linux/UNIX).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "instance_type": {
+                      "type": "string",
+                      "description": "EC2 instance type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "interruptible": {
+                      "type": "bool",
+                      "description": "Whether this reservation is interruptible.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Capacity reservation state.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tenancy": {
+                      "type": "string",
+                      "description": "Tenancy (default, dedicated).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "total_instance_count": {
+                      "type": "number",
+                      "description": "Total reserved instance count.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "AWS On-Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "aws_reserved_instances_details": {
+                "block": {
+                  "attributes": {
+                    "availability_zone_id": {
+                      "type": "string",
+                      "description": "AWS availability zone ID (zonal RIs only).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "availability_zone_name": {
+                      "type": "string",
+                      "description": "AWS availability zone name (zonal RIs only).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "AWS reserved instance ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "instance_count": {
+                      "type": "number",
+                      "description": "Instance count.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "instance_type": {
+                      "type": "string",
+                      "description": "AWS EC2 instance type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "scope": {
+                      "type": "string",
+                      "description": "Scope: whether the commitment applies to a region or an availability zone.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Reserved instance state (e.g. active).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "aws_savings_plan_details": {
+                "block": {
+                  "attributes": {
+                    "commitment_amount": {
+                      "type": "number",
+                      "description": "Commitment amount in USD per hour.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "commitment_term": {
+                      "type": "string",
+                      "description": "Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "AWS savings plan ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "instance_type_family": {
+                      "type": "string",
+                      "description": "Instance type family (EC2 instance savings plans).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "offering_id": {
+                      "type": "string",
+                      "description": "AWS savings plan offering ID.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "payment_option": {
+                      "type": "string",
+                      "description": "Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "Savings plan region.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Savings plan state (e.g. active).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Savings plan type (e.g. Compute, EC2Instance).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "azure_reservation_details": {
+                "block": {
+                  "attributes": {
+                    "count": {
+                      "type": "number",
+                      "description": "Count of reserved instances.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Reservation ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "instance_flexibility": {
+                      "type": "string",
+                      "description": "Instance flexibility. One of: ON, OFF.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "instance_type": {
+                      "type": "string",
+                      "description": "Reserved instance type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "plan": {
+                      "type": "string",
+                      "description": "Reservation term plan. One of: ONE_YEAR, THREE_YEAR.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "purchase_time": {
+                      "type": "string",
+                      "description": "Purchase time (RFC3339).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope": {
+                      "type": "string",
+                      "description": "Scope (e.g. Shared, Single, ManagementGroup).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_management_group": {
+                      "type": "string",
+                      "description": "Scope management group.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_resource_group": {
+                      "type": "string",
+                      "description": "Scope resource group.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_subscription": {
+                      "type": "string",
+                      "description": "Scope subscription.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_tenant": {
+                      "type": "string",
+                      "description": "Scope tenant ID.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Provisioning state (e.g. Succeeded).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "azure_savings_plan_details": {
+                "block": {
+                  "attributes": {
+                    "commitment_amount": {
+                      "type": "number",
+                      "description": "Hourly commitment amount in USD per hour.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Savings plan ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "provisioning_state": {
+                      "type": "string",
+                      "description": "Provisioning state (e.g. Succeeded, Expired, Cancelled).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope": {
+                      "type": "string",
+                      "description": "Applied scope type. One of: SINGLE, SHARED, MANAGEMENT_GROUP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_management_group": {
+                      "type": "string",
+                      "description": "Scope management group.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_resource_group": {
+                      "type": "string",
+                      "description": "Scope resource group.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_subscription": {
+                      "type": "string",
+                      "description": "Scope subscription ID.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_tenant": {
+                      "type": "string",
+                      "description": "Scope tenant ID.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "term": {
+                      "type": "string",
+                      "description": "Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "gcp_capacity_reservation_details": {
+                "block": {
+                  "attributes": {
+                    "assured_instance_count": {
+                      "type": "number",
+                      "description": "Assured count for the reservation.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Reservation ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "in_use_instance_count": {
+                      "type": "number",
+                      "description": "Number of instances currently in use.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "instance_type": {
+                      "type": "string",
+                      "description": "Instance type covered by the reservation.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "min_cpu_platform": {
+                      "type": "string",
+                      "description": "Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "project_id": {
+                      "type": "string",
+                      "description": "GCP project ID that owns the reservation.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "self_link": {
+                      "type": "string",
+                      "description": "Server-defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "specific_reservation_required": {
+                      "type": "bool",
+                      "description": "Whether the reservation requires specific reservation affinity.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Runtime state of the reservation (e.g. READY).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "total_instance_count": {
+                      "type": "number",
+                      "description": "Total number of instances reserved.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "zone": {
+                      "type": "string",
+                      "description": "GCP zone of the reservation.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "block_types": {
+                    "accelerators": {
+                      "block": {
+                        "attributes": {
+                          "accelerator_count": {
+                            "type": "number",
+                            "description": "Number of accelerators of this type per VM.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "accelerator_type": {
+                            "type": "string",
+                            "description": "Accelerator (GPU) type as the full GCP acceleratorType URL.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "description": "Accelerators (GPUs) reserved VMs must match exactly."
+                      },
+                      "nesting_mode": "list",
+                      "min_items": 0,
+                      "max_items": 0
+                    },
+                    "local_ssds": {
+                      "block": {
+                        "attributes": {
+                          "disk_size_gb": {
+                            "type": "number",
+                            "description": "Disk size in GB.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "interface": {
+                            "type": "string",
+                            "description": "Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "description": "Local SSD disks reserved VMs must match exactly."
+                      },
+                      "nesting_mode": "list",
+                      "min_items": 0,
+                      "max_items": 0
+                    },
+                    "share_settings": {
+                      "block": {
+                        "attributes": {
+                          "project_ids": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "share_type": {
+                            "type": "string",
+                            "description": "Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "description": "Reservation sharing settings."
+                      },
+                      "nesting_mode": "single",
+                      "min_items": 0,
+                      "max_items": 1
+                    }
+                  },
+                  "description": "GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "gcp_flex_cud_details": {
+                "block": {
+                  "attributes": {
+                    "commitment_amount": {
+                      "type": "number",
+                      "description": "Hourly commitment in USD per hour.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "description": "User-specified display name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "line_item_id": {
+                      "type": "string",
+                      "description": "Line item ID within the order.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "offer": {
+                      "type": "string",
+                      "description": "Offer identifier.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "order_name": {
+                      "type": "string",
+                      "description": "Resource name of the order.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "plan": {
+                      "type": "string",
+                      "description": "CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "Region (can be empty for global Flex CUDs).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "State (ACTIVE, CANCELED).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "GCP Flex CUD details. Required when type is FLEX_CUD."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "gcp_resource_cud_details": {
+                "block": {
+                  "attributes": {
+                    "cpu": {
+                      "type": "number",
+                      "description": "Committed CPU count.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "cud_id": {
+                      "type": "string",
+                      "description": "CUD ID from GCP.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "memory_mb": {
+                      "type": "number",
+                      "description": "Committed memory in MB.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "plan": {
+                      "type": "string",
+                      "description": "CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Commitment status (e.g. ACTIVE).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "GCP commitment type (e.g. COMPUTE_OPTIMIZED_C2D).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "GCP Resource CUD details. Required when type is RESOURCE_CUD."
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              }
+            }
           }
         },
         "castai_commitments": {
@@ -3564,7 +4361,7 @@
                     },
                     "aks_image_family": {
                       "type": "string",
-                      "description": "Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)",
+                      "description": "Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -4134,6 +4931,7 @@
                 "type": "bool",
                 "description": "Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true,
                 "computed": true
               },
@@ -4449,6 +5247,12 @@
                             "description_kind": "plain",
                             "required": true
                           },
+                          "max_cpu": {
+                            "type": "number",
+                            "description": "Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "min_gpus_per_node": {
                             "type": "number",
                             "description": "Minimal number of GPUs per node.",
@@ -4496,6 +5300,25 @@
                         "description": "Dedicated node affinity - creates preference for instances to be created on sole tenancy or dedicated nodes. This\n feature is only available for GCP clusters and sole tenancy nodes with local\n SSDs or GPUs are not supported. If the sole tenancy or dedicated nodes don't have capacity for selected instance\n type, the Autoscaler will fall back to multi-tenant instance types available for this Node Template.\n Other instance constraints are applied when the Autoscaler picks available instance types that can be created on\n the sole tenancy or dedicated node (example: setting min CPU to 16).",
                         "description_kind": "plain"
                       }
+                    },
+                    "gcp": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "capacity_reservation_ids": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "GCP capacity reservation IDs (numeric) that this template is allowed to use.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "GCP-specific constraints for the node template.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     },
                     "gpu": {
                       "nesting_mode": "list",
@@ -5910,7 +6733,7 @@
                     },
                     "num_targeted_nodes": {
                       "type": "number",
-                      "description": "Maximum number of nodes that will be selected for rebalancing.",
+                      "description": "Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -6659,6 +7482,41 @@
                 },
                 "max_items": 1
               },
+              "oidc": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "client_id": {
+                      "type": "string",
+                      "description": "OIDC client ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_secret": {
+                      "type": "string",
+                      "description": "OIDC client secret",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    },
+                    "issuer_url": {
+                      "type": "string",
+                      "description": "Issuer URL of the OpenID Connect provider",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "OIDC connector (e.g. Keycloak)",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "okta": {
                 "nesting_mode": "list",
                 "block": {
@@ -7239,13 +8097,13 @@
                           },
                           "only_if_original_exist": {
                             "type": "bool",
-                            "description": "Apply the strategy only when the original resource has limits defined.",
+                            "description": "When set to true, limits will only be set if the workload originally had limits defined in its manifest. \n\tIf the original workload has no limits specified, no limits will be added.\n\t\n\tThis flag allows conditional limit management based on the original workload configuration.\n\t\n\tOnly applicable when the type is set to multiplier.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "only_if_original_lower": {
                             "type": "bool",
-                            "description": "Use the original resource limits if they are higher than recommended values.",
+                            "description": "When set to true, limits will only be updated if the original limits are lower than the calculated value (requests \u00d7 multiplier). \n\tIf the original limits are already higher than the calculated value, they remain unchanged.\n\t\n\tThis flag prevents reducing existing limits and ensures limits only increase when beneficial.\n\t\n\tOnly applicable when the type is set to multiplier.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -7281,6 +8139,21 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              },
+              "hpa_converters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "type": {
+                      "type": "string",
+                      "description": "HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.",
+                  "description_kind": "plain"
+                }
               },
               "jvm": {
                 "nesting_mode": "list",
@@ -7480,13 +8353,13 @@
                           },
                           "only_if_original_exist": {
                             "type": "bool",
-                            "description": "Apply the strategy only when the original resource has limits defined.",
+                            "description": "When set to true, limits will only be set if the workload originally had limits defined in its manifest. \n\tIf the original workload has no limits specified, no limits will be added.\n\t\n\tThis flag allows conditional limit management based on the original workload configuration.\n\t\n\tOnly applicable when the type is set to multiplier.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "only_if_original_lower": {
                             "type": "bool",
-                            "description": "Use the original resource limits if they are higher than recommended values.",
+                            "description": "When set to true, limits will only be updated if the original limits are lower than the calculated value (requests \u00d7 multiplier). \n\tIf the original limits are already higher than the calculated value, they remain unchanged.\n\t\n\tThis flag prevents reducing existing limits and ensures limits only increase when beneficial.\n\t\n\tOnly applicable when the type is set to multiplier.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -7585,6 +8458,48 @@
                       "description": "Defines the duration (in seconds) during which elevated resource usage is expected at startup.\nWhen set, recommendations will be adjusted to disregard resource spikes within this period.\nIf not specified, the workload will receive standard recommendations without startup considerations.",
                       "description_kind": "plain",
                       "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "two_phase_recommendations": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Defines whether two-phase recommendations are enabled during startup.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "requests_on_startup": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "cpu_cores": {
+                                  "type": "number",
+                                  "description": "CPU cores to request during startup.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "memory_gib": {
+                                  "type": "number",
+                                  "description": "Memory in GiB to request during startup.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Defines the resource requests to use during startup.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Defines two-phase recommendations settings for the startup period.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description_kind": "plain"

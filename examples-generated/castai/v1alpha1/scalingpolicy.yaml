@@ -52,6 +52,8 @@ spec:
     excludedContainers:
     - container-1
     - container-2
+    hpaConverters:
+    - type: AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS
     jvm:
     - memory:
       - optimization: true
@@ -75,3 +77,8 @@ spec:
     - type: NO_DISRUPTION
     startup:
     - periodSeconds: 240
+      twoPhaseRecommendations:
+      - enabled: true
+        requestsOnStartup:
+        - cpuCores: 0.5
+          memoryGib: 1.5

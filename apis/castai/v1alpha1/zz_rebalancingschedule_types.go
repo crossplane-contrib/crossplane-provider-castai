@@ -169,8 +169,8 @@ type LaunchConfigurationInitParameters struct {
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
 
-	// (Number) Maximum number of nodes that will be selected for rebalancing.
-	// Maximum number of nodes that will be selected for rebalancing.
+	// (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
+	// Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
 	NumTargetedNodes *float64 `json:"numTargetedNodes,omitempty" tf:"num_targeted_nodes,omitempty"`
 
 	// (Number) Minimum number of nodes that should be kept in the cluster after rebalancing.
@@ -211,8 +211,8 @@ type LaunchConfigurationObservation struct {
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
 
-	// (Number) Maximum number of nodes that will be selected for rebalancing.
-	// Maximum number of nodes that will be selected for rebalancing.
+	// (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
+	// Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
 	NumTargetedNodes *float64 `json:"numTargetedNodes,omitempty" tf:"num_targeted_nodes,omitempty"`
 
 	// (Number) Minimum number of nodes that should be kept in the cluster after rebalancing.
@@ -259,8 +259,8 @@ type LaunchConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	NodeTTLSeconds *float64 `json:"nodeTtlSeconds,omitempty" tf:"node_ttl_seconds,omitempty"`
 
-	// (Number) Maximum number of nodes that will be selected for rebalancing.
-	// Maximum number of nodes that will be selected for rebalancing.
+	// (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
+	// Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
 	// +kubebuilder:validation:Optional
 	NumTargetedNodes *float64 `json:"numTargetedNodes,omitempty" tf:"num_targeted_nodes,omitempty"`
 

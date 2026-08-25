@@ -85,8 +85,8 @@ spec:
                           type: string
                         aksImageFamily:
                           description: |-
-                            linux,windows2019,windows2022)
-                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)
+                            linux,windows2019,windows2022,windows2025)
+                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)
                           type: string
                         applicationSecurityGroups:
                           description: |-
@@ -603,8 +603,8 @@ spec:
                           type: string
                         aksImageFamily:
                           description: |-
-                            linux,windows2019,windows2022)
-                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)
+                            linux,windows2019,windows2022,windows2025)
+                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)
                           type: string
                         applicationSecurityGroups:
                           description: |-
@@ -1289,8 +1289,8 @@ spec:
                           type: string
                         aksImageFamily:
                           description: |-
-                            linux,windows2019,windows2022)
-                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022)
+                            linux,windows2019,windows2022,windows2025)
+                            Image OS Family to use when provisioning node in AKS. If both image and family are provided, the system will use provided image and provisioning logic for given family. If only image family is provided, the system will attempt to resolve the latest image from that family based on kubernetes version and node architecture. If image family is omitted, a default family (based on cloud provider) will be used. See Cast.ai documentation for details. Possible values: (ubuntu,ubuntu2204,ubuntu2404,azure-linux,windows2019,windows2022,windows2025)
                           type: string
                         applicationSecurityGroups:
                           description: |-

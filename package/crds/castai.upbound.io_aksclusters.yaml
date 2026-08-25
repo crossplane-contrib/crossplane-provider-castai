@@ -73,6 +73,21 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  caCertConfig:
+                    description: |-
+                      (Block List, Max: 1) CA certificates to add to the node's trust store. (see below for nested schema)
+                      CA certificates to add to the node's trust store.
+                    items:
+                      properties:
+                        caCerts:
+                          description: |-
+                            encoded CA certificates.
+                            List of base64-encoded CA certificates.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   clientId:
                     description: |-
                       (String) Azure AD application ID that is created and used by CAST AI.
@@ -171,6 +186,21 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  caCertConfig:
+                    description: |-
+                      (Block List, Max: 1) CA certificates to add to the node's trust store. (see below for nested schema)
+                      CA certificates to add to the node's trust store.
+                    items:
+                      properties:
+                        caCerts:
+                          description: |-
+                            encoded CA certificates.
+                            List of base64-encoded CA certificates.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   clientId:
                     description: |-
                       (String) Azure AD application ID that is created and used by CAST AI.
@@ -453,6 +483,21 @@ spec:
             properties:
               atProvider:
                 properties:
+                  caCertConfig:
+                    description: |-
+                      (Block List, Max: 1) CA certificates to add to the node's trust store. (see below for nested schema)
+                      CA certificates to add to the node's trust store.
+                    items:
+                      properties:
+                        caCerts:
+                          description: |-
+                            encoded CA certificates.
+                            List of base64-encoded CA certificates.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   clientId:
                     description: |-
                       (String) Azure AD application ID that is created and used by CAST AI.

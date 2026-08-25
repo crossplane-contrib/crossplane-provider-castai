@@ -57,6 +57,63 @@ type AadParameters struct {
 	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
 }
 
+type OidcInitParameters struct {
+
+	// (String) Azure AD client ID
+	// OIDC client ID
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String, Sensitive) Azure AD client secret
+	// OIDC client secret
+	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+
+	// (String) Issuer URL of the OpenID Connect provider
+	// Issuer URL of the OpenID Connect provider
+	IssuerURL *string `json:"issuerUrl,omitempty" tf:"issuer_url,omitempty"`
+
+	// (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+	// OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type OidcObservation struct {
+
+	// (String) Azure AD client ID
+	// OIDC client ID
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String) Issuer URL of the OpenID Connect provider
+	// Issuer URL of the OpenID Connect provider
+	IssuerURL *string `json:"issuerUrl,omitempty" tf:"issuer_url,omitempty"`
+
+	// (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+	// OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type OidcParameters struct {
+
+	// (String) Azure AD client ID
+	// OIDC client ID
+	// +kubebuilder:validation:Optional
+	ClientID *string `json:"clientId" tf:"client_id,omitempty"`
+
+	// (String, Sensitive) Azure AD client secret
+	// OIDC client secret
+	// +kubebuilder:validation:Optional
+	ClientSecretSecretRef v1.SecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+
+	// (String) Issuer URL of the OpenID Connect provider
+	// Issuer URL of the OpenID Connect provider
+	// +kubebuilder:validation:Optional
+	IssuerURL *string `json:"issuerUrl" tf:"issuer_url,omitempty"`
+
+	// (String) OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+	// OIDC connection type (TYPE_BACK_CHANNEL or TYPE_FRONT_CHANNEL)
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type OktaInitParameters struct {
 
 	// (String) Azure AD client ID
@@ -119,6 +176,10 @@ type SSOConnectionInitParameters struct {
 	// Connection name
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)
+	// OIDC connector (e.g. Keycloak)
+	Oidc []OidcInitParameters `json:"oidc,omitempty" tf:"oidc,omitempty"`
+
 	// (Block List, Max: 1) Okta connector (see below for nested schema)
 	// Okta connector
 	Okta []OktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
@@ -148,6 +209,10 @@ type SSOConnectionObservation struct {
 	// (String) Connection name
 	// Connection name
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)
+	// OIDC connector (e.g. Keycloak)
+	Oidc []OidcObservation `json:"oidc,omitempty" tf:"oidc,omitempty"`
 
 	// (Block List, Max: 1) Okta connector (see below for nested schema)
 	// Okta connector
@@ -179,6 +244,11 @@ type SSOConnectionParameters struct {
 	// Connection name
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Max: 1) OIDC connector (e.g. Keycloak) (see below for nested schema)
+	// OIDC connector (e.g. Keycloak)
+	// +kubebuilder:validation:Optional
+	Oidc []OidcParameters `json:"oidc,omitempty" tf:"oidc,omitempty"`
 
 	// (Block List, Max: 1) Okta connector (see below for nested schema)
 	// Okta connector

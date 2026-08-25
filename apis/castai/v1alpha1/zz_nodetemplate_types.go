@@ -83,6 +83,28 @@ type ConstraintsAwsParameters struct {
 	CapacityReservations []CapacityReservationsParameters `json:"capacityReservations,omitempty" tf:"capacity_reservations,omitempty"`
 }
 
+type ConstraintsGCPInitParameters struct {
+
+	// (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
+	// GCP capacity reservation IDs (numeric) that this template is allowed to use.
+	CapacityReservationIds []*string `json:"capacityReservationIds,omitempty" tf:"capacity_reservation_ids,omitempty"`
+}
+
+type ConstraintsGCPObservation struct {
+
+	// (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
+	// GCP capacity reservation IDs (numeric) that this template is allowed to use.
+	CapacityReservationIds []*string `json:"capacityReservationIds,omitempty" tf:"capacity_reservation_ids,omitempty"`
+}
+
+type ConstraintsGCPParameters struct {
+
+	// (List of String) GCP capacity reservation IDs (numeric) that this template is allowed to use.
+	// GCP capacity reservation IDs (numeric) that this template is allowed to use.
+	// +kubebuilder:validation:Optional
+	CapacityReservationIds []*string `json:"capacityReservationIds,omitempty" tf:"capacity_reservation_ids,omitempty"`
+}
+
 type ConstraintsInitParameters struct {
 
 	// (List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.
@@ -149,6 +171,10 @@ type ConstraintsInitParameters struct {
 	// (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
+
+	// specific constraints for the node template. (see below for nested schema)
+	// GCP-specific constraints for the node template.
+	GCP []ConstraintsGCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	Gpu []GpuInitParameters `json:"gpu,omitempty" tf:"gpu,omitempty"`
@@ -294,6 +320,10 @@ type ConstraintsObservation struct {
 	// (Number) Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
+
+	// specific constraints for the node template. (see below for nested schema)
+	// GCP-specific constraints for the node template.
+	GCP []ConstraintsGCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	Gpu []GpuObservation `json:"gpu,omitempty" tf:"gpu,omitempty"`
@@ -453,6 +483,11 @@ type ConstraintsParameters struct {
 	// Fallback restore rate in seconds: defines how much time should pass before spot fallback should be attempted to be restored to real spot.
 	// +kubebuilder:validation:Optional
 	FallbackRestoreRateSeconds *float64 `json:"fallbackRestoreRateSeconds,omitempty" tf:"fallback_restore_rate_seconds,omitempty"`
+
+	// specific constraints for the node template. (see below for nested schema)
+	// GCP-specific constraints for the node template.
+	// +kubebuilder:validation:Optional
+	GCP []ConstraintsGCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// (Block List, Max: 1) GPU configuration. (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -713,6 +748,10 @@ type DedicatedNodeAffinityInitParameters struct {
 	// Instance/node types in this node group.
 	InstanceTypes []*string `json:"instanceTypes,omitempty" tf:"instance_types,omitempty"`
 
+	// (Number) Max CPU cores per node.
+	// Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.
+	MaxCPU *float64 `json:"maxCpu,omitempty" tf:"max_cpu,omitempty"`
+
 	// (Number) Minimal number of GPUs per node.
 	// Minimal number of GPUs per node.
 	MinGpusPerNode *float64 `json:"minGpusPerNode,omitempty" tf:"min_gpus_per_node,omitempty"`
@@ -738,6 +777,10 @@ type DedicatedNodeAffinityObservation struct {
 	// (List of String) Instance/node types in this node group.
 	// Instance/node types in this node group.
 	InstanceTypes []*string `json:"instanceTypes,omitempty" tf:"instance_types,omitempty"`
+
+	// (Number) Max CPU cores per node.
+	// Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.
+	MaxCPU *float64 `json:"maxCpu,omitempty" tf:"max_cpu,omitempty"`
 
 	// (Number) Minimal number of GPUs per node.
 	// Minimal number of GPUs per node.
@@ -768,6 +811,11 @@ type DedicatedNodeAffinityParameters struct {
 	// Instance/node types in this node group.
 	// +kubebuilder:validation:Optional
 	InstanceTypes []*string `json:"instanceTypes" tf:"instance_types,omitempty"`
+
+	// (Number) Max CPU cores per node.
+	// Maximum number of CPUs that can be provisioned from this dedicated node affinity across all nodes for the specific node template. If not set, no CPU cap is applied. If cpus_per_gpu is set, max_cpu must be a multiple of cpus_per_gpu.
+	// +kubebuilder:validation:Optional
+	MaxCPU *float64 `json:"maxCpu,omitempty" tf:"max_cpu,omitempty"`
 
 	// (Number) Minimal number of GPUs per node.
 	// Minimal number of GPUs per node.

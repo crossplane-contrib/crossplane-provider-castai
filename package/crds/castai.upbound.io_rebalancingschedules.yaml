@@ -158,8 +158,8 @@ spec:
                           type: number
                         numTargetedNodes:
                           description: |-
-                            (Number) Maximum number of nodes that will be selected for rebalancing.
-                            Maximum number of nodes that will be selected for rebalancing.
+                            (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
+                            Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
                           type: number
                         rebalancingMinNodes:
                           description: |-
@@ -330,8 +330,8 @@ spec:
                           type: number
                         numTargetedNodes:
                           description: |-
-                            (Number) Maximum number of nodes that will be selected for rebalancing.
-                            Maximum number of nodes that will be selected for rebalancing.
+                            (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
+                            Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
                           type: number
                         rebalancingMinNodes:
                           description: |-
@@ -681,8 +681,8 @@ spec:
                           type: number
                         numTargetedNodes:
                           description: |-
-                            (Number) Maximum number of nodes that will be selected for rebalancing.
-                            Maximum number of nodes that will be selected for rebalancing.
+                            (Number) Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
+                            Maximum number of nodes that will be selected for rebalancing. 0 means all nodes in the cluster can be selected.
                           type: number
                         rebalancingMinNodes:
                           description: |-

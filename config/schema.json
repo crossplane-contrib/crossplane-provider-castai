@@ -1463,7 +1463,7 @@
                 "computed": true
               }
             },
-            "description": "Manages a single CAST AI commitment (reserved instance, savings plan, CUD, capacity block or capacity reservation) via the pricing v1beta Commitments API. For bulk management, use for_each \u2014 see the examples/ directory.",
+            "description": "Manages a single CAST AI commitment (reserved instance, savings plan, CUD, capacity block or capacity reservation) via the pricing v1beta Commitments API. For bulk management, use for_each — see the examples/ directory.",
             "description_kind": "plain",
             "block_types": {
               "aws_capacity_block_details": {
@@ -4667,7 +4667,7 @@
                     },
                     "max_pods_per_node_formula": {
                       "type": "string",
-                      "description": "This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.\nThis field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:\n\n    * NUM_CPU - Number of CPUs available on the node\n    * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.\n\nIf you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \\* NUM_CPU, 5 \\* NUM_RAM_GB).\nFor a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5\u00d78), 80 (5\u00d716), and 110, then picks the smallest value: 40 pods.",
+                      "description": "This is an advanced configuration field. In general, we recommend using max_pods_per_node instead.\nThis field accepts a formula to calculate the maximum number of pods that can run on a node. This will affect the pod CIDR range that the node reserves. The following variables are available for use in the formula and will be bound to numeric values before evaluation:\n\n    * NUM_CPU - Number of CPUs available on the node\n    * NUM_RAM_GB - Amount of RAM in gigabytes available on the node.\n\nIf you want the smallest value between 5 times the CPUs, 5 times the RAM, or a cap of 110, your formula would be math.least(110, 5 \\* NUM_CPU, 5 \\* NUM_RAM_GB).\nFor a node with 8 CPUs and 16 GB RAM, this calculates to 40 (5×8), 80 (5×16), and 110, then picks the smallest value: 40 pods.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -8005,7 +8005,7 @@
                           },
                           "exponent": {
                             "type": "number",
-                            "description": "The exponent changes how fast the curve is going down. The smaller value will cause that we won\u2019t pick extremely small number for big resources, for example:\n\t- if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold\n\t- if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold\n\tIt must be defined for the CUSTOM_ADAPTIVE strategy.",
+                            "description": "The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:\n\t- if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold\n\t- if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold\n\tIt must be defined for the CUSTOM_ADAPTIVE strategy.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -8103,7 +8103,7 @@
                           },
                           "only_if_original_lower": {
                             "type": "bool",
-                            "description": "When set to true, limits will only be updated if the original limits are lower than the calculated value (requests \u00d7 multiplier). \n\tIf the original limits are already higher than the calculated value, they remain unchanged.\n\t\n\tThis flag prevents reducing existing limits and ensures limits only increase when beneficial.\n\t\n\tOnly applicable when the type is set to multiplier.",
+                            "description": "When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier). \n\tIf the original limits are already higher than the calculated value, they remain unchanged.\n\t\n\tThis flag prevents reducing existing limits and ensures limits only increase when beneficial.\n\t\n\tOnly applicable when the type is set to multiplier.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -8261,7 +8261,7 @@
                           },
                           "exponent": {
                             "type": "number",
-                            "description": "The exponent changes how fast the curve is going down. The smaller value will cause that we won\u2019t pick extremely small number for big resources, for example:\n\t- if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold\n\t- if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold\n\tIt must be defined for the CUSTOM_ADAPTIVE strategy.",
+                            "description": "The exponent changes how fast the curve is going down. The smaller value will cause that we won’t pick extremely small number for big resources, for example:\n\t- if numerator is 0, denominator is 1, and exponent is 1, for 50 CPU we will pick 2% threshold\n\t- if numerator is 0, denominator is 1, and exponent is 0.8, for 50 CPU we will pick 4.3% threshold\n\tIt must be defined for the CUSTOM_ADAPTIVE strategy.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -8359,7 +8359,7 @@
                           },
                           "only_if_original_lower": {
                             "type": "bool",
-                            "description": "When set to true, limits will only be updated if the original limits are lower than the calculated value (requests \u00d7 multiplier). \n\tIf the original limits are already higher than the calculated value, they remain unchanged.\n\t\n\tThis flag prevents reducing existing limits and ensures limits only increase when beneficial.\n\t\n\tOnly applicable when the type is set to multiplier.",
+                            "description": "When set to true, limits will only be updated if the original limits are lower than the calculated value (requests × multiplier). \n\tIf the original limits are already higher than the calculated value, they remain unchanged.\n\t\n\tThis flag prevents reducing existing limits and ensures limits only increase when beneficial.\n\t\n\tOnly applicable when the type is set to multiplier.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -8533,6 +8533,206 @@
                   },
                   "description_kind": "plain"
                 }
+              },
+              "hpa_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "management_option": {
+                      "type": "string",
+                      "description": "Defines whether CAST AI observes or manages horizontal pod autoscaling.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "take_ownership": {
+                      "type": "bool",
+                      "description": "Allows CAST AI to take ownership of eligible existing HPAs.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "native_hpa_spec": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "max_replicas": {
+                            "type": "number",
+                            "description": "Maximum number of replicas.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "min_replicas": {
+                            "type": "number",
+                            "description": "Minimum number of replicas.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "behavior": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "scale_down": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "select_policy": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "stabilization_window_seconds": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "policies": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "period_seconds": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "scale_up": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "select_policy": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "stabilization_window_seconds": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "policies": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "period_seconds": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "metrics": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "type": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "resource": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "target": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "type": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "min_items": 1,
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "min_items": 1,
+                                  "max_items": 1
+                                }
+                              },
+                              "description": "Resource utilization metrics used by the HPA.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Native Kubernetes HPA specification.",
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Configures native Kubernetes horizontal pod autoscaling for workloads using this policy.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description": "Manage workload scaling policy. Scaling policy [reference](https://docs.cast.ai/docs/woop-scaling-policies)",

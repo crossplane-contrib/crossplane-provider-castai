@@ -448,6 +448,121 @@ spec:
                           type: string
                       type: object
                     type: array
+                  hpaSettings:
+                    description: Configures native Kubernetes horizontal pod autoscaling
+                      for workloads using this policy.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages horizontal pod autoscaling.
+                          type: string
+                        nativeHpaSpec:
+                          description: Native Kubernetes HPA specification.
+                          items:
+                            properties:
+                              behavior:
+                                items:
+                                  properties:
+                                    scaleDown:
+                                      items:
+                                        properties:
+                                          policies:
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: |-
+                                                    (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                                                    When set, recommendations will be adjusted to disregard resource spikes within this period.
+                                                    If not specified, the workload will receive standard recommendations without startup considerations.
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            type: number
+                                        type: object
+                                      type: array
+                                    scaleUp:
+                                      items:
+                                        properties:
+                                          policies:
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: |-
+                                                    (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                                                    When set, recommendations will be adjusted to disregard resource spikes within this period.
+                                                    If not specified, the workload will receive standard recommendations without startup considerations.
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            type: number
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              maxReplicas:
+                                description: Maximum number of replicas.
+                                type: number
+                              metrics:
+                                description: Resource utilization metrics used by
+                                  the HPA.
+                                items:
+                                  properties:
+                                    resource:
+                                      items:
+                                        properties:
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: (String) Defines apply theshold
+                                        strategy type.
+                                      type: string
+                                  type: object
+                                type: array
+                              minReplicas:
+                                description: Minimum number of replicas.
+                                type: number
+                            type: object
+                          type: array
+                        takeOwnership:
+                          description: Allows CAST AI to take ownership of eligible
+                            existing HPAs.
+                          type: boolean
+                      type: object
+                    type: array
                   jvm:
                     description: |-
                       (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
@@ -1159,6 +1274,121 @@ spec:
                             (String) Defines apply theshold strategy type.
                             HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
                           type: string
+                      type: object
+                    type: array
+                  hpaSettings:
+                    description: Configures native Kubernetes horizontal pod autoscaling
+                      for workloads using this policy.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages horizontal pod autoscaling.
+                          type: string
+                        nativeHpaSpec:
+                          description: Native Kubernetes HPA specification.
+                          items:
+                            properties:
+                              behavior:
+                                items:
+                                  properties:
+                                    scaleDown:
+                                      items:
+                                        properties:
+                                          policies:
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: |-
+                                                    (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                                                    When set, recommendations will be adjusted to disregard resource spikes within this period.
+                                                    If not specified, the workload will receive standard recommendations without startup considerations.
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            type: number
+                                        type: object
+                                      type: array
+                                    scaleUp:
+                                      items:
+                                        properties:
+                                          policies:
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: |-
+                                                    (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                                                    When set, recommendations will be adjusted to disregard resource spikes within this period.
+                                                    If not specified, the workload will receive standard recommendations without startup considerations.
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            type: number
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              maxReplicas:
+                                description: Maximum number of replicas.
+                                type: number
+                              metrics:
+                                description: Resource utilization metrics used by
+                                  the HPA.
+                                items:
+                                  properties:
+                                    resource:
+                                      items:
+                                        properties:
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: (String) Defines apply theshold
+                                        strategy type.
+                                      type: string
+                                  type: object
+                                type: array
+                              minReplicas:
+                                description: Minimum number of replicas.
+                                type: number
+                            type: object
+                          type: array
+                        takeOwnership:
+                          description: Allows CAST AI to take ownership of eligible
+                            existing HPAs.
+                          type: boolean
                       type: object
                     type: array
                   jvm:
@@ -2056,6 +2286,121 @@ spec:
                             (String) Defines apply theshold strategy type.
                             HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
                           type: string
+                      type: object
+                    type: array
+                  hpaSettings:
+                    description: Configures native Kubernetes horizontal pod autoscaling
+                      for workloads using this policy.
+                    items:
+                      properties:
+                        managementOption:
+                          description: |-
+                            (String) Defines possible options for workload management.
+                            Defines whether CAST AI observes or manages horizontal pod autoscaling.
+                          type: string
+                        nativeHpaSpec:
+                          description: Native Kubernetes HPA specification.
+                          items:
+                            properties:
+                              behavior:
+                                items:
+                                  properties:
+                                    scaleDown:
+                                      items:
+                                        properties:
+                                          policies:
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: |-
+                                                    (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                                                    When set, recommendations will be adjusted to disregard resource spikes within this period.
+                                                    If not specified, the workload will receive standard recommendations without startup considerations.
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            type: number
+                                        type: object
+                                      type: array
+                                    scaleUp:
+                                      items:
+                                        properties:
+                                          policies:
+                                            items:
+                                              properties:
+                                                periodSeconds:
+                                                  description: |-
+                                                    (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+                                                    When set, recommendations will be adjusted to disregard resource spikes within this period.
+                                                    If not specified, the workload will receive standard recommendations without startup considerations.
+                                                  type: number
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          selectPolicy:
+                                            type: string
+                                          stabilizationWindowSeconds:
+                                            type: number
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              maxReplicas:
+                                description: Maximum number of replicas.
+                                type: number
+                              metrics:
+                                description: Resource utilization metrics used by
+                                  the HPA.
+                                items:
+                                  properties:
+                                    resource:
+                                      items:
+                                        properties:
+                                          name:
+                                            description: (String) Scaling policy name
+                                            type: string
+                                          target:
+                                            items:
+                                              properties:
+                                                type:
+                                                  description: (String) Defines apply
+                                                    theshold strategy type.
+                                                  type: string
+                                                value:
+                                                  type: string
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: (String) Defines apply theshold
+                                        strategy type.
+                                      type: string
+                                  type: object
+                                type: array
+                              minReplicas:
+                                description: Minimum number of replicas.
+                                type: number
+                            type: object
+                          type: array
+                        takeOwnership:
+                          description: Allows CAST AI to take ownership of eligible
+                            existing HPAs.
+                          type: boolean
                       type: object
                     type: array
                   id:

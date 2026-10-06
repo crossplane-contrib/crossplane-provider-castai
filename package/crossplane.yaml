@@ -3,7 +3,7 @@ kind: Provider
 metadata:
   name: crossplane-provider-castai
   annotations:
-    meta.crossplane.io/maintainer: "CAST AI <info@cast.ai>"
+    meta.crossplane.io/maintainer: "Epsilon ASI <chris.altamimi@epsilonasi.com>"
     meta.crossplane.io/source: "github.com/crossplane-contrib/crossplane-provider-castai"
     meta.crossplane.io/license: "Apache2"
     meta.crossplane.io/description: "Upbound Partner Provider for configuring CastAI automation & cost optimization functionality."

@@ -28,8 +28,17 @@ ENV TF_FORK 0
 
 RUN mkdir -p ${PLUGIN_DIR}
 
-ADD https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
-ADD https://github.com/castai/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/releases/download/v${TERRAFORM_PROVIDER_VERSION}/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
+## Download Terraform and the native provider, verifying each archive against
+## the SHA256SUMS published alongside it on the same release page.
+RUN cd /tmp \
+  && TF_BASE_URL="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}" \
+  && TF_ZIP="terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip" \
+  && wget -q "${TF_BASE_URL}/${TF_ZIP}" \
+  && wget -q -O - "${TF_BASE_URL}/terraform_${TERRAFORM_VERSION}_SHA256SUMS" | grep " ${TF_ZIP}\$" | sha256sum -c - \
+  && PROVIDER_BASE_URL="https://github.com/castai/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/releases/download/v${TERRAFORM_PROVIDER_VERSION}" \
+  && PROVIDER_ZIP="${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip" \
+  && wget -q "${PROVIDER_BASE_URL}/${PROVIDER_ZIP}" \
+  && wget -q -O - "${PROVIDER_BASE_URL}/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_SHA256SUMS" | grep " ${PROVIDER_ZIP}\$" | sha256sum -c -
 ADD terraformrc.hcl ${TF_CLI_CONFIG_FILE}
 
 RUN unzip /tmp/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d /usr/local/bin \

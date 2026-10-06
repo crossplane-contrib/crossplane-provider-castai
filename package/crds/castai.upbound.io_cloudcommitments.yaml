@@ -1,0 +1,2143 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+  name: cloudcommitments.castai.upbound.io
+spec:
+  group: castai.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - castai
+    kind: Commitment
+    listKind: CommitmentList
+    plural: cloudcommitments
+    singular: commitment
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Commitment is the Schema for the Commitments API. Manages a single
+          CAST AI commitment (reserved instance, savings plan, CUD, capacity block
+          or capacity reservation) via the pricing v1beta Commitments API. For bulk
+          management, use for_each — see the examples/ directory.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CommitmentSpec defines the desired state of Commitment
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  allowedUsage:
+                    description: |-
+                      1.0). 1.0 means 100%. Defaults to 1.0.
+                      Allowed usage of the commitment (0.0-1.0). 1.0 means 100%. Defaults to 1.0.
+                    type: number
+                  autoAssignment:
+                    description: |-
+                      assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+                      Auto-assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+                    type: boolean
+                  autoscalingStatus:
+                    description: |-
+                      (String) Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.
+                      Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.
+                    type: string
+                  awsCapacityBlockDetails:
+                    description: |-
+                      (Attributes) AWS Capacity Block details. Required when type is CAPACITY_BLOCK. (see below for nested schema)
+                      AWS Capacity Block details. Required when type is CAPACITY_BLOCK.
+                    properties:
+                      availabilityZone:
+                        description: |-
+                          (String) Availability zone name.
+                          Availability zone name.
+                        type: string
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          Availability zone ID.
+                        type: string
+                      availableInstanceCount:
+                        description: |-
+                          (Number) Available (unused) instance count.
+                          Available (unused) instance count.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Capacity block reservation ID.
+                          Capacity block reservation ID.
+                        type: string
+                      instancePlatform:
+                        description: |-
+                          (String) Instance platform (e.g. Linux/UNIX).
+                          Instance platform (e.g. Linux/UNIX).
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          EC2 instance type.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Capacity block state.
+                          Capacity block state.
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total reserved instance count.
+                        type: number
+                    type: object
+                  awsOdcrDetails:
+                    description: |-
+                      Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS. (see below for nested schema)
+                      AWS On-Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS.
+                    properties:
+                      availabilityZone:
+                        description: |-
+                          (String) Availability zone name.
+                          Availability zone name.
+                        type: string
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          Availability zone ID.
+                        type: string
+                      availableInstanceCount:
+                        description: |-
+                          (Number) Available (unused) instance count.
+                          Available (unused) instance count.
+                        type: number
+                      endDateType:
+                        description: |-
+                          (String) End date type (unlimited, limited).
+                          End date type (unlimited, limited).
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Capacity reservation ID.
+                        type: string
+                      instanceMatchCriteria:
+                        description: |-
+                          (String) Instance match criteria (open, targeted).
+                          Instance match criteria (open, targeted).
+                        type: string
+                      instancePlatform:
+                        description: |-
+                          (String) Instance platform (e.g. Linux/UNIX).
+                          Instance platform (e.g. Linux/UNIX).
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          EC2 instance type.
+                        type: string
+                      interruptible:
+                        description: |-
+                          (Boolean) Whether this reservation is interruptible.
+                          Whether this reservation is interruptible.
+                        type: boolean
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Capacity reservation state.
+                        type: string
+                      tenancy:
+                        description: |-
+                          (String) Tenancy (default, dedicated).
+                          Tenancy (default, dedicated).
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total reserved instance count.
+                        type: number
+                    type: object
+                  awsReservedInstancesDetails:
+                    description: |-
+                      (Attributes) AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS. (see below for nested schema)
+                      AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS.
+                    properties:
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          AWS availability zone ID (zonal RIs only).
+                        type: string
+                      availabilityZoneName:
+                        description: |-
+                          (String) AWS availability zone name (zonal RIs only).
+                          AWS availability zone name (zonal RIs only).
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          AWS reserved instance ID.
+                        type: string
+                      instanceCount:
+                        description: |-
+                          (Number) Instance count.
+                          Instance count.
+                        type: number
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          AWS EC2 instance type.
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Scope: whether the commitment applies to a region or an availability zone.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Reserved instance state (e.g. active).
+                        type: string
+                    type: object
+                  awsSavingsPlanDetails:
+                    description: |-
+                      (Attributes) AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS. (see below for nested schema)
+                      AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Commitment amount in USD per hour.
+                        type: number
+                      commitmentTerm:
+                        description: |-
+                          (String) Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.
+                          Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          AWS savings plan ID.
+                        type: string
+                      instanceTypeFamily:
+                        description: |-
+                          (String) Instance type family (EC2 instance savings plans).
+                          Instance type family (EC2 instance savings plans).
+                        type: string
+                      offeringId:
+                        description: |-
+                          (String) AWS savings plan offering ID.
+                          AWS savings plan offering ID.
+                        type: string
+                      paymentOption:
+                        description: |-
+                          (String) Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.
+                          Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.
+                        type: string
+                      region:
+                        description: |-
+                          (String) Region where the commitment is applicable.
+                          Savings plan region.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Savings plan state (e.g. active).
+                        type: string
+                      type:
+                        description: |-
+                          (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                          Savings plan type (e.g. Compute, EC2Instance).
+                        type: string
+                    type: object
+                  azureReservationDetails:
+                    description: |-
+                      (Attributes) Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure. (see below for nested schema)
+                      Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure.
+                    properties:
+                      count:
+                        description: |-
+                          (Number) Count of reserved instances.
+                          Count of reserved instances.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Reservation ID.
+                        type: string
+                      instanceFlexibility:
+                        description: |-
+                          (String) Instance flexibility. One of: ON, OFF.
+                          Instance flexibility. One of: ON, OFF.
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          Reserved instance type.
+                        type: string
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                        type: string
+                      purchaseTime:
+                        description: |-
+                          (String) Purchase time (RFC3339).
+                          Purchase time (RFC3339).
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Scope (e.g. Shared, Single, ManagementGroup).
+                        type: string
+                      scopeManagementGroup:
+                        description: |-
+                          (String) Scope management group.
+                          Scope management group.
+                        type: string
+                      scopeResourceGroup:
+                        description: |-
+                          (String) Scope resource group.
+                          Scope resource group.
+                        type: string
+                      scopeSubscription:
+                        description: |-
+                          (String) Scope subscription.
+                          Scope subscription.
+                        type: string
+                      scopeTenant:
+                        description: |-
+                          (String) Scope tenant ID.
+                          Scope tenant ID.
+                        type: string
+                      status:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded).
+                          Provisioning state (e.g. Succeeded).
+                        type: string
+                    type: object
+                  azureSavingsPlanDetails:
+                    description: |-
+                      (Attributes) Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure. (see below for nested schema)
+                      Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Hourly commitment amount in USD per hour.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Savings plan ID.
+                        type: string
+                      provisioningState:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded, Expired, Cancelled).
+                          Provisioning state (e.g. Succeeded, Expired, Cancelled).
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Applied scope type. One of: SINGLE, SHARED, MANAGEMENT_GROUP.
+                        type: string
+                      scopeManagementGroup:
+                        description: |-
+                          (String) Scope management group.
+                          Scope management group.
+                        type: string
+                      scopeResourceGroup:
+                        description: |-
+                          (String) Scope resource group.
+                          Scope resource group.
+                        type: string
+                      scopeSubscription:
+                        description: |-
+                          (String) Scope subscription.
+                          Scope subscription ID.
+                        type: string
+                      scopeTenant:
+                        description: |-
+                          (String) Scope tenant ID.
+                          Scope tenant ID.
+                        type: string
+                      term:
+                        description: |-
+                          (String) Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.
+                          Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.
+                        type: string
+                    type: object
+                  cloud:
+                    description: |-
+                      (String) Cloud provider. One of: AWS, GCP, AZURE.
+                      Cloud provider. One of: AWS, GCP, AZURE.
+                    type: string
+                  endTime:
+                    description: |-
+                      (String) End time of the commitment (RFC3339).
+                      End time of the commitment (RFC3339).
+                    type: string
+                  gcpCapacityReservationDetails:
+                    description: |-
+                      (Attributes) GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP. (see below for nested schema)
+                      GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP.
+                    properties:
+                      accelerators:
+                        description: |-
+                          (Attributes List) Accelerators (GPUs) reserved VMs must match exactly. (see below for nested schema)
+                          Accelerators (GPUs) reserved VMs must match exactly.
+                        items:
+                          properties:
+                            acceleratorCount:
+                              description: |-
+                                (Number) Number of accelerators of this type per VM.
+                                Number of accelerators of this type per VM.
+                              type: number
+                            acceleratorType:
+                              description: |-
+                                (String) Accelerator (GPU) type as the full GCP acceleratorType URL.
+                                Accelerator (GPU) type as the full GCP acceleratorType URL.
+                              type: string
+                          type: object
+                        type: array
+                      assuredInstanceCount:
+                        description: |-
+                          (Number) Assured count for the reservation.
+                          Assured count for the reservation.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Reservation ID.
+                        type: string
+                      inUseInstanceCount:
+                        description: |-
+                          (Number) Number of instances currently in use.
+                          Number of instances currently in use.
+                        type: number
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          Instance type covered by the reservation.
+                        type: string
+                      localSsds:
+                        description: |-
+                          (Attributes List) Local SSD disks reserved VMs must match exactly. (see below for nested schema)
+                          Local SSD disks reserved VMs must match exactly.
+                        items:
+                          properties:
+                            diskSizeGb:
+                              description: |-
+                                (Number) Disk size in GB.
+                                Disk size in GB.
+                              type: number
+                            interface:
+                              description: |-
+                                (String) Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
+                                Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
+                              type: string
+                          type: object
+                        type: array
+                      minCpuPlatform:
+                        description: |-
+                          (String) Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+                          Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) GCP project ID that owns the reservation.
+                          GCP project ID that owns the reservation.
+                        type: string
+                      selfLink:
+                        description: |-
+                          defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+                          Server-defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+                        type: string
+                      shareSettings:
+                        description: |-
+                          (Attributes) Reservation sharing settings. (see below for nested schema)
+                          Reservation sharing settings.
+                        items:
+                          properties:
+                            projectIds:
+                              description: |-
+                                (List of String) Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+                                Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+                              items:
+                                type: string
+                              type: array
+                            shareType:
+                              description: |-
+                                (String) Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.
+                                Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.
+                              type: string
+                          type: object
+                        type: array
+                      specificReservationRequired:
+                        description: |-
+                          (Boolean) Whether the reservation requires specific reservation affinity.
+                          Whether the reservation requires specific reservation affinity.
+                        type: boolean
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Runtime state of the reservation (e.g. READY).
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total number of instances reserved.
+                        type: number
+                      zone:
+                        description: |-
+                          (String) GCP zone of the reservation.
+                          GCP zone of the reservation.
+                        type: string
+                    type: object
+                  gcpFlexCudDetails:
+                    description: |-
+                      (Attributes) GCP Flex CUD details. Required when type is FLEX_CUD. (see below for nested schema)
+                      GCP Flex CUD details. Required when type is FLEX_CUD.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Hourly commitment in USD per hour.
+                        type: number
+                      displayName:
+                        description: |-
+                          specified display name.
+                          User-specified display name.
+                        type: string
+                      lineItemId:
+                        description: |-
+                          (String) Line item ID within the order.
+                          Line item ID within the order.
+                        type: string
+                      offer:
+                        description: |-
+                          (String) Offer identifier.
+                          Offer identifier.
+                        type: string
+                      orderName:
+                        description: |-
+                          (String) Resource name of the order.
+                          Resource name of the order.
+                        type: string
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.
+                        type: string
+                      region:
+                        description: |-
+                          (String) Region where the commitment is applicable.
+                          Region (can be empty for global Flex CUDs).
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          State (ACTIVE, CANCELED).
+                        type: string
+                    type: object
+                  gcpResourceCudDetails:
+                    description: |-
+                      (Attributes) GCP Resource CUD details. Required when type is RESOURCE_CUD. (see below for nested schema)
+                      GCP Resource CUD details. Required when type is RESOURCE_CUD.
+                    properties:
+                      cpu:
+                        description: |-
+                          (Number) Committed CPU count.
+                          Committed CPU count.
+                        type: number
+                      cudId:
+                        description: |-
+                          (String) CUD ID from GCP.
+                          CUD ID from GCP.
+                        type: string
+                      memoryMb:
+                        description: |-
+                          (Number) Committed memory in MB.
+                          Committed memory in MB.
+                        type: number
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.
+                        type: string
+                      status:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded).
+                          Commitment status (e.g. ACTIVE).
+                        type: string
+                      type:
+                        description: |-
+                          (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                          GCP commitment type (e.g. COMPUTE_OPTIMIZED_C2D).
+                        type: string
+                    type: object
+                  name:
+                    description: |-
+                      (String) Commitment name.
+                      Commitment name.
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+                      CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+                    type: string
+                  prioritization:
+                    description: |-
+                      priority clusters are ignored.
+                      If enabled, resources used by lower-priority clusters are ignored.
+                    type: boolean
+                  region:
+                    description: |-
+                      (String) Region where the commitment is applicable.
+                      Region where the commitment is applicable.
+                    type: string
+                  scalingStrategy:
+                    description: |-
+                      (String) Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.
+                      Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.
+                    type: string
+                  startTime:
+                    description: |-
+                      01-01T00:00:00Z).
+                      Start time of the commitment (RFC3339, e.g. 2026-01-01T00:00:00Z).
+                    type: string
+                  type:
+                    description: |-
+                      (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                      Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                    type: string
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  allowedUsage:
+                    description: |-
+                      1.0). 1.0 means 100%. Defaults to 1.0.
+                      Allowed usage of the commitment (0.0-1.0). 1.0 means 100%. Defaults to 1.0.
+                    type: number
+                  autoAssignment:
+                    description: |-
+                      assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+                      Auto-assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+                    type: boolean
+                  autoscalingStatus:
+                    description: |-
+                      (String) Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.
+                      Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.
+                    type: string
+                  awsCapacityBlockDetails:
+                    description: |-
+                      (Attributes) AWS Capacity Block details. Required when type is CAPACITY_BLOCK. (see below for nested schema)
+                      AWS Capacity Block details. Required when type is CAPACITY_BLOCK.
+                    properties:
+                      availabilityZone:
+                        description: |-
+                          (String) Availability zone name.
+                          Availability zone name.
+                        type: string
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          Availability zone ID.
+                        type: string
+                      availableInstanceCount:
+                        description: |-
+                          (Number) Available (unused) instance count.
+                          Available (unused) instance count.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Capacity block reservation ID.
+                          Capacity block reservation ID.
+                        type: string
+                      instancePlatform:
+                        description: |-
+                          (String) Instance platform (e.g. Linux/UNIX).
+                          Instance platform (e.g. Linux/UNIX).
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          EC2 instance type.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Capacity block state.
+                          Capacity block state.
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total reserved instance count.
+                        type: number
+                    type: object
+                  awsOdcrDetails:
+                    description: |-
+                      Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS. (see below for nested schema)
+                      AWS On-Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS.
+                    properties:
+                      availabilityZone:
+                        description: |-
+                          (String) Availability zone name.
+                          Availability zone name.
+                        type: string
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          Availability zone ID.
+                        type: string
+                      availableInstanceCount:
+                        description: |-
+                          (Number) Available (unused) instance count.
+                          Available (unused) instance count.
+                        type: number
+                      endDateType:
+                        description: |-
+                          (String) End date type (unlimited, limited).
+                          End date type (unlimited, limited).
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Capacity reservation ID.
+                        type: string
+                      instanceMatchCriteria:
+                        description: |-
+                          (String) Instance match criteria (open, targeted).
+                          Instance match criteria (open, targeted).
+                        type: string
+                      instancePlatform:
+                        description: |-
+                          (String) Instance platform (e.g. Linux/UNIX).
+                          Instance platform (e.g. Linux/UNIX).
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          EC2 instance type.
+                        type: string
+                      interruptible:
+                        description: |-
+                          (Boolean) Whether this reservation is interruptible.
+                          Whether this reservation is interruptible.
+                        type: boolean
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Capacity reservation state.
+                        type: string
+                      tenancy:
+                        description: |-
+                          (String) Tenancy (default, dedicated).
+                          Tenancy (default, dedicated).
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total reserved instance count.
+                        type: number
+                    type: object
+                  awsReservedInstancesDetails:
+                    description: |-
+                      (Attributes) AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS. (see below for nested schema)
+                      AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS.
+                    properties:
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          AWS availability zone ID (zonal RIs only).
+                        type: string
+                      availabilityZoneName:
+                        description: |-
+                          (String) AWS availability zone name (zonal RIs only).
+                          AWS availability zone name (zonal RIs only).
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          AWS reserved instance ID.
+                        type: string
+                      instanceCount:
+                        description: |-
+                          (Number) Instance count.
+                          Instance count.
+                        type: number
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          AWS EC2 instance type.
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Scope: whether the commitment applies to a region or an availability zone.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Reserved instance state (e.g. active).
+                        type: string
+                    type: object
+                  awsSavingsPlanDetails:
+                    description: |-
+                      (Attributes) AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS. (see below for nested schema)
+                      AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Commitment amount in USD per hour.
+                        type: number
+                      commitmentTerm:
+                        description: |-
+                          (String) Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.
+                          Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          AWS savings plan ID.
+                        type: string
+                      instanceTypeFamily:
+                        description: |-
+                          (String) Instance type family (EC2 instance savings plans).
+                          Instance type family (EC2 instance savings plans).
+                        type: string
+                      offeringId:
+                        description: |-
+                          (String) AWS savings plan offering ID.
+                          AWS savings plan offering ID.
+                        type: string
+                      paymentOption:
+                        description: |-
+                          (String) Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.
+                          Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.
+                        type: string
+                      region:
+                        description: |-
+                          (String) Region where the commitment is applicable.
+                          Savings plan region.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Savings plan state (e.g. active).
+                        type: string
+                      type:
+                        description: |-
+                          (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                          Savings plan type (e.g. Compute, EC2Instance).
+                        type: string
+                    type: object
+                  azureReservationDetails:
+                    description: |-
+                      (Attributes) Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure. (see below for nested schema)
+                      Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure.
+                    properties:
+                      count:
+                        description: |-
+                          (Number) Count of reserved instances.
+                          Count of reserved instances.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Reservation ID.
+                        type: string
+                      instanceFlexibility:
+                        description: |-
+                          (String) Instance flexibility. One of: ON, OFF.
+                          Instance flexibility. One of: ON, OFF.
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          Reserved instance type.
+                        type: string
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                        type: string
+                      purchaseTime:
+                        description: |-
+                          (String) Purchase time (RFC3339).
+                          Purchase time (RFC3339).
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Scope (e.g. Shared, Single, ManagementGroup).
+                        type: string
+                      scopeManagementGroup:
+                        description: |-
+                          (String) Scope management group.
+                          Scope management group.
+                        type: string
+                      scopeResourceGroup:
+                        description: |-
+                          (String) Scope resource group.
+                          Scope resource group.
+                        type: string
+                      scopeSubscription:
+                        description: |-
+                          (String) Scope subscription.
+                          Scope subscription.
+                        type: string
+                      scopeTenant:
+                        description: |-
+                          (String) Scope tenant ID.
+                          Scope tenant ID.
+                        type: string
+                      status:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded).
+                          Provisioning state (e.g. Succeeded).
+                        type: string
+                    type: object
+                  azureSavingsPlanDetails:
+                    description: |-
+                      (Attributes) Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure. (see below for nested schema)
+                      Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Hourly commitment amount in USD per hour.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Savings plan ID.
+                        type: string
+                      provisioningState:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded, Expired, Cancelled).
+                          Provisioning state (e.g. Succeeded, Expired, Cancelled).
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Applied scope type. One of: SINGLE, SHARED, MANAGEMENT_GROUP.
+                        type: string
+                      scopeManagementGroup:
+                        description: |-
+                          (String) Scope management group.
+                          Scope management group.
+                        type: string
+                      scopeResourceGroup:
+                        description: |-
+                          (String) Scope resource group.
+                          Scope resource group.
+                        type: string
+                      scopeSubscription:
+                        description: |-
+                          (String) Scope subscription.
+                          Scope subscription ID.
+                        type: string
+                      scopeTenant:
+                        description: |-
+                          (String) Scope tenant ID.
+                          Scope tenant ID.
+                        type: string
+                      term:
+                        description: |-
+                          (String) Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.
+                          Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.
+                        type: string
+                    type: object
+                  cloud:
+                    description: |-
+                      (String) Cloud provider. One of: AWS, GCP, AZURE.
+                      Cloud provider. One of: AWS, GCP, AZURE.
+                    type: string
+                  endTime:
+                    description: |-
+                      (String) End time of the commitment (RFC3339).
+                      End time of the commitment (RFC3339).
+                    type: string
+                  gcpCapacityReservationDetails:
+                    description: |-
+                      (Attributes) GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP. (see below for nested schema)
+                      GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP.
+                    properties:
+                      accelerators:
+                        description: |-
+                          (Attributes List) Accelerators (GPUs) reserved VMs must match exactly. (see below for nested schema)
+                          Accelerators (GPUs) reserved VMs must match exactly.
+                        items:
+                          properties:
+                            acceleratorCount:
+                              description: |-
+                                (Number) Number of accelerators of this type per VM.
+                                Number of accelerators of this type per VM.
+                              type: number
+                            acceleratorType:
+                              description: |-
+                                (String) Accelerator (GPU) type as the full GCP acceleratorType URL.
+                                Accelerator (GPU) type as the full GCP acceleratorType URL.
+                              type: string
+                          type: object
+                        type: array
+                      assuredInstanceCount:
+                        description: |-
+                          (Number) Assured count for the reservation.
+                          Assured count for the reservation.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Reservation ID.
+                        type: string
+                      inUseInstanceCount:
+                        description: |-
+                          (Number) Number of instances currently in use.
+                          Number of instances currently in use.
+                        type: number
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          Instance type covered by the reservation.
+                        type: string
+                      localSsds:
+                        description: |-
+                          (Attributes List) Local SSD disks reserved VMs must match exactly. (see below for nested schema)
+                          Local SSD disks reserved VMs must match exactly.
+                        items:
+                          properties:
+                            diskSizeGb:
+                              description: |-
+                                (Number) Disk size in GB.
+                                Disk size in GB.
+                              type: number
+                            interface:
+                              description: |-
+                                (String) Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
+                                Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
+                              type: string
+                          type: object
+                        type: array
+                      minCpuPlatform:
+                        description: |-
+                          (String) Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+                          Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) GCP project ID that owns the reservation.
+                          GCP project ID that owns the reservation.
+                        type: string
+                      selfLink:
+                        description: |-
+                          defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+                          Server-defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+                        type: string
+                      shareSettings:
+                        description: |-
+                          (Attributes) Reservation sharing settings. (see below for nested schema)
+                          Reservation sharing settings.
+                        items:
+                          properties:
+                            projectIds:
+                              description: |-
+                                (List of String) Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+                                Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+                              items:
+                                type: string
+                              type: array
+                            shareType:
+                              description: |-
+                                (String) Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.
+                                Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.
+                              type: string
+                          type: object
+                        type: array
+                      specificReservationRequired:
+                        description: |-
+                          (Boolean) Whether the reservation requires specific reservation affinity.
+                          Whether the reservation requires specific reservation affinity.
+                        type: boolean
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Runtime state of the reservation (e.g. READY).
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total number of instances reserved.
+                        type: number
+                      zone:
+                        description: |-
+                          (String) GCP zone of the reservation.
+                          GCP zone of the reservation.
+                        type: string
+                    type: object
+                  gcpFlexCudDetails:
+                    description: |-
+                      (Attributes) GCP Flex CUD details. Required when type is FLEX_CUD. (see below for nested schema)
+                      GCP Flex CUD details. Required when type is FLEX_CUD.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Hourly commitment in USD per hour.
+                        type: number
+                      displayName:
+                        description: |-
+                          specified display name.
+                          User-specified display name.
+                        type: string
+                      lineItemId:
+                        description: |-
+                          (String) Line item ID within the order.
+                          Line item ID within the order.
+                        type: string
+                      offer:
+                        description: |-
+                          (String) Offer identifier.
+                          Offer identifier.
+                        type: string
+                      orderName:
+                        description: |-
+                          (String) Resource name of the order.
+                          Resource name of the order.
+                        type: string
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.
+                        type: string
+                      region:
+                        description: |-
+                          (String) Region where the commitment is applicable.
+                          Region (can be empty for global Flex CUDs).
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          State (ACTIVE, CANCELED).
+                        type: string
+                    type: object
+                  gcpResourceCudDetails:
+                    description: |-
+                      (Attributes) GCP Resource CUD details. Required when type is RESOURCE_CUD. (see below for nested schema)
+                      GCP Resource CUD details. Required when type is RESOURCE_CUD.
+                    properties:
+                      cpu:
+                        description: |-
+                          (Number) Committed CPU count.
+                          Committed CPU count.
+                        type: number
+                      cudId:
+                        description: |-
+                          (String) CUD ID from GCP.
+                          CUD ID from GCP.
+                        type: string
+                      memoryMb:
+                        description: |-
+                          (Number) Committed memory in MB.
+                          Committed memory in MB.
+                        type: number
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.
+                        type: string
+                      status:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded).
+                          Commitment status (e.g. ACTIVE).
+                        type: string
+                      type:
+                        description: |-
+                          (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                          GCP commitment type (e.g. COMPUTE_OPTIMIZED_C2D).
+                        type: string
+                    type: object
+                  name:
+                    description: |-
+                      (String) Commitment name.
+                      Commitment name.
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+                      CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+                    type: string
+                  prioritization:
+                    description: |-
+                      priority clusters are ignored.
+                      If enabled, resources used by lower-priority clusters are ignored.
+                    type: boolean
+                  region:
+                    description: |-
+                      (String) Region where the commitment is applicable.
+                      Region where the commitment is applicable.
+                    type: string
+                  scalingStrategy:
+                    description: |-
+                      (String) Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.
+                      Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.
+                    type: string
+                  startTime:
+                    description: |-
+                      01-01T00:00:00Z).
+                      Start time of the commitment (RFC3339, e.g. 2026-01-01T00:00:00Z).
+                    type: string
+                  type:
+                    description: |-
+                      (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                      Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
+                        type: object
+                      type:
+                        description: |-
+                          Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.awsCapacityBlockDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.awsCapacityBlockDetails)
+                || (has(self.initProvider) && has(self.initProvider.awsCapacityBlockDetails))'
+            - message: spec.forProvider.awsOdcrDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.awsOdcrDetails)
+                || (has(self.initProvider) && has(self.initProvider.awsOdcrDetails))'
+            - message: spec.forProvider.awsReservedInstancesDetails is a required
+                parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.awsReservedInstancesDetails)
+                || (has(self.initProvider) && has(self.initProvider.awsReservedInstancesDetails))'
+            - message: spec.forProvider.awsSavingsPlanDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.awsSavingsPlanDetails)
+                || (has(self.initProvider) && has(self.initProvider.awsSavingsPlanDetails))'
+            - message: spec.forProvider.azureReservationDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.azureReservationDetails)
+                || (has(self.initProvider) && has(self.initProvider.azureReservationDetails))'
+            - message: spec.forProvider.azureSavingsPlanDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.azureSavingsPlanDetails)
+                || (has(self.initProvider) && has(self.initProvider.azureSavingsPlanDetails))'
+            - message: spec.forProvider.cloud is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.cloud)
+                || (has(self.initProvider) && has(self.initProvider.cloud))'
+            - message: spec.forProvider.gcpCapacityReservationDetails is a required
+                parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.gcpCapacityReservationDetails)
+                || (has(self.initProvider) && has(self.initProvider.gcpCapacityReservationDetails))'
+            - message: spec.forProvider.gcpFlexCudDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.gcpFlexCudDetails)
+                || (has(self.initProvider) && has(self.initProvider.gcpFlexCudDetails))'
+            - message: spec.forProvider.gcpResourceCudDetails is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.gcpResourceCudDetails)
+                || (has(self.initProvider) && has(self.initProvider.gcpResourceCudDetails))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.region is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.region)
+                || (has(self.initProvider) && has(self.initProvider.region))'
+            - message: spec.forProvider.startTime is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.startTime)
+                || (has(self.initProvider) && has(self.initProvider.startTime))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
+          status:
+            description: CommitmentStatus defines the observed state of Commitment.
+            properties:
+              atProvider:
+                properties:
+                  allowedUsage:
+                    description: |-
+                      1.0). 1.0 means 100%. Defaults to 1.0.
+                      Allowed usage of the commitment (0.0-1.0). 1.0 means 100%. Defaults to 1.0.
+                    type: number
+                  autoAssignment:
+                    description: |-
+                      assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+                      Auto-assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
+                    type: boolean
+                  autoscalingStatus:
+                    description: |-
+                      (String) Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.
+                      Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.
+                    type: string
+                  awsCapacityBlockDetails:
+                    description: |-
+                      (Attributes) AWS Capacity Block details. Required when type is CAPACITY_BLOCK. (see below for nested schema)
+                      AWS Capacity Block details. Required when type is CAPACITY_BLOCK.
+                    properties:
+                      availabilityZone:
+                        description: |-
+                          (String) Availability zone name.
+                          Availability zone name.
+                        type: string
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          Availability zone ID.
+                        type: string
+                      availableInstanceCount:
+                        description: |-
+                          (Number) Available (unused) instance count.
+                          Available (unused) instance count.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Capacity block reservation ID.
+                          Capacity block reservation ID.
+                        type: string
+                      instancePlatform:
+                        description: |-
+                          (String) Instance platform (e.g. Linux/UNIX).
+                          Instance platform (e.g. Linux/UNIX).
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          EC2 instance type.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Capacity block state.
+                          Capacity block state.
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total reserved instance count.
+                        type: number
+                    type: object
+                  awsOdcrDetails:
+                    description: |-
+                      Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS. (see below for nested schema)
+                      AWS On-Demand Capacity Reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on AWS.
+                    properties:
+                      availabilityZone:
+                        description: |-
+                          (String) Availability zone name.
+                          Availability zone name.
+                        type: string
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          Availability zone ID.
+                        type: string
+                      availableInstanceCount:
+                        description: |-
+                          (Number) Available (unused) instance count.
+                          Available (unused) instance count.
+                        type: number
+                      endDateType:
+                        description: |-
+                          (String) End date type (unlimited, limited).
+                          End date type (unlimited, limited).
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Capacity reservation ID.
+                        type: string
+                      instanceMatchCriteria:
+                        description: |-
+                          (String) Instance match criteria (open, targeted).
+                          Instance match criteria (open, targeted).
+                        type: string
+                      instancePlatform:
+                        description: |-
+                          (String) Instance platform (e.g. Linux/UNIX).
+                          Instance platform (e.g. Linux/UNIX).
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          EC2 instance type.
+                        type: string
+                      interruptible:
+                        description: |-
+                          (Boolean) Whether this reservation is interruptible.
+                          Whether this reservation is interruptible.
+                        type: boolean
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Capacity reservation state.
+                        type: string
+                      tenancy:
+                        description: |-
+                          (String) Tenancy (default, dedicated).
+                          Tenancy (default, dedicated).
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total reserved instance count.
+                        type: number
+                    type: object
+                  awsReservedInstancesDetails:
+                    description: |-
+                      (Attributes) AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS. (see below for nested schema)
+                      AWS Reserved Instances details. Required when type is RESERVED_INSTANCE on AWS.
+                    properties:
+                      availabilityZoneId:
+                        description: |-
+                          (String) Availability zone ID.
+                          AWS availability zone ID (zonal RIs only).
+                        type: string
+                      availabilityZoneName:
+                        description: |-
+                          (String) AWS availability zone name (zonal RIs only).
+                          AWS availability zone name (zonal RIs only).
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          AWS reserved instance ID.
+                        type: string
+                      instanceCount:
+                        description: |-
+                          (Number) Instance count.
+                          Instance count.
+                        type: number
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          AWS EC2 instance type.
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Scope: whether the commitment applies to a region or an availability zone.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Reserved instance state (e.g. active).
+                        type: string
+                    type: object
+                  awsSavingsPlanDetails:
+                    description: |-
+                      (Attributes) AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS. (see below for nested schema)
+                      AWS Savings Plan details. Required when type is SAVINGS_PLAN on AWS.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Commitment amount in USD per hour.
+                        type: number
+                      commitmentTerm:
+                        description: |-
+                          (String) Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.
+                          Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.
+                        type: string
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          AWS savings plan ID.
+                        type: string
+                      instanceTypeFamily:
+                        description: |-
+                          (String) Instance type family (EC2 instance savings plans).
+                          Instance type family (EC2 instance savings plans).
+                        type: string
+                      offeringId:
+                        description: |-
+                          (String) AWS savings plan offering ID.
+                          AWS savings plan offering ID.
+                        type: string
+                      paymentOption:
+                        description: |-
+                          (String) Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.
+                          Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.
+                        type: string
+                      region:
+                        description: |-
+                          (String) Region where the commitment is applicable.
+                          Savings plan region.
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Savings plan state (e.g. active).
+                        type: string
+                      type:
+                        description: |-
+                          (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                          Savings plan type (e.g. Compute, EC2Instance).
+                        type: string
+                    type: object
+                  azureReservationDetails:
+                    description: |-
+                      (Attributes) Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure. (see below for nested schema)
+                      Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure.
+                    properties:
+                      count:
+                        description: |-
+                          (Number) Count of reserved instances.
+                          Count of reserved instances.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Reservation ID.
+                        type: string
+                      instanceFlexibility:
+                        description: |-
+                          (String) Instance flexibility. One of: ON, OFF.
+                          Instance flexibility. One of: ON, OFF.
+                        type: string
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          Reserved instance type.
+                        type: string
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                        type: string
+                      purchaseTime:
+                        description: |-
+                          (String) Purchase time (RFC3339).
+                          Purchase time (RFC3339).
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Scope (e.g. Shared, Single, ManagementGroup).
+                        type: string
+                      scopeManagementGroup:
+                        description: |-
+                          (String) Scope management group.
+                          Scope management group.
+                        type: string
+                      scopeResourceGroup:
+                        description: |-
+                          (String) Scope resource group.
+                          Scope resource group.
+                        type: string
+                      scopeSubscription:
+                        description: |-
+                          (String) Scope subscription.
+                          Scope subscription.
+                        type: string
+                      scopeTenant:
+                        description: |-
+                          (String) Scope tenant ID.
+                          Scope tenant ID.
+                        type: string
+                      status:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded).
+                          Provisioning state (e.g. Succeeded).
+                        type: string
+                    type: object
+                  azureSavingsPlanDetails:
+                    description: |-
+                      (Attributes) Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure. (see below for nested schema)
+                      Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Hourly commitment amount in USD per hour.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Savings plan ID.
+                        type: string
+                      provisioningState:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded, Expired, Cancelled).
+                          Provisioning state (e.g. Succeeded, Expired, Cancelled).
+                        type: string
+                      scope:
+                        description: |-
+                          (String) Scope: whether the commitment applies to a region or an availability zone.
+                          Applied scope type. One of: SINGLE, SHARED, MANAGEMENT_GROUP.
+                        type: string
+                      scopeManagementGroup:
+                        description: |-
+                          (String) Scope management group.
+                          Scope management group.
+                        type: string
+                      scopeResourceGroup:
+                        description: |-
+                          (String) Scope resource group.
+                          Scope resource group.
+                        type: string
+                      scopeSubscription:
+                        description: |-
+                          (String) Scope subscription.
+                          Scope subscription ID.
+                        type: string
+                      scopeTenant:
+                        description: |-
+                          (String) Scope tenant ID.
+                          Scope tenant ID.
+                        type: string
+                      term:
+                        description: |-
+                          (String) Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.
+                          Savings plan term. One of: ONE_YEAR, THREE_YEARS, FIVE_YEARS.
+                        type: string
+                    type: object
+                  cloud:
+                    description: |-
+                      (String) Cloud provider. One of: AWS, GCP, AZURE.
+                      Cloud provider. One of: AWS, GCP, AZURE.
+                    type: string
+                  createTime:
+                    description: |-
+                      (String) Creation time.
+                      Creation time.
+                    type: string
+                  endTime:
+                    description: |-
+                      (String) End time of the commitment (RFC3339).
+                      End time of the commitment (RFC3339).
+                    type: string
+                  gcpCapacityReservationDetails:
+                    description: |-
+                      (Attributes) GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP. (see below for nested schema)
+                      GCP capacity reservation details. Required when type is ON_DEMAND_CAPACITY_RESERVATION on GCP.
+                    properties:
+                      accelerators:
+                        description: |-
+                          (Attributes List) Accelerators (GPUs) reserved VMs must match exactly. (see below for nested schema)
+                          Accelerators (GPUs) reserved VMs must match exactly.
+                        items:
+                          properties:
+                            acceleratorCount:
+                              description: |-
+                                (Number) Number of accelerators of this type per VM.
+                                Number of accelerators of this type per VM.
+                              type: number
+                            acceleratorType:
+                              description: |-
+                                (String) Accelerator (GPU) type as the full GCP acceleratorType URL.
+                                Accelerator (GPU) type as the full GCP acceleratorType URL.
+                              type: string
+                          type: object
+                        type: array
+                      assuredInstanceCount:
+                        description: |-
+                          (Number) Assured count for the reservation.
+                          Assured count for the reservation.
+                        type: number
+                      id:
+                        description: |-
+                          (String) Commitment ID.
+                          Reservation ID.
+                        type: string
+                      inUseInstanceCount:
+                        description: |-
+                          (Number) Number of instances currently in use.
+                          Number of instances currently in use.
+                        type: number
+                      instanceType:
+                        description: |-
+                          (String) EC2 instance type.
+                          Instance type covered by the reservation.
+                        type: string
+                      localSsds:
+                        description: |-
+                          (Attributes List) Local SSD disks reserved VMs must match exactly. (see below for nested schema)
+                          Local SSD disks reserved VMs must match exactly.
+                        items:
+                          properties:
+                            diskSizeGb:
+                              description: |-
+                                (Number) Disk size in GB.
+                                Disk size in GB.
+                              type: number
+                            interface:
+                              description: |-
+                                (String) Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
+                                Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
+                              type: string
+                          type: object
+                        type: array
+                      minCpuPlatform:
+                        description: |-
+                          (String) Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+                          Minimum CPU platform the reserved VMs require (e.g. Intel Cascade Lake).
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) GCP project ID that owns the reservation.
+                          GCP project ID that owns the reservation.
+                        type: string
+                      selfLink:
+                        description: |-
+                          defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+                          Server-defined URL for the reservation (e.g. https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/reservations/my-reservation).
+                        type: string
+                      shareSettings:
+                        description: |-
+                          (Attributes) Reservation sharing settings. (see below for nested schema)
+                          Reservation sharing settings.
+                        items:
+                          properties:
+                            projectIds:
+                              description: |-
+                                (List of String) Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+                                Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
+                              items:
+                                type: string
+                              type: array
+                            shareType:
+                              description: |-
+                                (String) Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.
+                                Share type. One of: GCP_RESERVATION_SHARE_TYPE_LOCAL, GCP_RESERVATION_SHARE_TYPE_SPECIFIC_PROJECTS, GCP_RESERVATION_SHARE_TYPE_ORGANIZATION.
+                              type: string
+                          type: object
+                        type: array
+                      specificReservationRequired:
+                        description: |-
+                          (Boolean) Whether the reservation requires specific reservation affinity.
+                          Whether the reservation requires specific reservation affinity.
+                        type: boolean
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          Runtime state of the reservation (e.g. READY).
+                        type: string
+                      totalInstanceCount:
+                        description: |-
+                          (Number) Total reserved instance count.
+                          Total number of instances reserved.
+                        type: number
+                      zone:
+                        description: |-
+                          (String) GCP zone of the reservation.
+                          GCP zone of the reservation.
+                        type: string
+                    type: object
+                  gcpFlexCudDetails:
+                    description: |-
+                      (Attributes) GCP Flex CUD details. Required when type is FLEX_CUD. (see below for nested schema)
+                      GCP Flex CUD details. Required when type is FLEX_CUD.
+                    properties:
+                      commitmentAmount:
+                        description: |-
+                          (Number) Commitment amount in USD per hour.
+                          Hourly commitment in USD per hour.
+                        type: number
+                      displayName:
+                        description: |-
+                          specified display name.
+                          User-specified display name.
+                        type: string
+                      lineItemId:
+                        description: |-
+                          (String) Line item ID within the order.
+                          Line item ID within the order.
+                        type: string
+                      offer:
+                        description: |-
+                          (String) Offer identifier.
+                          Offer identifier.
+                        type: string
+                      orderName:
+                        description: |-
+                          (String) Resource name of the order.
+                          Resource name of the order.
+                        type: string
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.
+                        type: string
+                      region:
+                        description: |-
+                          (String) Region where the commitment is applicable.
+                          Region (can be empty for global Flex CUDs).
+                        type: string
+                      state:
+                        description: |-
+                          (String) Computed lifecycle state of the commitment.
+                          State (ACTIVE, CANCELED).
+                        type: string
+                    type: object
+                  gcpResourceCudDetails:
+                    description: |-
+                      (Attributes) GCP Resource CUD details. Required when type is RESOURCE_CUD. (see below for nested schema)
+                      GCP Resource CUD details. Required when type is RESOURCE_CUD.
+                    properties:
+                      cpu:
+                        description: |-
+                          (Number) Committed CPU count.
+                          Committed CPU count.
+                        type: number
+                      cudId:
+                        description: |-
+                          (String) CUD ID from GCP.
+                          CUD ID from GCP.
+                        type: string
+                      memoryMb:
+                        description: |-
+                          (Number) Committed memory in MB.
+                          Committed memory in MB.
+                        type: number
+                      plan:
+                        description: |-
+                          (String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.
+                          CUD plan. One of: TWELVE_MONTH, THIRTY_SIX_MONTH.
+                        type: string
+                      status:
+                        description: |-
+                          (String) Provisioning state (e.g. Succeeded).
+                          Commitment status (e.g. ACTIVE).
+                        type: string
+                      type:
+                        description: |-
+                          (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                          GCP commitment type (e.g. COMPUTE_OPTIMIZED_C2D).
+                        type: string
+                    type: object
+                  id:
+                    description: (String) Commitment ID.
+                    type: string
+                  name:
+                    description: |-
+                      (String) Commitment name.
+                      Commitment name.
+                    type: string
+                  organizationId:
+                    description: |-
+                      (String) CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+                      CAST AI organization ID. If not provided, the organization from the provider configuration is used.
+                    type: string
+                  prioritization:
+                    description: |-
+                      priority clusters are ignored.
+                      If enabled, resources used by lower-priority clusters are ignored.
+                    type: boolean
+                  region:
+                    description: |-
+                      (String) Region where the commitment is applicable.
+                      Region where the commitment is applicable.
+                    type: string
+                  scalingStrategy:
+                    description: |-
+                      (String) Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.
+                      Scaling strategy for the autoscaler. One of: DEFAULT, CPU_BASED, MEMORY_BASED.
+                    type: string
+                  startTime:
+                    description: |-
+                      01-01T00:00:00Z).
+                      Start time of the commitment (RFC3339, e.g. 2026-01-01T00:00:00Z).
+                    type: string
+                  state:
+                    description: |-
+                      (String) Computed lifecycle state of the commitment.
+                      Computed lifecycle state of the commitment.
+                    type: string
+                  type:
+                    description: |-
+                      (String) Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                      Commitment type. One of: RESERVED_INSTANCE, RESOURCE_CUD, SAVINGS_PLAN, CAPACITY_BLOCK, ON_DEMAND_CAPACITY_RESERVATION, FLEX_CUD. The matching details block must be set.
+                    type: string
+                  updateTime:
+                    description: |-
+                      (String) Last update time.
+                      Last update time.
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

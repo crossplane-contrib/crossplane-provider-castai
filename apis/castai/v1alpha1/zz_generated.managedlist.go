@@ -88,6 +88,15 @@ func (l *CacheRuleList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this CommitmentList.
+func (l *CommitmentList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this CommitmentsList.
 func (l *CommitmentsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -162,6 +171,15 @@ func (l *EnterpriseGroupList) GetItems() []resource.Managed {
 
 // GetItems of this EnterpriseRoleBindingList.
 func (l *EnterpriseRoleBindingList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EnterpriseServiceAccountList.
+func (l *EnterpriseServiceAccountList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

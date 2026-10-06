@@ -1,0 +1,25 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: Commitment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/commitment
+  labels:
+    testing.upbound.io/example-name: gcp_cud
+  name: gcp-cud
+spec:
+  forProvider:
+    allowedUsage: 1
+    autoscalingStatus: ACTIVE
+    cloud: GCP
+    endTime: "2027-01-01T00:00:00Z"
+    gcpResourceCudDetails:
+      cpu: 32
+      cudId: "123456789"
+      memoryMb: 131072
+      plan: TWELVE_MONTH
+      status: ACTIVE
+      type: GENERAL_PURPOSE_E2
+    name: prod-cud-us-central1
+    region: us-central1
+    startTime: "2026-01-01T00:00:00Z"
+    type: RESOURCE_CUD

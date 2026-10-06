@@ -18,6 +18,7 @@ import (
 	cacheconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacheconfiguration"
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacherule"
+	commitment "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitment"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitments"
 	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfiguration"
 	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfigurationdefault"
@@ -27,6 +28,7 @@ import (
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksuserarn"
 	enterprisegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterprisegroup"
 	enterpriserolebinding "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterpriserolebinding"
+	enterpriseserviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterpriseserviceaccount"
 	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/evictoradvancedconfig"
 	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkecluster"
 	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkeclusterid"
@@ -65,6 +67,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		cacheconfiguration.Setup,
 		cachegroup.Setup,
 		cacherule.Setup,
+		commitment.Setup,
 		commitments.Setup,
 		edgeconfiguration.Setup,
 		edgeconfigurationdefault.Setup,
@@ -74,6 +77,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		eksuserarn.Setup,
 		enterprisegroup.Setup,
 		enterpriserolebinding.Setup,
+		enterpriseserviceaccount.Setup,
 		evictoradvancedconfig.Setup,
 		gkecluster.Setup,
 		gkeclusterid.Setup,

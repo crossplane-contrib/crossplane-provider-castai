@@ -19,6 +19,7 @@ import (
 	cacheconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/cacheconfiguration"
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/config/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/config/cacherule"
+	commitment "github.com/crossplane-contrib/crossplane-provider-castai/config/commitment"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/config/commitments"
 	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfiguration"
 	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfigurationdefault"
@@ -28,6 +29,7 @@ import (
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
 	enterprisegroup "github.com/crossplane-contrib/crossplane-provider-castai/config/enterprisegroup"
 	enterpriserolebinding "github.com/crossplane-contrib/crossplane-provider-castai/config/enterpriserolebinding"
+	enterpriseserviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/config/enterpriseserviceaccount"
 	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/config/evictoradvancedconfig"
 	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/config/gkecluster"
 	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/gkeclusterid"
@@ -46,7 +48,7 @@ import (
 	securityruntimerule "github.com/crossplane-contrib/crossplane-provider-castai/config/securityruntimerule"
 	serviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/config/serviceaccount"
 	serviceaccountkey "github.com/crossplane-contrib/crossplane-provider-castai/config/serviceaccountkey"
-	ssoconnation "github.com/crossplane-contrib/crossplane-provider-castai/config/ssoconnection"
+	ssoconnection "github.com/crossplane-contrib/crossplane-provider-castai/config/ssoconnection"
 	workloadcustommetricsdatasource "github.com/crossplane-contrib/crossplane-provider-castai/config/workloadcustommetricsdatasource"
 	workloadscalingpolicy "github.com/crossplane-contrib/crossplane-provider-castai/config/workloadscalingpolicy"
 	workloadscalingpolicyorder "github.com/crossplane-contrib/crossplane-provider-castai/config/workloadscalingpolicyorder"
@@ -83,6 +85,7 @@ func GetProvider() *ujconfig.Provider {
 		cacheconfiguration.Configure,
 		cachegroup.Configure,
 		cacherule.Configure,
+		commitment.Configure,
 		commitments.Configure,
 		edgeconfiguration.Configure,
 		edgeconfigurationdefault.Configure,
@@ -92,6 +95,7 @@ func GetProvider() *ujconfig.Provider {
 		eksuserarn.Configure,
 		enterprisegroup.Configure,
 		enterpriserolebinding.Configure,
+		enterpriseserviceaccount.Configure,
 		evictoradvancedconfig.Configure,
 		gkecluster.Configure,
 		gkeclusterid.Configure,
@@ -110,7 +114,7 @@ func GetProvider() *ujconfig.Provider {
 		securityruntimerule.Configure,
 		serviceaccount.Configure,
 		serviceaccountkey.Configure,
-		ssoconnation.Configure,
+		ssoconnection.Configure,
 		workloadcustommetricsdatasource.Configure,
 		workloadscalingpolicy.Configure,
 		workloadscalingpolicyorder.Configure,

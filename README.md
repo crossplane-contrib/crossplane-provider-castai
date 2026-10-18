@@ -31,6 +31,11 @@ You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-
 
 ## Developing
 
+Update the submodules, such as the common build scripts:
+```console
+make submodules
+```
+
 Run code-generation pipeline:
 ```console
 go run cmd/generator/main.go "$PWD"

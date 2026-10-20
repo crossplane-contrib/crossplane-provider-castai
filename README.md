@@ -10,7 +10,7 @@ CastAI API.
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://marketplace.upbound.io/providers/crossplane-contrib/crossplane-provider-castai):
 ```
-up ctp provider install crossplane-contrib/crossplane-provider-castai:v0.7.0
+up ctp provider install crossplane-contrib/crossplane-provider-castai:v0.39.0
 ```
 
 Alternatively, you can use declarative installation:
@@ -21,11 +21,39 @@ kind: Provider
 metadata:
   name: crossplane-provider-castai
 spec:
-  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.7.0
+  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.39.0
 EOF
 ```
 
-Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
+To run the provider with debug logging, create a `DeploymentRuntimeConfig` and
+reference it from the `Provider` via `spec.runtimeConfigRef`:
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: debug-config
+spec:
+  deploymentTemplate:
+    spec:
+      selector: {}
+      template:
+        spec:
+          containers:
+            - name: package-runtime
+              args:
+                - --debug
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: crossplane-provider-castai
+spec:
+  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.39.0
+  runtimeConfigRef:
+    name: debug-config
+EOF
+```
 
 You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/crossplane-provider-castai).
 

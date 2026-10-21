@@ -111,7 +111,7 @@ To regenerate the Crossplane provider against a new version of the
    make generate.init
    ```
 
-   This downloads the Terraform provider binary, runs `terraform providers schema`
+   This downloads OpenTofu and the CAST AI provider, runs `tofu providers schema`
    to produce `config/schema.json`, clones the upstream docs, and runs
    `hack/transform-schema.py` to convert `nested_type` attributes for Upjet v1
    compatibility.

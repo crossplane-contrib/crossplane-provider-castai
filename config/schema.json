@@ -1,7 +1,7 @@
 {
   "format_version": "1.0",
   "provider_schemas": {
-    "registry.terraform.io/castai/castai": {
+    "registry.opentofu.org/castai/castai": {
       "provider": {
         "version": 0,
         "block": {
@@ -679,6 +679,7 @@
                 "description": "computed value to store full policies configuration",
                 "description_kind": "plain",
                 "deprecated": true,
+                "deprecation_message": "This field is deprecated and will be removed in the next major version. Use autoscaler_settings to configure and manage autoscaler policies.",
                 "computed": true
               },
               "autoscaler_policies_json": {
@@ -686,6 +687,7 @@
                 "description": "autoscaler policies JSON string to override current autoscaler settings",
                 "description_kind": "plain",
                 "deprecated": true,
+                "deprecation_message": "use autoscaler_settings instead. See README for example: https://github.com/castai/terraform-provider-castai?tab=readme-ov-file#migrating-from-6xx-to-7xx",
                 "optional": true
               },
               "cluster_id": {
@@ -753,6 +755,7 @@
                                   "description": "defines the minimum allowed amount of CPUs in the whole cluster. This field is deprecated.",
                                   "description_kind": "plain",
                                   "deprecated": true,
+                                  "deprecation_message": "This field is deprecated and will be removed in a future major version of the provider.",
                                   "optional": true
                                 }
                               },
@@ -874,6 +877,7 @@
                             "description": "enable/disable spot instances policy.",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "`enabled` under `spot_instances` is deprecated. To enable spot instances, set `constraints.spot = true` in the default castai_node_template resource. The default node template has `is_default = true`.",
                             "optional": true
                           },
                           "max_reclaim_rate": {
@@ -881,6 +885,7 @@
                             "description": "max allowed reclaim rate when choosing spot instance type. E.g. if the value is 10%, instance types having 10% or higher reclaim rate will not be considered. Set to zero to use all instance types regardless of reclaim rate.",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "`max_reclaim_rate` under `spot_instances` is deprecated. This field has no direct equivalent in the castai_node_template resource, and setting it will have no effect.",
                             "optional": true
                           },
                           "spot_diversity_enabled": {
@@ -888,6 +893,7 @@
                             "description": "enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "`spot_diversity_enabled` is deprecated. Use the `enable_spot_diversity` field within `castai_node_template.constraints` in the default castai_node_template resource. The default node template has `is_default = true`.",
                             "optional": true
                           },
                           "spot_diversity_price_increase_limit": {
@@ -895,6 +901,7 @@
                             "description": "allowed node configuration price increase when diversifying instance types. E.g. if the value is 10%, then the overall price of diversified instance types can be 10% higher than the price of the optimal configuration.",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "`spot_diversity_price_increase_limit` is deprecated. Use `spot_diversity_price_increase_limit_percent` within `castai_node_template.constraints` in the default castai_node_template resource. The default node template has `is_default = true`.",
                             "optional": true
                           }
                         },
@@ -918,7 +925,8 @@
                               },
                               "description": "policy defining whether autoscaler can use spot backups instead of spot instances when spot instances are not available.",
                               "description_kind": "plain",
-                              "deprecated": true
+                              "deprecated": true,
+                              "deprecation_message": "`spot_backups` under `spot_instances` is deprecated. Configure spot backup behavior using `constraints.use_spot_fallbacks` and `constraints.fallback_restore_rate_seconds` in the default castai_node_template resource. The default node template has `is_default = true`."
                             },
                             "max_items": 1
                           },
@@ -937,19 +945,22 @@
                                   "description": "define the type of the spot interruption prediction to handle. The value \"AWSRebalanceRecommendations\" is deprecated; use \"CASTAIInterruptionPredictions\".",
                                   "description_kind": "plain",
                                   "deprecated": true,
+                                  "deprecation_message": "The value \"AWSRebalanceRecommendations\" is deprecated. Cast AI ML predictions are now used for all spot interruption prediction.",
                                   "optional": true
                                 }
                               },
                               "description": "configure the handling of SPOT interruption predictions.",
                               "description_kind": "plain",
-                              "deprecated": true
+                              "deprecated": true,
+                              "deprecation_message": "`spot_interruption_predictions` is deprecated. Use the `spot_interruption_predictions_enabled` and `spot_interruption_predictions_type` fields in the default castai_node_template resource. The default node template has `is_default = true`."
                             },
                             "max_items": 1
                           }
                         },
                         "description": "policy defining whether autoscaler can use spot instances for provisioning additional workloads.",
                         "description_kind": "plain",
-                        "deprecated": true
+                        "deprecated": true,
+                        "deprecation_message": "`spot_instances` is deprecated. Configure spot instance settings using the `constraints` field in the default castai_node_template resource. The default node template has `is_default = true`."
                       },
                       "max_items": 1
                     },
@@ -962,6 +973,7 @@
                             "description": "enable/disable custom instances policy.",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "`custom_instances_enabled` under `unschedulable_pods.node_constraints` is deprecated. Use the `custom_instances_enabled` field in the default castai_node_template resource instead. The default node template has `is_default = true`.",
                             "optional": true
                           },
                           "enabled": {
@@ -997,7 +1009,8 @@
                               },
                               "description": "additional headroom based on cluster's total available capacity for on-demand nodes.",
                               "description_kind": "plain",
-                              "deprecated": true
+                              "deprecated": true,
+                              "deprecation_message": "`headroom` is deprecated. Please refer to the FAQ for guidance on cluster headroom: https://docs.cast.ai/docs/autoscaler-1#can-you-please-share-some-guidance-on-cluster-headroom-i-would-like-to-add-some-buffer-room-so-that-pods-have-a-place-to-run-when-nodes-go-down"
                             },
                             "max_items": 1
                           },
@@ -1026,7 +1039,8 @@
                               },
                               "description": "additional headroom based on cluster's total available capacity for spot nodes.",
                               "description_kind": "plain",
-                              "deprecated": true
+                              "deprecated": true,
+                              "deprecation_message": "`headroom_spot` is deprecated. Please refer to the FAQ for guidance on cluster headroom: https://docs.cast.ai/docs/autoscaler-1#can-you-please-share-some-guidance-on-cluster-headroom-i-would-like-to-add-some-buffer-room-so-that-pods-have-a-place-to-run-when-nodes-go-down"
                             },
                             "max_items": 1
                           },
@@ -1067,7 +1081,8 @@
                               },
                               "description": "defines the node constraints that will be applied when autoscaling with Unschedulable Pods policy.",
                               "description_kind": "plain",
-                              "deprecated": true
+                              "deprecated": true,
+                              "deprecation_message": "`node_constraints` under `unschedulable_pods` is deprecated. Use the `constraints` field in the default castai_node_template resource instead. The default node template has `is_default = true`."
                             },
                             "max_items": 1
                           },
@@ -2687,7 +2702,8 @@
                       "description": "AWS access key ID",
                       "description_kind": "plain",
                       "optional": true,
-                      "sensitive": true
+                      "sensitive": true,
+                      "write_only": true
                     },
                     "account_id": {
                       "type": "string",
@@ -2719,7 +2735,8 @@
                       "description": "AWS secret access key",
                       "description_kind": "plain",
                       "optional": true,
-                      "sensitive": true
+                      "sensitive": true,
+                      "write_only": true
                     },
                     "security_group_id": {
                       "type": "string",
@@ -2798,7 +2815,8 @@
                       "description": "Base64 encoded service account JSON for provisioning edge resources",
                       "description_kind": "plain",
                       "optional": true,
-                      "sensitive": true
+                      "sensitive": true,
+                      "write_only": true
                     },
                     "instance_service_account": {
                       "type": "string",
@@ -2912,6 +2930,7 @@
                       "description": "API key fingerprint",
                       "description_kind": "plain",
                       "sensitive": true,
+                      "write_only": true,
                       "optional": true
                     },
                     "private_key_base64_wo": {
@@ -2919,6 +2938,7 @@
                       "description": "Base64 encoded API private key",
                       "description_kind": "plain",
                       "sensitive": true,
+                      "write_only": true,
                       "optional": true
                     },
                     "security_group_id": {
@@ -2943,6 +2963,7 @@
                       "type": "string",
                       "description": "User ID used to authenticate OCI",
                       "description_kind": "plain",
+                      "write_only": true,
                       "optional": true
                     },
                     "vcn_cidr": {
@@ -4415,6 +4436,7 @@
                             "description": "Deprecated: this field has no effect. Ephemeral OS disks always use ReadOnly cache strategy",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "This field has no effect and will be removed in a future major version of the provider. Remove it from your configuration.",
                             "optional": true
                           },
                           "placement": {
@@ -4444,6 +4466,7 @@
                             "description": "Name of load balancer",
                             "description_kind": "plain",
                             "deprecated": true,
+                            "deprecation_message": "name field is deprecated, use ID instead. Will be removed in future versions.",
                             "optional": true
                           }
                         },
@@ -4700,6 +4723,7 @@
                       "description": "List of preferred availability zones to choose from when provisioning new nodes.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "The argument will be moved into node template.",
                       "optional": true
                     }
                   },
@@ -4932,6 +4956,7 @@
                 "description": "Flag whether the node template is default. It's is always set to 'true' on 'default-by-castai' node template and 'false' otherwise.",
                 "description_kind": "plain",
                 "deprecated": true,
+                "deprecation_message": "is_default is derived from the template name ('default-by-castai' => true, otherwise false) and cannot be set independently. Remove it from your config; it will be removed as a user-settable field in a future release.",
                 "optional": true,
                 "computed": true
               },
@@ -5122,6 +5147,7 @@
                       "description": "Spot interruption predictions type. Only \"interruption-predictions\" is supported.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "The value \"aws-rebalance-recommendations\" is deprecated and will be removed in a future major version. Cast AI ML predictions (\"interruption-predictions\") are now used for all spot interruption prediction.",
                       "optional": true
                     },
                     "spot_reliability_enabled": {
@@ -5469,6 +5495,7 @@
                       "description": "Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = \"time-slicing\" instead.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use sharing_strategy instead.",
                       "optional": true
                     },
                     "sharing_strategy": {
@@ -5724,6 +5751,7 @@
                 "description": "A list of email addresses corresponding to users who should be given member access to the organization.",
                 "description_kind": "plain",
                 "deprecated": true,
+                "deprecation_message": "The 'members' field is deprecated. Use 'castai_role_bindings' resource instead for more granular role management. This field will be removed in a future version.",
                 "optional": true
               },
               "organization_id": {
@@ -5740,6 +5768,7 @@
                 "description": "A list of email addresses corresponding to users who should be given owner access to the organization.",
                 "description_kind": "plain",
                 "deprecated": true,
+                "deprecation_message": "The 'owners' field is deprecated. Use 'castai_role_bindings' resource instead for more granular role management. This field will be removed in a future version.",
                 "optional": true
               },
               "viewers": {
@@ -5750,6 +5779,7 @@
                 "description": "A list of email addresses corresponding to users who should be given viewer access to the organization.",
                 "description_kind": "plain",
                 "deprecated": true,
+                "deprecation_message": "The 'viewers' field is deprecated. Use 'castai_role_bindings' resource instead for more granular role management. This field will be removed in a future version.",
                 "optional": true
               }
             },
@@ -6717,6 +6747,7 @@
                       "description": "Deprecated: Use aggressive_mode_config instead. When enabled, rebalancing considers all problematic pods (pods without controller, job pods, pods with removal-disabled annotation) as not-problematic.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "For equivalent behaviour use aggresive_mode_config = {ignore_local_persistent_volumes = true, ignore_problem_job_pods = true, ignore_problem_removal_disabled_pods = true, ignore_problem_pods_without_controller = true}",
                       "optional": true
                     },
                     "keep_drain_timeout_nodes": {
@@ -6978,7 +7009,8 @@
             },
             "description": "Reservation represents cloud service provider reserved instances that can be used by CAST AI autoscaler.",
             "description_kind": "plain",
-            "deprecated": true
+            "deprecated": true,
+            "deprecation_message": "Use castai_commitments resource instead."
           }
         },
         "castai_role_bindings": {
@@ -7942,6 +7974,7 @@
                       "description": "The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use apply_threshold_strategy instead",
                       "optional": true
                     },
                     "args": {
@@ -7976,6 +8009,7 @@
                       "description": "Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use constraints { max { constant = X } } instead",
                       "optional": true
                     },
                     "min": {
@@ -7983,6 +8017,7 @@
                       "description": "Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use constraints { min { constant = X } } instead",
                       "optional": true
                     },
                     "overhead": {
@@ -8198,6 +8233,7 @@
                       "description": "The threshold of when to apply the recommendation. Recommendation will be applied when diff of current requests and new recommendation is greater than set value",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use apply_threshold_strategy instead",
                       "optional": true
                     },
                     "args": {
@@ -8232,6 +8268,7 @@
                       "description": "Max values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use constraints { max { constant = X } } instead",
                       "optional": true
                     },
                     "min": {
@@ -8239,6 +8276,7 @@
                       "description": "Min values for the recommendation, applies to every container. For memory - this is in MiB, for CPU - this is in cores.",
                       "description_kind": "plain",
                       "deprecated": true,
+                      "deprecation_message": "Use constraints { min { constant = X } } instead",
                       "optional": true
                     },
                     "overhead": {

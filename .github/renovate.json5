@@ -18,6 +18,17 @@
   "customManagers": [
     {
       "customType": "regex",
+      "description": "Bump the OpenTofu CLI version in the Makefile",
+      "fileMatch": ["^Makefile$"],
+      "matchStrings": [
+        "export OPENTOFU_VERSION \\?= (?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "depNameTemplate": "opentofu/opentofu",
+    },
+    {
+      "customType": "regex",
       "description": "Bump castai terraform provider version in the Makefile",
       "fileMatch": ["^Makefile$"],
       "matchStrings": [

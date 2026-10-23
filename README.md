@@ -75,6 +75,10 @@ Run against a Kubernetes cluster:
 make run
 ```
 
+`make run` uses the `terraform` binary on your `PATH`, which must be OpenTofu
+to match the provider image. For example, link it with
+`ln -s "$(command -v tofu)" ~/.local/bin/terraform`.
+
 Build, push, and install:
 
 ```console

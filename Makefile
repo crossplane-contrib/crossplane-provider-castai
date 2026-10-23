@@ -5,7 +5,7 @@ PROJECT_NAME ?= crossplane-provider-castai
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
 # OpenTofu replaces HashiCorp Terraform, whose releases after 1.5.7 are BSL-licensed.
-export OPENTOFU_VERSION ?= 1.13.1
+export OPENTOFU_VERSION ?= 1.13.2
 # Upjet records this version and `make run` forwards to the provider.
 export TERRAFORM_VERSION ?= $(OPENTOFU_VERSION)
 

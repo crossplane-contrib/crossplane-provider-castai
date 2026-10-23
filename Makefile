@@ -11,9 +11,9 @@ export TERRAFORM_VERSION ?= $(OPENTOFU_VERSION)
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai
-export TERRAFORM_PROVIDER_VERSION ?= 8.63.1
+export TERRAFORM_PROVIDER_VERSION ?= 8.64.2
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-castai
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v8.63.1
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v8.64.2
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 

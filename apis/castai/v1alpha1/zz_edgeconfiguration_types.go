@@ -137,6 +137,9 @@ type EdgeConfigurationInitParameters struct {
 	// Name of the edge configuration
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Nebius specific configuration
+	Nebius *NebiusInitParameters `json:"nebius,omitempty" tf:"nebius,omitempty"`
+
 	// OCI specific configuration
 	Oci *OciInitParameters `json:"oci,omitempty" tf:"oci,omitempty"`
 
@@ -174,6 +177,9 @@ type EdgeConfigurationObservation struct {
 
 	// Name of the edge configuration
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Nebius specific configuration
+	Nebius *NebiusObservation `json:"nebius,omitempty" tf:"nebius,omitempty"`
 
 	// OCI specific configuration
 	Oci *OciObservation `json:"oci,omitempty" tf:"oci,omitempty"`
@@ -233,6 +239,10 @@ type EdgeConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Nebius specific configuration
+	// +kubebuilder:validation:Optional
+	Nebius *NebiusParameters `json:"nebius,omitempty" tf:"nebius,omitempty"`
+
 	// OCI specific configuration
 	// +kubebuilder:validation:Optional
 	Oci *OciParameters `json:"oci,omitempty" tf:"oci,omitempty"`
@@ -279,6 +289,48 @@ type GCPParameters struct {
 	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
 
 	// Exact image ID (for example 'projects/castai-public-339919/global/images/ubuntu-2404-lts-amd64-cuda') or image family (for example `projects/ubuntu-os-cloud/global/images/family/ubuntu-2404-lts-amd64`) to be used for edge creation
+	// +kubebuilder:validation:Optional
+	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
+
+	// Instance/VM labels
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
+}
+
+type NebiusInitParameters struct {
+
+	// Boot disk size in GiB
+	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
+
+	// ImageID to be used for edge creation. It can be an image ID or a name filter
+	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
+
+	// Instance/VM labels
+	// +mapType=granular
+	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
+}
+
+type NebiusObservation struct {
+
+	// Boot disk size in GiB
+	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
+
+	// ImageID to be used for edge creation. It can be an image ID or a name filter
+	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
+
+	// Instance/VM labels
+	// +mapType=granular
+	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
+}
+
+type NebiusParameters struct {
+
+	// Boot disk size in GiB
+	// +kubebuilder:validation:Optional
+	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
+
+	// ImageID to be used for edge creation. It can be an image ID or a name filter
 	// +kubebuilder:validation:Optional
 	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
 

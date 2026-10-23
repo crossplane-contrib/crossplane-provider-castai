@@ -111,7 +111,7 @@ $(OPENTOFU):
 	@mkdir -p $(TOOLS_HOST_DIR)/tmp-opentofu
 	@curl -fsSL https://github.com/opentofu/opentofu/releases/download/v$(OPENTOFU_VERSION)/tofu_$(OPENTOFU_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-opentofu/tofu.zip
 	@curl -fsSL https://github.com/opentofu/opentofu/releases/download/v$(OPENTOFU_VERSION)/tofu_$(OPENTOFU_VERSION)_SHA256SUMS -o $(TOOLS_HOST_DIR)/tmp-opentofu/SHA256SUMS
-	@cd $(TOOLS_HOST_DIR)/tmp-opentofu && grep " tofu_$(OPENTOFU_VERSION)_$(SAFEHOST_PLATFORM).zip$$" SHA256SUMS | sed 's/tofu_.*\.zip/tofu.zip/' | sha256sum -c - || $(FAIL)
+	@cd $(TOOLS_HOST_DIR)/tmp-opentofu && grep " tofu_$(OPENTOFU_VERSION)_$(SAFEHOST_PLATFORM).zip$$" SHA256SUMS | sed 's/tofu_.*\.zip/tofu.zip/' | $(SHA256SUM) -c - || $(FAIL)
 	@unzip -o -q $(TOOLS_HOST_DIR)/tmp-opentofu/tofu.zip tofu -d $(TOOLS_HOST_DIR)/tmp-opentofu
 	@mv $(TOOLS_HOST_DIR)/tmp-opentofu/tofu $(OPENTOFU)
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-opentofu

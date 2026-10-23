@@ -4,13 +4,15 @@
 PROJECT_NAME ?= crossplane-provider-castai
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.5.7
+# OpenTofu replaces HashiCorp Terraform, whose releases after 1.5.7 are BSL-licensed.
+export OPENTOFU_VERSION ?= 1.13.2
+# Upjet records this version and `make run` forwards to the provider.
+export TERRAFORM_VERSION ?= $(OPENTOFU_VERSION)
 
 export TERRAFORM_PROVIDER_SOURCE ?= castai/castai
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/castai/terraform-provider-castai
 export TERRAFORM_PROVIDER_VERSION ?= 8.63.1
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-castai
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-castai_v8.63.1
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
@@ -99,26 +101,28 @@ xpkg.build.crossplane-provider-castai: do.build.images
 build.init: $(UP)
 
 # ====================================================================================
-# Setup Terraform for fetching provider schema
-TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
+# Setup OpenTofu for fetching provider schema
+OPENTOFU := $(TOOLS_HOST_DIR)/opentofu-$(OPENTOFU_VERSION)
 TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
-$(TERRAFORM):
-	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
-	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
-	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
-	@unzip $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip -d $(TOOLS_HOST_DIR)/tmp-terraform
-	@mv $(TOOLS_HOST_DIR)/tmp-terraform/terraform $(TERRAFORM)
-	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
-	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
+$(OPENTOFU):
+	@$(INFO) installing OpenTofu $(OPENTOFU_VERSION) $(HOSTOS)-$(HOSTARCH)
+	@mkdir -p $(TOOLS_HOST_DIR)/tmp-opentofu
+	@curl -fsSL https://github.com/opentofu/opentofu/releases/download/v$(OPENTOFU_VERSION)/tofu_$(OPENTOFU_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-opentofu/tofu.zip
+	@curl -fsSL https://github.com/opentofu/opentofu/releases/download/v$(OPENTOFU_VERSION)/tofu_$(OPENTOFU_VERSION)_SHA256SUMS -o $(TOOLS_HOST_DIR)/tmp-opentofu/SHA256SUMS
+	@cd $(TOOLS_HOST_DIR)/tmp-opentofu && grep " tofu_$(OPENTOFU_VERSION)_$(SAFEHOST_PLATFORM).zip$$" SHA256SUMS | sed 's/tofu_.*\.zip/tofu.zip/' | $(SHA256SUM) -c - || $(FAIL)
+	@unzip -o -q $(TOOLS_HOST_DIR)/tmp-opentofu/tofu.zip tofu -d $(TOOLS_HOST_DIR)/tmp-opentofu
+	@mv $(TOOLS_HOST_DIR)/tmp-opentofu/tofu $(OPENTOFU)
+	@rm -fr $(TOOLS_HOST_DIR)/tmp-opentofu
+	@$(OK) installing OpenTofu $(OPENTOFU_VERSION) $(HOSTOS)-$(HOSTARCH)
 
-$(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
+$(TERRAFORM_PROVIDER_SCHEMA): $(OPENTOFU)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR)
-	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init -upgrade > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
+	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(OPENTOFU_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
+	@$(OPENTOFU) -chdir=$(TERRAFORM_WORKDIR) init -upgrade > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@$(OPENTOFU) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
 pull-docs:

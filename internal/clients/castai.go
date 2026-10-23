@@ -36,8 +36,9 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		ps := terraform.Setup{
 			Version: version,
 			Requirement: terraform.ProviderRequirement{
-				Source:  providerSource,
-				Version: providerVersion,
+				Source:   providerSource,
+				Version:  providerVersion,
+				Registry: `provider["registry.opentofu.org/%s"]`,
 			},
 		}
 

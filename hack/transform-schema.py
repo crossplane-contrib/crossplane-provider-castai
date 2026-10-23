@@ -88,9 +88,8 @@ def main():
     with open(schema_path) as f:
         schema = json.load(f)
 
-    resources = schema["provider_schemas"]["registry.terraform.io/castai/castai"][
-        "resource_schemas"
-    ]
+    (provider,) = schema["provider_schemas"].values()
+    resources = provider["resource_schemas"]
 
     changed = []
     for res_name, res in resources.items():

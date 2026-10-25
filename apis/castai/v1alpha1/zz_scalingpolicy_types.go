@@ -174,6 +174,27 @@ type AssignmentRulesParameters struct {
 	Rules []RulesParameters `json:"rules" tf:"rules,omitempty"`
 }
 
+type BehaviorInitParameters struct {
+	ScaleDown []ScaleDownInitParameters `json:"scaleDown,omitempty" tf:"scale_down,omitempty"`
+
+	ScaleUp []ScaleUpInitParameters `json:"scaleUp,omitempty" tf:"scale_up,omitempty"`
+}
+
+type BehaviorObservation struct {
+	ScaleDown []ScaleDownObservation `json:"scaleDown,omitempty" tf:"scale_down,omitempty"`
+
+	ScaleUp []ScaleUpObservation `json:"scaleUp,omitempty" tf:"scale_up,omitempty"`
+}
+
+type BehaviorParameters struct {
+
+	// +kubebuilder:validation:Optional
+	ScaleDown []ScaleDownParameters `json:"scaleDown,omitempty" tf:"scale_down,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ScaleUp []ScaleUpParameters `json:"scaleUp,omitempty" tf:"scale_up,omitempty"`
+}
+
 type CPUConstraintsInitParameters struct {
 
 	// this is in MiB, for CPU - this is in cores.
@@ -378,6 +399,48 @@ type HpaConvertersParameters struct {
 	// HPA converter type. AVERAGE_VALUE_FROM_ORIGINAL_REQUESTS converts HPA utilization (%) targets to AverageValue using workload container requests.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type HpaSettingsInitParameters struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages horizontal pod autoscaling.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// Native Kubernetes HPA specification.
+	NativeHpaSpec []NativeHpaSpecInitParameters `json:"nativeHpaSpec,omitempty" tf:"native_hpa_spec,omitempty"`
+
+	// Allows CAST AI to take ownership of eligible existing HPAs.
+	TakeOwnership *bool `json:"takeOwnership,omitempty" tf:"take_ownership,omitempty"`
+}
+
+type HpaSettingsObservation struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages horizontal pod autoscaling.
+	ManagementOption *string `json:"managementOption,omitempty" tf:"management_option,omitempty"`
+
+	// Native Kubernetes HPA specification.
+	NativeHpaSpec []NativeHpaSpecObservation `json:"nativeHpaSpec,omitempty" tf:"native_hpa_spec,omitempty"`
+
+	// Allows CAST AI to take ownership of eligible existing HPAs.
+	TakeOwnership *bool `json:"takeOwnership,omitempty" tf:"take_ownership,omitempty"`
+}
+
+type HpaSettingsParameters struct {
+
+	// (String) Defines possible options for workload management.
+	// Defines whether CAST AI observes or manages horizontal pod autoscaling.
+	// +kubebuilder:validation:Optional
+	ManagementOption *string `json:"managementOption" tf:"management_option,omitempty"`
+
+	// Native Kubernetes HPA specification.
+	// +kubebuilder:validation:Optional
+	NativeHpaSpec []NativeHpaSpecParameters `json:"nativeHpaSpec" tf:"native_hpa_spec,omitempty"`
+
+	// Allows CAST AI to take ownership of eligible existing HPAs.
+	// +kubebuilder:validation:Optional
+	TakeOwnership *bool `json:"takeOwnership" tf:"take_ownership,omitempty"`
 }
 
 type JvmInitParameters struct {
@@ -887,6 +950,30 @@ type MemoryParameters struct {
 	Optimization *bool `json:"optimization,omitempty" tf:"optimization,omitempty"`
 }
 
+type MetricsInitParameters struct {
+	Resource []ResourceInitParameters `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type MetricsObservation struct {
+	Resource []ResourceObservation `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type MetricsParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Resource []ResourceParameters `json:"resource" tf:"resource,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type MinInitParameters struct {
 
 	// MiB, for CPU - cores.
@@ -955,6 +1042,92 @@ type NamespaceParameters struct {
 	// Defines matching by namespace names.
 	// +kubebuilder:validation:Optional
 	Names []*string `json:"names,omitempty" tf:"names,omitempty"`
+}
+
+type NativeHpaSpecInitParameters struct {
+	Behavior []BehaviorInitParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
+	// Maximum number of replicas.
+	MaxReplicas *float64 `json:"maxReplicas,omitempty" tf:"max_replicas,omitempty"`
+
+	// Resource utilization metrics used by the HPA.
+	Metrics []MetricsInitParameters `json:"metrics,omitempty" tf:"metrics,omitempty"`
+
+	// Minimum number of replicas.
+	MinReplicas *float64 `json:"minReplicas,omitempty" tf:"min_replicas,omitempty"`
+}
+
+type NativeHpaSpecObservation struct {
+	Behavior []BehaviorObservation `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
+	// Maximum number of replicas.
+	MaxReplicas *float64 `json:"maxReplicas,omitempty" tf:"max_replicas,omitempty"`
+
+	// Resource utilization metrics used by the HPA.
+	Metrics []MetricsObservation `json:"metrics,omitempty" tf:"metrics,omitempty"`
+
+	// Minimum number of replicas.
+	MinReplicas *float64 `json:"minReplicas,omitempty" tf:"min_replicas,omitempty"`
+}
+
+type NativeHpaSpecParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Behavior []BehaviorParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
+	// Maximum number of replicas.
+	// +kubebuilder:validation:Optional
+	MaxReplicas *float64 `json:"maxReplicas" tf:"max_replicas,omitempty"`
+
+	// Resource utilization metrics used by the HPA.
+	// +kubebuilder:validation:Optional
+	Metrics []MetricsParameters `json:"metrics" tf:"metrics,omitempty"`
+
+	// Minimum number of replicas.
+	// +kubebuilder:validation:Optional
+	MinReplicas *float64 `json:"minReplicas" tf:"min_replicas,omitempty"`
+}
+
+type PoliciesInitParameters struct {
+
+	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+	// When set, recommendations will be adjusted to disregard resource spikes within this period.
+	// If not specified, the workload will receive standard recommendations without startup considerations.
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type PoliciesObservation struct {
+
+	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+	// When set, recommendations will be adjusted to disregard resource spikes within this period.
+	// If not specified, the workload will receive standard recommendations without startup considerations.
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type PoliciesParameters struct {
+
+	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+	// When set, recommendations will be adjusted to disregard resource spikes within this period.
+	// If not specified, the workload will receive standard recommendations without startup considerations.
+	// +kubebuilder:validation:Optional
+	PeriodSeconds *float64 `json:"periodSeconds" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Value *float64 `json:"value" tf:"value,omitempty"`
 }
 
 type PredictiveScalingCPUInitParameters struct {
@@ -1034,6 +1207,32 @@ type RequestsOnStartupParameters struct {
 	// Memory in GiB to request during startup.
 	// +kubebuilder:validation:Optional
 	MemoryGib *float64 `json:"memoryGib,omitempty" tf:"memory_gib,omitempty"`
+}
+
+type ResourceInitParameters struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ResourceObservation struct {
+
+	// (String) Scaling policy name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Target []TargetObservation `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type ResourceParameters struct {
+
+	// (String) Scaling policy name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Target []TargetParameters `json:"target" tf:"target,omitempty"`
 }
 
 type RolloutBehaviorInitParameters struct {
@@ -1173,6 +1372,104 @@ type RulesWorkloadParameters struct {
 	// Defines matching by label selector requirements.
 	// +kubebuilder:validation:Optional
 	LabelsExpressions []WorkloadLabelsExpressionsParameters `json:"labelsExpressions,omitempty" tf:"labels_expressions,omitempty"`
+}
+
+type ScaleDownInitParameters struct {
+	Policies []PoliciesInitParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+}
+
+type ScaleDownObservation struct {
+	Policies []PoliciesObservation `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+}
+
+type ScaleDownParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Policies []PoliciesParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+}
+
+type ScaleUpInitParameters struct {
+	Policies []ScaleUpPoliciesInitParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+}
+
+type ScaleUpObservation struct {
+	Policies []ScaleUpPoliciesObservation `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+}
+
+type ScaleUpParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Policies []ScaleUpPoliciesParameters `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	SelectPolicy *string `json:"selectPolicy,omitempty" tf:"select_policy,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	StabilizationWindowSeconds *float64 `json:"stabilizationWindowSeconds,omitempty" tf:"stabilization_window_seconds,omitempty"`
+}
+
+type ScaleUpPoliciesInitParameters struct {
+
+	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+	// When set, recommendations will be adjusted to disregard resource spikes within this period.
+	// If not specified, the workload will receive standard recommendations without startup considerations.
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ScaleUpPoliciesObservation struct {
+
+	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+	// When set, recommendations will be adjusted to disregard resource spikes within this period.
+	// If not specified, the workload will receive standard recommendations without startup considerations.
+	PeriodSeconds *float64 `json:"periodSeconds,omitempty" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ScaleUpPoliciesParameters struct {
+
+	// (Number) Defines the duration (in seconds) during which elevated resource usage is expected at startup.
+	// When set, recommendations will be adjusted to disregard resource spikes within this period.
+	// If not specified, the workload will receive standard recommendations without startup considerations.
+	// +kubebuilder:validation:Optional
+	PeriodSeconds *float64 `json:"periodSeconds" tf:"period_seconds,omitempty"`
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Value *float64 `json:"value" tf:"value,omitempty"`
 }
 
 type ScalingPolicyCPUInitParameters struct {
@@ -1367,6 +1664,9 @@ type ScalingPolicyInitParameters struct {
 	// (Block List) Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting. (see below for nested schema)
 	// Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
 	HpaConverters []HpaConvertersInitParameters `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
+
+	// Configures native Kubernetes horizontal pod autoscaling for workloads using this policy.
+	HpaSettings []HpaSettingsInitParameters `json:"hpaSettings,omitempty" tf:"hpa_settings,omitempty"`
 
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
@@ -1597,6 +1897,9 @@ type ScalingPolicyObservation struct {
 	// Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.
 	HpaConverters []HpaConvertersObservation `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
 
+	// Configures native Kubernetes horizontal pod autoscaling for workloads using this policy.
+	HpaSettings []HpaSettingsObservation `json:"hpaSettings,omitempty" tf:"hpa_settings,omitempty"`
+
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -1687,6 +1990,10 @@ type ScalingPolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	HpaConverters []HpaConvertersParameters `json:"hpaConverters,omitempty" tf:"hpa_converters,omitempty"`
 
+	// Configures native Kubernetes horizontal pod autoscaling for workloads using this policy.
+	// +kubebuilder:validation:Optional
+	HpaSettings []HpaSettingsParameters `json:"hpaSettings,omitempty" tf:"hpa_settings,omitempty"`
+
 	// (Block List, Max: 1) JVM optimization settings. (see below for nested schema)
 	// JVM optimization settings.
 	// +kubebuilder:validation:Optional
@@ -1776,6 +2083,32 @@ type StartupParameters struct {
 	// Defines two-phase recommendations settings for the startup period.
 	// +kubebuilder:validation:Optional
 	TwoPhaseRecommendations []TwoPhaseRecommendationsParameters `json:"twoPhaseRecommendations,omitempty" tf:"two_phase_recommendations,omitempty"`
+}
+
+type TargetInitParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TargetObservation struct {
+
+	// (String) Defines apply theshold strategy type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TargetParameters struct {
+
+	// (String) Defines apply theshold strategy type.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value" tf:"value,omitempty"`
 }
 
 type TwoPhaseRecommendationsInitParameters struct {

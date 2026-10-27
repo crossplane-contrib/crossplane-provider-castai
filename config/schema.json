@@ -2513,6 +2513,38 @@
                 "min_items": 0,
                 "max_items": 1
               },
+              "nebius": {
+                "block": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "ImageID to be used for edge creation. It can be an image ID or a name filter",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "labels": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM labels",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Nebius specific configuration"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
               "oci": {
                 "block": {
                   "attributes": {
@@ -2848,6 +2880,53 @@
                   },
                   "description_kind": "plain",
                   "description": "GCP configuration for the edge location"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "nebius": {
+                "block": {
+                  "attributes": {
+                    "network_id": {
+                      "type": "string",
+                      "description": "The ID of the VPC network to be used in the selected region",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "parent_id": {
+                      "type": "string",
+                      "description": "Nebius project ID that owns the edge location resources",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "security_group_id": {
+                      "type": "string",
+                      "description": "The ID of the security group to be used in the selected region",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_account_id": {
+                      "type": "string",
+                      "description": "Nebius service account ID to be impersonated by CAST AI",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "subnet_cidr": {
+                      "type": "string",
+                      "description": "The IPv4 CIDR block of the subnet",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "subnet_id": {
+                      "type": "string",
+                      "description": "The ID of the subnet to be used in the selected region",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Nebius configuration for the edge location"
                 },
                 "nesting_mode": "single",
                 "min_items": 0,
@@ -8765,6 +8844,37 @@
                 "description": "The name of the edge configuration",
                 "description_kind": "plain",
                 "required": true
+              },
+              "nebius": {
+                "nested_type": {
+                  "attributes": {
+                    "boot_disk_size_gib": {
+                      "type": "number",
+                      "description": "Boot disk size in GiB",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "image_id": {
+                      "type": "string",
+                      "description": "Nebius image ID or name filter for edge creation",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "labels": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Instance/VM labels",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "Nebius specific configuration",
+                "description_kind": "plain",
+                "computed": true
               },
               "oci": {
                 "nested_type": {

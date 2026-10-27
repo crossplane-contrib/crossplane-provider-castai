@@ -290,6 +290,23 @@ spec:
                   name:
                     description: Name of the edge configuration
                     type: string
+                  nebius:
+                    description: Nebius specific configuration
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an image ID or a name filter
+                        type: string
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Instance/VM labels
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   oci:
                     description: OCI specific configuration
                     properties:
@@ -547,6 +564,23 @@ spec:
                   name:
                     description: Name of the edge configuration
                     type: string
+                  nebius:
+                    description: Nebius specific configuration
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an image ID or a name filter
+                        type: string
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Instance/VM labels
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   oci:
                     description: OCI specific configuration
                     properties:
@@ -825,6 +859,23 @@ spec:
                   name:
                     description: Name of the edge configuration
                     type: string
+                  nebius:
+                    description: Nebius specific configuration
+                    properties:
+                      bootDiskSizeGib:
+                        description: Boot disk size in GiB
+                        type: number
+                      imageId:
+                        description: ImageID to be used for edge creation. It can
+                          be an image ID or a name filter
+                        type: string
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Instance/VM labels
+                        type: object
+                        x-kubernetes-map-type: granular
+                    type: object
                   oci:
                     description: OCI specific configuration
                     properties:

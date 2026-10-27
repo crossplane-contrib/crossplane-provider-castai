@@ -420,6 +420,10 @@ type EdgeLocationInitParameters struct {
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Attributes) Nebius configuration for the edge location (see below for nested schema)
+	// Nebius configuration for the edge location
+	Nebius *EdgeLocationNebiusInitParameters `json:"nebius,omitempty" tf:"nebius,omitempty"`
+
 	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
 	// Edge cluster networking configuration.
 	Networking *NetworkingInitParameters `json:"networking,omitempty" tf:"networking,omitempty"`
@@ -439,6 +443,93 @@ type EdgeLocationInitParameters struct {
 	// (Attributes List) List of availability zones for the edge location (see below for nested schema)
 	// List of availability zones for the edge location
 	Zones []ZonesInitParameters `json:"zones,omitempty" tf:"zones,omitempty"`
+}
+
+type EdgeLocationNebiusInitParameters struct {
+
+	// (String) The ID of the VPC network to be used in the selected region
+	// The ID of the VPC network to be used in the selected region
+	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// (String) Nebius project ID that owns the edge location resources
+	// Nebius project ID that owns the edge location resources
+	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
+
+	// (String) Security group ID to be used in the selected region
+	// The ID of the security group to be used in the selected region
+	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
+
+	// (String) Nebius service account ID to be impersonated by CAST AI
+	// Nebius service account ID to be impersonated by CAST AI
+	ServiceAccountID *string `json:"serviceAccountId,omitempty" tf:"service_account_id,omitempty"`
+
+	// (String) VPC Subnet IPv4 CIDR block
+	// The IPv4 CIDR block of the subnet
+	SubnetCidr *string `json:"subnetCidr,omitempty" tf:"subnet_cidr,omitempty"`
+
+	// (String) The ID of the subnet to be used in the selected region
+	// The ID of the subnet to be used in the selected region
+	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
+}
+
+type EdgeLocationNebiusObservation struct {
+
+	// (String) The ID of the VPC network to be used in the selected region
+	// The ID of the VPC network to be used in the selected region
+	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// (String) Nebius project ID that owns the edge location resources
+	// Nebius project ID that owns the edge location resources
+	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
+
+	// (String) Security group ID to be used in the selected region
+	// The ID of the security group to be used in the selected region
+	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
+
+	// (String) Nebius service account ID to be impersonated by CAST AI
+	// Nebius service account ID to be impersonated by CAST AI
+	ServiceAccountID *string `json:"serviceAccountId,omitempty" tf:"service_account_id,omitempty"`
+
+	// (String) VPC Subnet IPv4 CIDR block
+	// The IPv4 CIDR block of the subnet
+	SubnetCidr *string `json:"subnetCidr,omitempty" tf:"subnet_cidr,omitempty"`
+
+	// (String) The ID of the subnet to be used in the selected region
+	// The ID of the subnet to be used in the selected region
+	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
+}
+
+type EdgeLocationNebiusParameters struct {
+
+	// (String) The ID of the VPC network to be used in the selected region
+	// The ID of the VPC network to be used in the selected region
+	// +kubebuilder:validation:Optional
+	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// (String) Nebius project ID that owns the edge location resources
+	// Nebius project ID that owns the edge location resources
+	// +kubebuilder:validation:Optional
+	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
+
+	// (String) Security group ID to be used in the selected region
+	// The ID of the security group to be used in the selected region
+	// +kubebuilder:validation:Optional
+	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
+
+	// (String) Nebius service account ID to be impersonated by CAST AI
+	// Nebius service account ID to be impersonated by CAST AI
+	// +kubebuilder:validation:Optional
+	ServiceAccountID *string `json:"serviceAccountId,omitempty" tf:"service_account_id,omitempty"`
+
+	// (String) VPC Subnet IPv4 CIDR block
+	// The IPv4 CIDR block of the subnet
+	// +kubebuilder:validation:Optional
+	SubnetCidr *string `json:"subnetCidr,omitempty" tf:"subnet_cidr,omitempty"`
+
+	// (String) The ID of the subnet to be used in the selected region
+	// The ID of the subnet to be used in the selected region
+	// +kubebuilder:validation:Optional
+	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
 }
 
 type EdgeLocationObservation struct {
@@ -486,6 +577,10 @@ type EdgeLocationObservation struct {
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Attributes) Nebius configuration for the edge location (see below for nested schema)
+	// Nebius configuration for the edge location
+	Nebius *EdgeLocationNebiusObservation `json:"nebius,omitempty" tf:"nebius,omitempty"`
+
 	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
 	// Edge cluster networking configuration.
 	Networking *NetworkingObservation `json:"networking,omitempty" tf:"networking,omitempty"`
@@ -525,7 +620,7 @@ type EdgeLocationOciInitParameters struct {
 	// OCI network security group ID
 	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
 
-	// (String) OCI subnet ID of edge location
+	// (String) The ID of the subnet to be used in the selected region
 	// OCI subnet ID of edge location
 	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
 
@@ -556,7 +651,7 @@ type EdgeLocationOciObservation struct {
 	// OCI network security group ID
 	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
 
-	// (String) OCI subnet ID of edge location
+	// (String) The ID of the subnet to be used in the selected region
 	// OCI subnet ID of edge location
 	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
 
@@ -599,7 +694,7 @@ type EdgeLocationOciParameters struct {
 	// +kubebuilder:validation:Optional
 	SecurityGroupID *string `json:"securityGroupId,omitempty" tf:"security_group_id,omitempty"`
 
-	// (String) OCI subnet ID of edge location
+	// (String) The ID of the subnet to be used in the selected region
 	// OCI subnet ID of edge location
 	// +kubebuilder:validation:Optional
 	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
@@ -680,6 +775,11 @@ type EdgeLocationParameters struct {
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Attributes) Nebius configuration for the edge location (see below for nested schema)
+	// Nebius configuration for the edge location
+	// +kubebuilder:validation:Optional
+	Nebius *EdgeLocationNebiusParameters `json:"nebius,omitempty" tf:"nebius,omitempty"`
 
 	// (Attributes) Edge cluster networking configuration. (see below for nested schema)
 	// Edge cluster networking configuration.

@@ -754,6 +754,19 @@ spec:
                       (Boolean) Marks whether the templated nodes will have a taint.
                       Marks whether the templated nodes will have a taint.
                     type: boolean
+                  stuckPodResizeReconciliation:
+                    description: |-
+                      initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize. (see below for nested schema)
+                      Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+                            Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+                          type: boolean
+                      type: object
+                    type: array
                 type: object
               initProvider:
                 description: |-
@@ -1449,6 +1462,19 @@ spec:
                       (Boolean) Marks whether the templated nodes will have a taint.
                       Marks whether the templated nodes will have a taint.
                     type: boolean
+                  stuckPodResizeReconciliation:
+                    description: |-
+                      initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize. (see below for nested schema)
+                      Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+                            Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+                          type: boolean
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -2159,6 +2185,19 @@ spec:
                       (Boolean) Marks whether the templated nodes will have a taint.
                       Marks whether the templated nodes will have a taint.
                     type: boolean
+                  stuckPodResizeReconciliation:
+                    description: |-
+                      initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize. (see below for nested schema)
+                      Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+                            Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+                          type: boolean
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

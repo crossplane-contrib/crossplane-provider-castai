@@ -23,6 +23,10 @@ type EvictorAdvancedConfigEvictorAdvancedConfigInitParameters struct {
 	// Mark node as disposable
 	Disposable *bool `json:"disposable,omitempty" tf:"disposable,omitempty"`
 
+	// disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+	// Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+	ForceDisposable *bool `json:"forceDisposable,omitempty" tf:"force_disposable,omitempty"`
+
 	// (Block List) node selector (see below for nested schema)
 	// node selector
 	NodeSelector []NodeSelectorInitParameters `json:"nodeSelector,omitempty" tf:"node_selector,omitempty"`
@@ -45,6 +49,10 @@ type EvictorAdvancedConfigEvictorAdvancedConfigObservation struct {
 	// (Boolean) Mark node as disposable
 	// Mark node as disposable
 	Disposable *bool `json:"disposable,omitempty" tf:"disposable,omitempty"`
+
+	// disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+	// Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+	ForceDisposable *bool `json:"forceDisposable,omitempty" tf:"force_disposable,omitempty"`
 
 	// (Block List) node selector (see below for nested schema)
 	// node selector
@@ -70,6 +78,11 @@ type EvictorAdvancedConfigEvictorAdvancedConfigParameters struct {
 	// Mark node as disposable
 	// +kubebuilder:validation:Optional
 	Disposable *bool `json:"disposable,omitempty" tf:"disposable,omitempty"`
+
+	// disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+	// Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+	// +kubebuilder:validation:Optional
+	ForceDisposable *bool `json:"forceDisposable,omitempty" tf:"force_disposable,omitempty"`
 
 	// (Block List) node selector (see below for nested schema)
 	// node selector

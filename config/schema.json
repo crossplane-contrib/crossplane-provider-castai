@@ -1119,6 +1119,114 @@
               }
             },
             "description": "CAST AI autoscaler resource to manage autoscaler settings",
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "castai_autoscaler_policies": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description": "CAST AI cluster id.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cluster_limits": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cpu": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "max_cores": "number",
+                            "min_cores": "number"
+                          }
+                        ]
+                      ],
+                      "enabled": "bool"
+                    }
+                  ]
+                ],
+                "description": "Defines minimum and maximum amount of CPU the cluster can have. cluster_limits { enabled = true, cpu { max_cores = 100, min_cores = 1 } }.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Enable/disable all policies (global master switch).",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource, equal to the cluster id.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "node_downscaler": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "empty_nodes_delay": "string",
+                      "empty_nodes_enabled": "bool"
+                    }
+                  ]
+                ],
+                "description": "Node Downscaler defines policies for removing nodes based on the configured conditions. node_downscaler { empty_nodes_enabled = true, empty_nodes_delay = \"5m\" }.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "scoped_mode": {
+                "type": "bool",
+                "description": "Run the node autoscaler in scoped mode.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "unschedulable_pods": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "enabled": "bool",
+                      "partial_template_matching_enabled": "bool",
+                      "pod_pinner": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "enabled": "bool"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Policy defining autoscaler's behavior when unschedulable pods were detected. unschedulable_pods { enabled = true, partial_template_matching_enabled = false, pod_pinner { enabled = true } }.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "version": {
+                "type": "string",
+                "description": "Policy version for optimistic locking.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "CAST AI autoscaler policies V2 resource to manage cluster autoscaling policies.",
             "description_kind": "plain"
           }
         },
@@ -1427,9 +1535,10 @@
               },
               "region": {
                 "type": "string",
-                "description": "Region where the commitment is applicable.",
+                "description": "Region where the commitment is applicable. Not required for region-agnostic commitment types such as Compute Savings Plans.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "scaling_strategy": {
                 "type": "string",
@@ -1485,7 +1594,8 @@
                       "type": "number",
                       "description": "Available (unused) instance count.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "id": {
                       "type": "string",
@@ -1544,7 +1654,8 @@
                       "type": "number",
                       "description": "Available (unused) instance count.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "end_date_type": {
                       "type": "string",
@@ -1578,9 +1689,9 @@
                     },
                     "interruptible": {
                       "type": "bool",
-                      "description": "Whether this reservation is interruptible.",
+                      "description": "Whether this reservation is interruptible. Set to true for interruptible ODCRs, false otherwise.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "state": {
                       "type": "string",
@@ -1881,7 +1992,8 @@
                       "type": "number",
                       "description": "Assured count for the reservation.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "id": {
                       "type": "string",
@@ -1893,7 +2005,8 @@
                       "type": "number",
                       "description": "Number of instances currently in use.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "instance_type": {
                       "type": "string",
@@ -1921,9 +2034,9 @@
                     },
                     "specific_reservation_required": {
                       "type": "bool",
-                      "description": "Whether the reservation requires specific reservation affinity.",
+                      "description": "Whether the reservation requires specific reservation affinity. Set to true for targeted reservations, false for automatic (open) reservations.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "state": {
                       "type": "string",
@@ -2522,6 +2635,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "gpu_cluster": {
+                      "type": "string",
+                      "description": "GPU cluster info",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "image_id": {
                       "type": "string",
                       "description": "ImageID to be used for edge creation. It can be an image ID or a name filter",
@@ -2534,6 +2653,15 @@
                         "string"
                       ],
                       "description": "Instance/VM labels",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "reservation_ids": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Capacity block reservation IDs",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -2880,6 +3008,23 @@
                   },
                   "description_kind": "plain",
                   "description": "GCP configuration for the edge location"
+                },
+                "nesting_mode": "single",
+                "min_items": 0,
+                "max_items": 1
+              },
+              "liqo": {
+                "block": {
+                  "attributes": {
+                    "gateway_replicas": {
+                      "type": "number",
+                      "description": "Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Liqo configuration for the edge cluster."
                 },
                 "nesting_mode": "single",
                 "min_items": 0,
@@ -3621,6 +3766,213 @@
             "description_kind": "plain"
           }
         },
+        "castai_evictor": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aggressive_mode": {
+                "type": "bool",
+                "description": "Enable/disable aggressive mode. By default, Evictor does not target nodes that are running unreplicated pods. This mode will make the Evictor start considering application with just a single replica.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "arm64_supported": {
+                "type": "bool",
+                "description": "If enabled, indicates arm64 nodes are present so the scheduling simulation includes them as valid bin-packing targets.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "CAST AI cluster id.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cycle_interval": {
+                "type": "string",
+                "description": "Configure the interval duration between Evictor operations. This property can be used to lower or raise the frequency of the Evictor's find-and-drain operations.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "drain_rollback_timeout": {
+                "type": "string",
+                "description": "How long the evictor waits before rolling back a cordon when a drain attempt fails.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "drain_timeout": {
+                "type": "string",
+                "description": "Maximum time the evictor waits for a node to fully drain before giving up.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dry_run": {
+                "type": "bool",
+                "description": "Enable/disable dry-run. This property allows you to prevent the Evictor from carrying any operations out and preview the actions it would take.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "emit_node_related_pod_events": {
+                "type": "bool",
+                "description": "If enabled, Evictor emits Kubernetes events on pods when they are evicted as part of a node drain.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Enable/disable the Evictor policy. This will either install or uninstall the Evictor component in your cluster.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_disable_karpenter_mode": {
+                "type": "bool",
+                "description": "If enabled, disables Karpenter-aware scheduling simulation even when Karpenter is detected.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_disable_live_migration": {
+                "type": "bool",
+                "description": "If enabled, disables LIVE pod migration even when the cluster capability is detected.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_disable_pod_mutations": {
+                "type": "bool",
+                "description": "If enabled, disables PodMutation CR application during scheduling simulation even when the cluster capability is detected.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_disable_woop": {
+                "type": "bool",
+                "description": "If enabled, disables WOOP scheduling recommendations even when the cluster capability is detected.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ignore_pod_disruption_budgets": {
+                "type": "bool",
+                "description": "If enabled then Evictor will attempt to evict pods that have pod disruption budgets configured.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_target_nodes_per_cycle": {
+                "type": "number",
+                "description": "Upper bound on nodes drained in a single cycle.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_target_nodes_per_cycle": {
+                "type": "number",
+                "description": "Lower bound on nodes considered per cycle.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "node_grace_period_minutes": {
+                "type": "number",
+                "description": "Configure the node grace period which controls the duration which must pass after a node has been created before Evictor starts considering that node.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "pod_eviction_failure_back_off_interval": {
+                "type": "string",
+                "description": "Configure the pod eviction failure back off interval. If pod eviction fails then Evictor will attempt to evict it again after the amount of time specified here.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "pricing_awareness_enabled": {
+                "type": "bool",
+                "description": "If enabled, the evictor factors node cost into drain candidate selection, preferring to drain more expensive nodes first.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scoped_mode": {
+                "type": "bool",
+                "description": "Enable/disable scoped mode. By default, Evictor targets all nodes in the cluster. This mode will constrain it to just the nodes which were created by CAST AI.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "soft_tainting": {
+                "type": "bool",
+                "description": "If enabled, Evictor will use soft tainting (PreferNoSchedule) instead of hard cordoning after eviction.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status provides indication whether the Evictor policy will be synced with Evictor helm chart - it will only be done if status is \"Compatible\".",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target_node_percentage": {
+                "type": "number",
+                "description": "Percentage of eligible nodes to consider per cycle, applied after min/max bounds.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "windows": {
+                "type": "bool",
+                "description": "If enabled, Evictor will evict pods and nodes running Windows workloads.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "pricing_model": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "base_cpu_cost": {
+                      "type": "string",
+                      "description": "Cost coefficient per CPU core used in node price estimation. Serialized as a Kubernetes resource.Quantity string.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "base_mem_cost": {
+                      "type": "string",
+                      "description": "Cost coefficient per GiB of memory used in node price estimation. Serialized as a Kubernetes resource.Quantity string.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "spot_discount": {
+                      "type": "string",
+                      "description": "Fractional discount applied to spot instance price relative to on-demand (e.g. \"0.5\" means spot is 50% cheaper). Serialized as a Kubernetes resource.Quantity string.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Overrides the default cost coefficients used when pricing_awareness_enabled is true.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "CAST AI evictor resource to manage evictor configuration",
+            "description_kind": "plain"
+          }
+        },
         "castai_evictor_advanced_config": {
           "version": 0,
           "block": {
@@ -3652,6 +4004,12 @@
                     "disposable": {
                       "type": "bool",
                       "description": "Mark node as disposable",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "force_disposable": {
+                      "type": "bool",
+                      "description": "Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -4828,6 +5186,27 @@
                         "description_kind": "plain"
                       }
                     },
+                    "secondary_boot_disks": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "disk_image": {
+                            "type": "string",
+                            "description": "Image the disk is initialized from: a GKE image reference, projects/PROJECT/global/images/NAME or the same-project shorthand global/images/NAME.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "mode": {
+                            "type": "string",
+                            "description": "Mode of the secondary boot disk. MODE_UNSPECIFIED (default) - arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.",
+                        "description_kind": "plain"
+                      }
+                    },
                     "secondary_ip_range": {
                       "nesting_mode": "list",
                       "block": {
@@ -5606,6 +5985,22 @@
                     }
                   },
                   "description": "Configuration for adjusting instance type prices during autoscaling. Adjustments only affect placement decisions, not cost reporting.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "stuck_pod_resize_reconciliation": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -6798,9 +7193,24 @@
                       "deprecated": true,
                       "optional": true
                     },
+                    "evict_gracefully": {
+                      "type": "bool",
+                      "description": "Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
                     "keep_drain_timeout_nodes": {
                       "type": "bool",
                       "description": "Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.",
+                      "description_kind": "plain",
+                      "deprecated": true,
+                      "optional": true,
+                      "computed": true
+                    },
+                    "max_simultaneous_drains": {
+                      "type": "number",
+                      "description": "Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -6825,6 +7235,12 @@
                     "selector": {
                       "type": "string",
                       "description": "Node selector in JSON format.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "split_nodes_in_batches_of": {
+                      "type": "number",
+                      "description": "If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -6858,6 +7274,12 @@
                             "description_kind": "plain",
                             "required": true
                           },
+                          "ignore_problem_prevented_drain_pods": {
+                            "type": "bool",
+                            "description": "Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "ignore_problem_removal_disabled_pods": {
                             "type": "bool",
                             "description": "Pods that are marked with \"removal disabled\" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.",
@@ -6887,7 +7309,7 @@
                             "optional": true
                           }
                         },
-                        "description": "Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.",
+                        "description": "Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -6986,7 +7408,7 @@
                 "max_items": 1
               }
             },
-            "description": "CAST AI rebalancing schedule resource to manage rebalancing schedules.",
+            "description": "CAST AI rebalancing schedule resource to manage rebalancing schedules. The `keep_drain_timeout_nodes` attribute is deprecated in favor of `evict_gracefully` (both are aliases of the same setting); migrate by renaming the attribute and keeping the same value.",
             "description_kind": "plain"
           }
         },
@@ -8854,6 +9276,12 @@
                       "description_kind": "plain",
                       "computed": true
                     },
+                    "gpu_cluster": {
+                      "type": "string",
+                      "description": "GPU cluster info",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
                     "image_id": {
                       "type": "string",
                       "description": "Nebius image ID or name filter for edge creation",
@@ -8866,6 +9294,15 @@
                         "string"
                       ],
                       "description": "Instance/VM labels",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "reservation_ids": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Capacity block reservation IDs",
                       "description_kind": "plain",
                       "computed": true
                     }
@@ -9346,6 +9783,7 @@
                             "ignore_local_persistent_volumes": "bool",
                             "ignore_problem_job_pods": "bool",
                             "ignore_problem_pods_without_controller": "bool",
+                            "ignore_problem_prevented_drain_pods": "bool",
                             "ignore_problem_removal_disabled_pods": "bool"
                           }
                         ]
@@ -9360,6 +9798,7 @@
                           }
                         ]
                       ],
+                      "evict_gracefully": "bool",
                       "execution_conditions": [
                         "list",
                         [
@@ -9371,10 +9810,12 @@
                         ]
                       ],
                       "keep_drain_timeout_nodes": "bool",
+                      "max_simultaneous_drains": "number",
                       "node_ttl_seconds": "number",
                       "num_targeted_nodes": "number",
                       "rebalancing_min_nodes": "number",
                       "selector": "string",
+                      "split_nodes_in_batches_of": "number",
                       "target_node_selection_algorithm": "string"
                     }
                   ]
@@ -9465,6 +9906,486 @@
               }
             },
             "description": "Lists all workload scaling policies for a cluster. Useful for dynamically resolving policy IDs by name without maintaining a hardcoded UUID map.",
+            "description_kind": "plain"
+          }
+        },
+        "castai_workload_scaling_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "anomaly_detection": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cpu_pressure": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "cpu_stall_threshold_percentage": "number",
+                            "min_pressured_pod_percentage": "number"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Defines anomaly detection settings for the scaling policy.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "anti_affinity": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "consider_anti_affinity": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "apply_type": {
+                "type": "string",
+                "description": "Recommendation apply type.\n\t- IMMEDIATE - pods are restarted immediately when new recommendation is generated.\n\t- DEFERRED - pods are not restarted and recommendation values are applied during natural restarts only (new deployment, etc.)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "assignment_rules": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "rules": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "namespace": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "labels_expressions": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "key": "string",
+                                        "operator": "string",
+                                        "values": [
+                                          "list",
+                                          "string"
+                                        ]
+                                      }
+                                    ]
+                                  ],
+                                  "names": [
+                                    "list",
+                                    "string"
+                                  ]
+                                }
+                              ]
+                            ],
+                            "workload": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "gvk": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "labels_expressions": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "key": "string",
+                                        "operator": "string",
+                                        "values": [
+                                          "list",
+                                          "string"
+                                        ]
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Allows defining conditions for automatically assigning workloads to this scaling policy.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "CAST AI cluster id.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "confidence": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "threshold": "number"
+                    }
+                  ]
+                ],
+                "description": "Defines the confidence settings for applying recommendations.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cpu": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "apply_threshold": "number",
+                      "apply_threshold_strategy": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "denominator": "string",
+                            "exponent": "number",
+                            "numerator": "number",
+                            "percentage": "number",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "args": [
+                        "list",
+                        "string"
+                      ],
+                      "constraints": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "max": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "constant": "number",
+                                  "percentage_of_original": "number"
+                                }
+                              ]
+                            ],
+                            "min": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "constant": "number",
+                                  "percentage_of_original": "number"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "function": "string",
+                      "limit": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "multiplier": "number",
+                            "only_if_original_exist": "bool",
+                            "only_if_original_lower": "bool",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "look_back_period_seconds": "number",
+                      "management_option": "string",
+                      "max": "number",
+                      "min": "number",
+                      "overhead": "number"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "downscaling": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "apply_type": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "excluded_containers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Defines containers to be excluded from receiving recommendations. The containers are matched by exact name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hpa_converters": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Configuration for converting existing HPAs when VPA is the sole optimization. If HPA management is enabled, it takes precedence over this setting.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_castware": {
+                "type": "bool",
+                "description": "Whether this policy is managed by CAST AI and only applies to castware workloads.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_default": {
+                "type": "bool",
+                "description": "Whether this is the default scaling policy for the cluster.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_readonly": {
+                "type": "bool",
+                "description": "Whether this policy is read-only (cannot be updated or deleted).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "jvm": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "auto_instrument": "bool",
+                      "memory": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "optimization": "bool"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "JVM optimization settings.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "management_option": {
+                "type": "string",
+                "description": "Defines possible options for workload management.\n\t- READ_ONLY - workload watched (metrics collected), but no actions performed by CAST AI.\n\t- MANAGED - workload watched (metrics collected), CAST AI may perform actions on the workload.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "memory": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "apply_threshold": "number",
+                      "apply_threshold_strategy": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "denominator": "string",
+                            "exponent": "number",
+                            "numerator": "number",
+                            "percentage": "number",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "args": [
+                        "list",
+                        "string"
+                      ],
+                      "constraints": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "max": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "constant": "number",
+                                  "percentage_of_original": "number"
+                                }
+                              ]
+                            ],
+                            "min": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "constant": "number",
+                                  "percentage_of_original": "number"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "function": "string",
+                      "limit": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "multiplier": "number",
+                            "only_if_original_exist": "bool",
+                            "only_if_original_lower": "bool",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "look_back_period_seconds": "number",
+                      "management_option": "string",
+                      "max": "number",
+                      "min": "number",
+                      "overhead": "number"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "memory_event": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "apply_type": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Scaling policy name to fetch. After the read, contains the name of the fetched policy. Exactly one of policy_id or name must be set.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_id": {
+                "type": "string",
+                "description": "Scaling policy id to fetch. Exactly one of policy_id or name must be set.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "predictive_scaling": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cpu": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "enabled": "bool"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rollout_behavior": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "delay_seconds": "number",
+                      "prefer_one_by_one": "bool",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the rollout behavior used when applying recommendations. Prerequisites:\n\t- Applicable to Deployment resources that support running as multi-replica.\n\t- Deployment is running with single replica (replica count = 1).\n\t- Deployment's rollout strategy allows for downtime.\n\t- Recommendation apply type is \"immediate\".\n\t- Cluster has workload-autoscaler component version v0.35.3 or higher.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "startup": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "period_seconds": "number",
+                      "two_phase_recommendations": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "enabled": "bool",
+                            "requests_on_startup": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "cpu_cores": "number",
+                                  "memory_gib": "number"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Fetches a single workload scaling policy by id or name, including system (read-only) policies. Returns the full policy definition, which can be used as a template for defining custom policies without keeping policy definitions as static code.",
             "description_kind": "plain"
           }
         },

@@ -1107,6 +1107,10 @@ type NodeTemplateInitParameters struct {
 	// (Boolean) Marks whether the templated nodes will have a taint.
 	// Marks whether the templated nodes will have a taint.
 	ShouldTaint *bool `json:"shouldTaint,omitempty" tf:"should_taint,omitempty"`
+
+	// initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize. (see below for nested schema)
+	// Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.
+	StuckPodResizeReconciliation []StuckPodResizeReconciliationInitParameters `json:"stuckPodResizeReconciliation,omitempty" tf:"stuck_pod_resize_reconciliation,omitempty"`
 }
 
 type NodeTemplateObservation struct {
@@ -1177,6 +1181,10 @@ type NodeTemplateObservation struct {
 	// (Boolean) Marks whether the templated nodes will have a taint.
 	// Marks whether the templated nodes will have a taint.
 	ShouldTaint *bool `json:"shouldTaint,omitempty" tf:"should_taint,omitempty"`
+
+	// initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize. (see below for nested schema)
+	// Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.
+	StuckPodResizeReconciliation []StuckPodResizeReconciliationObservation `json:"stuckPodResizeReconciliation,omitempty" tf:"stuck_pod_resize_reconciliation,omitempty"`
 }
 
 type NodeTemplateParameters struct {
@@ -1278,6 +1286,11 @@ type NodeTemplateParameters struct {
 	// Marks whether the templated nodes will have a taint.
 	// +kubebuilder:validation:Optional
 	ShouldTaint *bool `json:"shouldTaint,omitempty" tf:"should_taint,omitempty"`
+
+	// initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize. (see below for nested schema)
+	// Stuck Pod Resize Reconciliation (SPR) configuration for nodes created from this template. When enabled, the autoscaler discovers pods whose woop-initiated in-place resize failed or got stuck, protects them from woop's eviction, and partially or fully drains the node to enable the resize.
+	// +kubebuilder:validation:Optional
+	StuckPodResizeReconciliation []StuckPodResizeReconciliationParameters `json:"stuckPodResizeReconciliation,omitempty" tf:"stuck_pod_resize_reconciliation,omitempty"`
 }
 
 type PriceAdjustmentConfigurationInitParameters struct {
@@ -1373,6 +1386,28 @@ type SharingConfigurationParameters struct {
 	// Defines number of shared clients for specific GPU device.
 	// +kubebuilder:validation:Optional
 	SharedClientsPerGpu *float64 `json:"sharedClientsPerGpu" tf:"shared_clients_per_gpu,omitempty"`
+}
+
+type StuckPodResizeReconciliationInitParameters struct {
+
+	// (Boolean) Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+	// Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type StuckPodResizeReconciliationObservation struct {
+
+	// (Boolean) Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+	// Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type StuckPodResizeReconciliationParameters struct {
+
+	// (Boolean) Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+	// Enable/disable Stuck Pod Resize Reconciliation. Defaults to false. Setting it to false is equivalent to omitting the block.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 // NodeTemplateSpec defines the desired state of NodeTemplate

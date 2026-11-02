@@ -353,6 +353,17 @@ spec:
                           Target service account email to be used for impersonation
                         type: string
                     type: object
+                  liqo:
+                    description: |-
+                      (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
+                      Liqo configuration for the edge cluster.
+                    properties:
+                      gatewayReplicas:
+                        description: |-
+                          (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+                          Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+                        type: number
+                    type: object
                   name:
                     description: |-
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -823,6 +834,17 @@ spec:
                           (String) Target service account email to be used for impersonation
                           Target service account email to be used for impersonation
                         type: string
+                    type: object
+                  liqo:
+                    description: |-
+                      (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
+                      Liqo configuration for the edge cluster.
+                    properties:
+                      gatewayReplicas:
+                        description: |-
+                          (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+                          Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+                        type: number
                     type: object
                   name:
                     description: |-
@@ -1338,6 +1360,17 @@ spec:
                   id:
                     description: (String) Edge location ID
                     type: string
+                  liqo:
+                    description: |-
+                      (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
+                      Liqo configuration for the edge cluster.
+                    properties:
+                      gatewayReplicas:
+                        description: |-
+                          (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+                          Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+                        type: number
+                    type: object
                   name:
                     description: |-
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.

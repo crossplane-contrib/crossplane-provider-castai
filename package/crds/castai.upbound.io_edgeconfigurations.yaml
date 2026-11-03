@@ -336,6 +336,10 @@ spec:
                   organizationId:
                     description: CAST AI organization ID
                     type: string
+                  sshPublicKey:
+                    description: Base64 encoded SSH public key to be used for provisioned
+                      nodes.
+                    type: string
                   userDataBase64:
                     description: Base64 encoded user data to run on the edge as part
                       of bootstrap. The payload must start with either `#cloud-config`
@@ -617,6 +621,10 @@ spec:
                     type: object
                   organizationId:
                     description: CAST AI organization ID
+                    type: string
+                  sshPublicKey:
+                    description: Base64 encoded SSH public key to be used for provisioned
+                      nodes.
                     type: string
                   userDataBase64:
                     description: Base64 encoded user data to run on the edge as part
@@ -920,6 +928,10 @@ spec:
                     type: object
                   organizationId:
                     description: CAST AI organization ID
+                    type: string
+                  sshPublicKey:
+                    description: Base64 encoded SSH public key to be used for provisioned
+                      nodes.
                     type: string
                   userDataBase64:
                     description: Base64 encoded user data to run on the edge as part

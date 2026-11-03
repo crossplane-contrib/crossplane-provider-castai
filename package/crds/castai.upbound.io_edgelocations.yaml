@@ -269,11 +269,34 @@ spec:
                       (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
                       Control plane configuration. Only valid when control_plane_mode is SHARED.
                     properties:
+                      apiServerPort:
+                        description: |-
+                          (Number) The port used for the API server. Defaults to the system value when unset.
+                          The port used for the API server. Defaults to the system value when unset.
+                        type: number
+                      externalAddress:
+                        description: |-
+                          cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                          The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                        type: string
                       ha:
                         description: |-
                           (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
                           Whether to use HA mode for control plane. If not set, default is HA.
                         type: boolean
+                      konnectivityPort:
+                        description: |-
+                          (Number) The port used for the konnectivity server. Defaults to the system value when unset.
+                          The port used for the konnectivity server. Defaults to the system value when unset.
+                        type: number
+                      serviceAnnotations:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          (Map of String) Custom annotations to apply to the control plane service.
+                          Custom annotations to apply to the control plane service.
+                        type: object
+                        x-kubernetes-map-type: granular
                     type: object
                   controlPlaneMode:
                     description: |-
@@ -363,6 +386,38 @@ spec:
                           (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
                           Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
                         type: number
+                      gatewayServer:
+                        description: |-
+                          (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
+                          Configuration overrides for the Liqo gateway server.
+                        properties:
+                          externalAddress:
+                            description: |-
+                              cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                              The IP address or hostname used to reach the Liqo gateway server from outside the cluster.
+                            type: string
+                          externalPort:
+                            description: |-
+                              (Number) The port used for the Liqo gateway server.
+                              The port used for the Liqo gateway server.
+                            type: number
+                          serviceAnnotations:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              (Map of String) Custom annotations to apply to the control plane service.
+                              Custom annotations to apply to the Liqo gateway service.
+                            type: object
+                            x-kubernetes-map-type: granular
+                          serviceLabels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              (Map of String) Custom labels to apply to the Liqo gateway service.
+                              Custom labels to apply to the Liqo gateway service.
+                            type: object
+                            x-kubernetes-map-type: granular
+                        type: object
                     type: object
                   name:
                     description: |-
@@ -751,11 +806,34 @@ spec:
                       (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
                       Control plane configuration. Only valid when control_plane_mode is SHARED.
                     properties:
+                      apiServerPort:
+                        description: |-
+                          (Number) The port used for the API server. Defaults to the system value when unset.
+                          The port used for the API server. Defaults to the system value when unset.
+                        type: number
+                      externalAddress:
+                        description: |-
+                          cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                          The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                        type: string
                       ha:
                         description: |-
                           (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
                           Whether to use HA mode for control plane. If not set, default is HA.
                         type: boolean
+                      konnectivityPort:
+                        description: |-
+                          (Number) The port used for the konnectivity server. Defaults to the system value when unset.
+                          The port used for the konnectivity server. Defaults to the system value when unset.
+                        type: number
+                      serviceAnnotations:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          (Map of String) Custom annotations to apply to the control plane service.
+                          Custom annotations to apply to the control plane service.
+                        type: object
+                        x-kubernetes-map-type: granular
                     type: object
                   controlPlaneMode:
                     description: |-
@@ -845,6 +923,38 @@ spec:
                           (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
                           Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
                         type: number
+                      gatewayServer:
+                        description: |-
+                          (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
+                          Configuration overrides for the Liqo gateway server.
+                        properties:
+                          externalAddress:
+                            description: |-
+                              cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                              The IP address or hostname used to reach the Liqo gateway server from outside the cluster.
+                            type: string
+                          externalPort:
+                            description: |-
+                              (Number) The port used for the Liqo gateway server.
+                              The port used for the Liqo gateway server.
+                            type: number
+                          serviceAnnotations:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              (Map of String) Custom annotations to apply to the control plane service.
+                              Custom annotations to apply to the Liqo gateway service.
+                            type: object
+                            x-kubernetes-map-type: granular
+                          serviceLabels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              (Map of String) Custom labels to apply to the Liqo gateway service.
+                              Custom labels to apply to the Liqo gateway service.
+                            type: object
+                            x-kubernetes-map-type: granular
+                        type: object
                     type: object
                   name:
                     description: |-
@@ -1287,11 +1397,34 @@ spec:
                       (Attributes) Control plane configuration. Only valid when control_plane_mode is SHARED. (see below for nested schema)
                       Control plane configuration. Only valid when control_plane_mode is SHARED.
                     properties:
+                      apiServerPort:
+                        description: |-
+                          (Number) The port used for the API server. Defaults to the system value when unset.
+                          The port used for the API server. Defaults to the system value when unset.
+                        type: number
+                      externalAddress:
+                        description: |-
+                          cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                          The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                        type: string
                       ha:
                         description: |-
                           (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
                           Whether to use HA mode for control plane. If not set, default is HA.
                         type: boolean
+                      konnectivityPort:
+                        description: |-
+                          (Number) The port used for the konnectivity server. Defaults to the system value when unset.
+                          The port used for the konnectivity server. Defaults to the system value when unset.
+                        type: number
+                      serviceAnnotations:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          (Map of String) Custom annotations to apply to the control plane service.
+                          Custom annotations to apply to the control plane service.
+                        type: object
+                        x-kubernetes-map-type: granular
                     type: object
                   controlPlaneMode:
                     description: |-
@@ -1370,6 +1503,38 @@ spec:
                           (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
                           Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
                         type: number
+                      gatewayServer:
+                        description: |-
+                          (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
+                          Configuration overrides for the Liqo gateway server.
+                        properties:
+                          externalAddress:
+                            description: |-
+                              cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+                              The IP address or hostname used to reach the Liqo gateway server from outside the cluster.
+                            type: string
+                          externalPort:
+                            description: |-
+                              (Number) The port used for the Liqo gateway server.
+                              The port used for the Liqo gateway server.
+                            type: number
+                          serviceAnnotations:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              (Map of String) Custom annotations to apply to the control plane service.
+                              Custom annotations to apply to the Liqo gateway service.
+                            type: object
+                            x-kubernetes-map-type: granular
+                          serviceLabels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              (Map of String) Custom labels to apply to the Liqo gateway service.
+                              Custom labels to apply to the Liqo gateway service.
+                            type: object
+                            x-kubernetes-map-type: granular
+                        type: object
                     type: object
                   name:
                     description: |-

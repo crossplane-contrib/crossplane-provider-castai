@@ -146,6 +146,9 @@ type EdgeConfigurationInitParameters struct {
 	// CAST AI organization ID
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
+	// Base64 encoded SSH public key to be used for provisioned nodes.
+	SSHPublicKey *string `json:"sshPublicKey,omitempty" tf:"ssh_public_key,omitempty"`
+
 	// Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either `#cloud-config` (cloud-init YAML) or `#!` (shell script with a shebang)
 	UserDataBase64 *string `json:"userDataBase64,omitempty" tf:"user_data_base64,omitempty"`
 }
@@ -186,6 +189,9 @@ type EdgeConfigurationObservation struct {
 
 	// CAST AI organization ID
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// Base64 encoded SSH public key to be used for provisioned nodes.
+	SSHPublicKey *string `json:"sshPublicKey,omitempty" tf:"ssh_public_key,omitempty"`
 
 	// Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either `#cloud-config` (cloud-init YAML) or `#!` (shell script with a shebang)
 	UserDataBase64 *string `json:"userDataBase64,omitempty" tf:"user_data_base64,omitempty"`
@@ -250,6 +256,10 @@ type EdgeConfigurationParameters struct {
 	// CAST AI organization ID
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// Base64 encoded SSH public key to be used for provisioned nodes.
+	// +kubebuilder:validation:Optional
+	SSHPublicKey *string `json:"sshPublicKey,omitempty" tf:"ssh_public_key,omitempty"`
 
 	// Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either `#cloud-config` (cloud-init YAML) or `#!` (shell script with a shebang)
 	// +kubebuilder:validation:Optional

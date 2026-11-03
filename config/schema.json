@@ -2515,6 +2515,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "ssh_public_key": {
+                "type": "string",
+                "description": "Base64 encoded SSH public key to be used for provisioned nodes.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "user_data_base64": {
                 "type": "string",
                 "description": "Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either `#cloud-config` (cloud-init YAML) or `#!` (shell script with a shebang)",
@@ -2925,12 +2931,39 @@
               "control_plane": {
                 "block": {
                   "attributes": {
+                    "api_server_port": {
+                      "type": "number",
+                      "description": "The port used for the API server. Defaults to the system value when unset.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "external_address": {
+                      "type": "string",
+                      "description": "The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "ha": {
                       "type": "bool",
                       "description": "Whether to use HA mode for control plane. If not set, default is HA.",
                       "description_kind": "plain",
                       "optional": true,
                       "computed": true
+                    },
+                    "konnectivity_port": {
+                      "type": "number",
+                      "description": "The port used for the konnectivity server. Defaults to the system value when unset.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_annotations": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Custom annotations to apply to the control plane service.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "description_kind": "plain",
@@ -3024,6 +3057,49 @@
                     }
                   },
                   "description_kind": "plain",
+                  "block_types": {
+                    "gateway_server": {
+                      "block": {
+                        "attributes": {
+                          "external_address": {
+                            "type": "string",
+                            "description": "The IP address or hostname used to reach the Liqo gateway server from outside the cluster.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "external_port": {
+                            "type": "number",
+                            "description": "The port used for the Liqo gateway server.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service_annotations": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Custom annotations to apply to the Liqo gateway service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service_labels": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Custom labels to apply to the Liqo gateway service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "description": "Configuration overrides for the Liqo gateway server."
+                      },
+                      "nesting_mode": "single",
+                      "min_items": 0,
+                      "max_items": 1
+                    }
+                  },
                   "description": "Liqo configuration for the edge cluster."
                 },
                 "nesting_mode": "single",
@@ -5377,6 +5453,7 @@
                 ],
                 "description": "List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "id": {
@@ -5909,6 +5986,27 @@
                     }
                   },
                   "description": "Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.",
+                  "description_kind": "plain"
+                }
+              },
+              "edge_location_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "edge_config_id": {
+                      "type": "string",
+                      "description": "Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "edge_location_id": {
+                      "type": "string",
+                      "description": "Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.",
                   "description_kind": "plain"
                 }
               },
@@ -9349,6 +9447,12 @@
                 "description": "CAST AI organization ID",
                 "description_kind": "plain",
                 "required": true
+              },
+              "ssh_public_key": {
+                "type": "string",
+                "description": "Base64 encoded SSH public key for provisioned nodes",
+                "description_kind": "plain",
+                "computed": true
               },
               "user_data_base64": {
                 "type": "string",

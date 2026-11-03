@@ -741,6 +741,7 @@ resources:
             organization_id: (String) CAST AI organization ID
             reservation_ids: (List of String) Capacity block reservation IDs
             socket: '(String) Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
+            ssh_public_key: (String) Base64 encoded SSH public key to be used for provisioned nodes.
             tags: (Map of String) Instance/VM tags
             user_data_base64: '(String) Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either #cloud-config (cloud-init YAML) or #! (shell script with a shebang)'
         importStatements: []
@@ -824,6 +825,55 @@ resources:
                 }
               references:
                 cluster_id: castai_omni_cluster.example.id
+            - name: aws_example_overrides
+              manifest: |-
+                {
+                  "aws": {
+                    "access_key_id_wo": "AKIAIOSFODNN7EXAMPLE",
+                    "account_id": "123456789012",
+                    "secret_access_key_wo": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                    "security_group_id": "sg-12345678",
+                    "subnet_ids": {
+                      "us-east-1a": "subnet-12345678"
+                    },
+                    "vpc_id": "vpc-12345678"
+                  },
+                  "cluster_id": "${castai_omni_cluster.example.id}",
+                  "control_plane": {
+                    "api_server_port": 6443,
+                    "external_address": "api.edge.example.com",
+                    "ha": false,
+                    "konnectivity_port": 8132,
+                    "service_annotations": {
+                      "example.com/owner": "platform"
+                    }
+                  },
+                  "control_plane_mode": "SHARED",
+                  "liqo": {
+                    "gateway_replicas": 2,
+                    "gateway_server": {
+                      "external_address": "gw.edge.example.com",
+                      "external_port": 51820,
+                      "service_annotations": {
+                        "example.com/owner": "platform"
+                      },
+                      "service_labels": {
+                        "example.com/tier": "edge"
+                      }
+                    }
+                  },
+                  "name": "aws-edge-us-east-shared",
+                  "organization_id": "your-org-id",
+                  "region": "us-east-1",
+                  "zones": [
+                    {
+                      "id": "us-east-1a",
+                      "name": "us-east-1a"
+                    }
+                  ]
+                }
+              references:
+                cluster_id: castai_omni_cluster.example.id
             - name: aws_example_no_addons
               manifest: |-
                 {
@@ -847,6 +897,7 @@ resources:
             access_key_id_wo: (String, Sensitive) AWS access key ID
             account_id: (String) AWS account ID
             addons: (Attributes List) Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
+            api_server_port: (Number) The port used for the API server. Defaults to the system value when unset.
             aws: (Attributes) AWS configuration for the edge location (see below for nested schema)
             client_service_account_json_base64_wo: (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
             cluster_id: (String) CAST AI cluster ID
@@ -857,13 +908,17 @@ resources:
             credentials_revision: (Number) Revision number incremented each time credentials change
             custom: (Attributes) Custom cloud provider configuration for the edge location (see below for nested schema)
             description: (String) Description of the edge location
+            external_address: (String) The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+            external_port: (Number) The port used for the Liqo gateway server.
             fingerprint_wo: (String, Sensitive) API key fingerprint
             gateway_replicas: (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+            gateway_server: (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
             gcp: (Attributes) GCP configuration for the edge location (see below for nested schema)
             ha: (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
             id: (String) Edge location ID
             instance_profile: (String) AWS IAM instance profile ARN to be attached to edge instances. It can be used to grant permissions to access other AWS resources such as ECR.
             instance_service_account: (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
+            konnectivity_port: (Number) The port used for the konnectivity server. Defaults to the system value when unset.
             liqo: (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
             name: (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
             name_tag: (String, Deprecated) The value of a 'Name' tag applied to VPC resources
@@ -884,6 +939,8 @@ resources:
             secret_access_key_wo: (String, Sensitive) AWS secret access key
             security_group_id: (String) Security group ID to be used in the selected region
             service_account_id: (String) Nebius service account ID to be impersonated by CAST AI
+            service_annotations: (Map of String) Custom annotations to apply to the control plane service.
+            service_labels: (Map of String) Custom labels to apply to the Liqo gateway service.
             subnet_cidr: (String) VPC Subnet IPv4 CIDR block
             subnet_id: (String) The ID of the subnet to be used in the selected region
             subnet_ids: (Map of String) Map of zone names to subnet IDs to be used in the selected region
@@ -1571,6 +1628,15 @@ resources:
                       "value": "backend"
                     }
                   ],
+                  "edge_location_config": [
+                    {
+                      "edge_config_id": "${castai_edge_configuration.example_1.id}",
+                      "edge_location_id": "${castai_edge_location.example_1.id}"
+                    },
+                    {
+                      "edge_location_id": "${castai_edge_location.example_2.id}"
+                    }
+                  ],
                   "is_default": true,
                   "is_enabled": true,
                   "name": "default-by-castai",
@@ -1579,6 +1645,8 @@ resources:
               references:
                 cluster_id: castai_eks_cluster.test.id
                 configuration_id: castai_node_configuration.default.id
+                edge_location_config.edge_config_id: castai_edge_configuration.example_1.id
+                edge_location_config.edge_location_id: castai_edge_location.example_2.id
         argumentDocs:
             affinity: (Block List) (see below for nested schema)
             architecture_priority: '(List of String) Priority ordering of architectures, specifying no priority will pick cheapest. Allowed values: amd64, arm64.'
@@ -1617,7 +1685,10 @@ resources:
                 the sole tenancy or dedicated node (example: setting min CPU to 16). (see below for nested schema)
             default_shared_clients_per_gpu: (Number) Defines default number of shared clients per GPU.
             delete: (String)
-            edge_location_ids: (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+            edge_config_id: (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+            edge_location_config: (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+            edge_location_id: (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+            edge_location_ids: (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
             effect: '(String) Effect of a taint to be added to nodes created from this template, the default is NoSchedule. Allowed values: NoSchedule, NoExecute.'
             enable_spot_diversity: (Boolean) Enable/disable spot diversity policy. When enabled, autoscaler will try to balance between diverse and cost optimal instance types.
             enable_time_sharing: '(Boolean, Deprecated) Enable/disable GPU time-sharing. Deprecated: use sharing_strategy = "time-slicing" instead.'

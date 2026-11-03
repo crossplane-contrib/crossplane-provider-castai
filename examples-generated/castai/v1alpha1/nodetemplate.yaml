@@ -51,6 +51,10 @@ spec:
     - effect: NoSchedule
       key: dedicated
       value: backend
+    edgeLocationConfig:
+    - edgeConfigId: ${castai_edge_configuration.example_1.id}
+      edgeLocationId: ${castai_edge_location.example_1.id}
+    - edgeLocationId: ${castai_edge_location.example_2.id}
     isDefault: true
     isEnabled: true
     name: default-by-castai

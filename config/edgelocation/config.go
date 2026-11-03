@@ -46,6 +46,7 @@ func Configure(p *config.Provider) {
 			"custom",
 			"gcp",
 			"liqo",
+			"liqo.gateway_server",
 			"nebius",
 			"networking",
 			"networking.cni",

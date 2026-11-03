@@ -85,24 +85,79 @@ type CniParameters struct {
 
 type ControlPlaneInitParameters struct {
 
+	// (Number) The port used for the API server. Defaults to the system value when unset.
+	// The port used for the API server. Defaults to the system value when unset.
+	APIServerPort *float64 `json:"apiServerPort,omitempty" tf:"api_server_port,omitempty"`
+
+	// cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	ExternalAddress *string `json:"externalAddress,omitempty" tf:"external_address,omitempty"`
+
 	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
 	// Whether to use HA mode for control plane. If not set, default is HA.
 	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+
+	// (Number) The port used for the konnectivity server. Defaults to the system value when unset.
+	// The port used for the konnectivity server. Defaults to the system value when unset.
+	KonnectivityPort *float64 `json:"konnectivityPort,omitempty" tf:"konnectivity_port,omitempty"`
+
+	// (Map of String) Custom annotations to apply to the control plane service.
+	// Custom annotations to apply to the control plane service.
+	// +mapType=granular
+	ServiceAnnotations map[string]*string `json:"serviceAnnotations,omitempty" tf:"service_annotations,omitempty"`
 }
 
 type ControlPlaneObservation struct {
 
+	// (Number) The port used for the API server. Defaults to the system value when unset.
+	// The port used for the API server. Defaults to the system value when unset.
+	APIServerPort *float64 `json:"apiServerPort,omitempty" tf:"api_server_port,omitempty"`
+
+	// cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	ExternalAddress *string `json:"externalAddress,omitempty" tf:"external_address,omitempty"`
+
 	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
 	// Whether to use HA mode for control plane. If not set, default is HA.
 	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+
+	// (Number) The port used for the konnectivity server. Defaults to the system value when unset.
+	// The port used for the konnectivity server. Defaults to the system value when unset.
+	KonnectivityPort *float64 `json:"konnectivityPort,omitempty" tf:"konnectivity_port,omitempty"`
+
+	// (Map of String) Custom annotations to apply to the control plane service.
+	// Custom annotations to apply to the control plane service.
+	// +mapType=granular
+	ServiceAnnotations map[string]*string `json:"serviceAnnotations,omitempty" tf:"service_annotations,omitempty"`
 }
 
 type ControlPlaneParameters struct {
+
+	// (Number) The port used for the API server. Defaults to the system value when unset.
+	// The port used for the API server. Defaults to the system value when unset.
+	// +kubebuilder:validation:Optional
+	APIServerPort *float64 `json:"apiServerPort,omitempty" tf:"api_server_port,omitempty"`
+
+	// cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// +kubebuilder:validation:Optional
+	ExternalAddress *string `json:"externalAddress,omitempty" tf:"external_address,omitempty"`
 
 	// (Boolean) Whether to use HA mode for control plane. If not set, default is HA.
 	// Whether to use HA mode for control plane. If not set, default is HA.
 	// +kubebuilder:validation:Optional
 	Ha *bool `json:"ha,omitempty" tf:"ha,omitempty"`
+
+	// (Number) The port used for the konnectivity server. Defaults to the system value when unset.
+	// The port used for the konnectivity server. Defaults to the system value when unset.
+	// +kubebuilder:validation:Optional
+	KonnectivityPort *float64 `json:"konnectivityPort,omitempty" tf:"konnectivity_port,omitempty"`
+
+	// (Map of String) Custom annotations to apply to the control plane service.
+	// Custom annotations to apply to the control plane service.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	ServiceAnnotations map[string]*string `json:"serviceAnnotations,omitempty" tf:"service_annotations,omitempty"`
 }
 
 type EdgeLocationAwsInitParameters struct {
@@ -820,11 +875,82 @@ type EdgeLocationParameters struct {
 	Zones []ZonesParameters `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
+type GatewayServerInitParameters struct {
+
+	// cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// The IP address or hostname used to reach the Liqo gateway server from outside the cluster.
+	ExternalAddress *string `json:"externalAddress,omitempty" tf:"external_address,omitempty"`
+
+	// (Number) The port used for the Liqo gateway server.
+	// The port used for the Liqo gateway server.
+	ExternalPort *float64 `json:"externalPort,omitempty" tf:"external_port,omitempty"`
+
+	// (Map of String) Custom annotations to apply to the control plane service.
+	// Custom annotations to apply to the Liqo gateway service.
+	// +mapType=granular
+	ServiceAnnotations map[string]*string `json:"serviceAnnotations,omitempty" tf:"service_annotations,omitempty"`
+
+	// (Map of String) Custom labels to apply to the Liqo gateway service.
+	// Custom labels to apply to the Liqo gateway service.
+	// +mapType=granular
+	ServiceLabels map[string]*string `json:"serviceLabels,omitempty" tf:"service_labels,omitempty"`
+}
+
+type GatewayServerObservation struct {
+
+	// cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// The IP address or hostname used to reach the Liqo gateway server from outside the cluster.
+	ExternalAddress *string `json:"externalAddress,omitempty" tf:"external_address,omitempty"`
+
+	// (Number) The port used for the Liqo gateway server.
+	// The port used for the Liqo gateway server.
+	ExternalPort *float64 `json:"externalPort,omitempty" tf:"external_port,omitempty"`
+
+	// (Map of String) Custom annotations to apply to the control plane service.
+	// Custom annotations to apply to the Liqo gateway service.
+	// +mapType=granular
+	ServiceAnnotations map[string]*string `json:"serviceAnnotations,omitempty" tf:"service_annotations,omitempty"`
+
+	// (Map of String) Custom labels to apply to the Liqo gateway service.
+	// Custom labels to apply to the Liqo gateway service.
+	// +mapType=granular
+	ServiceLabels map[string]*string `json:"serviceLabels,omitempty" tf:"service_labels,omitempty"`
+}
+
+type GatewayServerParameters struct {
+
+	// cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
+	// The IP address or hostname used to reach the Liqo gateway server from outside the cluster.
+	// +kubebuilder:validation:Optional
+	ExternalAddress *string `json:"externalAddress,omitempty" tf:"external_address,omitempty"`
+
+	// (Number) The port used for the Liqo gateway server.
+	// The port used for the Liqo gateway server.
+	// +kubebuilder:validation:Optional
+	ExternalPort *float64 `json:"externalPort,omitempty" tf:"external_port,omitempty"`
+
+	// (Map of String) Custom annotations to apply to the control plane service.
+	// Custom annotations to apply to the Liqo gateway service.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	ServiceAnnotations map[string]*string `json:"serviceAnnotations,omitempty" tf:"service_annotations,omitempty"`
+
+	// (Map of String) Custom labels to apply to the Liqo gateway service.
+	// Custom labels to apply to the Liqo gateway service.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	ServiceLabels map[string]*string `json:"serviceLabels,omitempty" tf:"service_labels,omitempty"`
+}
+
 type LiqoInitParameters struct {
 
 	// (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
 	// Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
 	GatewayReplicas *float64 `json:"gatewayReplicas,omitempty" tf:"gateway_replicas,omitempty"`
+
+	// (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
+	// Configuration overrides for the Liqo gateway server.
+	GatewayServer *GatewayServerInitParameters `json:"gatewayServer,omitempty" tf:"gateway_server,omitempty"`
 }
 
 type LiqoObservation struct {
@@ -832,6 +958,10 @@ type LiqoObservation struct {
 	// (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
 	// Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
 	GatewayReplicas *float64 `json:"gatewayReplicas,omitempty" tf:"gateway_replicas,omitempty"`
+
+	// (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
+	// Configuration overrides for the Liqo gateway server.
+	GatewayServer *GatewayServerObservation `json:"gatewayServer,omitempty" tf:"gateway_server,omitempty"`
 }
 
 type LiqoParameters struct {
@@ -840,6 +970,11 @@ type LiqoParameters struct {
 	// Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
 	// +kubebuilder:validation:Optional
 	GatewayReplicas *float64 `json:"gatewayReplicas,omitempty" tf:"gateway_replicas,omitempty"`
+
+	// (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
+	// Configuration overrides for the Liqo gateway server.
+	// +kubebuilder:validation:Optional
+	GatewayServer *GatewayServerParameters `json:"gatewayServer,omitempty" tf:"gateway_server,omitempty"`
 }
 
 type NetworkingInitParameters struct {

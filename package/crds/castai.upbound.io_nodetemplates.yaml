@@ -660,9 +660,27 @@ spec:
                           type: string
                       type: object
                     type: array
+                  edgeLocationConfig:
+                    description: |-
+                      (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+                      List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.
+                    items:
+                      properties:
+                        edgeConfigId:
+                          description: |-
+                            (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+                            Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+                          type: string
+                        edgeLocationId:
+                          description: |-
+                            (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+                            Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+                          type: string
+                      type: object
+                    type: array
                   edgeLocationIds:
                     description: |-
-                      (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                      (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
                       List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
                     items:
                       type: string
@@ -1368,9 +1386,27 @@ spec:
                           type: string
                       type: object
                     type: array
+                  edgeLocationConfig:
+                    description: |-
+                      (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+                      List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.
+                    items:
+                      properties:
+                        edgeConfigId:
+                          description: |-
+                            (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+                            Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+                          type: string
+                        edgeLocationId:
+                          description: |-
+                            (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+                            Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+                          type: string
+                      type: object
+                    type: array
                   edgeLocationIds:
                     description: |-
-                      (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                      (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
                       List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
                     items:
                       type: string
@@ -2088,9 +2124,27 @@ spec:
                           type: string
                       type: object
                     type: array
+                  edgeLocationConfig:
+                    description: |-
+                      (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+                      List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.
+                    items:
+                      properties:
+                        edgeConfigId:
+                          description: |-
+                            (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+                            Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+                          type: string
+                        edgeLocationId:
+                          description: |-
+                            (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+                            Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+                          type: string
+                      type: object
+                    type: array
                   edgeLocationIds:
                     description: |-
-                      (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+                      (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
                       List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
                     items:
                       type: string

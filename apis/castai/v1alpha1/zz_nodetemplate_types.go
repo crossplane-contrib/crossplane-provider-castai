@@ -828,6 +828,41 @@ type DedicatedNodeAffinityParameters struct {
 	Name *string `json:"name" tf:"name,omitempty"`
 }
 
+type EdgeLocationConfigInitParameters struct {
+
+	// (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+	// Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+	EdgeConfigID *string `json:"edgeConfigId,omitempty" tf:"edge_config_id,omitempty"`
+
+	// (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+	// Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+	EdgeLocationID *string `json:"edgeLocationId,omitempty" tf:"edge_location_id,omitempty"`
+}
+
+type EdgeLocationConfigObservation struct {
+
+	// (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+	// Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+	EdgeConfigID *string `json:"edgeConfigId,omitempty" tf:"edge_config_id,omitempty"`
+
+	// (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+	// Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+	EdgeLocationID *string `json:"edgeLocationId,omitempty" tf:"edge_location_id,omitempty"`
+}
+
+type EdgeLocationConfigParameters struct {
+
+	// (String) Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+	// Optional edge configuration ID to apply at this edge location. Must be a valid UUID referencing a castai_edge_configuration resource.
+	// +kubebuilder:validation:Optional
+	EdgeConfigID *string `json:"edgeConfigId,omitempty" tf:"edge_config_id,omitempty"`
+
+	// (String) Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+	// Edge location ID to associate with this node template. Must be a valid UUID referencing a castai_edge_location resource.
+	// +kubebuilder:validation:Optional
+	EdgeLocationID *string `json:"edgeLocationId" tf:"edge_location_id,omitempty"`
+}
+
 type GpuInitParameters struct {
 
 	// (List of String) Names of the GPUs to exclude.
@@ -1076,7 +1111,11 @@ type NodeTemplateInitParameters struct {
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	CustomTaints []CustomTaintsInitParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
-	// (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+	// List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.
+	EdgeLocationConfig []EdgeLocationConfigInitParameters `json:"edgeLocationConfig,omitempty" tf:"edge_location_config,omitempty"`
+
+	// (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
 	// List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
 	EdgeLocationIds []*string `json:"edgeLocationIds,omitempty" tf:"edge_location_ids,omitempty"`
 
@@ -1147,7 +1186,11 @@ type NodeTemplateObservation struct {
 	// Custom taints to be added to the nodes created from this template. `shouldTaint` has to be `true` in order to create/update the node template with custom taints. If `shouldTaint` is `true`, but no custom taints are provided, the nodes will be tainted with the default node template taint.
 	CustomTaints []CustomTaintsObservation `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
-	// (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+	// List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.
+	EdgeLocationConfig []EdgeLocationConfigObservation `json:"edgeLocationConfig,omitempty" tf:"edge_location_config,omitempty"`
+
+	// (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
 	// List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
 	EdgeLocationIds []*string `json:"edgeLocationIds,omitempty" tf:"edge_location_ids,omitempty"`
 
@@ -1247,7 +1290,12 @@ type NodeTemplateParameters struct {
 	// +kubebuilder:validation:Optional
 	CustomTaints []CustomTaintsParameters `json:"customTaints,omitempty" tf:"custom_taints,omitempty"`
 
-	// (List of String) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
+	// (Block List) List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids. (see below for nested schema)
+	// List of edge location configurations to associate with this node template. Each entry pairs an edge location with an optional edge configuration. Conflicts with edge_location_ids.
+	// +kubebuilder:validation:Optional
+	EdgeLocationConfig []EdgeLocationConfigParameters `json:"edgeLocationConfig,omitempty" tf:"edge_location_config,omitempty"`
+
+	// (List of String, Deprecated) List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
 	// List of edge location IDs to associate with this node template. Must be valid UUIDs referencing castai_edge_location resources.
 	// +kubebuilder:validation:Optional
 	EdgeLocationIds []*string `json:"edgeLocationIds,omitempty" tf:"edge_location_ids,omitempty"`

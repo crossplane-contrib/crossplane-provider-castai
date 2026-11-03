@@ -416,6 +416,10 @@ type EdgeLocationInitParameters struct {
 	// GCP configuration for the edge location
 	GCP *EdgeLocationGCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
+	// (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
+	// Liqo configuration for the edge cluster.
+	Liqo *LiqoInitParameters `json:"liqo,omitempty" tf:"liqo,omitempty"`
+
 	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -572,6 +576,10 @@ type EdgeLocationObservation struct {
 
 	// (String) Edge location ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
+	// Liqo configuration for the edge cluster.
+	Liqo *LiqoObservation `json:"liqo,omitempty" tf:"liqo,omitempty"`
 
 	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
@@ -771,6 +779,11 @@ type EdgeLocationParameters struct {
 	// +kubebuilder:validation:Optional
 	GCP *EdgeLocationGCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
+	// (Attributes) Liqo configuration for the edge cluster. (see below for nested schema)
+	// Liqo configuration for the edge cluster.
+	// +kubebuilder:validation:Optional
+	Liqo *LiqoParameters `json:"liqo,omitempty" tf:"liqo,omitempty"`
+
 	// (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
 	// +kubebuilder:validation:Optional
@@ -805,6 +818,28 @@ type EdgeLocationParameters struct {
 	// List of availability zones for the edge location
 	// +kubebuilder:validation:Optional
 	Zones []ZonesParameters `json:"zones,omitempty" tf:"zones,omitempty"`
+}
+
+type LiqoInitParameters struct {
+
+	// (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+	// Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+	GatewayReplicas *float64 `json:"gatewayReplicas,omitempty" tf:"gateway_replicas,omitempty"`
+}
+
+type LiqoObservation struct {
+
+	// (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+	// Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+	GatewayReplicas *float64 `json:"gatewayReplicas,omitempty" tf:"gateway_replicas,omitempty"`
+}
+
+type LiqoParameters struct {
+
+	// (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+	// Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
+	// +kubebuilder:validation:Optional
+	GatewayReplicas *float64 `json:"gatewayReplicas,omitempty" tf:"gateway_replicas,omitempty"`
 }
 
 type NetworkingInitParameters struct {

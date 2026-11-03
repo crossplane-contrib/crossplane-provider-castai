@@ -495,6 +495,24 @@ spec:
                             spot nodes, it is migrate.
                             Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
                           type: string
+                        secondaryBootDisks:
+                          description: |-
+                            (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
+                            Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.
+                          items:
+                            properties:
+                              diskImage:
+                                description: |-
+                                  project shorthand global/images/NAME.
+                                  Image the disk is initialized from: a GKE image reference, projects/PROJECT/global/images/NAME or the same-project shorthand global/images/NAME.
+                                type: string
+                              mode:
+                                description: |-
+                                  arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.
+                                  Mode of the secondary boot disk. MODE_UNSPECIFIED (default) - arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.
+                                type: string
+                            type: object
+                          type: array
                         secondaryIpRange:
                           description: |-
                             (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
@@ -1013,6 +1031,24 @@ spec:
                             spot nodes, it is migrate.
                             Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
                           type: string
+                        secondaryBootDisks:
+                          description: |-
+                            (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
+                            Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.
+                          items:
+                            properties:
+                              diskImage:
+                                description: |-
+                                  project shorthand global/images/NAME.
+                                  Image the disk is initialized from: a GKE image reference, projects/PROJECT/global/images/NAME or the same-project shorthand global/images/NAME.
+                                type: string
+                              mode:
+                                description: |-
+                                  arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.
+                                  Mode of the secondary boot disk. MODE_UNSPECIFIED (default) - arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.
+                                type: string
+                            type: object
+                          type: array
                         secondaryIpRange:
                           description: |-
                             (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)
@@ -1623,6 +1659,24 @@ spec:
                             spot nodes, it is migrate.
                             Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
                           type: string
+                        secondaryBootDisks:
+                          description: |-
+                            (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
+                            Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.
+                          items:
+                            properties:
+                              diskImage:
+                                description: |-
+                                  project shorthand global/images/NAME.
+                                  Image the disk is initialized from: a GKE image reference, projects/PROJECT/global/images/NAME or the same-project shorthand global/images/NAME.
+                                type: string
+                              mode:
+                                description: |-
+                                  arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.
+                                  Mode of the secondary boot disk. MODE_UNSPECIFIED (default) - arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.
+                                type: string
+                            type: object
+                          type: array
                         secondaryIpRange:
                           description: |-
                             (Block List, Max: 1) Secondary IP range configuration for pods in GKE nodes (see below for nested schema)

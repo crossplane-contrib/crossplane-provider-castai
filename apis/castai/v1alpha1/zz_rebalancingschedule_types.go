@@ -27,6 +27,10 @@ type AggressiveModeConfigInitParameters struct {
 	// Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
 	IgnoreProblemPodsWithoutController *bool `json:"ignoreProblemPodsWithoutController,omitempty" tf:"ignore_problem_pods_without_controller,omitempty"`
 
+	// drain=true will not prevent the Rebalancer from deleting a node on which they run.
+	// Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.
+	IgnoreProblemPreventedDrainPods *bool `json:"ignoreProblemPreventedDrainPods,omitempty" tf:"ignore_problem_prevented_drain_pods,omitempty"`
+
 	// (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
 	// Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
 	IgnoreProblemRemovalDisabledPods *bool `json:"ignoreProblemRemovalDisabledPods,omitempty" tf:"ignore_problem_removal_disabled_pods,omitempty"`
@@ -45,6 +49,10 @@ type AggressiveModeConfigObservation struct {
 	// (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
 	// Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
 	IgnoreProblemPodsWithoutController *bool `json:"ignoreProblemPodsWithoutController,omitempty" tf:"ignore_problem_pods_without_controller,omitempty"`
+
+	// drain=true will not prevent the Rebalancer from deleting a node on which they run.
+	// Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.
+	IgnoreProblemPreventedDrainPods *bool `json:"ignoreProblemPreventedDrainPods,omitempty" tf:"ignore_problem_prevented_drain_pods,omitempty"`
 
 	// (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
 	// Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
@@ -67,6 +75,11 @@ type AggressiveModeConfigParameters struct {
 	// Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
 	// +kubebuilder:validation:Optional
 	IgnoreProblemPodsWithoutController *bool `json:"ignoreProblemPodsWithoutController" tf:"ignore_problem_pods_without_controller,omitempty"`
+
+	// drain=true will not prevent the Rebalancer from deleting a node on which they run.
+	// Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.
+	// +kubebuilder:validation:Optional
+	IgnoreProblemPreventedDrainPods *bool `json:"ignoreProblemPreventedDrainPods,omitempty" tf:"ignore_problem_prevented_drain_pods,omitempty"`
 
 	// (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
 	// Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
@@ -154,9 +167,13 @@ type LaunchConfigurationInitParameters struct {
 	// Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
 	AggressiveModeConfig []AggressiveModeConfigInitParameters `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
 
-	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
-	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when evict_gracefully is true. (see below for nested schema)
+	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.
 	DrainFailureConfig []DrainFailureConfigInitParameters `json:"drainFailureConfig,omitempty" tf:"drain_failure_config,omitempty"`
+
+	// failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+	EvictGracefully *bool `json:"evictGracefully,omitempty" tf:"evict_gracefully,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsInitParameters `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
@@ -164,6 +181,10 @@ type LaunchConfigurationInitParameters struct {
 	// failed annotation instead of forcefully drained.
 	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
 	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
+
+	// (Number) Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+	// Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+	MaxSimultaneousDrains *float64 `json:"maxSimultaneousDrains,omitempty" tf:"max_simultaneous_drains,omitempty"`
 
 	// (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
@@ -180,6 +201,10 @@ type LaunchConfigurationInitParameters struct {
 	// (String) Node selector in JSON format.
 	// Node selector in JSON format.
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	// (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+	// If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+	SplitNodesInBatchesOf *float64 `json:"splitNodesInBatchesOf,omitempty" tf:"split_nodes_in_batches_of,omitempty"`
 
 	// (String) Defines the algorithm used to select the target nodes for rebalancing.
 	// Defines the algorithm used to select the target nodes for rebalancing.
@@ -196,9 +221,13 @@ type LaunchConfigurationObservation struct {
 	// Advanced configuration for the aggressive rebalancing mode. This is the recommended way to configure aggressive rebalancing. Please keep the `aggressive_mode` parameter unset or set it `aggressive_mode=false` before using this config option. When the legacy `aggressive_mode` is set to `true`, it takes precedence over this option.
 	AggressiveModeConfig []AggressiveModeConfigObservation `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
 
-	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
-	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when evict_gracefully is true. (see below for nested schema)
+	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.
 	DrainFailureConfig []DrainFailureConfigObservation `json:"drainFailureConfig,omitempty" tf:"drain_failure_config,omitempty"`
+
+	// failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+	EvictGracefully *bool `json:"evictGracefully,omitempty" tf:"evict_gracefully,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	ExecutionConditions []ExecutionConditionsObservation `json:"executionConditions,omitempty" tf:"execution_conditions,omitempty"`
@@ -206,6 +235,10 @@ type LaunchConfigurationObservation struct {
 	// failed annotation instead of forcefully drained.
 	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
 	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
+
+	// (Number) Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+	// Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+	MaxSimultaneousDrains *float64 `json:"maxSimultaneousDrains,omitempty" tf:"max_simultaneous_drains,omitempty"`
 
 	// (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
@@ -222,6 +255,10 @@ type LaunchConfigurationObservation struct {
 	// (String) Node selector in JSON format.
 	// Node selector in JSON format.
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	// (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+	// If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+	SplitNodesInBatchesOf *float64 `json:"splitNodesInBatchesOf,omitempty" tf:"split_nodes_in_batches_of,omitempty"`
 
 	// (String) Defines the algorithm used to select the target nodes for rebalancing.
 	// Defines the algorithm used to select the target nodes for rebalancing.
@@ -240,10 +277,15 @@ type LaunchConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	AggressiveModeConfig []AggressiveModeConfigParameters `json:"aggressiveModeConfig,omitempty" tf:"aggressive_mode_config,omitempty"`
 
-	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
-	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+	// (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when evict_gracefully is true. (see below for nested schema)
+	// Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.
 	// +kubebuilder:validation:Optional
 	DrainFailureConfig []DrainFailureConfigParameters `json:"drainFailureConfig,omitempty" tf:"drain_failure_config,omitempty"`
+
+	// failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+	// +kubebuilder:validation:Optional
+	EvictGracefully *bool `json:"evictGracefully,omitempty" tf:"evict_gracefully,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -253,6 +295,11 @@ type LaunchConfigurationParameters struct {
 	// Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
 	// +kubebuilder:validation:Optional
 	KeepDrainTimeoutNodes *bool `json:"keepDrainTimeoutNodes,omitempty" tf:"keep_drain_timeout_nodes,omitempty"`
+
+	// (Number) Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+	// Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+	// +kubebuilder:validation:Optional
+	MaxSimultaneousDrains *float64 `json:"maxSimultaneousDrains,omitempty" tf:"max_simultaneous_drains,omitempty"`
 
 	// (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
 	// Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
@@ -273,6 +320,11 @@ type LaunchConfigurationParameters struct {
 	// Node selector in JSON format.
 	// +kubebuilder:validation:Optional
 	Selector *string `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	// (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+	// If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+	// +kubebuilder:validation:Optional
+	SplitNodesInBatchesOf *float64 `json:"splitNodesInBatchesOf,omitempty" tf:"split_nodes_in_batches_of,omitempty"`
 
 	// (String) Defines the algorithm used to select the target nodes for rebalancing.
 	// Defines the algorithm used to select the target nodes for rebalancing.
@@ -461,7 +513,7 @@ type RebalancingScheduleStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// RebalancingSchedule is the Schema for the RebalancingSchedules API. CAST AI rebalancing schedule resource to manage rebalancing schedules.
+// RebalancingSchedule is the Schema for the RebalancingSchedules API. CAST AI rebalancing schedule resource to manage rebalancing schedules. The keep_drain_timeout_nodes attribute is deprecated in favor of evict_gracefully (both are aliases of the same setting); migrate by renaming the attribute and keeping the same value.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

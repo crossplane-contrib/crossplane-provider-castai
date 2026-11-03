@@ -170,6 +170,11 @@ spec:
                             (Boolean) Mark node as disposable
                             Mark node as disposable
                           type: boolean
+                        forceDisposable:
+                          description: |-
+                            disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+                            Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+                          type: boolean
                         nodeSelector:
                           description: |-
                             (Block List) node selector (see below for nested schema)
@@ -360,6 +365,11 @@ spec:
                           description: |-
                             (Boolean) Mark node as disposable
                             Mark node as disposable
+                          type: boolean
+                        forceDisposable:
+                          description: |-
+                            disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+                            Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
                           type: boolean
                         nodeSelector:
                           description: |-
@@ -640,6 +650,11 @@ spec:
                           description: |-
                             (Boolean) Mark node as disposable
                             Mark node as disposable
+                          type: boolean
+                        forceDisposable:
+                          description: |-
+                            disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
+                            Forcibly treat matched pods as disposable, overriding protection annotations (removal-disabled, safe-to-evict=false, do-not-disrupt, eviction-disabled).
                           type: boolean
                         nodeSelector:
                           description: |-

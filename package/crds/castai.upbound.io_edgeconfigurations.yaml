@@ -296,6 +296,9 @@ spec:
                       bootDiskSizeGib:
                         description: Boot disk size in GiB
                         type: number
+                      gpuCluster:
+                        description: GPU cluster info
+                        type: string
                       imageId:
                         description: ImageID to be used for edge creation. It can
                           be an image ID or a name filter
@@ -306,6 +309,11 @@ spec:
                         description: Instance/VM labels
                         type: object
                         x-kubernetes-map-type: granular
+                      reservationIds:
+                        description: Capacity block reservation IDs
+                        items:
+                          type: string
+                        type: array
                     type: object
                   oci:
                     description: OCI specific configuration
@@ -570,6 +578,9 @@ spec:
                       bootDiskSizeGib:
                         description: Boot disk size in GiB
                         type: number
+                      gpuCluster:
+                        description: GPU cluster info
+                        type: string
                       imageId:
                         description: ImageID to be used for edge creation. It can
                           be an image ID or a name filter
@@ -580,6 +591,11 @@ spec:
                         description: Instance/VM labels
                         type: object
                         x-kubernetes-map-type: granular
+                      reservationIds:
+                        description: Capacity block reservation IDs
+                        items:
+                          type: string
+                        type: array
                     type: object
                   oci:
                     description: OCI specific configuration
@@ -865,6 +881,9 @@ spec:
                       bootDiskSizeGib:
                         description: Boot disk size in GiB
                         type: number
+                      gpuCluster:
+                        description: GPU cluster info
+                        type: string
                       imageId:
                         description: ImageID to be used for edge creation. It can
                           be an image ID or a name filter
@@ -875,6 +894,11 @@ spec:
                         description: Instance/VM labels
                         type: object
                         x-kubernetes-map-type: granular
+                      reservationIds:
+                        description: Capacity block reservation IDs
+                        items:
+                          type: string
+                        type: array
                     type: object
                   oci:
                     description: OCI specific configuration

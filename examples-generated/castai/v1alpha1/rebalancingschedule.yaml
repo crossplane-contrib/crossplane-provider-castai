@@ -13,14 +13,15 @@ spec:
       - ignoreLocalPersistentVolumes: true
         ignoreProblemJobPods: true
         ignoreProblemPodsWithoutController: true
+        ignoreProblemPreventedDrainPods: true
         ignoreProblemRemovalDisabledPods: true
       drainFailureConfig:
       - disableUncordon: false
         uncordonAfterSeconds: 7200
+      evictGracefully: true
       executionConditions:
       - achievedSavingsPercentage: 10
         enabled: true
-      keepDrainTimeoutNodes: true
       nodeTtlSeconds: 300
       numTargetedNodes: 3
       rebalancingMinNodes: 2
@@ -35,6 +36,7 @@ spec:
                 ]
               }]
             })}
+      splitNodesInBatchesOf: 2
     name: rebalance spots at every 30th minute
     schedule:
     - cron: '*/30 * * * *'

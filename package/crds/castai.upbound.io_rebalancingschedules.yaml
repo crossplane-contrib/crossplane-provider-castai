@@ -36,6 +36,9 @@ spec:
       openAPIV3Schema:
         description: RebalancingSchedule is the Schema for the RebalancingSchedules
           API. CAST AI rebalancing schedule resource to manage rebalancing schedules.
+          The keep_drain_timeout_nodes attribute is deprecated in favor of evict_gracefully
+          (both are aliases of the same setting); migrate by renaming the attribute
+          and keeping the same value.
         properties:
           apiVersion:
             description: |-
@@ -104,6 +107,11 @@ spec:
                                   (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
                                   Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
                                 type: boolean
+                              ignoreProblemPreventedDrainPods:
+                                description: |-
+                                  drain=true will not prevent the Rebalancer from deleting a node on which they run.
+                                  Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.
+                                type: boolean
                               ignoreProblemRemovalDisabledPods:
                                 description: |-
                                   (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
@@ -113,8 +121,8 @@ spec:
                           type: array
                         drainFailureConfig:
                           description: |-
-                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
-                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when evict_gracefully is true. (see below for nested schema)
+                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.
                           items:
                             properties:
                               disableUncordon:
@@ -129,6 +137,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        evictGracefully:
+                          description: |-
+                            failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+                            Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+                          type: boolean
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -151,6 +164,11 @@ spec:
                             failed annotation instead of forcefully drained.
                             Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
                           type: boolean
+                        maxSimultaneousDrains:
+                          description: |-
+                            (Number) Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+                            Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+                          type: number
                         nodeTtlSeconds:
                           description: |-
                             (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
@@ -171,6 +189,11 @@ spec:
                             (String) Node selector in JSON format.
                             Node selector in JSON format.
                           type: string
+                        splitNodesInBatchesOf:
+                          description: |-
+                            (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+                            If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+                          type: number
                         targetNodeSelectionAlgorithm:
                           description: |-
                             (String) Defines the algorithm used to select the target nodes for rebalancing.
@@ -276,6 +299,11 @@ spec:
                                   (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
                                   Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
                                 type: boolean
+                              ignoreProblemPreventedDrainPods:
+                                description: |-
+                                  drain=true will not prevent the Rebalancer from deleting a node on which they run.
+                                  Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.
+                                type: boolean
                               ignoreProblemRemovalDisabledPods:
                                 description: |-
                                   (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
@@ -285,8 +313,8 @@ spec:
                           type: array
                         drainFailureConfig:
                           description: |-
-                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
-                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when evict_gracefully is true. (see below for nested schema)
+                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.
                           items:
                             properties:
                               disableUncordon:
@@ -301,6 +329,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        evictGracefully:
+                          description: |-
+                            failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+                            Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+                          type: boolean
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -323,6 +356,11 @@ spec:
                             failed annotation instead of forcefully drained.
                             Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
                           type: boolean
+                        maxSimultaneousDrains:
+                          description: |-
+                            (Number) Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+                            Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+                          type: number
                         nodeTtlSeconds:
                           description: |-
                             (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
@@ -343,6 +381,11 @@ spec:
                             (String) Node selector in JSON format.
                             Node selector in JSON format.
                           type: string
+                        splitNodesInBatchesOf:
+                          description: |-
+                            (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+                            If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+                          type: number
                         targetNodeSelectionAlgorithm:
                           description: |-
                             (String) Defines the algorithm used to select the target nodes for rebalancing.
@@ -627,6 +670,11 @@ spec:
                                   (Boolean) Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
                                   Pods that don't have a controller (bare pods) will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods might not restart, since they have no controller to do it.
                                 type: boolean
+                              ignoreProblemPreventedDrainPods:
+                                description: |-
+                                  drain=true will not prevent the Rebalancer from deleting a node on which they run.
+                                  Pods annotated with rebalancing.cast.ai/prevented-drain=true will not prevent the Rebalancer from deleting a node on which they run.
+                                type: boolean
                               ignoreProblemRemovalDisabledPods:
                                 description: |-
                                   (Boolean) Pods that are marked with "removal disabled" will not prevent the Rebalancer from deleting a node on which they run. WARNING: When true, such pods will be evicted and disrupted.
@@ -636,8 +684,8 @@ spec:
                           type: array
                         drainFailureConfig:
                           description: |-
-                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when keep_drain_timeout_nodes is true. (see below for nested schema)
-                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `keep_drain_timeout_nodes` is true.
+                            (Block List, Max: 1) Configures behavior when a node fails to drain during rebalancing. Relevant only when evict_gracefully is true. (see below for nested schema)
+                            Configures behavior when a node fails to drain during rebalancing. Relevant only when `evict_gracefully` is true.
                           items:
                             properties:
                               disableUncordon:
@@ -652,6 +700,11 @@ spec:
                                 type: number
                             type: object
                           type: array
+                        evictGracefully:
+                          description: |-
+                            failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+                            Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained. Replaces the deprecated keep_drain_timeout_nodes.
+                          type: boolean
                         executionConditions:
                           description: '(Block List, Max: 1) (see below for nested
                             schema)'
@@ -674,6 +727,11 @@ spec:
                             failed annotation instead of forcefully drained.
                             Defines whether the nodes that failed to get drained until a predefined timeout, will be kept with a rebalancing.cast.ai/status=drain-failed annotation instead of forcefully drained.
                           type: boolean
+                        maxSimultaneousDrains:
+                          description: |-
+                            (Number) Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+                            Number of nodes to drain simultaneously. When unspecified, defaults to unlimited.
+                          type: number
                         nodeTtlSeconds:
                           description: |-
                             (Number) Specifies amount of time since node creation before the node is allowed to be considered for automated rebalancing.
@@ -694,6 +752,11 @@ spec:
                             (String) Node selector in JSON format.
                             Node selector in JSON format.
                           type: string
+                        splitNodesInBatchesOf:
+                          description: |-
+                            (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+                            If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
+                          type: number
                         targetNodeSelectionAlgorithm:
                           description: |-
                             (String) Defines the algorithm used to select the target nodes for rebalancing.

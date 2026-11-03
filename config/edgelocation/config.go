@@ -45,6 +45,7 @@ func Configure(p *config.Provider) {
 			"control_plane",
 			"custom",
 			"gcp",
+			"liqo",
 			"nebius",
 			"networking",
 			"networking.cni",

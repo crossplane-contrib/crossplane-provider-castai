@@ -303,12 +303,18 @@ type NebiusInitParameters struct {
 	// Boot disk size in GiB
 	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
 
+	// GPU cluster info
+	GpuCluster *string `json:"gpuCluster,omitempty" tf:"gpu_cluster,omitempty"`
+
 	// ImageID to be used for edge creation. It can be an image ID or a name filter
 	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
 
 	// Instance/VM labels
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
+
+	// Capacity block reservation IDs
+	ReservationIds []*string `json:"reservationIds,omitempty" tf:"reservation_ids,omitempty"`
 }
 
 type NebiusObservation struct {
@@ -316,12 +322,18 @@ type NebiusObservation struct {
 	// Boot disk size in GiB
 	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
 
+	// GPU cluster info
+	GpuCluster *string `json:"gpuCluster,omitempty" tf:"gpu_cluster,omitempty"`
+
 	// ImageID to be used for edge creation. It can be an image ID or a name filter
 	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
 
 	// Instance/VM labels
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
+
+	// Capacity block reservation IDs
+	ReservationIds []*string `json:"reservationIds,omitempty" tf:"reservation_ids,omitempty"`
 }
 
 type NebiusParameters struct {
@@ -330,6 +342,10 @@ type NebiusParameters struct {
 	// +kubebuilder:validation:Optional
 	BootDiskSizeGib *float64 `json:"bootDiskSizeGib,omitempty" tf:"boot_disk_size_gib,omitempty"`
 
+	// GPU cluster info
+	// +kubebuilder:validation:Optional
+	GpuCluster *string `json:"gpuCluster,omitempty" tf:"gpu_cluster,omitempty"`
+
 	// ImageID to be used for edge creation. It can be an image ID or a name filter
 	// +kubebuilder:validation:Optional
 	ImageID *string `json:"imageId,omitempty" tf:"image_id,omitempty"`
@@ -338,6 +354,10 @@ type NebiusParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
+
+	// Capacity block reservation IDs
+	// +kubebuilder:validation:Optional
+	ReservationIds []*string `json:"reservationIds,omitempty" tf:"reservation_ids,omitempty"`
 }
 
 type OciInitParameters struct {

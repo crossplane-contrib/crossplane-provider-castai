@@ -1197,6 +1197,11 @@ func (in *AggressiveModeConfigInitParameters) DeepCopyInto(out *AggressiveModeCo
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IgnoreProblemPreventedDrainPods != nil {
+		in, out := &in.IgnoreProblemPreventedDrainPods, &out.IgnoreProblemPreventedDrainPods
+		*out = new(bool)
+		**out = **in
+	}
 	if in.IgnoreProblemRemovalDisabledPods != nil {
 		in, out := &in.IgnoreProblemRemovalDisabledPods, &out.IgnoreProblemRemovalDisabledPods
 		*out = new(bool)
@@ -1232,6 +1237,11 @@ func (in *AggressiveModeConfigObservation) DeepCopyInto(out *AggressiveModeConfi
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IgnoreProblemPreventedDrainPods != nil {
+		in, out := &in.IgnoreProblemPreventedDrainPods, &out.IgnoreProblemPreventedDrainPods
+		*out = new(bool)
+		**out = **in
+	}
 	if in.IgnoreProblemRemovalDisabledPods != nil {
 		in, out := &in.IgnoreProblemRemovalDisabledPods, &out.IgnoreProblemRemovalDisabledPods
 		*out = new(bool)
@@ -1264,6 +1274,11 @@ func (in *AggressiveModeConfigParameters) DeepCopyInto(out *AggressiveModeConfig
 	}
 	if in.IgnoreProblemPodsWithoutController != nil {
 		in, out := &in.IgnoreProblemPodsWithoutController, &out.IgnoreProblemPodsWithoutController
+		*out = new(bool)
+		**out = **in
+	}
+	if in.IgnoreProblemPreventedDrainPods != nil {
+		in, out := &in.IgnoreProblemPreventedDrainPods, &out.IgnoreProblemPreventedDrainPods
 		*out = new(bool)
 		**out = **in
 	}
@@ -8757,6 +8772,11 @@ func (in *EdgeLocationInitParameters) DeepCopyInto(out *EdgeLocationInitParamete
 		*out = new(EdgeLocationGCPInitParameters)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Liqo != nil {
+		in, out := &in.Liqo, &out.Liqo
+		*out = new(LiqoInitParameters)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -9027,6 +9047,11 @@ func (in *EdgeLocationObservation) DeepCopyInto(out *EdgeLocationObservation) {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
 		**out = **in
+	}
+	if in.Liqo != nil {
+		in, out := &in.Liqo, &out.Liqo
+		*out = new(LiqoObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -9300,6 +9325,11 @@ func (in *EdgeLocationParameters) DeepCopyInto(out *EdgeLocationParameters) {
 	if in.GCP != nil {
 		in, out := &in.GCP, &out.GCP
 		*out = new(EdgeLocationGCPParameters)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Liqo != nil {
+		in, out := &in.Liqo, &out.Liqo
+		*out = new(LiqoParameters)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
@@ -11191,6 +11221,11 @@ func (in *EvictorAdvancedConfigEvictorAdvancedConfigInitParameters) DeepCopyInto
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceDisposable != nil {
+		in, out := &in.ForceDisposable, &out.ForceDisposable
+		*out = new(bool)
+		**out = **in
+	}
 	if in.NodeSelector != nil {
 		in, out := &in.NodeSelector, &out.NodeSelector
 		*out = make([]NodeSelectorInitParameters, len(*in))
@@ -11235,6 +11270,11 @@ func (in *EvictorAdvancedConfigEvictorAdvancedConfigObservation) DeepCopyInto(ou
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceDisposable != nil {
+		in, out := &in.ForceDisposable, &out.ForceDisposable
+		*out = new(bool)
+		**out = **in
+	}
 	if in.NodeSelector != nil {
 		in, out := &in.NodeSelector, &out.NodeSelector
 		*out = make([]NodeSelectorObservation, len(*in))
@@ -11276,6 +11316,11 @@ func (in *EvictorAdvancedConfigEvictorAdvancedConfigParameters) DeepCopyInto(out
 	}
 	if in.Disposable != nil {
 		in, out := &in.Disposable, &out.Disposable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.ForceDisposable != nil {
+		in, out := &in.ForceDisposable, &out.ForceDisposable
 		*out = new(bool)
 		**out = **in
 	}
@@ -13080,6 +13125,13 @@ func (in *GkeInitParameters) DeepCopyInto(out *GkeInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.SecondaryBootDisks != nil {
+		in, out := &in.SecondaryBootDisks, &out.SecondaryBootDisks
+		*out = make([]SecondaryBootDisksInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.SecondaryIPRange != nil {
 		in, out := &in.SecondaryIPRange, &out.SecondaryIPRange
 		*out = make([]SecondaryIPRangeInitParameters, len(*in))
@@ -13243,6 +13295,13 @@ func (in *GkeObservation) DeepCopyInto(out *GkeObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.SecondaryBootDisks != nil {
+		in, out := &in.SecondaryBootDisks, &out.SecondaryBootDisks
+		*out = make([]SecondaryBootDisksObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.SecondaryIPRange != nil {
 		in, out := &in.SecondaryIPRange, &out.SecondaryIPRange
 		*out = make([]SecondaryIPRangeObservation, len(*in))
@@ -13318,6 +13377,13 @@ func (in *GkeParameters) DeepCopyInto(out *GkeParameters) {
 		in, out := &in.OnHostMaintenance, &out.OnHostMaintenance
 		*out = new(string)
 		**out = **in
+	}
+	if in.SecondaryBootDisks != nil {
+		in, out := &in.SecondaryBootDisks, &out.SecondaryBootDisks
+		*out = make([]SecondaryBootDisksParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SecondaryIPRange != nil {
 		in, out := &in.SecondaryIPRange, &out.SecondaryIPRange
@@ -15551,6 +15617,11 @@ func (in *LaunchConfigurationInitParameters) DeepCopyInto(out *LaunchConfigurati
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.EvictGracefully != nil {
+		in, out := &in.EvictGracefully, &out.EvictGracefully
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ExecutionConditions != nil {
 		in, out := &in.ExecutionConditions, &out.ExecutionConditions
 		*out = make([]ExecutionConditionsInitParameters, len(*in))
@@ -15561,6 +15632,11 @@ func (in *LaunchConfigurationInitParameters) DeepCopyInto(out *LaunchConfigurati
 	if in.KeepDrainTimeoutNodes != nil {
 		in, out := &in.KeepDrainTimeoutNodes, &out.KeepDrainTimeoutNodes
 		*out = new(bool)
+		**out = **in
+	}
+	if in.MaxSimultaneousDrains != nil {
+		in, out := &in.MaxSimultaneousDrains, &out.MaxSimultaneousDrains
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NodeTTLSeconds != nil {
@@ -15581,6 +15657,11 @@ func (in *LaunchConfigurationInitParameters) DeepCopyInto(out *LaunchConfigurati
 	if in.Selector != nil {
 		in, out := &in.Selector, &out.Selector
 		*out = new(string)
+		**out = **in
+	}
+	if in.SplitNodesInBatchesOf != nil {
+		in, out := &in.SplitNodesInBatchesOf, &out.SplitNodesInBatchesOf
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TargetNodeSelectionAlgorithm != nil {
@@ -15622,6 +15703,11 @@ func (in *LaunchConfigurationObservation) DeepCopyInto(out *LaunchConfigurationO
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.EvictGracefully != nil {
+		in, out := &in.EvictGracefully, &out.EvictGracefully
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ExecutionConditions != nil {
 		in, out := &in.ExecutionConditions, &out.ExecutionConditions
 		*out = make([]ExecutionConditionsObservation, len(*in))
@@ -15632,6 +15718,11 @@ func (in *LaunchConfigurationObservation) DeepCopyInto(out *LaunchConfigurationO
 	if in.KeepDrainTimeoutNodes != nil {
 		in, out := &in.KeepDrainTimeoutNodes, &out.KeepDrainTimeoutNodes
 		*out = new(bool)
+		**out = **in
+	}
+	if in.MaxSimultaneousDrains != nil {
+		in, out := &in.MaxSimultaneousDrains, &out.MaxSimultaneousDrains
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NodeTTLSeconds != nil {
@@ -15652,6 +15743,11 @@ func (in *LaunchConfigurationObservation) DeepCopyInto(out *LaunchConfigurationO
 	if in.Selector != nil {
 		in, out := &in.Selector, &out.Selector
 		*out = new(string)
+		**out = **in
+	}
+	if in.SplitNodesInBatchesOf != nil {
+		in, out := &in.SplitNodesInBatchesOf, &out.SplitNodesInBatchesOf
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TargetNodeSelectionAlgorithm != nil {
@@ -15693,6 +15789,11 @@ func (in *LaunchConfigurationParameters) DeepCopyInto(out *LaunchConfigurationPa
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.EvictGracefully != nil {
+		in, out := &in.EvictGracefully, &out.EvictGracefully
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ExecutionConditions != nil {
 		in, out := &in.ExecutionConditions, &out.ExecutionConditions
 		*out = make([]ExecutionConditionsParameters, len(*in))
@@ -15703,6 +15804,11 @@ func (in *LaunchConfigurationParameters) DeepCopyInto(out *LaunchConfigurationPa
 	if in.KeepDrainTimeoutNodes != nil {
 		in, out := &in.KeepDrainTimeoutNodes, &out.KeepDrainTimeoutNodes
 		*out = new(bool)
+		**out = **in
+	}
+	if in.MaxSimultaneousDrains != nil {
+		in, out := &in.MaxSimultaneousDrains, &out.MaxSimultaneousDrains
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NodeTTLSeconds != nil {
@@ -15723,6 +15829,11 @@ func (in *LaunchConfigurationParameters) DeepCopyInto(out *LaunchConfigurationPa
 	if in.Selector != nil {
 		in, out := &in.Selector, &out.Selector
 		*out = new(string)
+		**out = **in
+	}
+	if in.SplitNodesInBatchesOf != nil {
+		in, out := &in.SplitNodesInBatchesOf, &out.SplitNodesInBatchesOf
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TargetNodeSelectionAlgorithm != nil {
@@ -15843,6 +15954,66 @@ func (in *LimitParameters) DeepCopy() *LimitParameters {
 		return nil
 	}
 	out := new(LimitParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *LiqoInitParameters) DeepCopyInto(out *LiqoInitParameters) {
+	*out = *in
+	if in.GatewayReplicas != nil {
+		in, out := &in.GatewayReplicas, &out.GatewayReplicas
+		*out = new(float64)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new LiqoInitParameters.
+func (in *LiqoInitParameters) DeepCopy() *LiqoInitParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(LiqoInitParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *LiqoObservation) DeepCopyInto(out *LiqoObservation) {
+	*out = *in
+	if in.GatewayReplicas != nil {
+		in, out := &in.GatewayReplicas, &out.GatewayReplicas
+		*out = new(float64)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new LiqoObservation.
+func (in *LiqoObservation) DeepCopy() *LiqoObservation {
+	if in == nil {
+		return nil
+	}
+	out := new(LiqoObservation)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *LiqoParameters) DeepCopyInto(out *LiqoParameters) {
+	*out = *in
+	if in.GatewayReplicas != nil {
+		in, out := &in.GatewayReplicas, &out.GatewayReplicas
+		*out = new(float64)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new LiqoParameters.
+func (in *LiqoParameters) DeepCopy() *LiqoParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(LiqoParameters)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -17544,6 +17715,11 @@ func (in *NebiusInitParameters) DeepCopyInto(out *NebiusInitParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.GpuCluster != nil {
+		in, out := &in.GpuCluster, &out.GpuCluster
+		*out = new(string)
+		**out = **in
+	}
 	if in.ImageID != nil {
 		in, out := &in.ImageID, &out.ImageID
 		*out = new(string)
@@ -17563,6 +17739,17 @@ func (in *NebiusInitParameters) DeepCopyInto(out *NebiusInitParameters) {
 				**out = **in
 			}
 			(*out)[key] = outVal
+		}
+	}
+	if in.ReservationIds != nil {
+		in, out := &in.ReservationIds, &out.ReservationIds
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
 		}
 	}
 }
@@ -17585,6 +17772,11 @@ func (in *NebiusObservation) DeepCopyInto(out *NebiusObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.GpuCluster != nil {
+		in, out := &in.GpuCluster, &out.GpuCluster
+		*out = new(string)
+		**out = **in
+	}
 	if in.ImageID != nil {
 		in, out := &in.ImageID, &out.ImageID
 		*out = new(string)
@@ -17604,6 +17796,17 @@ func (in *NebiusObservation) DeepCopyInto(out *NebiusObservation) {
 				**out = **in
 			}
 			(*out)[key] = outVal
+		}
+	}
+	if in.ReservationIds != nil {
+		in, out := &in.ReservationIds, &out.ReservationIds
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
 		}
 	}
 }
@@ -17626,6 +17829,11 @@ func (in *NebiusParameters) DeepCopyInto(out *NebiusParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.GpuCluster != nil {
+		in, out := &in.GpuCluster, &out.GpuCluster
+		*out = new(string)
+		**out = **in
+	}
 	if in.ImageID != nil {
 		in, out := &in.ImageID, &out.ImageID
 		*out = new(string)
@@ -17645,6 +17853,17 @@ func (in *NebiusParameters) DeepCopyInto(out *NebiusParameters) {
 				**out = **in
 			}
 			(*out)[key] = outVal
+		}
+	}
+	if in.ReservationIds != nil {
+		in, out := &in.ReservationIds, &out.ReservationIds
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
 		}
 	}
 }
@@ -19572,6 +19791,13 @@ func (in *NodeTemplateInitParameters) DeepCopyInto(out *NodeTemplateInitParamete
 		*out = new(bool)
 		**out = **in
 	}
+	if in.StuckPodResizeReconciliation != nil {
+		in, out := &in.StuckPodResizeReconciliation, &out.StuckPodResizeReconciliation
+		*out = make([]StuckPodResizeReconciliationInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new NodeTemplateInitParameters.
@@ -19729,6 +19955,13 @@ func (in *NodeTemplateObservation) DeepCopyInto(out *NodeTemplateObservation) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.StuckPodResizeReconciliation != nil {
+		in, out := &in.StuckPodResizeReconciliation, &out.StuckPodResizeReconciliation
+		*out = make([]StuckPodResizeReconciliationObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new NodeTemplateObservation.
@@ -19868,6 +20101,13 @@ func (in *NodeTemplateParameters) DeepCopyInto(out *NodeTemplateParameters) {
 		in, out := &in.ShouldTaint, &out.ShouldTaint
 		*out = new(bool)
 		**out = **in
+	}
+	if in.StuckPodResizeReconciliation != nil {
+		in, out := &in.StuckPodResizeReconciliation, &out.StuckPodResizeReconciliation
+		*out = make([]StuckPodResizeReconciliationParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -27383,6 +27623,81 @@ func (in *ScopesParameters) DeepCopy() *ScopesParameters {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *SecondaryBootDisksInitParameters) DeepCopyInto(out *SecondaryBootDisksInitParameters) {
+	*out = *in
+	if in.DiskImage != nil {
+		in, out := &in.DiskImage, &out.DiskImage
+		*out = new(string)
+		**out = **in
+	}
+	if in.Mode != nil {
+		in, out := &in.Mode, &out.Mode
+		*out = new(string)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new SecondaryBootDisksInitParameters.
+func (in *SecondaryBootDisksInitParameters) DeepCopy() *SecondaryBootDisksInitParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(SecondaryBootDisksInitParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *SecondaryBootDisksObservation) DeepCopyInto(out *SecondaryBootDisksObservation) {
+	*out = *in
+	if in.DiskImage != nil {
+		in, out := &in.DiskImage, &out.DiskImage
+		*out = new(string)
+		**out = **in
+	}
+	if in.Mode != nil {
+		in, out := &in.Mode, &out.Mode
+		*out = new(string)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new SecondaryBootDisksObservation.
+func (in *SecondaryBootDisksObservation) DeepCopy() *SecondaryBootDisksObservation {
+	if in == nil {
+		return nil
+	}
+	out := new(SecondaryBootDisksObservation)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *SecondaryBootDisksParameters) DeepCopyInto(out *SecondaryBootDisksParameters) {
+	*out = *in
+	if in.DiskImage != nil {
+		in, out := &in.DiskImage, &out.DiskImage
+		*out = new(string)
+		**out = **in
+	}
+	if in.Mode != nil {
+		in, out := &in.Mode, &out.Mode
+		*out = new(string)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new SecondaryBootDisksParameters.
+func (in *SecondaryBootDisksParameters) DeepCopy() *SecondaryBootDisksParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(SecondaryBootDisksParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *SecondaryIPRangeInitParameters) DeepCopyInto(out *SecondaryIPRangeInitParameters) {
 	*out = *in
 	if in.RangeName != nil {
@@ -28859,6 +29174,66 @@ func (in *StatusParameters) DeepCopy() *StatusParameters {
 		return nil
 	}
 	out := new(StatusParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *StuckPodResizeReconciliationInitParameters) DeepCopyInto(out *StuckPodResizeReconciliationInitParameters) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new StuckPodResizeReconciliationInitParameters.
+func (in *StuckPodResizeReconciliationInitParameters) DeepCopy() *StuckPodResizeReconciliationInitParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(StuckPodResizeReconciliationInitParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *StuckPodResizeReconciliationObservation) DeepCopyInto(out *StuckPodResizeReconciliationObservation) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new StuckPodResizeReconciliationObservation.
+func (in *StuckPodResizeReconciliationObservation) DeepCopy() *StuckPodResizeReconciliationObservation {
+	if in == nil {
+		return nil
+	}
+	out := new(StuckPodResizeReconciliationObservation)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *StuckPodResizeReconciliationParameters) DeepCopyInto(out *StuckPodResizeReconciliationParameters) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new StuckPodResizeReconciliationParameters.
+func (in *StuckPodResizeReconciliationParameters) DeepCopy() *StuckPodResizeReconciliationParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(StuckPodResizeReconciliationParameters)
 	in.DeepCopyInto(out)
 	return out
 }

@@ -778,6 +778,7 @@ resources:
             image_id: (String) ImageID to be used for edge creation. It can be an AMI ID (for example 'ami-0abcdef1234567890') or a name filter (for example 'al2023-ami-ecs-hvm-*')
             labels: (Map of String) Instance/VM labels
             name: (String) Name of the edge configuration
+            nebius: (Attributes) Nebius specific configuration (see below for nested schema)
             oci: (Attributes) OCI specific configuration (see below for nested schema)
             organization_id: (String) CAST AI organization ID
             socket: '(String) Path to an existing CRI socket. Example: unix:///run/containerd/containerd.sock'
@@ -905,6 +906,8 @@ resources:
             instance_service_account: (String) GCP service account email to be attached to edge instances. It can be used to grant permissions to access other GCP resources.
             name: (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
             name_tag: (String, Deprecated) The value of a 'Name' tag applied to VPC resources
+            nebius: (Attributes) Nebius configuration for the edge location (see below for nested schema)
+            network_id: (String) The ID of the VPC network to be used in the selected region
             network_name: (String) The name of the network to be used in the selected region
             network_tags: (Set of String) Tags applied on the provisioned cloud resources and the firewall rule
             networking: (Attributes) Edge cluster networking configuration. (see below for nested schema)
@@ -912,14 +915,16 @@ resources:
             organization_id: (String) CAST AI organization ID
             overlay: '(String) Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.'
             overlay_encap: '(String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.'
+            parent_id: (String) Nebius project ID that owns the edge location resources
             private_key_base64_wo: (String, Sensitive) Base64 encoded API private key
             project_id: (String) GCP project ID where edges run
             region: (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
             role_arn: (String) AWS IAM role ARN used for Google OIDC federation impersonation
             secret_access_key_wo: (String, Sensitive) AWS secret access key
             security_group_id: (String) Security group ID to be used in the selected region
+            service_account_id: (String) Nebius service account ID to be impersonated by CAST AI
             subnet_cidr: (String) VPC Subnet IPv4 CIDR block
-            subnet_id: (String) OCI subnet ID of edge location
+            subnet_id: (String) The ID of the subnet to be used in the selected region
             subnet_ids: (Map of String) Map of zone names to subnet IDs to be used in the selected region
             subnet_name: (String) The name of the subnetwork to be used in the selected region
             target_service_account_email: (String) Target service account email to be used for impersonation

@@ -49,7 +49,7 @@ def relax_conditionally_required_blocks(resources):
     """Make sub-fields inside mutually-exclusive provider blocks optional.
 
     Resources like castai_edge_location have cloud-specific blocks (aws, gcp,
-    oci, custom) where only one is needed depending on the cloud provider.
+    oci, nebius, custom) where only one is needed depending on the cloud provider.
     The Terraform schema marks sub-fields inside each block as required, but
     since the blocks themselves are optional and mutually exclusive, Upjet
     incorrectly generates CEL validation rules requiring all of them.
@@ -58,7 +58,7 @@ def relax_conditionally_required_blocks(resources):
     so that the CRD allows creating resources with only one provider block.
     """
     rules = {
-        "castai_edge_location": ["aws", "gcp", "oci"],
+        "castai_edge_location": ["aws", "gcp", "nebius", "oci"],
     }
 
     relaxed = []

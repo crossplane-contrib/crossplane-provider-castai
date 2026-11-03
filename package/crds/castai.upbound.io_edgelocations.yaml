@@ -358,6 +358,42 @@ spec:
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
                       Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
                     type: string
+                  nebius:
+                    description: |-
+                      (Attributes) Nebius configuration for the edge location (see below for nested schema)
+                      Nebius configuration for the edge location
+                    properties:
+                      networkId:
+                        description: |-
+                          (String) The ID of the VPC network to be used in the selected region
+                          The ID of the VPC network to be used in the selected region
+                        type: string
+                      parentId:
+                        description: |-
+                          (String) Nebius project ID that owns the edge location resources
+                          Nebius project ID that owns the edge location resources
+                        type: string
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          The ID of the security group to be used in the selected region
+                        type: string
+                      serviceAccountId:
+                        description: |-
+                          (String) Nebius service account ID to be impersonated by CAST AI
+                          Nebius service account ID to be impersonated by CAST AI
+                        type: string
+                      subnetCidr:
+                        description: |-
+                          (String) VPC Subnet IPv4 CIDR block
+                          The IPv4 CIDR block of the subnet
+                        type: string
+                      subnetId:
+                        description: |-
+                          (String) The ID of the subnet to be used in the selected region
+                          The ID of the subnet to be used in the selected region
+                        type: string
+                    type: object
                   networking:
                     description: |-
                       (Attributes) Edge cluster networking configuration. (see below for nested schema)
@@ -442,7 +478,7 @@ spec:
                         type: string
                       subnetId:
                         description: |-
-                          (String) OCI subnet ID of edge location
+                          (String) The ID of the subnet to be used in the selected region
                           OCI subnet ID of edge location
                         type: string
                       tenancyId:
@@ -793,6 +829,42 @@ spec:
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
                       Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
                     type: string
+                  nebius:
+                    description: |-
+                      (Attributes) Nebius configuration for the edge location (see below for nested schema)
+                      Nebius configuration for the edge location
+                    properties:
+                      networkId:
+                        description: |-
+                          (String) The ID of the VPC network to be used in the selected region
+                          The ID of the VPC network to be used in the selected region
+                        type: string
+                      parentId:
+                        description: |-
+                          (String) Nebius project ID that owns the edge location resources
+                          Nebius project ID that owns the edge location resources
+                        type: string
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          The ID of the security group to be used in the selected region
+                        type: string
+                      serviceAccountId:
+                        description: |-
+                          (String) Nebius service account ID to be impersonated by CAST AI
+                          Nebius service account ID to be impersonated by CAST AI
+                        type: string
+                      subnetCidr:
+                        description: |-
+                          (String) VPC Subnet IPv4 CIDR block
+                          The IPv4 CIDR block of the subnet
+                        type: string
+                      subnetId:
+                        description: |-
+                          (String) The ID of the subnet to be used in the selected region
+                          The ID of the subnet to be used in the selected region
+                        type: string
+                    type: object
                   networking:
                     description: |-
                       (Attributes) Edge cluster networking configuration. (see below for nested schema)
@@ -877,7 +949,7 @@ spec:
                         type: string
                       subnetId:
                         description: |-
-                          (String) OCI subnet ID of edge location
+                          (String) The ID of the subnet to be used in the selected region
                           OCI subnet ID of edge location
                         type: string
                       tenancyId:
@@ -1271,6 +1343,42 @@ spec:
                       (String) Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
                       Name of the edge location. Must be unique and relatively short as it's used for creating service accounts.
                     type: string
+                  nebius:
+                    description: |-
+                      (Attributes) Nebius configuration for the edge location (see below for nested schema)
+                      Nebius configuration for the edge location
+                    properties:
+                      networkId:
+                        description: |-
+                          (String) The ID of the VPC network to be used in the selected region
+                          The ID of the VPC network to be used in the selected region
+                        type: string
+                      parentId:
+                        description: |-
+                          (String) Nebius project ID that owns the edge location resources
+                          Nebius project ID that owns the edge location resources
+                        type: string
+                      securityGroupId:
+                        description: |-
+                          (String) Security group ID to be used in the selected region
+                          The ID of the security group to be used in the selected region
+                        type: string
+                      serviceAccountId:
+                        description: |-
+                          (String) Nebius service account ID to be impersonated by CAST AI
+                          Nebius service account ID to be impersonated by CAST AI
+                        type: string
+                      subnetCidr:
+                        description: |-
+                          (String) VPC Subnet IPv4 CIDR block
+                          The IPv4 CIDR block of the subnet
+                        type: string
+                      subnetId:
+                        description: |-
+                          (String) The ID of the subnet to be used in the selected region
+                          The ID of the subnet to be used in the selected region
+                        type: string
+                    type: object
                   networking:
                     description: |-
                       (Attributes) Edge cluster networking configuration. (see below for nested schema)
@@ -1317,7 +1425,7 @@ spec:
                         type: string
                       subnetId:
                         description: |-
-                          (String) OCI subnet ID of edge location
+                          (String) The ID of the subnet to be used in the selected region
                           OCI subnet ID of edge location
                         type: string
                       tenancyId:

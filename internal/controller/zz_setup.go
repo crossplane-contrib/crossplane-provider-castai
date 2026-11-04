@@ -15,9 +15,11 @@ import (
 	akscluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/akscluster"
 	allocationgroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/allocationgroup"
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/autoscaler"
+	autoscalerpolicies "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/autoscalerpolicies"
 	cacheconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacheconfiguration"
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/cacherule"
+	commitmententry "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitmententry"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/commitments"
 	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfiguration"
 	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/edgeconfigurationdefault"
@@ -27,6 +29,8 @@ import (
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/eksuserarn"
 	enterprisegroup "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterprisegroup"
 	enterpriserolebinding "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterpriserolebinding"
+	enterpriseserviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/enterpriseserviceaccount"
+	evictor "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/evictor"
 	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/evictoradvancedconfig"
 	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkecluster"
 	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/internal/controller/castai/gkeclusterid"
@@ -62,9 +66,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		akscluster.Setup,
 		allocationgroup.Setup,
 		autoscaler.Setup,
+		autoscalerpolicies.Setup,
 		cacheconfiguration.Setup,
 		cachegroup.Setup,
 		cacherule.Setup,
+		commitmententry.Setup,
 		commitments.Setup,
 		edgeconfiguration.Setup,
 		edgeconfigurationdefault.Setup,
@@ -74,6 +80,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		eksuserarn.Setup,
 		enterprisegroup.Setup,
 		enterpriserolebinding.Setup,
+		enterpriseserviceaccount.Setup,
+		evictor.Setup,
 		evictoradvancedconfig.Setup,
 		gkecluster.Setup,
 		gkeclusterid.Setup,

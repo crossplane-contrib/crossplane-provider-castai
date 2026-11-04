@@ -3,7 +3,7 @@ resources:
     castai_ai_optimizer_hosted_model:
         subCategory: ""
         name: castai_ai_optimizer_hosted_model
-        title: castai_ai_optimizer_hosted_model Resource - terraform-provider-castai
+        title: castai_ai_optimizer_hosted_model Resource - CAST AI
         examples:
             - name: hf_example
               manifest: |-
@@ -76,7 +76,7 @@ resources:
     castai_ai_optimizer_model_registry:
         subCategory: ""
         name: castai_ai_optimizer_model_registry
-        title: castai_ai_optimizer_model_registry Resource - terraform-provider-castai
+        title: castai_ai_optimizer_model_registry Resource - CAST AI
         examples:
             - name: example
               manifest: |-
@@ -110,7 +110,7 @@ resources:
     castai_ai_optimizer_model_specs:
         subCategory: ""
         name: castai_ai_optimizer_model_specs
-        title: castai_ai_optimizer_model_specs Resource - terraform-provider-castai
+        title: castai_ai_optimizer_model_specs Resource - CAST AI
         examples:
             - name: hf_example
               manifest: |-
@@ -208,7 +208,7 @@ resources:
         subCategory: ""
         description: Manage allocation group. Allocation group reference https://docs.cast.ai/docs/allocation-groups
         name: castai_allocation_group
-        title: castai_allocation_group Resource - terraform-provider-castai
+        title: castai_allocation_group Resource - CAST AI
         examples:
             - name: ag_example
               manifest: |-
@@ -288,30 +288,30 @@ resources:
                 cluster_id: castai_eks_cluster.test.id
         argumentDocs:
             cluster_id: (String) CAST AI cluster id.
-            cluster_limits: (List of Object) Defines minimum and maximum amount of CPU the cluster can have. cluster_limits { enabled = true, cpu { max_cores = 100, min_cores = 1 } }. (see below for nested schema)
-            cpu: (List of Object) (see below for nested schema)
-            empty_nodes_delay: (String)
-            empty_nodes_enabled: (Boolean)
+            cluster_limits: (Block List) Defines minimum and maximum amount of CPU the cluster can have. cluster_limits { enabled = true, cpu { max_cores = 100, min_cores = 1 } }. (see below for nested schema)
+            cpu: (Block List) (see below for nested schema)
+            empty_nodes_delay: (String) How long a node must be empty before it becomes eligible for downscaling, as a duration in seconds (e.g. "300s" for 5 minutes). Matches the server default when omitted.
+            empty_nodes_enabled: (Boolean) Enable downscaling of empty nodes. The server treats absence as false; matching that here keeps plan and apply result in agreement.
             enabled: (Boolean) Enable/disable all policies (global master switch).
             id: (String) The ID of this resource, equal to the cluster id.
-            max_cores: (Number)
-            min_cores: (Number)
-            node_downscaler: (List of Object) Node Downscaler defines policies for removing nodes based on the configured conditions. node_downscaler { empty_nodes_enabled = true, empty_nodes_delay = "5m" }. (see below for nested schema)
-            partial_template_matching_enabled: (Boolean)
-            pod_pinner: (List of Object) (see below for nested schema)
+            max_cores: (Number) Maximum vCPUs allowed cluster-wide. Required when the cpu block is declared.
+            min_cores: (Number) Minimum vCPUs allowed cluster-wide. Matches the server default when omitted.
+            node_downscaler: (Block List) Node Downscaler defines policies for removing nodes based on the configured conditions. node_downscaler { empty_nodes_enabled = true, empty_nodes_delay = "300s" }. (see below for nested schema)
+            partial_template_matching_enabled: (Boolean) Use partial template matching when deciding which custom node template to select.
+            pod_pinner: (Block List) Pod Pinner component settings. (see below for nested schema)
             scoped_mode: (Boolean) Run the node autoscaler in scoped mode.
             spot_instances: (all nested fields) — manage via Node Templates
-            unschedulable_pods: (List of Object) Policy defining autoscaler's behavior when unschedulable pods were detected. unschedulable_pods { enabled = true, partial_template_matching_enabled = false, pod_pinner { enabled = true } }. (see below for nested schema)
+            unschedulable_pods: (Block List) Policy defining autoscaler's behavior when unschedulable pods were detected. unschedulable_pods { enabled = true, partial_template_matching_enabled = false, pod_pinner { enabled = true } }. (see below for nested schema)
             unschedulable_pods.custom_instances_enabled: — manage via Node Templates
             unschedulable_pods.headroom: / headroom_spot — manage via Node Templates
             unschedulable_pods.node_constraints: — manage via Node Templates
             version: (String) Policy version for optimistic locking.
         importStatements: []
-    castai_cache_configuration Resource - terraform-provider-castai:
+    castai_cache_configuration Resource - CAST AI:
         subCategory: ""
         description: Manage CAST AI DBO Cache Configuration. Cache configurations define caching behavior for specific databases within a cache group.
-        name: castai_cache_configuration Resource - terraform-provider-castai
-        title: castai_cache_configuration Resource - terraform-provider-castai
+        name: castai_cache_configuration Resource - CAST AI
+        title: castai_cache_configuration Resource - CAST AI
         argumentDocs:
             cache_group_id: (String) ID of the cache group this configuration belongs to.
             create: (String)
@@ -323,11 +323,11 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_cache_group Resource - terraform-provider-castai:
+    castai_cache_group Resource - CAST AI:
         subCategory: ""
         description: Manage CAST AI DBO Cache Group. Cache groups enable query caching for database workloads.
-        name: castai_cache_group Resource - terraform-provider-castai
-        title: castai_cache_group Resource - terraform-provider-castai
+        name: castai_cache_group Resource - CAST AI
+        title: castai_cache_group Resource - CAST AI
         argumentDocs:
             create: (String)
             delete: (String)
@@ -342,11 +342,11 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_cache_rule Resource - terraform-provider-castai:
+    castai_cache_rule Resource - CAST AI:
         subCategory: ""
         description: Manage CAST AI DBO Cache Rule (TTL Configuration). Cache rules define caching behavior and TTL settings for specific queries or tables within a cache configuration.
-        name: castai_cache_rule Resource - terraform-provider-castai
-        title: castai_cache_rule Resource - terraform-provider-castai
+        name: castai_cache_rule Resource - CAST AI
+        title: castai_cache_rule Resource - CAST AI
         argumentDocs:
             cache_configuration_id: (String) ID of the cache configuration this rule belongs to.
             cache_group_id: (String) ID of the cache group this rule belongs to.
@@ -365,8 +365,128 @@ resources:
         subCategory: ""
         description: Manages a single CAST AI commitment (reserved instance, savings plan, CUD, capacity block or capacity reservation) via the pricing v1beta Commitments API. For bulk management, use for_each — see the examples/ directory.
         name: castai_commitment
-        title: castai_commitment Resource - terraform-provider-castai
+        title: castai_commitment Resource - CAST AI
         examples:
+            - name: aws_ri
+              manifest: |-
+                {
+                  "aws_reserved_instances_details": {
+                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+                    "instance_count": 10,
+                    "instance_type": "m5.xlarge",
+                    "scope": "Region",
+                    "state": "active"
+                  },
+                  "cloud": "AWS",
+                  "end_time": "2027-01-01T00:00:00Z",
+                  "name": "prod-ri-us-east-1",
+                  "region": "us-east-1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "RESERVED_INSTANCE"
+                }
+            - name: aws_savings_plan
+              manifest: |-
+                {
+                  "allowed_usage": 1,
+                  "autoscaling_status": "ACTIVE",
+                  "aws_savings_plan_details": {
+                    "commitment_amount": 5,
+                    "commitment_term": "COMMITMENT_TERM_UNIT_ONE_YEAR",
+                    "id": "sp-abcdef01234567890",
+                    "offering_id": "12345678-1234-1234-1234-123456789012",
+                    "payment_option": "NO_UPFRONT",
+                    "region": "us-east-1",
+                    "state": "active",
+                    "type": "Compute"
+                  },
+                  "cloud": "AWS",
+                  "end_time": "2027-01-01T00:00:00Z",
+                  "name": "prod-sp-us-east-1",
+                  "region": "us-east-1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "SAVINGS_PLAN"
+                }
+            - name: aws_capacity_block
+              manifest: |-
+                {
+                  "aws_capacity_block_details": {
+                    "availability_zone": "us-east-1a",
+                    "available_instance_count": 2,
+                    "id": "cr-abcdef01234567890",
+                    "instance_platform": "Linux/UNIX",
+                    "instance_type": "p5.48xlarge",
+                    "state": "active",
+                    "total_instance_count": 2
+                  },
+                  "cloud": "AWS",
+                  "end_time": "2026-01-08T00:00:00Z",
+                  "name": "prod-capacityblock-us-east-1",
+                  "region": "us-east-1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "CAPACITY_BLOCK"
+                }
+            - name: aws_odcr
+              manifest: |-
+                {
+                  "allowed_usage": 1,
+                  "autoscaling_status": "ACTIVE",
+                  "aws_odcr_details": {
+                    "availability_zone": "us-east-1a",
+                    "available_instance_count": 10,
+                    "end_date_type": "unlimited",
+                    "id": "cr-abcdef01234567890",
+                    "instance_match_criteria": "open",
+                    "instance_platform": "Linux/UNIX",
+                    "instance_type": "m5.xlarge",
+                    "interruptible": false,
+                    "state": "active",
+                    "tenancy": "default",
+                    "total_instance_count": 10
+                  },
+                  "cloud": "AWS",
+                  "name": "prod-odcr-us-east-1",
+                  "region": "us-east-1",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "ON_DEMAND_CAPACITY_RESERVATION"
+                }
+            - name: azure_reservation
+              manifest: |-
+                {
+                  "azure_reservation_details": {
+                    "count": 5,
+                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+                    "instance_flexibility": "ON",
+                    "instance_type": "Standard_D4s_v3",
+                    "plan": "THREE_YEAR",
+                    "scope": "Shared",
+                    "status": "Succeeded"
+                  },
+                  "cloud": "AZURE",
+                  "end_time": "2029-01-01T00:00:00Z",
+                  "name": "prod-reservation-eastus",
+                  "region": "eastus",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "RESERVED_INSTANCE"
+                }
+            - name: azure_savings_plan
+              manifest: |-
+                {
+                  "allowed_usage": 1,
+                  "autoscaling_status": "ACTIVE",
+                  "azure_savings_plan_details": {
+                    "commitment_amount": 5,
+                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+                    "provisioning_state": "Succeeded",
+                    "scope": "SHARED",
+                    "term": "THREE_YEARS"
+                  },
+                  "cloud": "AZURE",
+                  "end_time": "2029-01-01T00:00:00Z",
+                  "name": "prod-asp-eastus",
+                  "region": "eastus",
+                  "start_time": "2026-01-01T00:00:00Z",
+                  "type": "SAVINGS_PLAN"
+                }
             - name: gcp_cud
               manifest: |-
                 {
@@ -387,41 +507,57 @@ resources:
                   "start_time": "2026-01-01T00:00:00Z",
                   "type": "RESOURCE_CUD"
                 }
-            - name: aws_ri
+            - name: gcp_cud_assigned
               manifest: |-
                 {
-                  "aws_reserved_instances_details": {
-                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
-                    "instance_count": 10,
-                    "instance_type": "m5.xlarge",
-                    "scope": "Region",
-                    "state": "active"
-                  },
-                  "cloud": "AWS",
+                  "allowed_usage": 1,
+                  "assignments": [
+                    {
+                      "cluster_id": "11111111-1111-1111-1111-111111111111"
+                    },
+                    {
+                      "cluster_id": "22222222-2222-2222-2222-222222222222"
+                    }
+                  ],
+                  "auto_assignment": false,
+                  "autoscaling_status": "ACTIVE",
+                  "cloud": "GCP",
                   "end_time": "2027-01-01T00:00:00Z",
-                  "name": "prod-ri-us-east-1",
-                  "region": "us-east-1",
+                  "gcp_resource_cud_details": {
+                    "cpu": 32,
+                    "cud_id": "123456789",
+                    "memory_mb": 131072,
+                    "plan": "TWELVE_MONTH",
+                    "status": "ACTIVE",
+                    "type": "GENERAL_PURPOSE_E2"
+                  },
+                  "name": "prod-cud-us-central1",
+                  "prioritization": true,
+                  "region": "us-central1",
                   "start_time": "2026-01-01T00:00:00Z",
-                  "type": "RESERVED_INSTANCE"
+                  "type": "RESOURCE_CUD"
                 }
-            - name: azure_reservation
+            - name: gcp_flex_cud
               manifest: |-
                 {
-                  "azure_reservation_details": {
-                    "count": 5,
-                    "id": "abcdef01-2345-6789-abcd-ef0123456789",
-                    "instance_flexibility": "ON",
-                    "instance_type": "Standard_D4s_v3",
-                    "plan": "THREE_YEAR",
-                    "scope": "Shared",
-                    "status": "Succeeded"
+                  "allowed_usage": 1,
+                  "autoscaling_status": "ACTIVE",
+                  "cloud": "GCP",
+                  "end_time": "2027-01-01T00:00:00Z",
+                  "gcp_flex_cud_details": {
+                    "commitment_amount": 2.5,
+                    "display_name": "prod-flex-cud",
+                    "line_item_id": "li-67890",
+                    "offer": "6C1B7C20-6C2D-4A85-9C39-A1A7B7E5C3F9",
+                    "order_name": "projects/my-project/locations/global/commitments/orders/12345",
+                    "plan": "TWELVE_MONTH",
+                    "region": "us-central1",
+                    "state": "ACTIVE"
                   },
-                  "cloud": "AZURE",
-                  "end_time": "2029-01-01T00:00:00Z",
-                  "name": "prod-reservation-eastus",
-                  "region": "eastus",
+                  "name": "prod-flex-cud-us-central1",
+                  "region": "us-central1",
                   "start_time": "2026-01-01T00:00:00Z",
-                  "type": "RESERVED_INSTANCE"
+                  "type": "FLEX_CUD"
                 }
             - name: gcp_capacity_reservation
               manifest: |-
@@ -445,30 +581,6 @@ resources:
                   },
                   "name": "gpu-reservation-us-central1",
                   "region": "us-central1",
-                  "start_time": "2026-01-01T00:00:00Z",
-                  "type": "ON_DEMAND_CAPACITY_RESERVATION"
-                }
-            - name: aws_odcr
-              manifest: |-
-                {
-                  "allowed_usage": 1,
-                  "autoscaling_status": "ACTIVE",
-                  "aws_odcr_details": {
-                    "availability_zone": "us-east-1a",
-                    "available_instance_count": 10,
-                    "end_date_type": "unlimited",
-                    "id": "cr-abcdef01234567890",
-                    "instance_match_criteria": "open",
-                    "instance_platform": "Linux/UNIX",
-                    "instance_type": "m5.xlarge",
-                    "interruptible": false,
-                    "state": "active",
-                    "tenancy": "default",
-                    "total_instance_count": 10
-                  },
-                  "cloud": "AWS",
-                  "name": "prod-odcr-us-east-1",
-                  "region": "us-east-1",
                   "start_time": "2026-01-01T00:00:00Z",
                   "type": "ON_DEMAND_CAPACITY_RESERVATION"
                 }
@@ -501,6 +613,7 @@ resources:
             accelerator_type: (String) Accelerator (GPU) type as the full GCP acceleratorType URL.
             accelerators: (Attributes List) Accelerators (GPUs) reserved VMs must match exactly. (see below for nested schema)
             allowed_usage: (Number) Allowed usage of the commitment (0.0-1.0). 1.0 means 100%. Defaults to 1.0.
+            assignments: (Attributes List) Clusters assigned to this commitment, in priority order (first = highest priority; only meaningful when prioritization = true). Requires auto_assignment = false. Removing this block unassigns all clusters. Clusters must be in the commitment's region, except for region-agnostic savings plans (AWS Compute Savings Plans, Azure Savings Plans). (see below for nested schema)
             assured_instance_count: (Number) Assured count for the reservation.
             auto_assignment: (Boolean) Auto-assign the commitment to all matching clusters in the commitment's region. If not set, the server's auto-assignment logic determines the value at creation time. Set to false to explicitly disable auto-assignment. Not supported for CAPACITY_BLOCK or targeted ON_DEMAND_CAPACITY_RESERVATION commitments.
             autoscaling_status: '(String) Controls whether the autoscaler can use this commitment. One of: ACTIVE, INACTIVE. Defaults to INACTIVE (matches the API default); set to ACTIVE for the autoscaler to use the commitment.'
@@ -523,6 +636,7 @@ resources:
             azure_reservation_details: (Attributes) Azure Reservation details. Required when type is RESERVED_INSTANCE on Azure. (see below for nested schema)
             azure_savings_plan_details: (Attributes) Azure Savings Plan details. Required when type is SAVINGS_PLAN on Azure. (see below for nested schema)
             cloud: '(String) Cloud provider. One of: AWS, GCP, AZURE.'
+            cluster_id: (String) Cluster ID to assign the commitment to.
             commitment_amount: (Number) Commitment amount in USD per hour.
             commitment_term: '(String) Commitment term. One of: COMMITMENT_TERM_UNIT_ONE_YEAR, COMMITMENT_TERM_UNIT_THREE_YEARS.'
             count: (Number) Count of reserved instances.
@@ -558,6 +672,7 @@ resources:
             payment_option: '(String) Payment option. One of: ALL_UPFRONT, PARTIAL_UPFRONT, NO_UPFRONT.'
             plan: '(String) Reservation term plan. One of: ONE_YEAR, THREE_YEAR.'
             prioritization: (Boolean) If enabled, resources used by lower-priority clusters are ignored.
+            priority: (Number) Server-assigned priority of the assignment; 1 is the highest. Equals the position in the list.
             project_id: (String) GCP project ID that owns the reservation.
             project_ids: (List of String) Project IDs this reservation is shared with (SPECIFIC_PROJECTS share type only).
             provisioning_state: (String) Provisioning state (e.g. Succeeded, Expired, Cancelled).
@@ -593,7 +708,7 @@ resources:
         subCategory: ""
         description: Commitments represent cloud service provider reserved instances (Azure) and commited use discounts (GCP) that can be used by CAST AI autoscaler.
         name: castai_commitments
-        title: castai_commitments Resource - terraform-provider-castai
+        title: castai_commitments Resource - CAST AI
         examples:
             - name: gcp_test
               manifest: |-
@@ -717,11 +832,11 @@ resources:
             type: (String) Type of the commitment to match. For compute resources, it's the type of the machine.
             update: (String)
         importStatements: []
-    castai_edge_configuration Resource - terraform-provider-castai:
+    castai_edge_configuration Resource - CAST AI:
         subCategory: ""
         description: Manage CAST AI Edge Configuration for edge computing deployments
-        name: castai_edge_configuration Resource - terraform-provider-castai
-        title: castai_edge_configuration Resource - terraform-provider-castai
+        name: castai_edge_configuration Resource - CAST AI
+        title: castai_edge_configuration Resource - CAST AI
         argumentDocs:
             aws: (Attributes) AWS specific configuration (see below for nested schema)
             boot_disk_size_gib: (Number) Boot disk size in GiB
@@ -730,11 +845,14 @@ resources:
             custom: (Attributes) Custom cloud specific configuration (see below for nested schema)
             default: (Boolean) Whether this edge configuration is the default one
             edge_location_id: (String) Edge location ID
+            filesystem_id: '(String) ID of an existing Nebius shared filesystem. Example: computefilesystem-e00yt3n68egnzr50nz'
+            filesystems: (Attributes List) Shared filesystems to attach to each VM created from this configuration (see below for nested schema)
             gcp: (Attributes) GCP specific configuration (see below for nested schema)
             gpu_cluster: (String) GPU cluster info
             id: (String) Edge configuration ID
             image_id: (String) ImageID to be used for edge creation. It can be an AMI ID (for example 'ami-0abcdef1234567890') or a name filter (for example 'al2023-ami-ecs-hvm-*')
             labels: (Map of String) Instance/VM labels
+            mount_path: (String) Mount path inside the VM. Must be an absolute path (start with /).
             name: (String) Name of the edge configuration
             nebius: (Attributes) Nebius specific configuration (see below for nested schema)
             oci: (Attributes) OCI specific configuration (see below for nested schema)
@@ -745,11 +863,11 @@ resources:
             tags: (Map of String) Instance/VM tags
             user_data_base64: '(String) Base64 encoded user data to run on the edge as part of bootstrap. The payload must start with either #cloud-config (cloud-init YAML) or #! (shell script with a shebang)'
         importStatements: []
-    castai_edge_configuration_default Resource - terraform-provider-castai:
+    castai_edge_configuration_default Resource - CAST AI:
         subCategory: ""
         description: Manages the default CAST AI Edge Configuration for an edge location. This resource sets an existing edge configuration as the default for the specified edge location.
-        name: castai_edge_configuration_default Resource - terraform-provider-castai
-        title: castai_edge_configuration_default Resource - terraform-provider-castai
+        name: castai_edge_configuration_default Resource - CAST AI
+        title: castai_edge_configuration_default Resource - CAST AI
         argumentDocs:
             cloud_provider: (String) Cloud provider type (gcp, aws, oci, custom)
             cluster_id: (String) CAST AI cluster ID
@@ -763,7 +881,7 @@ resources:
         subCategory: ""
         description: Manage CAST AI Edge Location for edge computing deployments
         name: castai_edge_location
-        title: castai_edge_location Resource - terraform-provider-castai
+        title: castai_edge_location Resource - CAST AI
         examples:
             - name: aws_example
               manifest: |-
@@ -894,12 +1012,12 @@ resources:
               references:
                 cluster_id: castai_omni_cluster.example.id
         argumentDocs:
-            access_key_id_wo: (String, Sensitive) AWS access key ID
+            access_key_id_wo: (String, Sensitive, Write-only) AWS access key ID
             account_id: (String) AWS account ID
             addons: (Attributes List) Optional addons to install on the edge cluster. Defaults to installing nvidia-gpu-operator. Set to an empty list to install no optional addons. (see below for nested schema)
             api_server_port: (Number) The port used for the API server. Defaults to the system value when unset.
             aws: (Attributes) AWS configuration for the edge location (see below for nested schema)
-            client_service_account_json_base64_wo: (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
+            client_service_account_json_base64_wo: (String, Sensitive, Write-only) Base64 encoded service account JSON for provisioning edge resources
             cluster_id: (String) CAST AI cluster ID
             cni: (Attributes) CNI (kube-router) configuration for the edge cluster. (see below for nested schema)
             compartment_id: (String) OCI compartment ID of edge location
@@ -910,7 +1028,7 @@ resources:
             description: (String) Description of the edge location
             external_address: (String) The IP address or hostname used to reach the API server from outside the cluster, if in-cluster LoadBalancer services are not reachable (e.g. cluster is hidden behind an external LoadBalancer).
             external_port: (Number) The port used for the Liqo gateway server.
-            fingerprint_wo: (String, Sensitive) API key fingerprint
+            fingerprint_wo: (String, Sensitive, Write-only) API key fingerprint
             gateway_replicas: (Number) Number of active replicas for the Liqo gateway servers and clients. Defaults to 1 when unset.
             gateway_server: (Attributes) Configuration overrides for the Liqo gateway server. (see below for nested schema)
             gcp: (Attributes) GCP configuration for the edge location (see below for nested schema)
@@ -932,11 +1050,11 @@ resources:
             overlay: '(String) Overlay mode for kube-router pod-to-pod traffic. Valid values: OVERLAY_UNSPECIFIED, OVERLAY_OFF, OVERLAY_SUBNET, OVERLAY_FULL.'
             overlay_encap: '(String) Encapsulation protocol used by the overlay. Valid values: OVERLAY_ENCAP_UNSPECIFIED, OVERLAY_ENCAP_IPIP, OVERLAY_ENCAP_FOU.'
             parent_id: (String) Nebius project ID that owns the edge location resources
-            private_key_base64_wo: (String, Sensitive) Base64 encoded API private key
+            private_key_base64_wo: (String, Sensitive, Write-only) Base64 encoded API private key
             project_id: (String) GCP project ID where edges run
             region: (String) The region where the edge location is deployed. Required for AWS, GCP and OCI providers.
             role_arn: (String) AWS IAM role ARN used for Google OIDC federation impersonation
-            secret_access_key_wo: (String, Sensitive) AWS secret access key
+            secret_access_key_wo: (String, Sensitive, Write-only) AWS secret access key
             security_group_id: (String) Security group ID to be used in the selected region
             service_account_id: (String) Nebius service account ID to be impersonated by CAST AI
             service_annotations: (Map of String) Custom annotations to apply to the control plane service.
@@ -948,7 +1066,7 @@ resources:
             target_service_account_email: (String) Target service account email to be used for impersonation
             tenancy_id: (String) OCI tenancy ID of the account
             tunneled_cidrs: (List of String) List of destination CIDR blocks whose traffic should be routed through the main cluster instead of directly from the edge cluster.
-            user_id_wo: (String) User ID used to authenticate OCI
+            user_id_wo: (String, Write-only) User ID used to authenticate OCI
             values: (String) Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
             vcn_cidr: (String) OCI VCN IPv4 CIDR block
             vcn_id: (String) OCI virtual cloud network ID
@@ -995,12 +1113,15 @@ resources:
             region: (String) AWS region where the cluster is placed
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
-        importStatements: []
+        importStatements:
+            - |-
+              # Import EKS cluster by specifying the CAST AI cluster ID.
+              terraform import castai_eks_cluster.this e3daba12-2b5f-4c2e-9d3a-c7e91f2b8a11
     castai_eks_clusterid:
         subCategory: ""
         description: Retrieve CAST AI clusterid
         name: castai_eks_clusterid
-        title: castai_eks_clusterid Resource - terraform-provider-castai
+        title: castai_eks_clusterid Resource - CAST AI
         examples:
             - name: cluster_id
               manifest: |-
@@ -1019,12 +1140,15 @@ resources:
             id: (String) The ID of this resource.
             organization_id: (String) CAST AI organization ID
             region: (String)
-        importStatements: []
+        importStatements:
+            - |-
+              # Import EKS clusterid resource by specifying the CAST AI cluster ID.
+              terraform import castai_eks_clusterid.cluster_id e3daba12-2b5f-4c2e-9d3a-c7e91f2b8a11
     castai_eks_user_arn:
         subCategory: ""
         description: Retrieve EKS Cluster User ARN
         name: castai_eks_user_arn
-        title: castai_eks_user_arn Resource - terraform-provider-castai
+        title: castai_eks_user_arn Resource - CAST AI
         examples:
             - name: castai_user_arn
               manifest: |-
@@ -1037,12 +1161,15 @@ resources:
             arn: (String)
             cluster_id: (String)
             id: (String) The ID of this resource.
-        importStatements: []
-    castai_enterprise_group Resource - terraform-provider-castai:
+        importStatements:
+            - |-
+              # Import EKS cluster user ARN resource by specifying the CAST AI cluster ID.
+              terraform import castai_eks_user_arn.castai_user_arn e3daba12-2b5f-4c2e-9d3a-c7e91f2b8a11
+    castai_enterprise_group Resource - CAST AI:
         subCategory: ""
         description: CAST AI Enterprise Group resource.
-        name: castai_enterprise_group Resource - terraform-provider-castai
-        title: castai_enterprise_group Resource - terraform-provider-castai
+        name: castai_enterprise_group Resource - CAST AI
+        title: castai_enterprise_group Resource - CAST AI
         argumentDocs:
             cluster: (String) Cluster ID scope.
             create: (String)
@@ -1064,11 +1191,11 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_enterprise_role_binding Resource - terraform-provider-castai:
+    castai_enterprise_role_binding Resource - CAST AI:
         subCategory: ""
         description: CAST AI Enterprise Role Binding resource.
-        name: castai_enterprise_role_binding Resource - terraform-provider-castai
-        title: castai_enterprise_role_binding Resource - terraform-provider-castai
+        name: castai_enterprise_role_binding Resource - CAST AI
+        title: castai_enterprise_role_binding Resource - CAST AI
         argumentDocs:
             cluster: (Block List) Cluster scopes. (see below for nested schema)
             create: (String)
@@ -1092,7 +1219,7 @@ resources:
         subCategory: ""
         description: CAST AI Enterprise Service Account resource.
         name: castai_enterprise_service_account
-        title: castai_enterprise_service_account Resource - terraform-provider-castai
+        title: castai_enterprise_service_account Resource - CAST AI
         examples:
             - name: child_org
               manifest: |-
@@ -1201,7 +1328,7 @@ resources:
         subCategory: ""
         description: CAST AI eviction config resource to manage evictor properties
         name: castai_evictor_advanced_config
-        title: castai_evictor_advanced_config Resource - terraform-provider-castai
+        title: castai_evictor_advanced_config Resource - CAST AI
         examples:
             - name: config
               manifest: |-
@@ -1256,19 +1383,35 @@ resources:
             - name: this
               manifest: |-
                 {
-                  "credentials_json": "${var.gke_credentials}",
+                  "castai_service_account_email": "${data.castai_impersonation_service_account.this.email}",
                   "delete_nodes_on_disconnect": "${var.delete_nodes_on_disconnect}",
                   "location": "${module.gke.location}",
                   "name": "${var.gke_cluster_name}",
-                  "project_id": "${var.project_id}"
+                  "project_id": "${var.project_id}",
+                  "target_service_account_email": "${google_service_account.target.email}"
                 }
               references:
-                credentials_json: var.gke_credentials
+                castai_service_account_email: data.castai_impersonation_service_account.this.email
                 delete_nodes_on_disconnect: var.delete_nodes_on_disconnect
                 location: module.gke.location
                 name: var.gke_cluster_name
                 project_id: var.project_id
+                target_service_account_email: google_service_account.target.email
+              dependencies:
+                google_service_account.target: |-
+                    {
+                      "account_id": "${var.service_account_id}",
+                      "display_name": "CAST AI GKE cluster",
+                      "project": "${var.project_id}"
+                    }
+                google_service_account_iam_member.token_creator: |-
+                    {
+                      "member": "serviceAccount:${data.castai_impersonation_service_account.this.email}",
+                      "role": "roles/iam.serviceAccountTokenCreator",
+                      "service_account_id": "${google_service_account.target.name}"
+                    }
         argumentDocs:
+            castai_service_account_email: (String) CAST AI service account email used to access the target project
             cluster_token: (String, Sensitive) CAST.AI agent cluster token
             create: (String)
             credentials_id: (String) CAST AI credentials id for cluster
@@ -1280,14 +1423,15 @@ resources:
             name: (String) GKE cluster name
             organization_id: (String) CAST AI organization ID
             project_id: (String) GCP project id
+            target_service_account_email: (String) Service account email in the GCP project that CAST AI impersonates
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_gke_cluster_id Resource - terraform-provider-castai:
+    castai_gke_cluster_id Resource - CAST AI:
         subCategory: ""
         description: GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
-        name: castai_gke_cluster_id Resource - terraform-provider-castai
-        title: castai_gke_cluster_id Resource - terraform-provider-castai
+        name: castai_gke_cluster_id Resource - CAST AI
+        title: castai_gke_cluster_id Resource - CAST AI
         argumentDocs:
             cast_service_account: (String) Service account email in cast project
             client_service_account: (String) Service account email in client project
@@ -1306,7 +1450,7 @@ resources:
         subCategory: ""
         description: CAST AI hibernation schedule resource to manage hibernation schedules.
         name: castai_hibernation_schedule
-        title: castai_hibernation_schedule Resource - terraform-provider-castai
+        title: castai_hibernation_schedule Resource - CAST AI
         examples:
             - name: my_schedule
               manifest: |-
@@ -1567,7 +1711,7 @@ resources:
         subCategory: ""
         description: CAST AI node template resource to manage node templates
         name: castai_node_template
-        title: castai_node_template Resource - terraform-provider-castai
+        title: castai_node_template Resource - CAST AI
         examples:
             - name: default_by_castai
               manifest: |-
@@ -1751,11 +1895,11 @@ resources:
             - |-
               # Import node template by specifying cluster ID and node template name.
               terraform import castai_node_template.default_by_castai 105e6fa3-20b1-424e-v589-9a64d1eeabea/default-by-castai
-    castai_omni_cluster Resource - terraform-provider-castai:
+    castai_omni_cluster Resource - CAST AI:
         subCategory: ""
         description: Omni cluster resource allows registering a cluster with CAST AI Omni provider.
-        name: castai_omni_cluster Resource - terraform-provider-castai
-        title: castai_omni_cluster Resource - terraform-provider-castai
+        name: castai_omni_cluster Resource - CAST AI
+        title: castai_omni_cluster Resource - CAST AI
         argumentDocs:
             cluster_id: (String) CAST AI cluster ID to register
             id: (String) Resource ID (same as cluster_id)
@@ -1768,7 +1912,7 @@ resources:
         subCategory: ""
         description: CAST AI organization group resource to manage organization groups
         name: castai_organization_group
-        title: castai_organization_group Resource - terraform-provider-castai
+        title: castai_organization_group Resource - CAST AI
         examples:
             - name: first_group
               manifest: |-
@@ -1838,7 +1982,7 @@ resources:
         subCategory: ""
         description: CAST AI organization members resource to manage organization members
         name: castai_organization_members
-        title: castai_organization_members Resource - terraform-provider-castai
+        title: castai_organization_members Resource - CAST AI
         examples:
             - name: dev
               manifest: |-
@@ -1869,7 +2013,7 @@ resources:
         subCategory: ""
         description: CAST AI pod mutation resource allows managing pod mutations for Kubernetes workloads.
         name: castai_pod_mutation
-        title: castai_pod_mutation Resource - terraform-provider-castai
+        title: castai_pod_mutation Resource - CAST AI
         examples:
             - name: spot_scheduling
               manifest: |-
@@ -2370,7 +2514,7 @@ resources:
         subCategory: ""
         description: Job assigns a rebalancing schedule to a cluster.
         name: castai_rebalancing_job
-        title: castai_rebalancing_job Resource - terraform-provider-castai
+        title: castai_rebalancing_job Resource - CAST AI
         examples:
             - name: spots
               manifest: |-
@@ -2401,7 +2545,7 @@ resources:
         subCategory: ""
         description: CAST AI rebalancing schedule resource to manage rebalancing schedules. The keep_drain_timeout_nodes attribute is deprecated in favor of evict_gracefully (both are aliases of the same setting); migrate by renaming the attribute and keeping the same value.
         name: castai_rebalancing_schedule
-        title: castai_rebalancing_schedule Resource - terraform-provider-castai
+        title: castai_rebalancing_schedule Resource - CAST AI
         examples:
             - name: spots
               manifest: |-
@@ -2482,6 +2626,7 @@ resources:
             selector: (String) Node selector in JSON format.
             split_nodes_in_batches_of: (Number) If set, the rebalancing plan is executed in batches such that at most this many additional nodes (nodes created minus nodes drained) are alive at any moment during execution, and a node is only drained after its replacement node exists. When unset, the plan executes in a single batch.
             target_node_selection_algorithm: (String) Defines the algorithm used to select the target nodes for rebalancing.
+            targeted_nodes_percentage: (Number) Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
             timeouts: (Block, Optional) (see below for nested schema)
             trigger_conditions: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
             uncordon_after_seconds: (Number) Time in seconds after which a drain-failed node is automatically uncordoned. Must be between 60 (1m) and 259200 (72h). Defaults to 1800 (30m). Ignored when disable_uncordon is true.
@@ -2528,9 +2673,9 @@ resources:
               terraform import 'castai_reservations.test' 5b046e29-e947-470f-9952-bfdf369ecca6
     castai_role_bindings:
         subCategory: ""
-        description: CAST AI organization group resource to manage organization groups
+        description: CAST AI role binding resource to manage role bindings
         name: castai_role_bindings
-        title: castai_role_bindings Resource - terraform-provider-castai
+        title: castai_role_bindings Resource - CAST AI
         examples:
             - name: owner_test
               manifest: |-
@@ -2538,7 +2683,7 @@ resources:
                   "description": "Owner access for whole organization.",
                   "name": "Role binding owner",
                   "organization_id": "${data.castai_organization.test.id}",
-                  "role_id": "3e1050c7-6593-4298-94bb-154637911d78",
+                  "role_id": "${data.castai_role.owner.id}",
                   "scopes": [
                     {
                       "kind": "organization",
@@ -2570,6 +2715,7 @@ resources:
                 }
               references:
                 organization_id: data.castai_organization.test.id
+                role_id: data.castai_role.owner.id
                 scopes.resource_id: data.castai_organization.test.id
             - name: viewer_test
               manifest: |-
@@ -2577,7 +2723,7 @@ resources:
                   "description": "Viewer access for on of the clusters.",
                   "name": "Role binding viewer for cluster 7063d31c-897e-48ef-a322-bdfda6fdbcfb",
                   "organization_id": "${data.castai_organization.test.id}",
-                  "role_id": "6fc95bd7-6049-4735-80b0-ce5ccde71cb1",
+                  "role_id": "${data.castai_role.viewer.id}",
                   "scopes": [
                     {
                       "kind": "cluster",
@@ -2601,6 +2747,7 @@ resources:
                 }
               references:
                 organization_id: data.castai_organization.test.id
+                role_id: data.castai_role.viewer.id
         argumentDocs:
             create: (String)
             delete: (String)
@@ -2620,11 +2767,11 @@ resources:
             update: (String)
             user_id: (String) Optional, required only if kind is user.
         importStatements: []
-    castai_security_runtime_rule Resource - terraform-provider-castai:
+    castai_security_runtime_rule Resource - CAST AI:
         subCategory: ""
         description: Manages a CAST AI security runtime rule.
-        name: castai_security_runtime_rule Resource - terraform-provider-castai
-        title: castai_security_runtime_rule Resource - terraform-provider-castai
+        name: castai_security_runtime_rule Resource - CAST AI
+        title: castai_security_runtime_rule Resource - CAST AI
         argumentDocs:
             anomalies_count: (Number) Number of anomalies detected using this rule.
             category: (String) Category of the rule.
@@ -2648,7 +2795,7 @@ resources:
         subCategory: ""
         description: Service account resource allows managing CAST AI service accounts.
         name: castai_service_account
-        title: castai_service_account Resource - terraform-provider-castai
+        title: castai_service_account Resource - CAST AI
         examples:
             - name: service_account
               manifest: |-
@@ -2677,7 +2824,7 @@ resources:
         subCategory: ""
         description: Service account key resource allows managing CAST AI service account keys.
         name: castai_service_account_key
-        title: castai_service_account_key Resource - terraform-provider-castai
+        title: castai_service_account_key Resource - CAST AI
         examples:
             - name: service_account_key
               manifest: |-
@@ -2770,7 +2917,7 @@ resources:
         subCategory: ""
         description: Manages a CAST AI workload custom metrics data source. Custom metrics data sources allow CAST AI to collect and use non-standard metrics for workload optimization.
         name: castai_workload_custom_metrics_data_source
-        title: castai_workload_custom_metrics_data_source Resource - terraform-provider-castai
+        title: castai_workload_custom_metrics_data_source Resource - CAST AI
         examples:
             - name: prometheus
               manifest: |-

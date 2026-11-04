@@ -1,0 +1,22 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: CommitmentEntry
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/commitmententry
+  labels:
+    testing.upbound.io/example-name: aws_ri
+  name: aws-ri
+spec:
+  forProvider:
+    awsReservedInstancesDetails:
+      id: abcdef01-2345-6789-abcd-ef0123456789
+      instanceCount: 10
+      instanceType: m5.xlarge
+      scope: Region
+      state: active
+    cloud: AWS
+    endTime: "2027-01-01T00:00:00Z"
+    name: prod-ri-us-east-1
+    region: us-east-1
+    startTime: "2026-01-01T00:00:00Z"
+    type: RESERVED_INSTANCE

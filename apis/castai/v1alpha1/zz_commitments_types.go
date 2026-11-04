@@ -13,10 +13,10 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AssignmentsInitParameters struct {
+type AzureReservationsAssignmentsInitParameters struct {
 }
 
-type AssignmentsObservation struct {
+type AzureReservationsAssignmentsObservation struct {
 
 	// (String) ID of the cluster to assign the commitment to.
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
@@ -25,7 +25,7 @@ type AssignmentsObservation struct {
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
-type AssignmentsParameters struct {
+type AzureReservationsAssignmentsParameters struct {
 }
 
 type AzureReservationsInitParameters struct {
@@ -37,7 +37,7 @@ type AzureReservationsObservation struct {
 	AllowedUsage *float64 `json:"allowedUsage,omitempty" tf:"allowed_usage,omitempty"`
 
 	// (Block List) List of assigned clusters for the commitment. If prioritization is enabled, the order of the assignments indicates the priority. The first assignment has the highest priority. (see below for nested schema)
-	Assignments []AssignmentsObservation `json:"assignments,omitempty" tf:"assignments,omitempty"`
+	Assignments []AzureReservationsAssignmentsObservation `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
 	// (Number)
 	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`

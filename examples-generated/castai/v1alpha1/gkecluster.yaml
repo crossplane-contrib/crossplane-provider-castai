@@ -8,11 +8,9 @@ metadata:
   name: this
 spec:
   forProvider:
-    credentialsJsonSecretRef:
-      key: example-key
-      name: example-secret
-      namespace: upbound-system
+    castaiServiceAccountEmail: ${data.castai_impersonation_service_account.this.email}
     deleteNodesOnDisconnect: ${var.delete_nodes_on_disconnect}
     location: ${module.gke.location}
     name: ${var.gke_cluster_name}
     projectId: ${var.project_id}
+    targetServiceAccountEmail: ${google_service_account.target.email}

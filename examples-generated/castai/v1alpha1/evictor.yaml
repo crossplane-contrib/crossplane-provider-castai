@@ -1,0 +1,39 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: Evictor
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/evictor
+  labels:
+    testing.upbound.io/example-name: evictor
+  name: evictor
+spec:
+  forProvider:
+    aggressiveMode: false
+    arm64Supported: false
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    cycleInterval: 60s
+    drainRollbackTimeout: 1m
+    drainTimeout: 10m
+    dryRun: false
+    emitNodeRelatedPodEvents: false
+    enabled: true
+    forceDisableKarpenterMode: false
+    forceDisableLiveMigration: false
+    forceDisablePodMutations: false
+    forceDisableWoop: false
+    ignorePodDisruptionBudgets: false
+    maxTargetNodesPerCycle: 0
+    minTargetNodesPerCycle: 0
+    nodeGracePeriodMinutes: 10
+    podEvictionFailureBackOffInterval: 30s
+    pricingAwarenessEnabled: false
+    pricingModel:
+    - baseCpuCost: "0.5"
+      baseMemCost: "0.5"
+      spotDiscount: "0.5"
+    scopedMode: false
+    softTainting: false
+    targetNodePercentage: 0
+    windows: false

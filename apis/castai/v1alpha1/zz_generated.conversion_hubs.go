@@ -25,6 +25,9 @@ func (tr *AllocationGroup) Hub() {}
 func (tr *AutoScaler) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *AutoScalerPolicies) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *CacheConfiguration) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -32,6 +35,9 @@ func (tr *CacheGroup) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *CacheRule) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *CommitmentEntry) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Commitments) Hub() {}
@@ -59,6 +65,12 @@ func (tr *EnterpriseGroup) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *EnterpriseRoleBinding) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *EnterpriseServiceAccount) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Evictor) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *EvictorAdvancedConfig) Hub() {}

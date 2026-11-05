@@ -45,6 +45,19 @@ def transform_block(block):
         block["block_types"] = new_block_types
 
 
+def relax_block(block, prefix):
+    """Make every required attribute in block and its nested blocks optional."""
+    fields = []
+    for fname, fattr in block.get("attributes", {}).items():
+        if fattr.get("required"):
+            fattr.pop("required", None)
+            fattr["optional"] = True
+            fields.append(prefix + fname)
+    for bname, btype in block.get("block_types", {}).items():
+        fields.extend(relax_block(btype.get("block", {}), f"{prefix}{bname}."))
+    return fields
+
+
 def relax_conditionally_required_blocks(resources):
     """Make sub-fields inside mutually-exclusive provider blocks optional.
 
@@ -56,6 +69,10 @@ def relax_conditionally_required_blocks(resources):
 
     This function converts required sub-fields inside those blocks to optional
     so that the CRD allows creating resources with only one provider block.
+    It recurses into nested blocks, because Upjet also treats a block as
+    required when one of its nested blocks has a required field (for example
+    castai_edge_configuration.nebius.filesystems since provider 9.15.0, and
+    castai_commitment.gcp_capacity_reservation_details.accelerators).
     """
     rules = {
         "castai_commitment": [
@@ -69,6 +86,7 @@ def relax_conditionally_required_blocks(resources):
             "gcp_flex_cud_details",
             "gcp_resource_cud_details",
         ],
+        "castai_edge_configuration": ["nebius"],
         "castai_edge_location": ["aws", "gcp", "nebius", "oci"],
     }
 
@@ -80,13 +98,7 @@ def relax_conditionally_required_blocks(resources):
         for bname in block_names:
             if bname not in block_types:
                 continue
-            inner_attrs = block_types[bname].get("block", {}).get("attributes", {})
-            fields = []
-            for fname, fattr in inner_attrs.items():
-                if fattr.get("required"):
-                    fattr.pop("required", None)
-                    fattr["optional"] = True
-                    fields.append(fname)
+            fields = relax_block(block_types[bname].get("block", {}), "")
             if fields:
                 relaxed.append(f"{res_name}.{bname}: {fields}")
 

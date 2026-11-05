@@ -2128,13 +2128,13 @@
                             "type": "number",
                             "description": "Number of accelerators of this type per VM.",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           },
                           "accelerator_type": {
                             "type": "string",
                             "description": "Accelerator (GPU) type as the full GCP acceleratorType URL.",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           }
                         },
                         "description_kind": "plain",
@@ -2151,7 +2151,7 @@
                             "type": "number",
                             "description": "Disk size in GB.",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           },
                           "interface": {
                             "type": "string",
@@ -2743,13 +2743,13 @@
                             "type": "string",
                             "description": "ID of an existing Nebius shared filesystem. Example: computefilesystem-e00yt3n68egnzr50nz",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           },
                           "mount_path": {
                             "type": "string",
                             "description": "Mount path inside the VM. Must be an absolute path (start with `/`).",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           }
                         },
                         "description_kind": "plain",

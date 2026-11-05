@@ -288,11 +288,11 @@ type FilesystemsParameters struct {
 
 	// ID of an existing Nebius shared filesystem. Example: computefilesystem-e00yt3n68egnzr50nz
 	// +kubebuilder:validation:Optional
-	FilesystemID *string `json:"filesystemId" tf:"filesystem_id,omitempty"`
+	FilesystemID *string `json:"filesystemId,omitempty" tf:"filesystem_id,omitempty"`
 
 	// Mount path inside the VM. Must be an absolute path (start with `/`).
 	// +kubebuilder:validation:Optional
-	MountPath *string `json:"mountPath" tf:"mount_path,omitempty"`
+	MountPath *string `json:"mountPath,omitempty" tf:"mount_path,omitempty"`
 }
 
 type GCPInitParameters struct {
@@ -488,7 +488,6 @@ type EdgeConfiguration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.nebius) || (has(self.initProvider) && has(self.initProvider.nebius))",message="spec.forProvider.nebius is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organizationId) || (has(self.initProvider) && has(self.initProvider.organizationId))",message="spec.forProvider.organizationId is a required parameter"
 	Spec   EdgeConfigurationSpec   `json:"spec"`
 	Status EdgeConfigurationStatus `json:"status,omitempty"`

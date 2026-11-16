@@ -11,7 +11,7 @@ spec:
     description: Owner access for whole organization.
     name: Role binding owner
     organizationId: ${data.castai_organization.test.id}
-    roleId: 3e1050c7-6593-4298-94bb-154637911d78
+    roleId: ${data.castai_role.owner.id}
     scopes:
     - kind: organization
       resourceId: ${data.castai_organization.test.id}

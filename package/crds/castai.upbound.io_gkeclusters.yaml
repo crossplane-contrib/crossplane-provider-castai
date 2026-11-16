@@ -73,6 +73,11 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  castaiServiceAccountEmail:
+                    description: |-
+                      (String) CAST AI service account email used to access the target project
+                      CAST AI service account email used to access the target project
+                    type: string
                   credentialsJsonSecretRef:
                     description: |-
                       (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
@@ -111,6 +116,11 @@ spec:
                     description: |-
                       (String) GCP project id
                       GCP project id
+                    type: string
+                  targetServiceAccountEmail:
+                    description: |-
+                      (String) Service account email in the GCP project that CAST AI impersonates
+                      Service account email in the GCP project that CAST AI impersonates
                     type: string
                 type: object
               initProvider:
@@ -126,6 +136,11 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  castaiServiceAccountEmail:
+                    description: |-
+                      (String) CAST AI service account email used to access the target project
+                      CAST AI service account email used to access the target project
+                    type: string
                   credentialsJsonSecretRef:
                     description: |-
                       (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
@@ -164,6 +179,11 @@ spec:
                     description: |-
                       (String) GCP project id
                       GCP project id
+                    type: string
+                  targetServiceAccountEmail:
+                    description: |-
+                      (String) Service account email in the GCP project that CAST AI impersonates
+                      Service account email in the GCP project that CAST AI impersonates
                     type: string
                 type: object
               managementPolicies:
@@ -351,6 +371,11 @@ spec:
             properties:
               atProvider:
                 properties:
+                  castaiServiceAccountEmail:
+                    description: |-
+                      (String) CAST AI service account email used to access the target project
+                      CAST AI service account email used to access the target project
+                    type: string
                   credentialsId:
                     description: |-
                       (String) CAST AI credentials id for cluster
@@ -383,6 +408,11 @@ spec:
                     description: |-
                       (String) GCP project id
                       GCP project id
+                    type: string
+                  targetServiceAccountEmail:
+                    description: |-
+                      (String) Service account email in the GCP project that CAST AI impersonates
+                      Service account email in the GCP project that CAST AI impersonates
                     type: string
                 type: object
               conditions:

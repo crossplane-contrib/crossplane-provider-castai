@@ -1,0 +1,28 @@
+# V2 autoscaler policies. Do not run this alongside an AutoScaler (V1) resource
+# for the same cluster: upstream manages them in independent API stores.
+apiVersion: castai.upbound.io/v1alpha1
+kind: AutoScalerPolicies
+metadata:
+  name: sample
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        cast-ai-cluster: "sample-cluster"
+    enabled: true
+    scopedMode: false
+    clusterLimits:
+      - enabled: true
+        cpu:
+          - maxCores: 10
+            minCores: 1
+    nodeDownscaler:
+      - emptyNodesEnabled: true
+        emptyNodesDelay: "90s"
+    unschedulablePods:
+      - enabled: true
+        partialTemplateMatchingEnabled: true
+        podPinner:
+          - enabled: true
+  providerConfigRef:
+    name: default

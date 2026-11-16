@@ -1,0 +1,22 @@
+# Standalone evictor configuration (V2). Pairs with AutoScalerPolicies; do not
+# run alongside an AutoScaler (V1) resource for the same cluster.
+apiVersion: castai.upbound.io/v1alpha1
+kind: Evictor
+metadata:
+  name: sample
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        cast-ai-cluster: "sample-cluster"
+    enabled: true
+    dryRun: false
+    aggressiveMode: false
+    scopedMode: false
+    cycleInterval: "60s"
+    nodeGracePeriodMinutes: 10
+    podEvictionFailureBackOffInterval: "30s"
+    ignorePodDisruptionBudgets: false
+    softTainting: false
+  providerConfigRef:
+    name: default

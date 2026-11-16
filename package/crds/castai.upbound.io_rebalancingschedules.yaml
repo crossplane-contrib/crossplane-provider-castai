@@ -199,6 +199,11 @@ spec:
                             (String) Defines the algorithm used to select the target nodes for rebalancing.
                             Defines the algorithm used to select the target nodes for rebalancing.
                           type: string
+                        targetedNodesPercentage:
+                          description: |-
+                            100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+                            Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+                          type: number
                       type: object
                     type: array
                   name:
@@ -391,6 +396,11 @@ spec:
                             (String) Defines the algorithm used to select the target nodes for rebalancing.
                             Defines the algorithm used to select the target nodes for rebalancing.
                           type: string
+                        targetedNodesPercentage:
+                          description: |-
+                            100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+                            Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+                          type: number
                       type: object
                     type: array
                   name:
@@ -762,6 +772,11 @@ spec:
                             (String) Defines the algorithm used to select the target nodes for rebalancing.
                             Defines the algorithm used to select the target nodes for rebalancing.
                           type: string
+                        targetedNodesPercentage:
+                          description: |-
+                            100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+                            Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+                          type: number
                       type: object
                     type: array
                   name:

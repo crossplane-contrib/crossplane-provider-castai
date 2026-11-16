@@ -15,6 +15,10 @@ import (
 
 type GkeClusterInitParameters struct {
 
+	// (String) CAST AI service account email used to access the target project
+	// CAST AI service account email used to access the target project
+	CastaiServiceAccountEmail *string `json:"castaiServiceAccountEmail,omitempty" tf:"castai_service_account_email,omitempty"`
+
 	// (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
 	// GCP credentials.json from ServiceAccount with credentials for CAST AI
 	CredentialsJSONSecretRef *v1.SecretKeySelector `json:"credentialsJsonSecretRef,omitempty" tf:"-"`
@@ -34,9 +38,17 @@ type GkeClusterInitParameters struct {
 	// (String) GCP project id
 	// GCP project id
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// (String) Service account email in the GCP project that CAST AI impersonates
+	// Service account email in the GCP project that CAST AI impersonates
+	TargetServiceAccountEmail *string `json:"targetServiceAccountEmail,omitempty" tf:"target_service_account_email,omitempty"`
 }
 
 type GkeClusterObservation struct {
+
+	// (String) CAST AI service account email used to access the target project
+	// CAST AI service account email used to access the target project
+	CastaiServiceAccountEmail *string `json:"castaiServiceAccountEmail,omitempty" tf:"castai_service_account_email,omitempty"`
 
 	// (String) CAST AI credentials id for cluster
 	// CAST AI credentials id for cluster
@@ -64,9 +76,18 @@ type GkeClusterObservation struct {
 	// (String) GCP project id
 	// GCP project id
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// (String) Service account email in the GCP project that CAST AI impersonates
+	// Service account email in the GCP project that CAST AI impersonates
+	TargetServiceAccountEmail *string `json:"targetServiceAccountEmail,omitempty" tf:"target_service_account_email,omitempty"`
 }
 
 type GkeClusterParameters struct {
+
+	// (String) CAST AI service account email used to access the target project
+	// CAST AI service account email used to access the target project
+	// +kubebuilder:validation:Optional
+	CastaiServiceAccountEmail *string `json:"castaiServiceAccountEmail,omitempty" tf:"castai_service_account_email,omitempty"`
 
 	// (String, Sensitive) GCP credentials.json from ServiceAccount with credentials for CAST AI
 	// GCP credentials.json from ServiceAccount with credentials for CAST AI
@@ -92,6 +113,11 @@ type GkeClusterParameters struct {
 	// GCP project id
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// (String) Service account email in the GCP project that CAST AI impersonates
+	// Service account email in the GCP project that CAST AI impersonates
+	// +kubebuilder:validation:Optional
+	TargetServiceAccountEmail *string `json:"targetServiceAccountEmail,omitempty" tf:"target_service_account_email,omitempty"`
 }
 
 // GkeClusterSpec defines the desired state of GkeCluster

@@ -58,6 +58,17 @@ def relax_conditionally_required_blocks(resources):
     so that the CRD allows creating resources with only one provider block.
     """
     rules = {
+        "castai_commitment": [
+            "aws_capacity_block_details",
+            "aws_odcr_details",
+            "aws_reserved_instances_details",
+            "aws_savings_plan_details",
+            "azure_reservation_details",
+            "azure_savings_plan_details",
+            "gcp_capacity_reservation_details",
+            "gcp_flex_cud_details",
+            "gcp_resource_cud_details",
+        ],
         "castai_edge_location": ["aws", "gcp", "nebius", "oci"],
     }
 

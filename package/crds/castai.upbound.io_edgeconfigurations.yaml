@@ -296,6 +296,21 @@ spec:
                       bootDiskSizeGib:
                         description: Boot disk size in GiB
                         type: number
+                      filesystems:
+                        description: Shared filesystems to attach to each VM created
+                          from this configuration
+                        items:
+                          properties:
+                            filesystemId:
+                              description: 'ID of an existing Nebius shared filesystem.
+                                Example: computefilesystem-e00yt3n68egnzr50nz'
+                              type: string
+                            mountPath:
+                              description: Mount path inside the VM. Must be an absolute
+                                path (start with `/`).
+                              type: string
+                          type: object
+                        type: array
                       gpuCluster:
                         description: GPU cluster info
                         type: string
@@ -582,6 +597,21 @@ spec:
                       bootDiskSizeGib:
                         description: Boot disk size in GiB
                         type: number
+                      filesystems:
+                        description: Shared filesystems to attach to each VM created
+                          from this configuration
+                        items:
+                          properties:
+                            filesystemId:
+                              description: 'ID of an existing Nebius shared filesystem.
+                                Example: computefilesystem-e00yt3n68egnzr50nz'
+                              type: string
+                            mountPath:
+                              description: Mount path inside the VM. Must be an absolute
+                                path (start with `/`).
+                              type: string
+                          type: object
+                        type: array
                       gpuCluster:
                         description: GPU cluster info
                         type: string
@@ -804,6 +834,10 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
                 || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.nebius is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.nebius)
+                || (has(self.initProvider) && has(self.initProvider.nebius))'
             - message: spec.forProvider.organizationId is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.organizationId)
@@ -889,6 +923,21 @@ spec:
                       bootDiskSizeGib:
                         description: Boot disk size in GiB
                         type: number
+                      filesystems:
+                        description: Shared filesystems to attach to each VM created
+                          from this configuration
+                        items:
+                          properties:
+                            filesystemId:
+                              description: 'ID of an existing Nebius shared filesystem.
+                                Example: computefilesystem-e00yt3n68egnzr50nz'
+                              type: string
+                            mountPath:
+                              description: Mount path inside the VM. Must be an absolute
+                                path (start with `/`).
+                              type: string
+                          type: object
+                        type: array
                       gpuCluster:
                         description: GPU cluster info
                         type: string

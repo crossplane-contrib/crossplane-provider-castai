@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: RoleBindings is the Schema for the RoleBindingss API. CAST AI
-          organization group resource to manage organization groups
+          role binding resource to manage role bindings
         properties:
           apiVersion:
             description: |-

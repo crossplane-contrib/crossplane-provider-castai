@@ -1133,31 +1133,6 @@
                 "description_kind": "plain",
                 "required": true
               },
-              "cluster_limits": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "cpu": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "max_cores": "number",
-                            "min_cores": "number"
-                          }
-                        ]
-                      ],
-                      "enabled": "bool"
-                    }
-                  ]
-                ],
-                "description": "Defines minimum and maximum amount of CPU the cluster can have. cluster_limits { enabled = true, cpu { max_cores = 100, min_cores = 1 } }.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
               "enabled": {
                 "type": "bool",
                 "description": "Enable/disable all policies (global master switch).",
@@ -1171,50 +1146,9 @@
                 "description_kind": "plain",
                 "computed": true
               },
-              "node_downscaler": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "empty_nodes_delay": "string",
-                      "empty_nodes_enabled": "bool"
-                    }
-                  ]
-                ],
-                "description": "Node Downscaler defines policies for removing nodes based on the configured conditions. node_downscaler { empty_nodes_enabled = true, empty_nodes_delay = \"5m\" }.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
               "scoped_mode": {
                 "type": "bool",
                 "description": "Run the node autoscaler in scoped mode.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "unschedulable_pods": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "enabled": "bool",
-                      "partial_template_matching_enabled": "bool",
-                      "pod_pinner": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "enabled": "bool"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description": "Policy defining autoscaler's behavior when unschedulable pods were detected. unschedulable_pods { enabled = true, partial_template_matching_enabled = false, pod_pinner { enabled = true } }.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -1224,6 +1158,111 @@
                 "description": "Policy version for optimistic locking.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "block_types": {
+              "cluster_limits": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Enable/disable the cluster_limits policy.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "cpu": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "max_cores": {
+                            "type": "number",
+                            "description": "Maximum vCPUs allowed cluster-wide. Required when the cpu block is declared.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "min_cores": {
+                            "type": "number",
+                            "description": "Minimum vCPUs allowed cluster-wide. Matches the server default when omitted.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Defines minimum and maximum amount of CPU the cluster can have. cluster_limits { enabled = true, cpu { max_cores = 100, min_cores = 1 } }.",
+                  "description_kind": "plain"
+                }
+              },
+              "node_downscaler": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "empty_nodes_delay": {
+                      "type": "string",
+                      "description": "How long a node must be empty before it becomes eligible for downscaling, as a duration in seconds (e.g. \"300s\" for 5 minutes). Matches the server default when omitted.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "empty_nodes_enabled": {
+                      "type": "bool",
+                      "description": "Enable downscaling of empty nodes. The server treats absence as false; matching that here keeps plan and apply result in agreement.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Node Downscaler defines policies for removing nodes based on the configured conditions. node_downscaler { empty_nodes_enabled = true, empty_nodes_delay = \"300s\" }.",
+                  "description_kind": "plain"
+                }
+              },
+              "unschedulable_pods": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Enable the unschedulable pods policy.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "partial_template_matching_enabled": {
+                      "type": "bool",
+                      "description": "Use partial template matching when deciding which custom node template to select.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "pod_pinner": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enable the Pod Pinner component.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description": "Pod Pinner component settings.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Policy defining autoscaler's behavior when unschedulable pods were detected. unschedulable_pods { enabled = true, partial_template_matching_enabled = false, pod_pinner { enabled = true } }.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description": "CAST AI autoscaler policies V2 resource to manage cluster autoscaling policies.",
@@ -1575,6 +1614,29 @@
             "description": "Manages a single CAST AI commitment (reserved instance, savings plan, CUD, capacity block or capacity reservation) via the pricing v1beta Commitments API. For bulk management, use for_each \u2014 see the examples/ directory.",
             "description_kind": "plain",
             "block_types": {
+              "assignments": {
+                "block": {
+                  "attributes": {
+                    "cluster_id": {
+                      "type": "string",
+                      "description": "Cluster ID to assign the commitment to.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "priority": {
+                      "type": "number",
+                      "description": "Server-assigned priority of the assignment; 1 is the highest. Equals the position in the list.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "description": "Clusters assigned to this commitment, in priority order (first = highest priority; only meaningful when prioritization = true). Requires auto_assignment = false. Removing this block unassigns all clusters. Clusters must be in the commitment's region, except for region-agnostic savings plans (AWS Compute Savings Plans, Azure Savings Plans)."
+                },
+                "nesting_mode": "list",
+                "min_items": 0,
+                "max_items": 0
+              },
               "aws_capacity_block_details": {
                 "block": {
                   "attributes": {
@@ -1601,7 +1663,7 @@
                       "type": "string",
                       "description": "Capacity block reservation ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_platform": {
                       "type": "string",
@@ -1613,7 +1675,7 @@
                       "type": "string",
                       "description": "EC2 instance type.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "state": {
                       "type": "string",
@@ -1625,7 +1687,7 @@
                       "type": "number",
                       "description": "Total reserved instance count.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     }
                   },
                   "description_kind": "plain",
@@ -1667,7 +1729,7 @@
                       "type": "string",
                       "description": "Capacity reservation ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_match_criteria": {
                       "type": "string",
@@ -1685,13 +1747,13 @@
                       "type": "string",
                       "description": "EC2 instance type.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "interruptible": {
                       "type": "bool",
                       "description": "Whether this reservation is interruptible. Set to true for interruptible ODCRs, false otherwise.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "state": {
                       "type": "string",
@@ -1709,7 +1771,7 @@
                       "type": "number",
                       "description": "Total reserved instance count.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     }
                   },
                   "description_kind": "plain",
@@ -1738,19 +1800,19 @@
                       "type": "string",
                       "description": "AWS reserved instance ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_count": {
                       "type": "number",
                       "description": "Instance count.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_type": {
                       "type": "string",
                       "description": "AWS EC2 instance type.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "scope": {
                       "type": "string",
@@ -1791,7 +1853,7 @@
                       "type": "string",
                       "description": "AWS savings plan ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_type_family": {
                       "type": "string",
@@ -1844,13 +1906,13 @@
                       "type": "number",
                       "description": "Count of reserved instances.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "id": {
                       "type": "string",
                       "description": "Reservation ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "instance_flexibility": {
                       "type": "string",
@@ -1862,7 +1924,7 @@
                       "type": "string",
                       "description": "Reserved instance type.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "plan": {
                       "type": "string",
@@ -1933,7 +1995,7 @@
                       "type": "string",
                       "description": "Savings plan ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "provisioning_state": {
                       "type": "string",
@@ -1999,7 +2061,7 @@
                       "type": "string",
                       "description": "Reservation ID.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "in_use_instance_count": {
                       "type": "number",
@@ -2012,7 +2074,7 @@
                       "type": "string",
                       "description": "Instance type covered by the reservation.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "min_cpu_platform": {
                       "type": "string",
@@ -2036,7 +2098,7 @@
                       "type": "bool",
                       "description": "Whether the reservation requires specific reservation affinity. Set to true for targeted reservations, false for automatic (open) reservations.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "state": {
                       "type": "string",
@@ -2048,7 +2110,7 @@
                       "type": "number",
                       "description": "Total number of instances reserved.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "zone": {
                       "type": "string",
@@ -2157,7 +2219,7 @@
                       "type": "string",
                       "description": "Line item ID within the order.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "offer": {
                       "type": "string",
@@ -2210,7 +2272,7 @@
                       "type": "string",
                       "description": "CUD ID from GCP.",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "memory_mb": {
                       "type": "number",
@@ -2673,6 +2735,31 @@
                     }
                   },
                   "description_kind": "plain",
+                  "block_types": {
+                    "filesystems": {
+                      "block": {
+                        "attributes": {
+                          "filesystem_id": {
+                            "type": "string",
+                            "description": "ID of an existing Nebius shared filesystem. Example: computefilesystem-e00yt3n68egnzr50nz",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "mount_path": {
+                            "type": "string",
+                            "description": "Mount path inside the VM. Must be an absolute path (start with `/`).",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "description": "Shared filesystems to attach to each VM created from this configuration"
+                      },
+                      "nesting_mode": "list",
+                      "min_items": 0,
+                      "max_items": 0
+                    }
+                  },
                   "description": "Nebius specific configuration"
                 },
                 "nesting_mode": "single",
@@ -4236,6 +4323,13 @@
           "version": 0,
           "block": {
             "attributes": {
+              "castai_service_account_email": {
+                "type": "string",
+                "description": "CAST AI service account email used to access the target project",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "cluster_token": {
                 "type": "string",
                 "description": "CAST.AI agent cluster token",
@@ -4291,6 +4385,13 @@
                 "description": "GCP project id",
                 "description_kind": "plain",
                 "required": true
+              },
+              "target_service_account_email": {
+                "type": "string",
+                "description": "Service account email in the GCP project that CAST AI impersonates",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -7347,6 +7448,12 @@
                       "description": "Defines the algorithm used to select the target nodes for rebalancing.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "targeted_nodes_percentage": {
+                      "type": "number",
+                      "description": "Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "block_types": {
@@ -7706,7 +7813,7 @@
                 }
               }
             },
-            "description": "CAST AI organization group resource to manage organization groups",
+            "description": "CAST AI role binding resource to manage role bindings",
             "description_kind": "plain"
           }
         },
@@ -9758,14 +9865,26 @@
           "version": 0,
           "block": {
             "attributes": {
+              "email": {
+                "type": "string",
+                "description": "Email of the impersonation service account",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description": "ID of the impersonation service account",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "provider_type": {
+                "type": "string",
+                "description": "Type of the provider the impersonation service account is used for: \"gke\" or \"aks\". Defaults to \"aks\"",
+                "description_kind": "plain",
+                "optional": true
               }
             },
-            "description": "Retrieve impersonation service account ID for AKS clusters",
+            "description": "Retrieve impersonation service account ID and email for AKS or GKE clusters",
             "description_kind": "plain"
           }
         },
@@ -9920,7 +10039,8 @@
                       "rebalancing_min_nodes": "number",
                       "selector": "string",
                       "split_nodes_in_batches_of": "number",
-                      "target_node_selection_algorithm": "string"
+                      "target_node_selection_algorithm": "string",
+                      "targeted_nodes_percentage": "number"
                     }
                   ]
                 ],
@@ -9962,6 +10082,148 @@
               }
             },
             "description": "Retrieve Rebalancing Schedule ",
+            "description_kind": "plain"
+          }
+        },
+        "castai_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default": {
+                "type": "bool",
+                "description": "Whether this is a default (built-in) role.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deprecated": {
+                "type": "bool",
+                "description": "Whether this role is deprecated.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Role description.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "level": {
+                "type": "number",
+                "description": "Priority level of the role (higher is more important).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Exact, case-sensitive name of the role to look up.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "Cast AI organization ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "effect": "string",
+                      "endpoints": [
+                        "list",
+                        "string"
+                      ],
+                      "groups": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Permissions granted by the role.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Server-side role type filter. One of: ALL (default), DEFAULT, ENTERPRISE.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Looks up a single RBAC role in a Cast AI organization by its exact, case-sensitive name. Role names are unique per organization, so the name identifies the role; the data source errors if no role with the given name exists. Useful for resolving role IDs (Owner, Member, Viewer) without maintaining a hardcoded UUID map.",
+            "description_kind": "plain"
+          }
+        },
+        "castai_roles": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "Cast AI organization ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "roles": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "default": "bool",
+                      "deprecated": "bool",
+                      "description": "string",
+                      "id": "string",
+                      "level": "number",
+                      "name": "string",
+                      "permissions": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "effect": "string",
+                            "endpoints": [
+                              "list",
+                              "string"
+                            ],
+                            "groups": [
+                              "list",
+                              "string"
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "List of roles matching the filters.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Server-side role type filter. One of: ALL (default), DEFAULT, ENTERPRISE.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Lists RBAC roles in a Cast AI organization. To look up a single role by its name, use the castai_role data source.",
             "description_kind": "plain"
           }
         },

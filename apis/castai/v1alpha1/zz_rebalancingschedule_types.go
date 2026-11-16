@@ -209,6 +209,10 @@ type LaunchConfigurationInitParameters struct {
 	// (String) Defines the algorithm used to select the target nodes for rebalancing.
 	// Defines the algorithm used to select the target nodes for rebalancing.
 	TargetNodeSelectionAlgorithm *string `json:"targetNodeSelectionAlgorithm,omitempty" tf:"target_node_selection_algorithm,omitempty"`
+
+	// 100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+	// Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+	TargetedNodesPercentage *float64 `json:"targetedNodesPercentage,omitempty" tf:"targeted_nodes_percentage,omitempty"`
 }
 
 type LaunchConfigurationObservation struct {
@@ -263,6 +267,10 @@ type LaunchConfigurationObservation struct {
 	// (String) Defines the algorithm used to select the target nodes for rebalancing.
 	// Defines the algorithm used to select the target nodes for rebalancing.
 	TargetNodeSelectionAlgorithm *string `json:"targetNodeSelectionAlgorithm,omitempty" tf:"target_node_selection_algorithm,omitempty"`
+
+	// 100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+	// Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+	TargetedNodesPercentage *float64 `json:"targetedNodesPercentage,omitempty" tf:"targeted_nodes_percentage,omitempty"`
 }
 
 type LaunchConfigurationParameters struct {
@@ -330,6 +338,11 @@ type LaunchConfigurationParameters struct {
 	// Defines the algorithm used to select the target nodes for rebalancing.
 	// +kubebuilder:validation:Optional
 	TargetNodeSelectionAlgorithm *string `json:"targetNodeSelectionAlgorithm,omitempty" tf:"target_node_selection_algorithm,omitempty"`
+
+	// 100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+	// Maximum percentage (1-100) of eligible nodes that will be selected for rebalancing. Eligible nodes are those matching the launch configuration selector and free of problematic pods. Mutually exclusive with num_targeted_nodes.
+	// +kubebuilder:validation:Optional
+	TargetedNodesPercentage *float64 `json:"targetedNodesPercentage,omitempty" tf:"targeted_nodes_percentage,omitempty"`
 }
 
 type RebalancingScheduleInitParameters struct {

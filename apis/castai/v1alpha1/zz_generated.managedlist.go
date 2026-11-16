@@ -61,6 +61,15 @@ func (l *AutoScalerList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this AutoScalerPoliciesList.
+func (l *AutoScalerPoliciesList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this CacheConfigurationList.
 func (l *CacheConfigurationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -81,6 +90,15 @@ func (l *CacheGroupList) GetItems() []resource.Managed {
 
 // GetItems of this CacheRuleList.
 func (l *CacheRuleList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this CommitmentEntryList.
+func (l *CommitmentEntryList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -169,8 +187,26 @@ func (l *EnterpriseRoleBindingList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this EnterpriseServiceAccountList.
+func (l *EnterpriseServiceAccountList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this EvictorAdvancedConfigList.
 func (l *EvictorAdvancedConfigList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this EvictorList.
+func (l *EvictorList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

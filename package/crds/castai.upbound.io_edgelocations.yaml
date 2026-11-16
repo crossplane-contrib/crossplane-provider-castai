@@ -98,7 +98,7 @@ spec:
                     properties:
                       accessKeyIdWoSecretRef:
                         description: |-
-                          (String, Sensitive) AWS access key ID
+                          only) AWS access key ID
                           AWS access key ID
                         properties:
                           key:
@@ -137,7 +137,7 @@ spec:
                         type: string
                       secretAccessKeyWoSecretRef:
                         description: |-
-                          (String, Sensitive) AWS secret access key
+                          only) AWS secret access key
                           AWS secret access key
                         properties:
                           key:
@@ -320,7 +320,7 @@ spec:
                     properties:
                       clientServiceAccountJsonBase64WoSecretRef:
                         description: |-
-                          (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
+                          only) Base64 encoded service account JSON for provisioning edge resources
                           Base64 encoded service account JSON for provisioning edge resources
                         properties:
                           key:
@@ -501,7 +501,7 @@ spec:
                         type: string
                       fingerprintWoSecretRef:
                         description: |-
-                          (String, Sensitive) API key fingerprint
+                          only) API key fingerprint
                           API key fingerprint
                         properties:
                           key:
@@ -520,7 +520,7 @@ spec:
                         type: object
                       privateKeyBase64WoSecretRef:
                         description: |-
-                          (String, Sensitive) Base64 encoded API private key
+                          only) Base64 encoded API private key
                           Base64 encoded API private key
                         properties:
                           key:
@@ -554,7 +554,7 @@ spec:
                         type: string
                       userIdWo:
                         description: |-
-                          (String) User ID used to authenticate OCI
+                          only) User ID used to authenticate OCI
                           User ID used to authenticate OCI
                         type: string
                       vcnCidr:
@@ -635,7 +635,7 @@ spec:
                     properties:
                       accessKeyIdWoSecretRef:
                         description: |-
-                          (String, Sensitive) AWS access key ID
+                          only) AWS access key ID
                           AWS access key ID
                         properties:
                           key:
@@ -674,7 +674,7 @@ spec:
                         type: string
                       secretAccessKeyWoSecretRef:
                         description: |-
-                          (String, Sensitive) AWS secret access key
+                          only) AWS secret access key
                           AWS secret access key
                         properties:
                           key:
@@ -857,7 +857,7 @@ spec:
                     properties:
                       clientServiceAccountJsonBase64WoSecretRef:
                         description: |-
-                          (String, Sensitive) Base64 encoded service account JSON for provisioning edge resources
+                          only) Base64 encoded service account JSON for provisioning edge resources
                           Base64 encoded service account JSON for provisioning edge resources
                         properties:
                           key:
@@ -1038,7 +1038,7 @@ spec:
                         type: string
                       fingerprintWoSecretRef:
                         description: |-
-                          (String, Sensitive) API key fingerprint
+                          only) API key fingerprint
                           API key fingerprint
                         properties:
                           key:
@@ -1057,7 +1057,7 @@ spec:
                         type: object
                       privateKeyBase64WoSecretRef:
                         description: |-
-                          (String, Sensitive) Base64 encoded API private key
+                          only) Base64 encoded API private key
                           Base64 encoded API private key
                         properties:
                           key:
@@ -1091,7 +1091,7 @@ spec:
                         type: string
                       userIdWo:
                         description: |-
-                          (String) User ID used to authenticate OCI
+                          only) User ID used to authenticate OCI
                           User ID used to authenticate OCI
                         type: string
                       vcnCidr:
@@ -1633,7 +1633,7 @@ spec:
                         type: string
                       userIdWo:
                         description: |-
-                          (String) User ID used to authenticate OCI
+                          only) User ID used to authenticate OCI
                           User ID used to authenticate OCI
                         type: string
                       vcnCidr:

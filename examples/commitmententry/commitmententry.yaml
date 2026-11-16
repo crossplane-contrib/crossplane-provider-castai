@@ -1,0 +1,23 @@
+# A single commitment (castai_commitment upstream). One detail block per
+# commitment type; this one is an AWS Reserved Instance. Replace the ids with
+# real ones from your cloud account before applying.
+apiVersion: castai.upbound.io/v1alpha1
+kind: CommitmentEntry
+metadata:
+  name: aws-ri-sample
+spec:
+  forProvider:
+    name: prod-ri-us-east-1
+    cloud: AWS
+    region: us-east-1
+    type: RESERVED_INSTANCE
+    startTime: "2026-01-01T00:00:00Z"
+    endTime: "2027-01-01T00:00:00Z"
+    awsReservedInstancesDetails:
+      id: abcdef01-2345-6789-abcd-ef0123456789
+      scope: Region
+      instanceType: m5.xlarge
+      instanceCount: 10
+      state: active
+  providerConfigRef:
+    name: default

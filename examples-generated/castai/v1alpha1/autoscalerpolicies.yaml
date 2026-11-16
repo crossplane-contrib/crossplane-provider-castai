@@ -1,0 +1,27 @@
+apiVersion: castai.upbound.io/v1alpha1
+kind: AutoScalerPolicies
+metadata:
+  annotations:
+    meta.upbound.io/example-id: castai/v1alpha1/autoscalerpolicies
+  labels:
+    testing.upbound.io/example-name: policies
+  name: policies
+spec:
+  forProvider:
+    clusterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    clusterLimits:
+    - cpu:
+      - maxCores: 10
+      enabled: true
+    enabled: true
+    nodeDownscaler:
+    - emptyNodesDelay: 90s
+      emptyNodesEnabled: true
+    scopedMode: false
+    unschedulablePods:
+    - enabled: true
+      partialTemplateMatchingEnabled: true
+      podPinner:
+      - enabled: true

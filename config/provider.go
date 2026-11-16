@@ -16,9 +16,11 @@ import (
 	akscluster "github.com/crossplane-contrib/crossplane-provider-castai/config/akscluster"
 	allocationgroup "github.com/crossplane-contrib/crossplane-provider-castai/config/allocationgroup"
 	autoscaler "github.com/crossplane-contrib/crossplane-provider-castai/config/autoscaler"
+	autoscalerpolicies "github.com/crossplane-contrib/crossplane-provider-castai/config/autoscalerpolicies"
 	cacheconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/cacheconfiguration"
 	cachegroup "github.com/crossplane-contrib/crossplane-provider-castai/config/cachegroup"
 	cacherule "github.com/crossplane-contrib/crossplane-provider-castai/config/cacherule"
+	commitment "github.com/crossplane-contrib/crossplane-provider-castai/config/commitment"
 	commitments "github.com/crossplane-contrib/crossplane-provider-castai/config/commitments"
 	edgeconfiguration "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfiguration"
 	edgeconfigurationdefault "github.com/crossplane-contrib/crossplane-provider-castai/config/edgeconfigurationdefault"
@@ -28,6 +30,8 @@ import (
 	eksuserarn "github.com/crossplane-contrib/crossplane-provider-castai/config/eksuserarn"
 	enterprisegroup "github.com/crossplane-contrib/crossplane-provider-castai/config/enterprisegroup"
 	enterpriserolebinding "github.com/crossplane-contrib/crossplane-provider-castai/config/enterpriserolebinding"
+	enterpriseserviceaccount "github.com/crossplane-contrib/crossplane-provider-castai/config/enterpriseserviceaccount"
+	evictor "github.com/crossplane-contrib/crossplane-provider-castai/config/evictor"
 	evictoradvancedconfig "github.com/crossplane-contrib/crossplane-provider-castai/config/evictoradvancedconfig"
 	gkecluster "github.com/crossplane-contrib/crossplane-provider-castai/config/gkecluster"
 	gkeclusterid "github.com/crossplane-contrib/crossplane-provider-castai/config/gkeclusterid"
@@ -80,9 +84,11 @@ func GetProvider() *ujconfig.Provider {
 		akscluster.Configure,
 		allocationgroup.Configure,
 		autoscaler.Configure,
+		autoscalerpolicies.Configure,
 		cacheconfiguration.Configure,
 		cachegroup.Configure,
 		cacherule.Configure,
+		commitment.Configure,
 		commitments.Configure,
 		edgeconfiguration.Configure,
 		edgeconfigurationdefault.Configure,
@@ -92,6 +98,8 @@ func GetProvider() *ujconfig.Provider {
 		eksuserarn.Configure,
 		enterprisegroup.Configure,
 		enterpriserolebinding.Configure,
+		enterpriseserviceaccount.Configure,
+		evictor.Configure,
 		evictoradvancedconfig.Configure,
 		gkecluster.Configure,
 		gkeclusterid.Configure,

@@ -40,12 +40,12 @@ type AcceleratorsParameters struct {
 	// (Number) Number of accelerators of this type per VM.
 	// Number of accelerators of this type per VM.
 	// +kubebuilder:validation:Optional
-	AcceleratorCount *float64 `json:"acceleratorCount" tf:"accelerator_count,omitempty"`
+	AcceleratorCount *float64 `json:"acceleratorCount,omitempty" tf:"accelerator_count,omitempty"`
 
 	// (String) Accelerator (GPU) type as the full GCP acceleratorType URL.
 	// Accelerator (GPU) type as the full GCP acceleratorType URL.
 	// +kubebuilder:validation:Optional
-	AcceleratorType *string `json:"acceleratorType" tf:"accelerator_type,omitempty"`
+	AcceleratorType *string `json:"acceleratorType,omitempty" tf:"accelerator_type,omitempty"`
 }
 
 type AssignmentsInitParameters struct {
@@ -1597,7 +1597,7 @@ type LocalSsdsParameters struct {
 	// (Number) Disk size in GB.
 	// Disk size in GB.
 	// +kubebuilder:validation:Optional
-	DiskSizeGb *float64 `json:"diskSizeGb" tf:"disk_size_gb,omitempty"`
+	DiskSizeGb *float64 `json:"diskSizeGb,omitempty" tf:"disk_size_gb,omitempty"`
 
 	// (String) Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
 	// Disk interface. One of: GCP_RESERVATION_LOCAL_SSD_INTERFACE_SCSI, GCP_RESERVATION_LOCAL_SSD_INTERFACE_NVME.
@@ -1677,7 +1677,6 @@ type CommitmentEntry struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.cloud) || (has(self.initProvider) && has(self.initProvider.cloud))",message="spec.forProvider.cloud is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.gcpCapacityReservationDetails) || (has(self.initProvider) && has(self.initProvider.gcpCapacityReservationDetails))",message="spec.forProvider.gcpCapacityReservationDetails is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.startTime) || (has(self.initProvider) && has(self.initProvider.startTime))",message="spec.forProvider.startTime is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"

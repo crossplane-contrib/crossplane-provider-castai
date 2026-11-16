@@ -1444,11 +1444,6 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.cloud)
                 || (has(self.initProvider) && has(self.initProvider.cloud))'
-            - message: spec.forProvider.gcpCapacityReservationDetails is a required
-                parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.gcpCapacityReservationDetails)
-                || (has(self.initProvider) && has(self.initProvider.gcpCapacityReservationDetails))'
             - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)

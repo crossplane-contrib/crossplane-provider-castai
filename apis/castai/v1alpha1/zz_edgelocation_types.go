@@ -702,6 +702,10 @@ type EdgeLocationOciInitParameters struct {
 	// (String) OCI virtual cloud network ID
 	// OCI virtual cloud network ID
 	VcnID *string `json:"vcnId,omitempty" tf:"vcn_id,omitempty"`
+
+	// (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+	// Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+	VcnPeered *bool `json:"vcnPeered,omitempty" tf:"vcn_peered,omitempty"`
 }
 
 type EdgeLocationOciObservation struct {
@@ -733,6 +737,10 @@ type EdgeLocationOciObservation struct {
 	// (String) OCI virtual cloud network ID
 	// OCI virtual cloud network ID
 	VcnID *string `json:"vcnId,omitempty" tf:"vcn_id,omitempty"`
+
+	// (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+	// Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+	VcnPeered *bool `json:"vcnPeered,omitempty" tf:"vcn_peered,omitempty"`
 }
 
 type EdgeLocationOciParameters struct {
@@ -781,6 +789,11 @@ type EdgeLocationOciParameters struct {
 	// OCI virtual cloud network ID
 	// +kubebuilder:validation:Optional
 	VcnID *string `json:"vcnId,omitempty" tf:"vcn_id,omitempty"`
+
+	// (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+	// Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+	// +kubebuilder:validation:Optional
+	VcnPeered *bool `json:"vcnPeered,omitempty" tf:"vcn_peered,omitempty"`
 }
 
 type EdgeLocationParameters struct {

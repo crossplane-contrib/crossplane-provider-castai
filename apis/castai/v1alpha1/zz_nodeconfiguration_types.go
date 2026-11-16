@@ -203,6 +203,10 @@ type EksInitParameters struct {
 	// Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
 	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
+	// (String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+	// Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+	NestedVirtualisation *string `json:"nestedVirtualisation,omitempty" tf:"nested_virtualisation,omitempty"`
+
 	// (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
 	// Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
 	NodeGroupArn *string `json:"nodeGroupArn,omitempty" tf:"node_group_arn,omitempty"`
@@ -273,6 +277,10 @@ type EksObservation struct {
 	// (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
 	// Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
 	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
+
+	// (String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+	// Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+	NestedVirtualisation *string `json:"nestedVirtualisation,omitempty" tf:"nested_virtualisation,omitempty"`
 
 	// (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
 	// Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
@@ -354,6 +362,11 @@ type EksParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxPodsPerNodeFormula *string `json:"maxPodsPerNodeFormula,omitempty" tf:"max_pods_per_node_formula,omitempty"`
 
+	// (String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+	// Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+	// +kubebuilder:validation:Optional
+	NestedVirtualisation *string `json:"nestedVirtualisation,omitempty" tf:"nested_virtualisation,omitempty"`
+
 	// (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
 	// Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
 	// +kubebuilder:validation:Optional
@@ -432,8 +445,8 @@ type EphemeralOsDiskParameters struct {
 
 type GkeInitParameters struct {
 
-	// standard, pd-balanced, pd-ssd, pd-extreme
-	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+	// standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
+	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
 	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
 
 	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
@@ -462,6 +475,14 @@ type GkeInitParameters struct {
 	// spot nodes, it is migrate.
 	// Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
 	OnHostMaintenance *string `json:"onHostMaintenance,omitempty" tf:"on_host_maintenance,omitempty"`
+
+	// balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	ProvisionedIops *float64 `json:"provisionedIops,omitempty" tf:"provisioned_iops,omitempty"`
+
+	// balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	ProvisionedThroughput *float64 `json:"provisionedThroughput,omitempty" tf:"provisioned_throughput,omitempty"`
 
 	// (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
 	// Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.
@@ -517,8 +538,8 @@ type GkeLoadbalancersParameters struct {
 
 type GkeObservation struct {
 
-	// standard, pd-balanced, pd-ssd, pd-extreme
-	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+	// standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
+	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
 	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
 
 	// (Block List) Load balancer configuration for CAST provisioned nodes (see below for nested schema)
@@ -548,6 +569,14 @@ type GkeObservation struct {
 	// Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
 	OnHostMaintenance *string `json:"onHostMaintenance,omitempty" tf:"on_host_maintenance,omitempty"`
 
+	// balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	ProvisionedIops *float64 `json:"provisionedIops,omitempty" tf:"provisioned_iops,omitempty"`
+
+	// balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	ProvisionedThroughput *float64 `json:"provisionedThroughput,omitempty" tf:"provisioned_throughput,omitempty"`
+
 	// (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
 	// Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.
 	SecondaryBootDisks []SecondaryBootDisksObservation `json:"secondaryBootDisks,omitempty" tf:"secondary_boot_disks,omitempty"`
@@ -567,8 +596,8 @@ type GkeObservation struct {
 
 type GkeParameters struct {
 
-	// standard, pd-balanced, pd-ssd, pd-extreme
-	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+	// standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
+	// Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
 	// +kubebuilder:validation:Optional
 	DiskType *string `json:"diskType,omitempty" tf:"disk_type,omitempty"`
 
@@ -603,6 +632,16 @@ type GkeParameters struct {
 	// Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
 	// +kubebuilder:validation:Optional
 	OnHostMaintenance *string `json:"onHostMaintenance,omitempty" tf:"on_host_maintenance,omitempty"`
+
+	// balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// +kubebuilder:validation:Optional
+	ProvisionedIops *float64 `json:"provisionedIops,omitempty" tf:"provisioned_iops,omitempty"`
+
+	// balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+	// +kubebuilder:validation:Optional
+	ProvisionedThroughput *float64 `json:"provisionedThroughput,omitempty" tf:"provisioned_throughput,omitempty"`
 
 	// (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
 	// Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes.

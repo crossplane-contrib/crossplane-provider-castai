@@ -567,6 +567,11 @@ spec:
                           (String) OCI virtual cloud network ID
                           OCI virtual cloud network ID
                         type: string
+                      vcnPeered:
+                        description: |-
+                          (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+                          Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+                        type: boolean
                     type: object
                   organizationId:
                     description: |-
@@ -1104,6 +1109,11 @@ spec:
                           (String) OCI virtual cloud network ID
                           OCI virtual cloud network ID
                         type: string
+                      vcnPeered:
+                        description: |-
+                          (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+                          Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+                        type: boolean
                     type: object
                   organizationId:
                     description: |-
@@ -1646,6 +1656,11 @@ spec:
                           (String) OCI virtual cloud network ID
                           OCI virtual cloud network ID
                         type: string
+                      vcnPeered:
+                        description: |-
+                          (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+                          Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
+                        type: boolean
                     type: object
                   organizationId:
                     description: |-

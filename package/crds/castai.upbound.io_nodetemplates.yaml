@@ -78,6 +78,11 @@ spec:
                       enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                       Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                     type: boolean
+                  clmNetworkingMode:
+                    description: |-
+                      (String) CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if clm_enabled=true. Removing this attribute does not reset the mode; set it to default explicitly.
+                      CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if `clm_enabled=true`. Removing this attribute does not reset the mode; set it to `default` explicitly.
+                    type: string
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id.
@@ -804,6 +809,11 @@ spec:
                       enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                       Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                     type: boolean
+                  clmNetworkingMode:
+                    description: |-
+                      (String) CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if clm_enabled=true. Removing this attribute does not reset the mode; set it to default explicitly.
+                      CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if `clm_enabled=true`. Removing this attribute does not reset the mode; set it to `default` explicitly.
+                    type: string
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id.
@@ -1694,6 +1704,11 @@ spec:
                       enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                       Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
                     type: boolean
+                  clmNetworkingMode:
+                    description: |-
+                      (String) CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if clm_enabled=true. Removing this attribute does not reset the mode; set it to default explicitly.
+                      CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if `clm_enabled=true`. Removing this attribute does not reset the mode; set it to `default` explicitly.
+                    type: string
                   clusterId:
                     description: |-
                       (String) CAST AI cluster id.

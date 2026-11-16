@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION=1.26.10
+ARG GO_VERSION=1.26.11
 
 # Rebuild the Terraform CLI and the CAST AI provider plugin from their upstream
 # release tags with a Go toolchain that carries the eMudhra CA distrust
@@ -36,8 +36,8 @@ RUN git clone -c advice.detachedHead=false --depth 1 --branch "v${TERRAFORM_PROV
        -o "/out/${TERRAFORM_NATIVE_PROVIDER_BINARY}" . \
   && install -D -m 0644 LICENSE "/out/licenses/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/LICENSE"
 
-FROM alpine:3.22.7
-RUN apk --no-cache add ca-certificates bash
+FROM alpine:3.22.8
+RUN apk --no-cache upgrade && apk --no-cache add ca-certificates bash
 
 ARG TARGETOS
 ARG TARGETARCH

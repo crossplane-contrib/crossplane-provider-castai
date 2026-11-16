@@ -104,7 +104,7 @@ type GkeClusterIdStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// GkeClusterId is the Schema for the GkeClusterIds API. <no value>
+// GkeClusterId is the Schema for the GkeClusterIds API. Deprecated: CAST AI deprecated this resource in provider 9.18.0 and will remove it in a future version. Use GkeCluster with targetServiceAccountEmail and castaiServiceAccountEmail instead. Deleting a GkeClusterId whose cluster has credentials assigned, for example by a GkeCluster, no longer deregisters the cluster. It stays registered in CAST AI until the GkeCluster that owns it is deleted.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

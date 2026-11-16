@@ -359,6 +359,11 @@ spec:
                             (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
                             Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
                           type: string
+                        nestedVirtualisation:
+                          description: |-
+                            (String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+                            Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+                          type: string
                         nodeGroupArn:
                           description: |-
                             (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
@@ -422,8 +427,8 @@ spec:
                       properties:
                         diskType:
                           description: |-
-                            standard, pd-balanced, pd-ssd, pd-extreme
-                            Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+                            standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
+                            Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
                           type: string
                         loadbalancers:
                           description: |-
@@ -495,6 +500,16 @@ spec:
                             spot nodes, it is migrate.
                             Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
                           type: string
+                        provisionedIops:
+                          description: |-
+                            balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                            Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                          type: number
+                        provisionedThroughput:
+                          description: |-
+                            balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                            Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                          type: number
                         secondaryBootDisks:
                           description: |-
                             (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
@@ -895,6 +910,11 @@ spec:
                             (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
                             Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
                           type: string
+                        nestedVirtualisation:
+                          description: |-
+                            (String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+                            Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+                          type: string
                         nodeGroupArn:
                           description: |-
                             (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
@@ -958,8 +978,8 @@ spec:
                       properties:
                         diskType:
                           description: |-
-                            standard, pd-balanced, pd-ssd, pd-extreme
-                            Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+                            standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
+                            Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
                           type: string
                         loadbalancers:
                           description: |-
@@ -1031,6 +1051,16 @@ spec:
                             spot nodes, it is migrate.
                             Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
                           type: string
+                        provisionedIops:
+                          description: |-
+                            balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                            Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                          type: number
+                        provisionedThroughput:
+                          description: |-
+                            balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                            Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                          type: number
                         secondaryBootDisks:
                           description: |-
                             (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)
@@ -1523,6 +1553,11 @@ spec:
                             (String) Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
                             Formula to calculate the maximum number of pods that can be run on a node. The following list of variables will be bound to a number before evaluating and can be used in the formula: NUM_MAX_NET_INTERFACES, NUM_IP_PER_INTERFACE, NUM_IP_PER_PREFIX, NUM_CPU, NUM_RAM_GB .
                           type: string
+                        nestedVirtualisation:
+                          description: |-
+                            (String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+                            Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.
+                          type: string
                         nodeGroupArn:
                           description: |-
                             (String) Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality
@@ -1586,8 +1621,8 @@ spec:
                       properties:
                         diskType:
                           description: |-
-                            standard, pd-balanced, pd-ssd, pd-extreme
-                            Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme
+                            standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
+                            Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced
                           type: string
                         loadbalancers:
                           description: |-
@@ -1659,6 +1694,16 @@ spec:
                             spot nodes, it is migrate.
                             Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.
                           type: string
+                        provisionedIops:
+                          description: |-
+                            balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                            Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                          type: number
+                        provisionedThroughput:
+                          description: |-
+                            balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                            Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.
+                          type: number
                         secondaryBootDisks:
                           description: |-
                             (Block List) Secondary boot disks to be attached to provisioned nodes. Can be used to preload container images or arbitrary data on new nodes. (see below for nested schema)

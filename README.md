@@ -10,7 +10,7 @@ CastAI API.
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://marketplace.upbound.io/providers/crossplane-contrib/crossplane-provider-castai):
 ```
-up ctp provider install crossplane-contrib/crossplane-provider-castai:v0.43.0
+up ctp provider install crossplane-contrib/crossplane-provider-castai:v0.44.0
 ```
 
 Alternatively, you can use declarative installation:
@@ -21,7 +21,7 @@ kind: Provider
 metadata:
   name: crossplane-provider-castai
 spec:
-  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.43.0
+  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.44.0
 EOF
 ```
 
@@ -49,7 +49,7 @@ kind: Provider
 metadata:
   name: crossplane-provider-castai
 spec:
-  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.43.0
+  package: xpkg.upbound.io/crossplane-contrib/crossplane-provider-castai:v0.44.0
   runtimeConfigRef:
     name: debug-config
 EOF

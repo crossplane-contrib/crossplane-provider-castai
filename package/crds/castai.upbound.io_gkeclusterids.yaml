@@ -34,7 +34,13 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: GkeClusterId is the Schema for the GkeClusterIds API. <no value>
+        description: 'GkeClusterId is the Schema for the GkeClusterIds API. Deprecated:
+          CAST AI deprecated castai_gke_cluster_id in version 9.18.0 of its castai/castai
+          provider and will remove it in a future version. Use GkeCluster with targetServiceAccountEmail
+          and castaiServiceAccountEmail instead. Deleting a GkeClusterId whose cluster
+          has credentials assigned, for example by a GkeCluster, no longer deregisters
+          the cluster. It stays registered in CAST AI until the GkeCluster that owns
+          it is deleted.'
         properties:
           apiVersion:
             description: |-

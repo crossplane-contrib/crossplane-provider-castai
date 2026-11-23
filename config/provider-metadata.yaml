@@ -1070,6 +1070,7 @@ resources:
             values: (String) Helm values for the addon, encoded as a JSON object. Deep-merged over the chart's default values.
             vcn_cidr: (String) OCI VCN IPv4 CIDR block
             vcn_id: (String) OCI virtual cloud network ID
+            vcn_peered: (Boolean) Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.
             vpc_cidr: (String) VPC IPv4 CIDR block
             vpc_id: (String) VPC ID to be used in the selected region
             vpc_peered: (Boolean) Whether existing VPC is peered with main cluster's VPC. Field is ignored if vpc_id is not provided or main cluster is not EKS
@@ -1427,25 +1428,6 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             update: (String)
         importStatements: []
-    castai_gke_cluster_id Resource - CAST AI:
-        subCategory: ""
-        description: GKE cluster resource allows connecting an existing GKE cluster to CAST AI.
-        name: castai_gke_cluster_id Resource - CAST AI
-        title: castai_gke_cluster_id Resource - CAST AI
-        argumentDocs:
-            cast_service_account: (String) Service account email in cast project
-            client_service_account: (String) Service account email in client project
-            cluster_token: (String, Sensitive) CAST.AI agent cluster token
-            create: (String)
-            delete: (String)
-            id: (String) The ID of this resource.
-            location: (String) GCP cluster zone in case of zonal or region in case of regional cluster
-            name: (String) GKE cluster name
-            organization_id: (String) CAST AI organization ID
-            project_id: (String) GCP project id
-            timeouts: (Block, Optional) (see below for nested schema)
-            update: (String)
-        importStatements: []
     castai_hibernation_schedule:
         subCategory: ""
         description: CAST AI hibernation schedule resource to manage hibernation schedules.
@@ -1621,7 +1603,7 @@ resources:
             delete: (String)
             disk_cpu_ratio: (Number) Disk to CPU ratio. Sets the number of GiBs to be added for every CPU on the node. Defaults to 0
             disk_image: '(String) Image the disk is initialized from: a GKE image reference, projects/PROJECT/global/images/NAME or the same-project shorthand global/images/NAME.'
-            disk_type: '(String) Type of boot disk attached to the node. (See disk types). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme'
+            disk_type: '(String) Type of boot disk attached to the node. (See disk types). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced'
             dns_cluster_ip: (String) IP address to use for DNS queries within the cluster
             docker_config: (String) Optional docker daemon configuration properties in JSON format. Provide only properties that you want to override. Applicable for EKS only. Available values
             drain_timeout_sec: (Number) Timeout in seconds for draining the node. Defaults to 0
@@ -1649,6 +1631,7 @@ resources:
             min_disk_size: (Number) Minimal disk size in GiB. Defaults to 100, min 30, max 65536
             mode: '(String) Mode of the secondary boot disk. MODE_UNSPECIFIED (default) - arbitrary data disk: the kubelet exposes it via SECONDARY_BOOT_DATA_DISK. CONTAINER_IMAGE_CACHE - container image cache: the kubelet exposes it via SECONDARY_BOOT_DISKS and the cluster must have image streaming enabled.'
             name: (String) Name of the node configuration. It must be unique within the cluster. In case of cluster is reonboarded to Terraform, when previously it was onboarded with CAST AI UI, and the name corresponds to previously created node configuration this resource will override existing configuration instead of creating new.
+            nested_virtualisation: '(String) Controls EC2 nested virtualisation on provisioned nodes. Allowed values: enabled, disabled. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.'
             network_security_group: (String) Network security group to be used for provisioned nodes, if not provided default security group from castpool will be used
             network_tags: (List of String) Network tags to be added on a VM. (See network tags)
             nic_based_backend_pools: (Block List) NIC based backend pools configuration for CAST provisioned nodes. (see below for nested schema)
@@ -1658,6 +1641,8 @@ resources:
             placement: '(String) Placement of the ephemeral OS disk. One of: cacheDisk, resourceDisk, nvmeDisk'
             pod_subnet_id: (String) ID of pod subnet to be used for provisioned nodes.
             port: (Number) Port for AWS target group for CAST provisioned nodes
+            provisioned_iops: '(Number) Provisioned IOPS for the node''s boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.'
+            provisioned_throughput: '(Number) Provisioned throughput in MiB/s for the node''s boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.'
             public_ip: '(Block List, Max: 1) Public IP configuration for CAST AI provisioned nodes (see below for nested schema)'
             public_ip_prefix: (String) Public IP prefix to be used for provisioned nodes
             range_name: (String) Name of the secondary IP range
@@ -1804,6 +1789,7 @@ resources:
             capacity_reservations: (Block List) Capacity reservations that this template can use for provisioning. (see below for nested schema)
             capacity_resource_group_arn: (String) Capacity resource group ARN for UltraServer capacity blocks.
             clm_enabled: (Boolean) Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.
+            clm_networking_mode: '(String) CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if clm_enabled=true. Removing this attribute does not reset the mode; set it to default explicitly.'
             cluster_id: (String) CAST AI cluster id.
             compute_optimized: (Boolean) Compute optimized instance constraint (deprecated).
             compute_optimized_state: '(String) Will only include compute optimized nodes when enabled and exclude compute optimized nodes when disabled. Empty value won''t have effect on instances filter. Supported values: enabled, disabled or empty string.'

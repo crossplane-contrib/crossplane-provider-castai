@@ -18,7 +18,10 @@ func Configure(p *config.Provider) {
 			},
 		}
 		r.LateInitializer = config.LateInitializer{
-			IgnoredFields: []string{"custom_labels"},
+			// clm_networking_mode is optional and computed. Without this, a mode
+			// returned by the API is late-initialized into spec.forProvider on
+			// existing NodeTemplates, which shows up as drift in GitOps tools.
+			IgnoredFields: []string{"custom_labels", "clm_networking_mode"},
 		}
 	})
 }

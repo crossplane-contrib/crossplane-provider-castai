@@ -3343,6 +3343,12 @@
                       "description": "OCI virtual cloud network ID",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "vcn_peered": {
+                      "type": "bool",
+                      "description": "Whether existing VCN is peered with main cluster's network. Field is ignored if vcn_id is not provided or main cluster does not support internal load balancers. Omit the attribute instead of setting it to false to disable peering.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "description_kind": "plain",
@@ -4503,8 +4509,9 @@
                 }
               }
             },
-            "description": "GKE cluster resource allows connecting an existing GKE cluster to CAST AI.",
-            "description_kind": "plain"
+            "description": "GKE cluster resource ID allows registering an existing GKE cluster and configuring impersonation settings.",
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "castai_hibernation_schedule": {
@@ -5190,6 +5197,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "nested_virtualisation": {
+                      "type": "string",
+                      "description": "Controls EC2 nested virtualisation on provisioned nodes. Allowed values: `enabled`, `disabled`. When omitted, the field is not sent to the API and the API default (nested virtualisation off) applies.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "node_group_arn": {
                       "type": "string",
                       "description": "Cluster's node group ARN used for CAST provisioned node pools. Required for hibernate/resume functionality",
@@ -5269,7 +5282,7 @@
                   "attributes": {
                     "disk_type": {
                       "type": "string",
-                      "description": "Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme ",
+                      "description": "Type of boot disk attached to the node. (See [disk types](https://cloud.google.com/compute/docs/disks#pdspecs)). One of: pd-standard, pd-balanced, pd-ssd, pd-extreme, hyperdisk-balanced ",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -5297,6 +5310,18 @@
                     "on_host_maintenance": {
                       "type": "string",
                       "description": "Maintenance behavior of the instances. If not set, the default value for spot nodes is terminate, and for non-spot nodes, it is migrate.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "provisioned_iops": {
+                      "type": "number",
+                      "description": "Provisioned IOPS for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 3000-160000. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "provisioned_throughput": {
+                      "type": "number",
+                      "description": "Provisioned throughput in MiB/s for the node's boot disk. Only applies when the boot disk type is hyperdisk-balanced (set explicitly via disk_type or resolved by the service); configuring it together with an explicit different disk_type is rejected by the API. GCP valid range: 140-2400 MiB/s. When both provisioned values are set, the coupling MAX(140, provisioned_iops/256) <= provisioned_throughput <= MIN(2400, provisioned_iops/4) is validated at plan time by the provider and in the service.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -5513,6 +5538,13 @@
                 "description": "Marks whether Container Live Migration (CLM) should be enabled for nodes created from this template. Supported on EKS, GKE, and AKS clusters. CLM-enabled nodes participate in live workload migration during rebalancing, scale-down, and node lifecycle events.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "clm_networking_mode": {
+                "type": "string",
+                "description": "CLM networking mode for nodes created from this template. Controls how TCP connections are handled during live migration. Valid values: default, none, tc, cni. Applied only if `clm_enabled=true`. Removing this attribute does not reset the mode; set it to `default` explicitly.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "cluster_id": {
                 "type": "string",
@@ -9609,6 +9641,15 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "instance_profile_role_arns": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "IAM role ARNs that CAST AI is allowed to pass (iam:PassRole) to EC2 and EKS, e.g. the instance profile roles used by Node Configurations. If not set, iam:PassRole is allowed for any role (`role/*`). Limiting this list can block node creation when a Node Configuration is later added or updated with an instance profile role that is not on the list; keeping the list in sync is your responsibility.",
+                "description_kind": "plain",
+                "optional": true
               },
               "region": {
                 "type": "string",

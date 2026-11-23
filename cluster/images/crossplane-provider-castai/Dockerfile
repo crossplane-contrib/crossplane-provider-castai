@@ -37,7 +37,7 @@ RUN git clone -c advice.detachedHead=false --depth 1 --branch "v${TERRAFORM_PROV
        -o "/out/${TERRAFORM_NATIVE_PROVIDER_BINARY}" . \
   && install -D -m 0644 LICENSE "/out/licenses/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/LICENSE"
 
-FROM alpine:3.22.8
+FROM alpine:3.24.4
 RUN apk --no-cache upgrade && apk --no-cache add ca-certificates bash
 
 ARG TARGETOS

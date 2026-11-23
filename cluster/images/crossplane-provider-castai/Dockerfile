@@ -1,5 +1,44 @@
-FROM alpine:3.20.10
-RUN apk --no-cache add ca-certificates bash
+# The image Makefile passes this from .tool-versions. The default is only a
+# fallback for builds that do not go through the Makefile.
+ARG GO_VERSION=1.26.11
+
+# Rebuild the Terraform CLI and the CAST AI provider plugin from their upstream
+# release tags with a Go toolchain that carries the eMudhra CA distrust
+# (CVE-2026-111943). Same versions and build flags as upstream.
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS tf-builder
+
+RUN apk --no-cache add git
+
+ARG TARGETOS
+ARG TARGETARCH
+ARG TERRAFORM_VERSION
+ARG TERRAFORM_PROVIDER_VERSION
+ARG TERRAFORM_PROVIDER_DOWNLOAD_NAME
+ARG TERRAFORM_NATIVE_PROVIDER_BINARY
+
+ENV CGO_ENABLED=0
+ENV GOFLAGS="-trimpath -buildvcs=false"
+ENV GOOS=${TARGETOS}
+ENV GOARCH=${TARGETARCH}
+
+# Terraform CLI (MPL-2.0)
+RUN git clone -c advice.detachedHead=false --depth 1 --branch "v${TERRAFORM_VERSION}" \
+      https://github.com/hashicorp/terraform /src/terraform \
+  && cd /src/terraform \
+  && go build -ldflags "-s -w -X 'github.com/hashicorp/terraform/version.Version=${TERRAFORM_VERSION}' -X 'github.com/hashicorp/terraform/version.Prerelease='" \
+       -o /out/terraform . \
+  && install -D -m 0644 LICENSE /out/licenses/terraform/LICENSE
+
+# CAST AI Terraform provider plugin (MIT)
+RUN git clone -c advice.detachedHead=false --depth 1 --branch "v${TERRAFORM_PROVIDER_VERSION}" \
+      "https://github.com/castai/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}" /src/provider \
+  && cd /src/provider \
+  && go build -ldflags "-s -w -X main.version=${TERRAFORM_PROVIDER_VERSION} -X main.commit=$(git rev-parse HEAD)" \
+       -o "/out/${TERRAFORM_NATIVE_PROVIDER_BINARY}" . \
+  && install -D -m 0644 LICENSE "/out/licenses/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/LICENSE"
+
+FROM alpine:3.22.8
+RUN apk --no-cache upgrade && apk --no-cache add ca-certificates bash
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -16,9 +55,7 @@ ENV CASTAI_ADDITIONAL_USER_AGENT crossplane-provider-castai/${CROSSPLANE_PROVIDE
 ARG TERRAFORM_VERSION
 ARG TERRAFORM_PROVIDER_SOURCE
 ARG TERRAFORM_PROVIDER_VERSION
-ARG TERRAFORM_PROVIDER_DOWNLOAD_NAME
 ARG TERRAFORM_NATIVE_PROVIDER_BINARY
-ARG TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX
 
 ## End of - Provider-dependent configuration
 
@@ -26,18 +63,12 @@ ENV PLUGIN_DIR /terraform/provider-mirror/registry.terraform.io/${TERRAFORM_PROV
 ENV TF_CLI_CONFIG_FILE /terraform/.terraformrc
 ENV TF_FORK 0
 
-RUN mkdir -p ${PLUGIN_DIR}
-
-ADD https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
-ADD https://github.com/castai/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/releases/download/v${TERRAFORM_PROVIDER_VERSION}/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
+COPY --from=tf-builder /out/terraform /usr/local/bin/terraform
+COPY --from=tf-builder "/out/${TERRAFORM_NATIVE_PROVIDER_BINARY}" "${PLUGIN_DIR}/${TERRAFORM_NATIVE_PROVIDER_BINARY}"
+COPY --from=tf-builder /out/licenses /usr/local/share/licenses
 ADD terraformrc.hcl ${TF_CLI_CONFIG_FILE}
 
-RUN unzip /tmp/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d /usr/local/bin \
-  && chmod +x /usr/local/bin/terraform \
-  && rm /tmp/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip \
-  && unzip /tmp/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d ${PLUGIN_DIR} \
-  && chmod +x ${PLUGIN_DIR}/* \
-  && rm /tmp/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip \
+RUN chmod +x /usr/local/bin/terraform ${PLUGIN_DIR}/* \
   && chown -R ${USER_ID}:${USER_ID} /terraform
 # End of - Setup Terraform environment
 

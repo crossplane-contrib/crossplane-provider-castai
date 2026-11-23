@@ -18,6 +18,11 @@ include ../../../build/makelib/imagelight.mk
 
 -include ../../../build/makelib/xpkg.mk
 
+# Go version for the Terraform and plugin builds in the Dockerfile, taken from
+# .tool-versions so Renovate's Go bumps reach the image. Not named GO_VERSION
+# because golang.mk already defines that from the host toolchain.
+IMAGE_GO_VERSION := $(shell awk '/^golang /{print $$2}' $(ROOT_DIR)/.tool-versions)
+
 # ====================================================================================
 # Targets
 
@@ -37,11 +42,11 @@ img.build.shared:
 	@cp -r $(OUTPUT_DIR)/bin/ $(IMAGE_TEMP_DIR)/bin || $(FAIL)
 	@docker buildx build $(BUILD_ARGS) \
 		--platform $(IMAGE_PLATFORMS) \
+		--build-arg GO_VERSION=$(IMAGE_GO_VERSION) \
 		--build-arg TERRAFORM_VERSION=$(TERRAFORM_VERSION) \
 		--build-arg TERRAFORM_PROVIDER_SOURCE=$(TERRAFORM_PROVIDER_SOURCE) \
 		--build-arg TERRAFORM_PROVIDER_VERSION=$(TERRAFORM_PROVIDER_VERSION) \
 		--build-arg TERRAFORM_PROVIDER_DOWNLOAD_NAME=$(TERRAFORM_PROVIDER_DOWNLOAD_NAME) \
-		--build-arg TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=$(TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX) \
 		--build-arg TERRAFORM_NATIVE_PROVIDER_BINARY=$(TERRAFORM_NATIVE_PROVIDER_BINARY) \
 		--build-arg CROSSPLANE_PROVIDER_VERSION=$(VERSION) \
 		-t $(IMAGE) \

@@ -1,5 +1,5 @@
-# syntax=docker/dockerfile:1
-
+# The image Makefile passes this from .tool-versions. The default is only a
+# fallback for builds that do not go through the Makefile.
 ARG GO_VERSION=1.26.11
 
 # Rebuild the Terraform CLI and the CAST AI provider plugin from their upstream
@@ -25,7 +25,8 @@ ENV GOARCH=${TARGETARCH}
 RUN git clone -c advice.detachedHead=false --depth 1 --branch "v${TERRAFORM_VERSION}" \
       https://github.com/hashicorp/terraform /src/terraform \
   && cd /src/terraform \
-  && go build -ldflags "-s -w -X github.com/hashicorp/terraform/version.dev=no" -o /out/terraform . \
+  && go build -ldflags "-s -w -X 'github.com/hashicorp/terraform/version.Version=${TERRAFORM_VERSION}' -X 'github.com/hashicorp/terraform/version.Prerelease='" \
+       -o /out/terraform . \
   && install -D -m 0644 LICENSE /out/licenses/terraform/LICENSE
 
 # CAST AI Terraform provider plugin (MIT)
@@ -54,9 +55,7 @@ ENV CASTAI_ADDITIONAL_USER_AGENT crossplane-provider-castai/${CROSSPLANE_PROVIDE
 ARG TERRAFORM_VERSION
 ARG TERRAFORM_PROVIDER_SOURCE
 ARG TERRAFORM_PROVIDER_VERSION
-ARG TERRAFORM_PROVIDER_DOWNLOAD_NAME
 ARG TERRAFORM_NATIVE_PROVIDER_BINARY
-ARG TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX
 
 ## End of - Provider-dependent configuration
 
